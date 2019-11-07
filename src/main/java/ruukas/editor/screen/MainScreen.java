@@ -23,7 +23,7 @@ public class MainScreen extends ParentScreen {
 		super.render(mouseX, mouseY, p3);
 		
 		boolean vanillaStyle = true;
-		Color color = vanillaStyle ? new Color(255, ColorUtils.hsvToRGB(renderTicks / 5000f, 1f, 1f)) : new Color(255, 200, 200, 200);
+		Color color = vanillaStyle ? new Color(255, 200, 200, 200) : new Color(255, ColorUtils.hsvToRGB(renderTicks / 5000f, 1f, 1f));
 
 		if(vanillaStyle)
 			renderBackground();
