@@ -9,6 +9,9 @@ public class GuiUtils {
 	}
 	
 	public static void drawFrame(int x, int y, int width, int height, int border, Color color) {
-		AbstractGui.fill(x, y, width, x+border, color.getColor());
+		AbstractGui.fill(x, y, width, y+border, color.getColor());
+		AbstractGui.fill(x, y+border, x+border, height-border, color.getColor());
+		AbstractGui.fill(width-border, y+border, width, height-border, color.getColor());
+		AbstractGui.fill(x, height-border, width, height, color.getColor());
 	}
 }

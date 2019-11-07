@@ -1,5 +1,8 @@
 package ruukas.editor.screen;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.StringTextComponent;
@@ -20,21 +23,42 @@ public class MainScreen extends ParentScreen {
 		super.render(mouseX, mouseY, p3);
 		Color spectrumColor = new Color(255, ColorUtils.hsvToRGB(renderTicks / 5000f, 1f, 1f));
 		
-        fill(0, 0, width, height, (int)222 << 24);
-        //fill(5, 5, width-5, height-5, spectrumColor + );
+		//Frame
         GuiUtils.drawFrame(5, 5, width-5, height-5, 1, spectrumColor);
+        fill(6, 6, width-6, height-6, (int)235 << 24); //Fill in the frame, might be nice if part of "drawFrame"
+
+        //First vertical line
+        fill(width/3, 20, width/3+1, height-20, spectrumColor.getColor());
+        //Second vertical line
+        fill(width*2/3, 20, width*2/3+1, height-20, spectrumColor.getColor());
+        //Left horizontal line
+        fill(20, 40, width/3-15, 41, spectrumColor.getColor());
+        fill(width*2/3+16, 40, width-20, 41, spectrumColor.getColor());
 
 
-
-		drawCenteredString(font, getTitle().getFormattedText(), width / 2, 10, spectrumColor.getColor());
-		//int sWidthHalf = font.getStringWidth(getTitle().getFormattedText())/2;
-		//AbstractGui.fill(width/2-sWidthHalf, 10, width, x+border, color.getColor());
-
-		itemRenderer.renderItemIntoGUI(editing.getItemStack(), width / 2 - 8, 25);
+        //GUI Title
+		drawCenteredString(font, getTitle().getFormattedText(), width / 2, 9, spectrumColor.getColor());
+		int sWidthHalf = font.getStringWidth(getTitle().getFormattedText())/2 + 3;
+		//Title underline
+		AbstractGui.fill(width/2-sWidthHalf, 20, width/2+sWidthHalf, 21, spectrumColor.getColor());
 		
-		if(GuiUtils.isMouseIn(mouseX, mouseY, width / 2 - 8, 25, 16, 16)) {
+
+		//Item Name
+		drawCenteredString(font, editing.getItemStack().getDisplayName().getFormattedText(), width / 2, 27, spectrumColor.getColor());
+		
+		//Item
+		float itemScale = 2f;
+		GlStateManager.scalef(itemScale, itemScale, 1f);
+		itemRenderer.renderItemIntoGUI(editing.getItemStack(), (int)(width / (2 * itemScale) - 8), (int) (height/(2 * itemScale) - 8));
+		GlStateManager.scalef(1f/itemScale, 1f/itemScale, 1f);
+		//Item frame
+        GuiUtils.drawFrame(width / 2 - 18, height / 2 - 19, width / 2 + 18,  height / 2 + 17, 1, spectrumColor); //Add fill to "drawframe"
+
+        //Item tooltip
+		if(GuiUtils.isMouseIn(mouseX, mouseY, width / 2 - 16, height / 2 - 16, 32, 32)) {
 			renderTooltip(editing.getItemStack(), mouseX, mouseY);
 		}
+		
 		
         
 		renderTicks = (renderTicks + 1) % 5000;
