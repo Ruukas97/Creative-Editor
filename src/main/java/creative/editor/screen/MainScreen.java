@@ -1,15 +1,15 @@
-package ruukas.editor.screen;
+package creative.editor.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import creative.editor.nbt.NBTItemBase;
+import creative.editor.util.ColorUtils;
+import creative.editor.util.GuiUtils;
+import creative.editor.util.ColorUtils.Color;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.StringTextComponent;
-import ruukas.editor.nbt.NBTItemBase;
-import ruukas.editor.util.ColorUtils;
-import ruukas.editor.util.ColorUtils.Color;
-import ruukas.editor.util.GuiUtils;
 
 public class MainScreen extends ParentScreen {
 	private static int renderTicks = 0;

@@ -1,4 +1,4 @@
-package ruukas.editor.util;
+package creative.editor.util;
 
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;

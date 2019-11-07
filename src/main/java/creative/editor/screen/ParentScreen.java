@@ -1,9 +1,9 @@
-package ruukas.editor.screen;
+package creative.editor.screen;
 
+import creative.editor.nbt.NBTItemBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.ITextComponent;
-import ruukas.editor.nbt.NBTItemBase;
 
 public class ParentScreen extends Screen {
 	protected final Screen lastScreen;

@@ -1,9 +1,11 @@
-package ruukas.editor;
+package creative.editor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
+import creative.editor.nbt.NBTItemBase;
+import creative.editor.screen.MainScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
@@ -13,8 +15,6 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import ruukas.editor.nbt.NBTItemBase;
-import ruukas.editor.screen.MainScreen;
 
 @Mod("creativeeditor")
 public class CreativeEditor {

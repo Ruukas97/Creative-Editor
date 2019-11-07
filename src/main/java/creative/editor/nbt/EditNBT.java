@@ -1,4 +1,4 @@
-package ruukas.editor.nbt;
+package creative.editor.nbt;
 
 import net.minecraft.nbt.INBT;
 

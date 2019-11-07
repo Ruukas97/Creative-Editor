@@ -1,4 +1,4 @@
-package ruukas.editor.nbt;
+package creative.editor.nbt;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

@@ -1,4 +1,4 @@
-package ruukas.editor.util;
+package creative.editor.util;
 
 public class NBTUtils {
 
