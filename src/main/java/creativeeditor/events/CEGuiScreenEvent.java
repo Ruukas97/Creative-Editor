@@ -1,6 +1,6 @@
-package creative.editor.events;
+package creativeeditor.events;
 
-import creative.editor.screen.CEOptionSoundScreen;
+import creativeeditor.screen.CEOptionSoundScreen;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.OptionsScreen;

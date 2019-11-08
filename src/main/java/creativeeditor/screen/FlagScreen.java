@@ -1,9 +1,9 @@
-package creative.editor.screen;
+package creativeeditor.screen;
 
-import creative.editor.nbt.NBTItemBase;
-import creative.editor.util.CEStringUtils;
-import creative.editor.util.HideFlagUtils;
-import creative.editor.widgets.CEWButton;
+import creativeeditor.nbt.NBTItemBase;
+import creativeeditor.util.CEStringUtils;
+import creativeeditor.util.HideFlagUtils;
+import creativeeditor.widgets.CEWButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.ITextComponent;

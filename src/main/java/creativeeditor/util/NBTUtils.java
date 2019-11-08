@@ -1,4 +1,4 @@
-package creative.editor.util;
+package creativeeditor.util;
 
 public class NBTUtils {
 

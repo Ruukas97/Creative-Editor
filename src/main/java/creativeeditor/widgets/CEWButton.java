@@ -1,4 +1,4 @@
-package creative.editor.widgets;
+package creativeeditor.widgets;
 
 import net.minecraft.client.gui.widget.button.Button;
 

@@ -1,4 +1,4 @@
-package creative.editor.nbt;
+package creativeeditor.nbt;
 
 import net.minecraft.nbt.INBT;
 

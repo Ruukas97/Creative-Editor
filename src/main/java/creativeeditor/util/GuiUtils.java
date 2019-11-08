@@ -1,6 +1,6 @@
-package creative.editor.util;
+package creativeeditor.util;
 
-import creative.editor.util.ColorUtils.Color;
+import creativeeditor.util.ColorUtils.Color;
 import net.minecraft.client.gui.AbstractGui;
 
 public class GuiUtils {

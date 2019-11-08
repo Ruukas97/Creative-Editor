@@ -1,4 +1,4 @@
-package creative.editor.screen;
+package creativeeditor.screen;
 
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.gui.screen.Screen;

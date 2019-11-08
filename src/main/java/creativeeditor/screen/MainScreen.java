@@ -1,10 +1,9 @@
-package creative.editor.screen;
+package creativeeditor.screen;
 
-import creative.editor.config.CEStyle;
-import creative.editor.config.CEStyle.Style;
-import creative.editor.nbt.NBTItemBase;
-import creative.editor.util.ColorUtils.Color;
-import creative.editor.widgets.CEWButton;
+import creativeeditor.config.CEStyle;
+import creativeeditor.nbt.NBTItemBase;
+import creativeeditor.util.ColorUtils.Color;
+import creativeeditor.widgets.CEWButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.StringTextComponent;

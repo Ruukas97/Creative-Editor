@@ -1,12 +1,12 @@
-package creative.editor.screen;
+package creativeeditor.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import creative.editor.config.CEStyle;
-import creative.editor.config.CEStyle.Style;
-import creative.editor.nbt.NBTItemBase;
-import creative.editor.util.ColorUtils.Color;
-import creative.editor.util.GuiUtils;
+import creativeeditor.config.CEStyle;
+import creativeeditor.config.CEStyle.Style;
+import creativeeditor.nbt.NBTItemBase;
+import creativeeditor.util.GuiUtils;
+import creativeeditor.util.ColorUtils.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.Screen;
@@ -18,11 +18,14 @@ public class ParentScreen extends Screen {
 	protected NBTItemBase editing;
 
 	// Back, reset, drop, save button
-	boolean hasSave = false;
-	boolean closing = false;
+	protected boolean hasSave = false;
+	
+	// Helps for resetting gui scale back to normal on closing
+	private boolean closing = false;
 
-	// render itemstack
-	boolean renderItemStack = false;
+	// render item
+	protected boolean renderItem = true;
+	protected float itemScale = 2.0f;
 
 	// render tooltip top left
 	boolean renderToolTip = false;
@@ -61,6 +64,12 @@ public class ParentScreen extends Screen {
 	public boolean isPauseScreen() {
 		return false;
 	}
+	
+	public void setRenderItem(boolean shouldRender, float scale) {
+		this.renderItem = shouldRender;
+		if(scale > 0)
+			this.itemScale = scale;
+	}
 
 	@Override
 	public void render(int mouseX, int mouseY, float p3) {
@@ -86,20 +95,20 @@ public class ParentScreen extends Screen {
 				color.getColor());
 
 		// Item
-		float itemScale = 2f;
-		GlStateManager.scalef(itemScale, itemScale, 1f);
-		RenderHelper.enableGUIStandardItemLighting();
-		itemRenderer.renderItemIntoGUI(editing.getItemStack(), (int) (width / (2 * itemScale) - 8),
-				(int) (height / (2 * itemScale + 2) - 15));
+		if(renderItem) {
+			GlStateManager.scalef(itemScale, itemScale, 1f);
+			RenderHelper.enableGUIStandardItemLighting();
+			itemRenderer.renderItemIntoGUI(editing.getItemStack(), (int) (width / (2 * itemScale) - 8),
+					(int) (height / (2 * itemScale + 2) - 15));
 
-		GlStateManager.scalef(1f / itemScale, 1f / itemScale, 1f);
-		// Item frame
-		GuiUtils.drawFrame(width / 2 - 18, height / 3 - 32, width / 2 + 18, height / 3 + 5, 1, color); // Add fill to
-																										// "drawframe"
-
-		// Item tooltip
-		if (GuiUtils.isMouseIn(mouseX, mouseY, width / 2 - 16, height / 3 - 30, 32, 32)) {
-			renderTooltip(editing.getItemStack(), mouseX, mouseY);
+			GlStateManager.scalef(1f / itemScale, 1f / itemScale, 1f);
+			// Item frame
+			GuiUtils.drawFrame(width / 2 - 18, height / 3 - 32, width / 2 + 18, height / 3 + 5, 1, color); // Add fill to
+																											// "drawframe"
+			// Item tooltip
+			if (GuiUtils.isMouseIn(mouseX, mouseY, width / 2 - 16, height / 3 - 30, 32, 32)) {
+				renderTooltip(editing.getItemStack(), mouseX, mouseY);
+			}
 		}
 
 		// super.render always after bg rendering

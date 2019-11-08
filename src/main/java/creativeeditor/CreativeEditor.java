@@ -1,12 +1,12 @@
-package creative.editor;
+package creativeeditor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
-import creative.editor.events.CEGuiScreenEvent;
-import creative.editor.nbt.NBTItemBase;
-import creative.editor.screen.MainScreen;
+import creativeeditor.events.CEGuiScreenEvent;
+import creativeeditor.nbt.NBTItemBase;
+import creativeeditor.screen.MainScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.world.GameType;

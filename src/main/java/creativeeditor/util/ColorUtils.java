@@ -1,4 +1,4 @@
-package creative.editor.util;
+package creativeeditor.util;
 
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
