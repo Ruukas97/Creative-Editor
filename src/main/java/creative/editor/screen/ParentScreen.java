@@ -3,6 +3,7 @@ package creative.editor.screen;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import creative.editor.config.CEStyle;
+import creative.editor.config.CEStyle.Style;
 import creative.editor.nbt.NBTItemBase;
 import creative.editor.util.ColorUtils.Color;
 import creative.editor.util.GuiUtils;
@@ -22,7 +23,7 @@ public class ParentScreen extends Screen {
 
 	// render itemstack
 	boolean renderItemStack = false;
-	
+
 	// render tooltip top left
 	boolean renderToolTip = false;
 
@@ -48,8 +49,7 @@ public class ParentScreen extends Screen {
 	public void onClose() {
 		super.onClose();
 		closing = true;
-		int i = minecraft.mainWindow.calcGuiScale(minecraft.gameSettings.guiScale, minecraft.getForceUnicodeFont());
-		minecraft.mainWindow.setGuiScale(i);
+		minecraft.mainWindow.setGuiScale(minecraft.mainWindow.calcGuiScale(minecraft.gameSettings.guiScale, minecraft.getForceUnicodeFont()));
 	}
 
 	@Override
@@ -64,16 +64,15 @@ public class ParentScreen extends Screen {
 
 	@Override
 	public void render(int mouseX, int mouseY, float p3) {
-		if (CEStyle.vanillaStyle)
+		if (CEStyle.getStyle() == Style.vanilla)
 			renderBackground();
 		else
 			fillGradient(6, 6, width - 6, height - 6, -1072689136, -804253680);
 
-		Color color = CEStyle.color;
+		Color color = CEStyle.getMainColor();
 
 		// Frame
 		GuiUtils.drawFrame(5, 5, width - 5, height - 5, 1, color);
-		// fill(6, 6, width-6, height-6, (int)235 << 24); //Fill in the frame, might be
 		// nice if part of "drawFrame"
 
 		// GUI Title

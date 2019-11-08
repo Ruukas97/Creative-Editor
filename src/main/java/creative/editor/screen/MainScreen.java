@@ -1,6 +1,7 @@
 package creative.editor.screen;
 
 import creative.editor.config.CEStyle;
+import creative.editor.config.CEStyle.Style;
 import creative.editor.nbt.NBTItemBase;
 import creative.editor.util.ColorUtils.Color;
 import creative.editor.widgets.CEWButton;
@@ -25,7 +26,8 @@ public class MainScreen extends ParentScreen {
 
 	@Override
 	public void render(int mouseX, int mouseY, float p3) {
-		Color color = CEStyle.color;
+		super.render(mouseX, mouseY, p3);
+		Color color = CEStyle.getMainColor();
 		
 		// First vertical line
 		fill(width / 3, 20, width / 3 + 1, height - 20, color.getColor());
@@ -34,8 +36,5 @@ public class MainScreen extends ParentScreen {
 		// Left horizontal line
 		fill(20, 40, width / 3 - 15, 41, color.getColor());
 		fill(width * 2 / 3 + 16, 40, width - 20, 41, color.getColor());
-
-		
-		super.render(mouseX, mouseY, p3);
 	}
 }
