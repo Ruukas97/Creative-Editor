@@ -1,4 +1,9 @@
 {
 	"gui.creativeeditor": "Creative Editor",
-	"key.editor": "Edit Selected Item"
+	"gui.itemflag": "Item Flags Editor",
+	"key.editor": "Edit Selected Item",
+	
+	
+	"gui.main.itemflag": "Item Flags"
+	
 }

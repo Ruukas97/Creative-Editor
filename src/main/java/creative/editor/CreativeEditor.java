@@ -4,10 +4,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
+import creative.editor.events.CEGuiScreenEvent;
 import creative.editor.nbt.NBTItemBase;
 import creative.editor.screen.MainScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.world.GameType;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,9 +23,13 @@ public class CreativeEditor {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final KeyBinding OPEN_EDITOR_KEY = new KeyBinding("key.editor", GLFW.GLFW_KEY_U, "creativeeditor");
 
+	Minecraft mc;
+
 	public CreativeEditor() {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientInit);
+		MinecraftForge.EVENT_BUS.register(new CEGuiScreenEvent());
 		MinecraftForge.EVENT_BUS.register(this);
+		mc = Minecraft.getInstance();
 	}
 
 	private void clientInit(final FMLClientSetupEvent event) {
@@ -33,9 +39,11 @@ public class CreativeEditor {
 
 	@SubscribeEvent
 	public void onKeyInput(final KeyInputEvent event) {
-		if (event.getKey() == OPEN_EDITOR_KEY.getKey().getKeyCode()) {
-			Minecraft mc = Minecraft.getInstance();
-			mc.displayGuiScreen(new MainScreen(mc.currentScreen, new NBTItemBase(mc.player.getHeldItemMainhand())));
+		//preventing crash on main menu
+		if (mc.player != null) {
+			if (event.getKey() == OPEN_EDITOR_KEY.getKey().getKeyCode()) {
+				mc.displayGuiScreen(new MainScreen(mc.currentScreen, new NBTItemBase(mc.player.getHeldItemMainhand())));
+			}
 		}
 	}
 }
