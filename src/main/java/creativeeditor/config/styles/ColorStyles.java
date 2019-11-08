@@ -15,7 +15,6 @@ public class ColorStyles {
 		public Color getColor() {
 			switch (this) {
 			case spectrum:
-				spectrumTick = (spectrumTick+1)%5000;
 				return new Color(255, ColorUtils.hsvToRGB(spectrumTick/5000f, 1f, 1f));
 			case vanilla:
 				return new Color(255, 200, 200, 200);
@@ -38,6 +37,10 @@ public class ColorStyles {
 
 	public static Color getMainColor() {
 		return style.getColor();
+	}
+	
+	public static void tickSpectrum() {
+		spectrumTick = (spectrumTick+1)%5000;
 	}
 	
 }

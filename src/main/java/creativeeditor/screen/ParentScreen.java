@@ -72,7 +72,7 @@ public class ParentScreen extends Screen {
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float p3) {
+	public void render(int mouseX, int mouseY, float p3) {		
 		if (ColorStyles.getStyle() == Style.vanilla)
 			renderBackground();
 		else
@@ -115,5 +115,7 @@ public class ParentScreen extends Screen {
 				renderTooltip(editing.getItemStack(), mouseX, mouseY);
 			}
 		}
+		
+		ColorStyles.tickSpectrum();
 	}
 }
