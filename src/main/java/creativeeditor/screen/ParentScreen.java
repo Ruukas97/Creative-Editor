@@ -2,8 +2,8 @@ package creativeeditor.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import creativeeditor.config.CEStyle;
-import creativeeditor.config.CEStyle.Style;
+import creativeeditor.config.styles.ColorStyles;
+import creativeeditor.config.styles.ColorStyles.Style;
 import creativeeditor.nbt.NBTItemBase;
 import creativeeditor.util.GuiUtils;
 import creativeeditor.util.ColorUtils.Color;
@@ -73,12 +73,12 @@ public class ParentScreen extends Screen {
 
 	@Override
 	public void render(int mouseX, int mouseY, float p3) {
-		if (CEStyle.getStyle() == Style.vanilla)
+		if (ColorStyles.getStyle() == Style.vanilla)
 			renderBackground();
 		else
 			fillGradient(6, 6, width - 6, height - 6, -1072689136, -804253680);
 
-		Color color = CEStyle.getMainColor();
+		Color color = ColorStyles.getMainColor();
 
 		// Frame
 		GuiUtils.drawFrame(5, 5, width - 5, height - 5, 1, color);
@@ -93,8 +93,13 @@ public class ParentScreen extends Screen {
 		// Item Name
 		drawCenteredString(font, editing.getItemStack().getDisplayName().getFormattedText(), width / 2, 27,
 				color.getColor());
+		
+		
+		// renders buttons, if there are any
+		super.render(mouseX, mouseY, p3);
 
-		// Item
+
+		// Item (Tooltip must render last or colors will be messed up)
 		if(renderItem) {
 			GlStateManager.scalef(itemScale, itemScale, 1f);
 			RenderHelper.enableGUIStandardItemLighting();
@@ -110,8 +115,5 @@ public class ParentScreen extends Screen {
 				renderTooltip(editing.getItemStack(), mouseX, mouseY);
 			}
 		}
-
-		// super.render always after bg rendering
-		super.render(mouseX, mouseY, p3);
 	}
 }

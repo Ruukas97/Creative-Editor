@@ -1,9 +1,9 @@
-package creative.editor.config;
+package creativeeditor.config.styles;
 
-import creative.editor.util.ColorUtils;
-import creative.editor.util.ColorUtils.Color;
+import creativeeditor.util.ColorUtils;
+import creativeeditor.util.ColorUtils.Color;
 
-public class CEStyle {
+public class ColorStyles {
 	// styles
 	private static Style style = Style.vanilla;
 	private static Color staticColor = Style.vanilla.getColor();
@@ -33,7 +33,7 @@ public class CEStyle {
 	}
 
 	public static void setStyle(Style style) {
-		CEStyle.style = style;
+		ColorStyles.style = style;
 	}
 
 	public static Color getMainColor() {
