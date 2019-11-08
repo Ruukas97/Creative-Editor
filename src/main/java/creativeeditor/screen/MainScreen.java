@@ -41,5 +41,7 @@ public class MainScreen extends ParentScreen {
 		// Left horizontal line
 		fill(20, 40, width / 3 - 15, 41, color.getColor());
 		fill(width * 2 / 3 + 16, 40, width - 20, 41, color.getColor());
+		
+		finalRender(mouseX, mouseY, color);
 	}
 }

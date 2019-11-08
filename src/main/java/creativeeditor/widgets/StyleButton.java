@@ -5,6 +5,8 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import creativeeditor.config.styles.ColorStyles;
 import creativeeditor.config.styles.ColorStyles.Style;
 import creativeeditor.util.ColorUtils;
+import creativeeditor.util.ColorUtils.Color;
+import creativeeditor.util.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.button.Button;
@@ -19,6 +21,8 @@ public class StyleButton extends Button {
 	public void renderButton(int mouseX, int mouseY, float unused) {
 		Minecraft minecraft = Minecraft.getInstance();
 		FontRenderer fontrenderer = minecraft.fontRenderer;
+		int j = getFGColor();
+
 		if(ColorStyles.getStyle() == Style.vanilla) {
 			minecraft.getTextureManager().bindTexture(WIDGETS_LOCATION);
 			GlStateManager.color4f(1.0F, 1.0F, 1.0F, alpha);
@@ -31,8 +35,10 @@ public class StyleButton extends Button {
 			blit(x, y, 0, 46 + i * 20, width / 2, height);
 			blit(x + width / 2, y, 200 - width / 2, 46 + i * 20, width / 2, height);
 		}
+		else {
+			GuiUtils.drawFrame(x, y, x+width, y+height, 1, new Color( j ));
+		}
 		this.renderBg(minecraft, mouseX, mouseY);
-		int j = getFGColor();
 
 		this.drawCenteredString(fontrenderer, getMessage(), x + width / 2, y + (height - 8) / 2, j | MathHelper.ceil(alpha * 255.0F) << 24);
 	}

@@ -94,11 +94,14 @@ public class ParentScreen extends Screen {
 		drawCenteredString(font, editing.getItemStack().getDisplayName().getFormattedText(), width / 2, 27,
 				color.getColor());
 		
-		
 		// renders buttons, if there are any
 		super.render(mouseX, mouseY, p3);
-
-
+	}
+	
+	/**
+	 * Should always be called last in render, but only once.
+	 */
+	public void finalRender(int mouseX, int mouseY, Color color) {
 		// Item (Tooltip must render last or colors will be messed up)
 		if(renderItem) {
 			GlStateManager.scalef(itemScale, itemScale, 1f);
