@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
+import creativeeditor.config.ConfigHandler;
 import creativeeditor.creativetabs.TabUnavailable;
 import creativeeditor.events.CEClientChatReceivedEvent;
 import creativeeditor.events.CEGuiScreenEvent;
@@ -11,6 +12,10 @@ import creativeeditor.events.CERegistryEvent;
 import creativeeditor.events.CEScreenshotEvent;
 import creativeeditor.nbt.NBTItemBase;
 import creativeeditor.screen.MainScreen;
+import creativeeditor.styles.Style;
+import creativeeditor.styles.StyleSpectrum;
+import creativeeditor.styles.StyleVanilla;
+import creativeeditor.util.CameraUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.settings.KeyBinding;
@@ -24,7 +29,6 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.config.ModConfig.Type;
 
 @Mod("creativeeditor")
 public class CreativeEditor {
@@ -39,15 +43,21 @@ public class CreativeEditor {
 	private ItemGroup tabUnavailable;
 
 	public CreativeEditor() {
-		//final ModLoadingContext modLoadingContext = ModLoadingContext.get();
-		//modLoadingContext.registerConfig(ModConfig.Type.CLIENT, null);
+		mc = Minecraft.getInstance();
+		final ModLoadingContext context = ModLoadingContext.get();
 		
+		LOGGER.info("Registering config");
+		context.registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
+		Style.setCurrentStyle(ConfigHandler.CLIENT.currentStyle.get() == 0 ? new StyleSpectrum() : new StyleVanilla());
+		
+		LOGGER.info("Registering keybindings");
 		OPEN_EDITOR_KEY = new KeyBinding("key.editor", GLFW.GLFW_KEY_U, "creativeeditor");
 		TEST_KEY = new KeyBinding("key.inspector", GLFW.GLFW_KEY_G, "creativeeditor");
 		ClientRegistry.registerKeyBinding(OPEN_EDITOR_KEY);
 		ClientRegistry.registerKeyBinding(TEST_KEY);
 		
 		// Register Events
+		LOGGER.info("Registering events");
 		registerEventHandler(new CEGuiScreenEvent());
 		registerEventHandler(new CERegistryEvent());
 		registerEventHandler(new CEScreenshotEvent());
@@ -56,8 +66,6 @@ public class CreativeEditor {
 
 		// Register Creative Tabs
 		registerTabs();
-
-		mc = Minecraft.getInstance();
 	}
 
 	private void registerEventHandler(Object target) {
@@ -65,6 +73,7 @@ public class CreativeEditor {
 	}
 
 	private void registerTabs() {
+		LOGGER.info("Registering Creative tabs");
 		tabUnavailable = new TabUnavailable();
 	}
 
@@ -80,6 +89,7 @@ public class CreativeEditor {
 		
 		else if(event.getKey() == TEST_KEY.getKey().getKeyCode()) 
 		{
+			CameraUtil.setThirdPersonPerspective();
 			Entity entity = mc.pointedEntity;
 			if(entity instanceof PlayerEntity)
 			{

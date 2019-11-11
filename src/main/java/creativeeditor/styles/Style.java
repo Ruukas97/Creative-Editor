@@ -11,7 +11,7 @@ public abstract class Style {
 		this.buttonColor = buttonColor;
 	}
 	
-	private static Style currentStyle = new StyleSpectrum();
+	private static Style currentStyle;
 
 	public static Style getCurrentStyle() {
 		return currentStyle;

@@ -61,9 +61,7 @@ public class StyleSpectrum extends Style {
 		
 		@Override
 		public Color hovered() {
-			System.out.println("heya");
-			return new Color(255, 120, 120, 120);
-			//return ColorUtils.multiplyColor(specStyle.getMainColor(), new ColorUtils.Color(255, 100, 100, 100));
+			return ColorUtils.multiplyColor(specStyle.getMainColor(), new ColorUtils.Color(255, 170, 170, 170));
 		}
 	}
 }

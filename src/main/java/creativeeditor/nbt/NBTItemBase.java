@@ -41,6 +41,10 @@ public class NBTItemBase extends EditNBT {
 		this.item = item;
 	}
 	
+	public Item getItem() {
+		return item;
+	}
+	
 	public void setCount(byte count) {
 		this.count = count;
 	}

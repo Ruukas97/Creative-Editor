@@ -33,23 +33,20 @@ public class ParentItemScreen extends ParentScreen {
 	protected void init() {
 		super.init();
 
-		// Render essential buttons NOT WORKING ATM
 		if (hasEssButtons) {
 			int bwidth = 50;
 			int posX = width / 2 - (bwidth / 2);
 			int posY = height / 7 * 6;
-			addButton(new CEWButton(posX - 49, posY, bwidth, 20, I18n.format("gui.main.close"), b -> {
+			addButton(new CEWButton(posX - bwidth - 1, posY, bwidth, 20, I18n.format("gui.main.close"), b -> {
 				mc.displayGuiScreen(lastScreen);
 			}));
-			addButton(new CEWButton(posX, posY - 9, bwidth, 20, I18n.format("gui.main.reset"), b -> {
+			addButton(new CEWButton(posX, posY - 11, bwidth, 20, I18n.format("gui.main.reset"), b -> {
 				editing.setTag(null);
-				// mc.player.inventory.player.dropItem(editing.getItemStack(), true);
 			}));
-			addButton(new CEWButton(posX, posY + 9, bwidth, 20, I18n.format("gui.main.save"), b -> {
-				mc.displayGuiScreen(lastScreen);
-				// Hold shift to copy to realm?
+			addButton(new CEWButton(posX, posY + 10, bwidth, 20, I18n.format("gui.main.save"), b -> {
+				mc.playerController.sendSlotPacket(editing.getItemStack(), 36 + mc.player.inventory.currentItem);
 			}));
-			addButton(new CEWButton(posX + 49, posY, bwidth, 20, I18n.format("gui.main.drop"), b -> {
+			addButton(new CEWButton(posX + bwidth + 1, posY, bwidth, 20, I18n.format("gui.main.drop"), b -> {
 				mc.playerController.sendPacketDropItem(editing.getItemStack());
 				// Shift for /give
 			}));
@@ -74,7 +71,6 @@ public class ParentItemScreen extends ParentScreen {
 	@Override
 	public void overlayRender(int mouseX, int mouseY, float p3, Color color) {
 		super.overlayRender(mouseX, mouseY, p3, color);
-
 		// Item (Tooltip must render last or colors will be messed up)
 		if (renderItem) {
 			GlStateManager.scalef(itemScale, itemScale, 1f);

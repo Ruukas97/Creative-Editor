@@ -4,6 +4,8 @@
 	"itemGroup.unavailable": "Unavailable",
 
 	"gui.main": "Creative Editor",
+	"gui.main.id": "ID",
+	"gui.main.count": "Count",
 	"gui.main.save": "Save",
 	"gui.main.drop": "Drop",
 	"gui.main.close": "Close",
