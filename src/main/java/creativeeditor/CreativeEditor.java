@@ -12,11 +12,11 @@ import creativeeditor.events.CEScreenshotEvent;
 import creativeeditor.nbt.NBTItemBase;
 import creativeeditor.screen.MainScreen;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -64,12 +64,15 @@ public class CreativeEditor {
 
 	@SubscribeEvent
 	public void onKeyInput(final KeyInputEvent event) {
+		if(mc.world == null || (mc.currentScreen != null && mc.currentScreen instanceof ChatScreen))
+			return;
+
 		// preventing crash on main menu
-		if (mc.player != null && event.getKey() == OPEN_EDITOR_KEY.getKey().getKeyCode()) {
+		if (event.getKey() == OPEN_EDITOR_KEY.getKey().getKeyCode()) {
 			mc.displayGuiScreen(new MainScreen(mc.currentScreen, new NBTItemBase(mc.player.getHeldItemMainhand())));
 		}
 		
-		if(mc.player != null && event.getKey() == TEST_KEY.getKey().getKeyCode()) 
+		else if(event.getKey() == TEST_KEY.getKey().getKeyCode()) 
 		{
 			Entity entity = mc.pointedEntity;
 			if(entity instanceof PlayerEntity)

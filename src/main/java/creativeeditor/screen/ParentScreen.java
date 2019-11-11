@@ -46,6 +46,7 @@ public class ParentScreen extends Screen {
 	
 
 	@Override
+	@Deprecated
 	public void render(int mouseX, int mouseY, float p3) {
 		Color color = ColorStyles.getMainColor();
 		backRender(mouseX, mouseY, p3, color);

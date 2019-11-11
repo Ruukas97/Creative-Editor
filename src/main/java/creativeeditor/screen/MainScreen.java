@@ -7,12 +7,12 @@ import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.widgets.CEWButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class MainScreen extends ParentItemScreen {
 
 	public MainScreen(Screen lastScreen, NBTItemBase editing) {
-		super(new StringTextComponent(I18n.format("gui.creativeeditor")), lastScreen, editing);
+		super(new TranslationTextComponent("gui.creativeeditor"), lastScreen, editing);
 	}
 
 	@Override
