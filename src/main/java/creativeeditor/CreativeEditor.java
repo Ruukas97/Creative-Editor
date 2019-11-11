@@ -39,8 +39,8 @@ public class CreativeEditor {
 	private ItemGroup tabUnavailable;
 
 	public CreativeEditor() {
-		final ModLoadingContext modLoadingContext = ModLoadingContext.get();
-		modLoadingContext.registerConfig(ModConfig.Type.CLIENT, null);
+		//final ModLoadingContext modLoadingContext = ModLoadingContext.get();
+		//modLoadingContext.registerConfig(ModConfig.Type.CLIENT, null);
 		
 		OPEN_EDITOR_KEY = new KeyBinding("key.editor", GLFW.GLFW_KEY_U, "creativeeditor");
 		TEST_KEY = new KeyBinding("key.inspector", GLFW.GLFW_KEY_G, "creativeeditor");
