@@ -12,6 +12,7 @@ import creativeeditor.events.CERegistryEvent;
 import creativeeditor.events.CEScreenshotEvent;
 import creativeeditor.nbt.NBTItemBase;
 import creativeeditor.screen.MainScreen;
+import creativeeditor.screen.ScreenPlayerInspector;
 import creativeeditor.styles.Style;
 import creativeeditor.styles.StyleSpectrum;
 import creativeeditor.styles.StyleVanilla;
@@ -34,7 +35,7 @@ import net.minecraftforge.fml.config.ModConfig;
 public class CreativeEditor {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static KeyBinding OPEN_EDITOR_KEY;
-	private static KeyBinding TEST_KEY;
+	private static KeyBinding PLAYER_INSPECT;
 
 	private Minecraft mc;
 
@@ -52,9 +53,9 @@ public class CreativeEditor {
 		
 		LOGGER.info("Registering keybindings");
 		OPEN_EDITOR_KEY = new KeyBinding("key.editor", GLFW.GLFW_KEY_U, "creativeeditor");
-		TEST_KEY = new KeyBinding("key.inspector", GLFW.GLFW_KEY_G, "creativeeditor");
+		PLAYER_INSPECT = new KeyBinding("key.inspector", GLFW.GLFW_KEY_G, "creativeeditor");
 		ClientRegistry.registerKeyBinding(OPEN_EDITOR_KEY);
-		ClientRegistry.registerKeyBinding(TEST_KEY);
+		ClientRegistry.registerKeyBinding(PLAYER_INSPECT);
 		
 		// Register Events
 		LOGGER.info("Registering events");
@@ -87,12 +88,13 @@ public class CreativeEditor {
 			mc.displayGuiScreen(new MainScreen(mc.currentScreen, new NBTItemBase(mc.player.getHeldItemMainhand())));
 		}
 		
-		else if(event.getKey() == TEST_KEY.getKey().getKeyCode()) 
+		else if(event.getKey() == PLAYER_INSPECT.getKey().getKeyCode())
 		{
 			CameraUtil.setThirdPersonPerspective();
 			Entity entity = mc.pointedEntity;
-			if(entity instanceof PlayerEntity)
+			if(entity != null)
 			{
+				mc.displayGuiScreen(new ScreenPlayerInspector(mc.currentScreen, mc.player));
 				mc.player.sendMessage(entity.getDisplayName());
 			}
 		}
