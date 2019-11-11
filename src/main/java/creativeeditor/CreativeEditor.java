@@ -64,7 +64,7 @@ public class CreativeEditor {
 
 	@SubscribeEvent
 	public void onKeyInput(final KeyInputEvent event) {
-		if(mc.world == null || (mc.currentScreen != null && mc.currentScreen instanceof ChatScreen))
+		if(mc.world == null || event.getAction() != GLFW.GLFW_PRESS || (mc.currentScreen != null && mc.currentScreen instanceof ChatScreen))
 			return;
 
 		// preventing crash on main menu
