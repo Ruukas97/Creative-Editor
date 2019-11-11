@@ -106,11 +106,11 @@ public class ParentScreen extends Screen {
 
 		// Frame
 		GuiUtils.drawFrame(5, 5, width - 5, height - 5, 1, color);
-		// nice if part of "drawFrame"
 
 		// GUI Title
 		drawCenteredString(font, getTitle().getFormattedText(), width / 2, 9, color.getColor());
 		int sWidthHalf = font.getStringWidth(getTitle().getFormattedText()) / 2 + 3;
+		
 		// Title underline
 		AbstractGui.fill(width / 2 - sWidthHalf, 20, width / 2 + sWidthHalf, 21, color.getColor());
 
@@ -118,7 +118,8 @@ public class ParentScreen extends Screen {
 
 	public void mainRender(int mouseX, int mouseY, float p3, Color color) {
 		// Item Name
-		drawCenteredString(font, editing.getItemStack().getDisplayName().getFormattedText(), width / 2, 27,
+		String itemName = editing.getItemStack().getDisplayName().getFormattedText();
+		drawCenteredString(font, itemName, width / 2, 27,
 				color.getColor());
 
 		buttons.forEach(b -> {

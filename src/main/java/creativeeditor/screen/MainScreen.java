@@ -31,7 +31,7 @@ public class MainScreen extends ParentScreen {
 
 	@Override
 	public void mainRender(int mouseX, int mouseY, float p3, Color color) {
-		super.mainRender(mouseX, mouseY, p3, null);
+		super.mainRender(mouseX, mouseY, p3, color);
 
 		// First vertical line
 		fill(width / 3, 20, width / 3 + 1, height - 20, color.getColor());
