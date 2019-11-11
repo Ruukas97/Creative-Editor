@@ -20,10 +20,10 @@ public class TabUnavailable extends ItemGroup {
 	
 	@Override
 	public void fill(NonNullList<ItemStack> items) {
-		super.fill(items);
+		//super.fill(items); super sees if any items are assigned to this tab - this tab by definition list items that aren't assigned any tabs
 		
 		GameData.getWrapper(Item.class).forEach(i -> {
-			if(i.getCreativeTabs().isEmpty()) {
+			if(i != Items.AIR && (i.getCreativeTabs().isEmpty() || (i.getCreativeTabs().size() == 1 && i.getCreativeTabs().contains(null)))) {
 				items.add(new ItemStack(i));
 			}
 		});
