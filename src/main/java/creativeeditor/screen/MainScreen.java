@@ -11,9 +11,6 @@ import net.minecraft.util.text.StringTextComponent;
 
 public class MainScreen extends ParentScreen {
 
-	
-	
-	
 	public MainScreen(Screen lastScreen, NBTItemBase editing) {
 		super(new StringTextComponent(I18n.format("gui.creativeeditor")), lastScreen, editing);
 	}
@@ -33,9 +30,8 @@ public class MainScreen extends ParentScreen {
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float p3) {
-		super.render(mouseX, mouseY, p3);
-		Color color = ColorStyles.getMainColor();
+	public void mainRender(int mouseX, int mouseY, float p3, Color color) {
+		super.mainRender(mouseX, mouseY, p3, null);
 
 		// First vertical line
 		fill(width / 3, 20, width / 3 + 1, height - 20, color.getColor());
@@ -45,7 +41,5 @@ public class MainScreen extends ParentScreen {
 		fill(20, 40, width / 3 - 15, 41, color.getColor());
 		// Right horizontal line
 		fill(width * 2 / 3 + 16, 40, width - 20, 41, color.getColor());
-		
-		finalRender(mouseX, mouseY, color);
 	}
 }

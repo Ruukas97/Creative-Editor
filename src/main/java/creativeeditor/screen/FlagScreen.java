@@ -1,6 +1,7 @@
 package creativeeditor.screen;
 
 import creativeeditor.nbt.NBTItemBase;
+import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.HideFlagUtils;
 import creativeeditor.widgets.CEWButton;
 import net.minecraft.client.gui.screen.Screen;
@@ -37,7 +38,7 @@ public class FlagScreen extends ParentScreen {
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float p3) {
-		super.render(mouseX, mouseY, p3);
+	public void mainRender(int mouseX, int mouseY, float p3, Color color) {
+		super.mainRender(mouseX, mouseY, p3, color);
 	}
 }

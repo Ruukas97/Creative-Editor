@@ -28,7 +28,7 @@ public class ParentScreen extends Screen {
 
 	// render tooltip top left
 	boolean renderToolTip = false;
-	
+
 	protected Minecraft mc;
 
 	public ParentScreen(ITextComponent title, Screen lastScreen, NBTItemBase editing) {
@@ -52,8 +52,8 @@ public class ParentScreen extends Screen {
 			addButton(new CEWButton(posX, posY - 9, bwidth, 20, "Drop", (Button b) -> {
 				mc.player.inventory.player.dropItem(editing.getItemStack(), true);
 				mc.playerController.sendPacketDropItem(editing.getItemStack());
-				// Shift for /give 
-			})); 
+				// Shift for /give
+			}));
 			addButton(new CEWButton(posX, posY + 9, bwidth, 20, "Close", (Button b) -> {
 				this.onClose();
 			}));
@@ -92,13 +92,17 @@ public class ParentScreen extends Screen {
 
 	@Override
 	public void render(int mouseX, int mouseY, float p3) {
-		
+		Color color = ColorStyles.getMainColor();
+		backRender(mouseX, mouseY, p3, color);
+		mainRender(mouseX, mouseY, p3, color);
+		overlayRender(mouseX, mouseY, p3, color);
+	}
+
+	public void backRender(int mouseX, int mouseY, float p3, Color color) {
 		if (ColorStyles.getStyle() == Style.vanilla)
 			renderBackground();
 		else
 			fillGradient(0, 0, width, height, -1072689136, -804253680);
-
-		Color color = ColorStyles.getMainColor();
 
 		// Frame
 		GuiUtils.drawFrame(5, 5, width - 5, height - 5, 1, color);
@@ -110,23 +114,22 @@ public class ParentScreen extends Screen {
 		// Title underline
 		AbstractGui.fill(width / 2 - sWidthHalf, 20, width / 2 + sWidthHalf, 21, color.getColor());
 
+	}
+
+	public void mainRender(int mouseX, int mouseY, float p3, Color color) {
 		// Item Name
 		drawCenteredString(font, editing.getItemStack().getDisplayName().getFormattedText(), width / 2, 27,
 				color.getColor());
 
-		// Render item with tooltip
-		if (renderItem) {
-			finalRender(mouseX, mouseY, color);
-		}
-
-		// renders buttons, if there are any
-		super.render(mouseX, mouseY, p3);
+		buttons.forEach(b -> {
+			b.render(mouseX, mouseY, p3);
+		});
 	}
 
 	/**
 	 * Should always be called last in render, but only once.
 	 */
-	public void finalRender(int mouseX, int mouseY, Color color) {
+	public void overlayRender(int mouseX, int mouseY, float p3, Color color) {
 		// Item (Tooltip must render last or colors will be messed up)
 		if (renderItem) {
 			GlStateManager.scalef(itemScale, itemScale, 1f);
