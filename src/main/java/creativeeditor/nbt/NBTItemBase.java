@@ -36,6 +36,18 @@ public class NBTItemBase extends EditNBT {
 	public ItemStack getItemStack() {
 		return new ItemStack(item, count, tag);
 	}
+	
+	public void setItem(Item item) {
+		this.item = item;
+	}
+	
+	public void setCount(byte count) {
+		this.count = count;
+	}
+	
+	public byte getCount() {
+		return this.count;
+	}
 
 	public byte setSlot(byte slot) {
 		return (this.slot = slot);

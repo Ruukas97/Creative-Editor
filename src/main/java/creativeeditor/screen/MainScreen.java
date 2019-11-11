@@ -9,7 +9,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.StringTextComponent;
 
-public class MainScreen extends ParentScreen {
+public class MainScreen extends ParentItemScreen {
 
 	public MainScreen(Screen lastScreen, NBTItemBase editing) {
 		super(new StringTextComponent(I18n.format("gui.creativeeditor")), lastScreen, editing);

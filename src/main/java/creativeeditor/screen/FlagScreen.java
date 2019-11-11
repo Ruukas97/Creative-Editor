@@ -10,18 +10,16 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
-public class FlagScreen extends ParentScreen {
+public class FlagScreen extends ParentItemScreen {
 
 	public FlagScreen(ITextComponent title, Screen lastScreen, NBTItemBase editing) {
 		super(new StringTextComponent(I18n.format("gui.itemflag")), lastScreen, editing);
-		setRenderItem(false, 0f);
-		
 	}
 
 	@Override
 	protected void init() {
 		//render Item
-		renderItem = true;
+		setRenderItem(true, 1f);
 		
 		hasEssButtons = true;
 		
