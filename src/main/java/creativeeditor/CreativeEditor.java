@@ -90,12 +90,10 @@ public class CreativeEditor {
 		
 		else if(event.getKey() == PLAYER_INSPECT.getKey().getKeyCode())
 		{
-			CameraUtil.setThirdPersonPerspective();
 			Entity entity = mc.pointedEntity;
 			if(entity != null)
 			{
 				mc.displayGuiScreen(new ScreenPlayerInspector(mc.currentScreen, mc.player));
-				mc.player.sendMessage(entity.getDisplayName());
 			}
 		}
 	}
