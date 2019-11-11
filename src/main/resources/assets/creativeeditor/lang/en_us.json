@@ -1,15 +1,19 @@
 {
-	"gui.creativeeditor": "Creative Editor",
-	"gui.itemflag": "Item Flags Editor",
 	"key.editor": "Edit Selected Item",
-	
+
 	"itemGroup.unavailable": "Unavailable",
-	
-	
+
+	"gui.main": "Creative Editor",
+	"gui.main.save": "Save",
+	"gui.main.drop": "Drop",
+	"gui.main.close": "Close",
+	"gui.main.back": "Back",
+	"gui.main.reset": "Reset",
 	"gui.main.itemflag": "Item Flags",
 	"gui.main.colorstyle": "Change Style",
 	
 	
+	"gui.itemflag": "Item Flags Editor",
 	"flag.enchantment": "Enchantments",
 	"flag.attributemod": "AttributeMod",
 	"flag.unbreakable": "Unbreakable",

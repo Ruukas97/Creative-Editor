@@ -46,15 +46,23 @@ public class NBTItemBase extends EditNBT {
 	}
 	
 	public byte getCount() {
-		return this.count;
+		return count;
 	}
 
-	public byte setSlot(byte slot) {
-		return (this.slot = slot);
+	public void setSlot(byte slot) {
+		this.slot = slot;
 	}
 
 	public byte getSlot() {
 		return slot;
+	}
+	
+	public void setTag(CompoundNBT tag) {
+		this.tag = tag;
+	}
+	
+	public CompoundNBT getTag() {
+		return tag;
 	}
 
 	@Override

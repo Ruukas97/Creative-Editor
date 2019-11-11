@@ -1,9 +1,9 @@
 package creativeeditor.screen;
 
-import creativeeditor.config.styles.Style;
-import creativeeditor.config.styles.StyleSpectrum;
-import creativeeditor.config.styles.StyleVanilla;
 import creativeeditor.nbt.NBTItemBase;
+import creativeeditor.styles.Style;
+import creativeeditor.styles.StyleSpectrum;
+import creativeeditor.styles.StyleVanilla;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.widgets.CEWButton;
 import net.minecraft.client.gui.screen.Screen;
@@ -13,7 +13,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class MainScreen extends ParentItemScreen {
 
 	public MainScreen(Screen lastScreen, NBTItemBase editing) {
-		super(new TranslationTextComponent("gui.creativeeditor"), lastScreen, editing);
+		super(new TranslationTextComponent("gui.main"), lastScreen, editing);
 	}
 
 	@Override
@@ -47,6 +47,10 @@ public class MainScreen extends ParentItemScreen {
 	@Override
 	public void mainRender(int mouseX, int mouseY, float p3, Color color) {
 		super.mainRender(mouseX, mouseY, p3, color);
-
+		
+		// Item Name
+		String itemCount = editing.getCount() > 1 ? editing.getCount() + "x " : "";
+		String itemOverview = itemCount + editing.getItemStack().getDisplayName().getFormattedText();
+		drawCenteredString(font, itemOverview, width / 2, 27, color.getInt());
 	}
 }

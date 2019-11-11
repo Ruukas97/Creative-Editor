@@ -1,7 +1,7 @@
 package creativeeditor.screen;
 
 import creativeeditor.util.ColorUtils.Color;
-import creativeeditor.config.styles.Style;
+import creativeeditor.styles.Style;
 import creativeeditor.util.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;

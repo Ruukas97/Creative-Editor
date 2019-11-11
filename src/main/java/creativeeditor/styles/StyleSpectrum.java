@@ -1,4 +1,4 @@
-package creativeeditor.config.styles;
+package creativeeditor.styles;
 
 import creativeeditor.screen.ParentScreen;
 import creativeeditor.util.ColorUtils;
@@ -36,10 +36,10 @@ public class StyleSpectrum extends Style {
 	public void renderButton(CEWButton button, int mouseX, int mouseY, float alpha) {
 		Minecraft mc = Minecraft.getInstance();
 		FontRenderer font = mc.fontRenderer;
-
-		GuiUtils.drawFrame(button.x, button.y, button.x+button.getWidth(), button.y+button.getHeight(), 1, getMainColor());
+		int j = button.getFGColor();
+		GuiUtils.drawFrame(button.x, button.y, button.x+button.getWidth(), button.y+button.getHeight(), 1, new Color(j));
 		button.renderBg(mc, mouseX, mouseY);
-		button.drawCenteredString(font, button.getMessage(), button.x + button.getWidth() / 2, button.y + (button.getHeight() - 8) / 2, getMainColor().getInt() | MathHelper.ceil(alpha * 255.0F) << 24);		
+		button.drawCenteredString(font, button.getMessage(), button.x + button.getWidth() / 2, button.y + (button.getHeight() - 8) / 2, j | MathHelper.ceil(alpha * 255.0F) << 24);		
 	}
 	
 	public static class SpectrumButtonColor extends ButtonColor {
@@ -56,12 +56,14 @@ public class StyleSpectrum extends Style {
 		
 		@Override
 		public Color inactive() {
-			return specStyle.getMainColor();
+			return new Color(255, 120, 120, 120);
 		}
 		
 		@Override
 		public Color hovered() {
-			return ColorUtils.multiplyColor(specStyle.getMainColor(), new ColorUtils.Color(255, 170, 170, 170));
+			System.out.println("heya");
+			return new Color(255, 120, 120, 120);
+			//return ColorUtils.multiplyColor(specStyle.getMainColor(), new ColorUtils.Color(255, 100, 100, 100));
 		}
 	}
 }

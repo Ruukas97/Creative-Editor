@@ -1,4 +1,4 @@
-package creativeeditor.config.styles;
+package creativeeditor.styles;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 

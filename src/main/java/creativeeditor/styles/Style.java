@@ -1,4 +1,4 @@
-package creativeeditor.config.styles;
+package creativeeditor.styles;
 
 import creativeeditor.screen.ParentScreen;
 import creativeeditor.util.ColorUtils.Color;

@@ -1,7 +1,7 @@
 package creativeeditor.widgets;
 
-import creativeeditor.config.styles.Style;
-import creativeeditor.config.styles.Style.ButtonColor;
+import creativeeditor.styles.Style;
+import creativeeditor.styles.Style.ButtonColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 
