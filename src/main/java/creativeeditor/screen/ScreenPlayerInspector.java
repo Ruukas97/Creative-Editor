@@ -25,6 +25,6 @@ public class ScreenPlayerInspector extends ParentScreen {
 		//Render player name somewhere
 		//Try typing draw underneath here to see some options
 		InventoryScreen.drawEntityOnScreen(width/2, height/2, 50, width/2 - mouseX, height/3 - mouseY, target);
-		mc.fontRenderer.drawStringWithShadow("Hello world", width/2 - 15, height/2 + 5, 1);
+		mc.fontRenderer.drawStringWithShadow(target.getDisplayName().getString(), width/2 - 15, height/2 + 5, 1);
 	}
 }
