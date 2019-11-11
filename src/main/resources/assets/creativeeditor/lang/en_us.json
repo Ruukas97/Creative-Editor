@@ -2,6 +2,26 @@
 	"key.editor": "Edit Selected Item",
 
 	"itemGroup.unavailable": "Unavailable",
+	"gui.optionsound":"Change output",
+	
+	
+	
+	"gui.heads":"Head Collection",
+	"gui.heads.category.alphabet":"Alphabet",
+	"gui.heads.category.animals":"Animals",
+	"gui.heads.category.blocks":"Blocks",
+	"gui.heads.category.decoration":"Decoration",
+	"gui.heads.category.food_drinks":"Food-drinks",
+	"gui.heads.category.humans":"Humans",
+	"gui.heads.category.humanoid":"Humanoid",
+	"gui.heads.category.miscellaneous":"Miscellaneous",
+	"gui.heads.category.monsters":"Monsters",
+	"gui.heads.category.plants":"Plants",
+	
+	
+	
+	
+	"gui.soundoutput": "Change sound output",
 
 	"gui.main": "Creative Editor",
 	"gui.main.id": "ID",
@@ -14,6 +34,8 @@
 	"gui.main.itemflag": "Item Flags",
 	"gui.main.colorstyle": "Change Style",
 	
+	"gui.headcollection":"Head Collection",
+	
 	
 	"gui.itemflag": "Item Flags Editor",
 	"flag.enchantment": "Enchantments",
@@ -23,6 +45,8 @@
 	"flag.canplaceon": "CanPlaceOn",
 	"flag.iteminfo": "ItemInfo",
 	"flag.switchall": "Switch all"
+	
+	
 	
 	
 	

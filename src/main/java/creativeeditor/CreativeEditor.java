@@ -16,13 +16,13 @@ import creativeeditor.screen.ScreenPlayerInspector;
 import creativeeditor.styles.Style;
 import creativeeditor.styles.StyleSpectrum;
 import creativeeditor.styles.StyleVanilla;
-import creativeeditor.util.CameraUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.util.Hand;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,7 +36,8 @@ public class CreativeEditor {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static KeyBinding OPEN_EDITOR_KEY;
 	private static KeyBinding PLAYER_INSPECT;
-
+	private static KeyBinding OFF_HAND_SWING;
+	
 	private Minecraft mc;
 
 	//private ArrayList<ItemGroup> itemGroupArray = new ArrayList<>();
@@ -54,7 +55,9 @@ public class CreativeEditor {
 		LOGGER.info("Registering keybindings");
 		OPEN_EDITOR_KEY = new KeyBinding("key.editor", GLFW.GLFW_KEY_U, "creativeeditor");
 		PLAYER_INSPECT = new KeyBinding("key.inspector", GLFW.GLFW_KEY_G, "creativeeditor");
+		OFF_HAND_SWING = new KeyBinding("key.offhandswing", InputMappings.INPUT_INVALID.getKeyCode(), "creativeeditor");
 		ClientRegistry.registerKeyBinding(OPEN_EDITOR_KEY);
+		ClientRegistry.registerKeyBinding(OFF_HAND_SWING);
 		ClientRegistry.registerKeyBinding(PLAYER_INSPECT);
 		
 		// Register Events
@@ -95,6 +98,8 @@ public class CreativeEditor {
 			{
 				mc.displayGuiScreen(new ScreenPlayerInspector(mc.currentScreen, mc.player));
 			}
+		} else if(event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {
+			mc.player.swingArm(Hand.OFF_HAND);
 		}
 	}
 }

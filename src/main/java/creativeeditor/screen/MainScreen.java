@@ -31,8 +31,8 @@ public class MainScreen extends ParentItemScreen {
 							Style.getCurrentStyle() instanceof StyleVanilla ? new StyleSpectrum() : new StyleVanilla());
 				}));
 
-		addButton(new CEWButton(width / 9 * 7 - 20, height / 11 * 2 + 60, 100, 20, "test count++", b -> {
-			editing.setCount((byte) Math.min(64, editing.getCount() + 1));
+		addButton(new CEWButton(width / 9 * 7 - 20, height / 11 * 2 + 60, 100, 20, "Heads", b -> {
+			mc.displayGuiScreen(new HeadScreen(title, lastScreen));
 		}));
 
 		CountSlider countSlider = new CountSlider(width / 2 + 5, 60, 50, 20, (double)(editing.getCount() / 64.0), s -> {
