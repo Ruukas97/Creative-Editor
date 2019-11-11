@@ -69,7 +69,7 @@ public class ParentItemScreen extends ParentScreen {
 		String itemCount = editing.getCount() > 1 ? editing.getCount() + "x " : "";
 		String itemOverview = itemCount + editing.getItemStack().getDisplayName().getFormattedText();
 		drawCenteredString(font, itemOverview, width / 2, 27,
-				color.getColor());
+				color.getInt());
 
 		buttons.forEach(b -> {
 			b.render(mouseX, mouseY, p3);

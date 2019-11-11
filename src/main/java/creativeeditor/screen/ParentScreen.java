@@ -1,8 +1,7 @@
 package creativeeditor.screen;
 
-import creativeeditor.config.styles.ColorStyles;
-import creativeeditor.config.styles.ColorStyles.Style;
 import creativeeditor.util.ColorUtils.Color;
+import creativeeditor.config.styles.Style;
 import creativeeditor.util.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
@@ -44,33 +43,33 @@ public class ParentScreen extends Screen {
 		return false;
 	}
 	
+	public int getBlitOffset() {
+		return blitOffset;
+	}
+	
 
 	@Override
 	@Deprecated
 	public void render(int mouseX, int mouseY, float p3) {
-		Color color = ColorStyles.getMainColor();
+		Color color = Style.getCurrentStyle().getMainColor();
 		backRender(mouseX, mouseY, p3, color);
 		mainRender(mouseX, mouseY, p3, color);
 		overlayRender(mouseX, mouseY, p3, color);
-		ColorStyles.tickSpectrum();
+		Style.getCurrentStyle().tick();
 	}
 
 	public void backRender(int mouseX, int mouseY, float p3, Color color) {
-		if (ColorStyles.getStyle() == Style.vanilla)
-			renderBackground();
-		else
-			fillGradient(0, 0, width, height, -1072689136, -804253680);
+		Style.getCurrentStyle().renderBackground(this);
 
 		// Frame
 		GuiUtils.drawFrame(5, 5, width - 5, height - 5, 1, color);
 
 		// GUI Title
-		drawCenteredString(font, getTitle().getFormattedText(), width / 2, 9, color.getColor());
+		drawCenteredString(font, getTitle().getFormattedText(), width / 2, 9, color.getInt());
 		int sWidthHalf = font.getStringWidth(getTitle().getFormattedText()) / 2 + 3;
 		
 		// Title underline
-		AbstractGui.fill(width / 2 - sWidthHalf, 20, width / 2 + sWidthHalf, 21, color.getColor());
-
+		AbstractGui.fill(width / 2 - sWidthHalf, 20, width / 2 + sWidthHalf, 21, color.getInt());
 	}
 
 	public void mainRender(int mouseX, int mouseY, float p3, Color color) {

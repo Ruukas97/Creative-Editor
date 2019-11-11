@@ -6,20 +6,16 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ColorUtils {	
-	public static int rgb(int r, int g, int b) {
-		return MathHelper.rgb(r, g, b);
-	}
-
-	public static int multiplyColor(int color, int color2) {
-		return MathHelper.multiplyColor(color, color2);
+	public static Color multiplyColor(Color color, Color color2) {
+		return new Color(MathHelper.multiplyColor(color.getInt(), color2.getInt()));
 	}
 	
-	public static int hsvToRGBInt(float hue, float saturation, float value) {
-		return MathHelper.hsvToRGB(hue/255f, saturation/255f, value/255f);
+	public static Color hsvToRGBInt(float hue, float saturation, float value) {
+		return new Color(255, MathHelper.hsvToRGB(hue/255f, saturation/255f, value/255f));
 	}
 
-	public static int hsvToRGB(float hue, float saturation, float value) {
-		return MathHelper.hsvToRGB(hue, saturation, value);
+	public static Color hsvToRGB(float hue, float saturation, float value) {
+		return new Color(255, MathHelper.hsvToRGB(hue, saturation, value));
 	}
 	
 	public static class Color{
@@ -37,7 +33,7 @@ public class ColorUtils {
 			this.color = (a << 24) + rgb;
 		}
 		
-		public int getColor() {
+		public int getInt() {
 			return color;
 		}
 	}

@@ -20,8 +20,11 @@ import net.minecraft.item.ItemGroup;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.config.ModConfig.Type;
 
 @Mod("creativeeditor")
 public class CreativeEditor {
@@ -36,6 +39,9 @@ public class CreativeEditor {
 	private ItemGroup tabUnavailable;
 
 	public CreativeEditor() {
+		final ModLoadingContext modLoadingContext = ModLoadingContext.get();
+		modLoadingContext.registerConfig(ModConfig.Type.CLIENT, null);
+		
 		OPEN_EDITOR_KEY = new KeyBinding("key.editor", GLFW.GLFW_KEY_U, "creativeeditor");
 		TEST_KEY = new KeyBinding("key.inspector", GLFW.GLFW_KEY_G, "creativeeditor");
 		ClientRegistry.registerKeyBinding(OPEN_EDITOR_KEY);
