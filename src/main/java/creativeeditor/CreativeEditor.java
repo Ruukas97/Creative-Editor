@@ -13,7 +13,10 @@ import creativeeditor.nbt.NBTItemBase;
 import creativeeditor.screen.MainScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,6 +27,7 @@ import net.minecraftforge.fml.common.Mod;
 public class CreativeEditor {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static KeyBinding OPEN_EDITOR_KEY;
+	private static KeyBinding TEST_KEY;
 
 	private Minecraft mc;
 
@@ -33,7 +37,9 @@ public class CreativeEditor {
 
 	public CreativeEditor() {
 		OPEN_EDITOR_KEY = new KeyBinding("key.editor", GLFW.GLFW_KEY_U, "creativeeditor");
+		TEST_KEY = new KeyBinding("key.inspector", GLFW.GLFW_KEY_G, "creativeeditor");
 		ClientRegistry.registerKeyBinding(OPEN_EDITOR_KEY);
+		ClientRegistry.registerKeyBinding(TEST_KEY);
 		
 		// Register Events
 		registerEventHandler(new CEGuiScreenEvent());
@@ -61,6 +67,15 @@ public class CreativeEditor {
 		// preventing crash on main menu
 		if (mc.player != null && event.getKey() == OPEN_EDITOR_KEY.getKey().getKeyCode()) {
 			mc.displayGuiScreen(new MainScreen(mc.currentScreen, new NBTItemBase(mc.player.getHeldItemMainhand())));
+		}
+		
+		if(mc.player != null && event.getKey() == TEST_KEY.getKey().getKeyCode()) 
+		{
+			Entity entity = mc.pointedEntity;
+			if(entity instanceof PlayerEntity)
+			{
+				mc.player.sendMessage(entity.getDisplayName());
+			}
 		}
 	}
 }
