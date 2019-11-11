@@ -1,16 +1,21 @@
 package creativeeditor;
 
+import java.util.ArrayList;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
+import creativeeditor.creativetabs.UnavailableTab;
 import creativeeditor.events.CEClientChatReceivedEvent;
 import creativeeditor.events.CEGuiScreenEvent;
+import creativeeditor.events.CERegistryEvent;
 import creativeeditor.events.CEScreenshotEvent;
 import creativeeditor.nbt.NBTItemBase;
 import creativeeditor.screen.MainScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.item.ItemGroup;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,15 +29,22 @@ public class CreativeEditor {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final KeyBinding OPEN_EDITOR_KEY = new KeyBinding("key.editor", GLFW.GLFW_KEY_U, "creativeeditor");
 
-	Minecraft mc;
+	private Minecraft mc;
+	
+	
 
 	public CreativeEditor() {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientInit);
-		//events
+		// Register Events
 		register(new CEGuiScreenEvent());
+		register(new CERegistryEvent());
 		register(new CEScreenshotEvent());
 		register(new CEClientChatReceivedEvent());
 		register(this);
+		
+		// Register Creative Tabs
+		registerTabs();
+		
 		mc = Minecraft.getInstance();
 	}
 
@@ -44,6 +56,19 @@ public class CreativeEditor {
 	private void register(Object target) {
 		MinecraftForge.EVENT_BUS.register(target);
 	}
+	
+	
+	
+	private ArrayList<ItemGroup> itemGroupArray = new ArrayList<>();
+	private ItemGroup unavIG = new UnavailableTab("unavailable");
+
+	private void registerTabs() {
+		
+		itemGroupArray.add(unavIG);
+	}
+	
+	
+	
 
 	@SubscribeEvent
 	public void onKeyInput(final KeyInputEvent event) {

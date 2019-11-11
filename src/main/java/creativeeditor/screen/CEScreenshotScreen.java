@@ -24,23 +24,25 @@ public class CEScreenshotScreen {
 	}
 
 	public void displayScreen() {
+		mc.execute(() -> {
+			// needs delay but shouldnt be new thread
+			File file = e.getScreenshotFile();
+			try {
+				InputStream targetStream;
+				targetStream = new FileInputStream(file);
+				NativeImage ni = NativeImage.read(targetStream);
+				DynamicTexture dyntex = new DynamicTexture(ni);
+				mc.textureManager.loadTexture(null, dyntex);
+				dyntex.bindTexture();
 
-		// needs delay but shouldnt be new thread
-		File file = e.getScreenshotFile();
-		try {
-			InputStream targetStream;
-			targetStream = new FileInputStream(file);
-			NativeImage ni = NativeImage.read(targetStream);
-			DynamicTexture dyntex = new DynamicTexture(ni);
-			mc.textureManager.loadTexture(null, dyntex);
-			dyntex.bindTexture();
-
-			mc.ingameGUI.blit(59, 50, 50, 50, 20, 20);
-			dyntex.close();
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+				mc.ingameGUI.blit(59, 50, 50, 50, 20, 20);
+				dyntex.close();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+		
 
 	}
 

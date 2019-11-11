@@ -3,7 +3,22 @@
 	"gui.itemflag": "Item Flags Editor",
 	"key.editor": "Edit Selected Item",
 	
+	"itemGroup.unavailable": "Unavailable",
 	
-	"gui.main.itemflag": "Item Flags"
+	
+	"gui.main.itemflag": "Item Flags",
+	"gui.main.colorstyle": "Change Style",
+	
+	
+	"flag.enchantment": "Enchantments",
+	"flag.attributemod": "AttributeMod",
+	"flag.unbreakable": "Unbreakable",
+	"flag.candestroy": "CanDestroy",
+	"flag.canplaceon": "CanPlaceOn",
+	"flag.iteminfo": "ItemInfo",
+	"flag.switchall": "Switch all"
+	
+	
+	
 	
 }

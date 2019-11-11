@@ -5,11 +5,13 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import creativeeditor.config.styles.ColorStyles;
 import creativeeditor.config.styles.ColorStyles.Style;
 import creativeeditor.nbt.NBTItemBase;
-import creativeeditor.util.GuiUtils;
 import creativeeditor.util.ColorUtils.Color;
+import creativeeditor.util.GuiUtils;
+import creativeeditor.widgets.CEWButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.text.ITextComponent;
 
@@ -17,11 +19,8 @@ public class ParentScreen extends Screen {
 	protected final Screen lastScreen;
 	protected NBTItemBase editing;
 
-	// Back, reset, drop, save button
-	protected boolean hasSave = false;
-	
-	// Helps for resetting gui scale back to normal on closing
-	private boolean closing = false;
+	// Back, reset, drop, save button (has essential buttons)
+	protected boolean hasEssButtons = false;
 
 	// render item
 	protected boolean renderItem = true;
@@ -29,18 +28,40 @@ public class ParentScreen extends Screen {
 
 	// render tooltip top left
 	boolean renderToolTip = false;
+	
+	protected Minecraft mc;
 
 	public ParentScreen(ITextComponent title, Screen lastScreen, NBTItemBase editing) {
 		super(title);
 		this.lastScreen = lastScreen;
 		this.editing = editing;
+		this.mc = Minecraft.getInstance();
 	}
 
 	@Override
 	protected void init() {
+
+		// Render essential buttons NOT WORKING ATM
+		if (hasEssButtons) {
+			int bwidth = 50;
+			int posX = width / 2 - (bwidth / 2);
+			int posY = height / 7 * 6;
+			addButton(new CEWButton(posX - 49, posY, bwidth, 20, "Back", (Button b) -> {
+				mc.displayGuiScreen(lastScreen);
+			}));
+			addButton(new CEWButton(posX, posY - 9, bwidth, 20, "Drop", (Button b) -> {
+				mc.player.inventory.player.dropItem(editing.getItemStack(), true);
+				mc.playerController.sendPacketDropItem(editing.getItemStack());
+				// Shift for /give 
+			})); 
+			addButton(new CEWButton(posX, posY + 9, bwidth, 20, "Close", (Button b) -> {
+				this.onClose();
+			}));
+			addButton(new CEWButton(posX + 49, posY, bwidth, 20, "Apply", (Button b) -> {
+				// Hold shift to copy to realm?
+			}));
+		}
 		super.init();
-		if (!closing)
-			minecraft.mainWindow.setGuiScale(3.0d);
 	}
 
 	@Override
@@ -51,8 +72,6 @@ public class ParentScreen extends Screen {
 	@Override
 	public void onClose() {
 		super.onClose();
-		closing = true;
-		minecraft.mainWindow.setGuiScale(minecraft.mainWindow.calcGuiScale(minecraft.gameSettings.guiScale, minecraft.getForceUnicodeFont()));
 	}
 
 	@Override
@@ -64,19 +83,20 @@ public class ParentScreen extends Screen {
 	public boolean isPauseScreen() {
 		return false;
 	}
-	
+
 	public void setRenderItem(boolean shouldRender, float scale) {
 		this.renderItem = shouldRender;
-		if(scale > 0)
+		if (scale > 0)
 			this.itemScale = scale;
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float p3) {		
+	public void render(int mouseX, int mouseY, float p3) {
+		
 		if (ColorStyles.getStyle() == Style.vanilla)
 			renderBackground();
 		else
-			fillGradient(6, 6, width - 6, height - 6, -1072689136, -804253680);
+			fillGradient(0, 0, width, height, -1072689136, -804253680);
 
 		Color color = ColorStyles.getMainColor();
 
@@ -93,17 +113,22 @@ public class ParentScreen extends Screen {
 		// Item Name
 		drawCenteredString(font, editing.getItemStack().getDisplayName().getFormattedText(), width / 2, 27,
 				color.getColor());
-		
+
+		// Render item with tooltip
+		if (renderItem) {
+			finalRender(mouseX, mouseY, color);
+		}
+
 		// renders buttons, if there are any
 		super.render(mouseX, mouseY, p3);
 	}
-	
+
 	/**
 	 * Should always be called last in render, but only once.
 	 */
 	public void finalRender(int mouseX, int mouseY, Color color) {
 		// Item (Tooltip must render last or colors will be messed up)
-		if(renderItem) {
+		if (renderItem) {
 			GlStateManager.scalef(itemScale, itemScale, 1f);
 			RenderHelper.enableGUIStandardItemLighting();
 			itemRenderer.renderItemIntoGUI(editing.getItemStack(), (int) (width / (2 * itemScale) - 8),
@@ -111,14 +136,15 @@ public class ParentScreen extends Screen {
 
 			GlStateManager.scalef(1f / itemScale, 1f / itemScale, 1f);
 			// Item frame
-			GuiUtils.drawFrame(width / 2 - 18, height / 3 - 32, width / 2 + 18, height / 3 + 5, 1, color); // Add fill to
+			GuiUtils.drawFrame(width / 2 - 18, height / 3 - 32, width / 2 + 18, height / 3 + 5, 1, color); // Add fill
+																											// to
 																											// "drawframe"
-			// Item tooltip
+			// Item tooltip STILL NEEDS IMPROVEMENT
 			if (GuiUtils.isMouseIn(mouseX, mouseY, width / 2 - 16, height / 3 - 30, 32, 32)) {
 				renderTooltip(editing.getItemStack(), mouseX, mouseY);
 			}
 		}
-		
+
 		ColorStyles.tickSpectrum();
 	}
 }
