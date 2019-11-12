@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
+import cpw.mods.modlauncher.api.ITransformer.Target;
 import creativeeditor.config.ConfigHandler;
 import creativeeditor.creativetabs.TabUnavailable;
 import creativeeditor.events.CEClientChatReceivedEvent;
@@ -18,9 +19,11 @@ import creativeeditor.styles.StyleSpectrum;
 import creativeeditor.styles.StyleVanilla;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.particle.MobAppearanceParticle;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Hand;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
@@ -94,9 +97,10 @@ public class CreativeEditor {
 		else if(event.getKey() == PLAYER_INSPECT.getKey().getKeyCode())
 		{
 			Entity entity = mc.pointedEntity;
-			if(entity != null)
+			if(entity instanceof PlayerEntity)
 			{
-				mc.displayGuiScreen(new ScreenPlayerInspector(mc.currentScreen, mc.player));
+				PlayerEntity playerEntity = (PlayerEntity) entity;
+				mc.displayGuiScreen(new ScreenPlayerInspector(mc.currentScreen, playerEntity));
 			}
 		} else if(event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {
 			mc.player.swingArm(Hand.OFF_HAND);
