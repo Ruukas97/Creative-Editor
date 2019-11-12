@@ -12,6 +12,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class ScreenPlayerInspector extends ParentScreen {
 	private PlayerEntity target;
+	private String playerUUID;
 	
 	public ScreenPlayerInspector(Screen lastScreen, PlayerEntity targetPlayer) {
 		super(new TranslationTextComponent("gui.playerinspector"), lastScreen);
@@ -19,13 +20,18 @@ public class ScreenPlayerInspector extends ParentScreen {
 	}
 	
 	@Override
+	protected void init() {
+		// TODO Auto-generated method stub
+		super.init();
+		playerUUID = PlayerEntity.getUUID(target.getGameProfile()).toString();
+	}
+	@Override
 	public void mainRender(int mouseX, int mouseY, float p3, Color color) {
 		super.mainRender(mouseX, mouseY, p3, color);
 		
 		//Render player model
 		InventoryScreen.drawEntityOnScreen(width/2, height/2, 50, width/2 - mouseX, height/3 - mouseY, target);
 		//Render player UUID
-		String playerUUID = PlayerEntity.getUUID(target.getGameProfile()).toString();	
 		drawCenteredString(mc.fontRenderer, playerUUID, width/2, height/2 + 8, 0xFFFFFF);
 		
 		//Render equipped items
@@ -42,4 +48,5 @@ public class ScreenPlayerInspector extends ParentScreen {
 		    itemRenderer.renderItemOverlayIntoGUI(font, stack.getStack(), x, y, null);
 		}
 	}
+	
 }
