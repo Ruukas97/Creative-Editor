@@ -13,7 +13,7 @@ public class CountSlider extends AbstractSlider {
 	}
 	
 	public int getCount() {
-		return (int) Math.max(1,this.value * 64);
+		return (int) (this.value * 64);
 	}
 
 	@Override

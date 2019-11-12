@@ -32,6 +32,9 @@ public class ParentItemScreen extends ParentScreen {
 	@Override
 	protected void init() {
 		super.init();
+		buttons.clear();
+		children().clear();
+		renderWidgets.clear();
 
 		if (hasEssButtons) {
 			int bwidth = 50;

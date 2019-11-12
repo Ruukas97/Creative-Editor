@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
-import cpw.mods.modlauncher.api.ITransformer.Target;
 import creativeeditor.config.ConfigHandler;
 import creativeeditor.creativetabs.TabUnavailable;
 import creativeeditor.events.CEClientChatReceivedEvent;
@@ -19,7 +18,6 @@ import creativeeditor.styles.StyleSpectrum;
 import creativeeditor.styles.StyleVanilla;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.client.particle.MobAppearanceParticle;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
@@ -89,20 +87,17 @@ public class CreativeEditor {
 		if(mc.world == null || event.getAction() != GLFW.GLFW_PRESS || (mc.currentScreen != null && mc.currentScreen instanceof ChatScreen))
 			return;
 
-		// preventing crash on main menu
 		if (event.getKey() == OPEN_EDITOR_KEY.getKey().getKeyCode()) {
 			mc.displayGuiScreen(new MainScreen(mc.currentScreen, new NBTItemBase(mc.player.getHeldItemMainhand())));
 		}
 		
-		else if(event.getKey() == PLAYER_INSPECT.getKey().getKeyCode())
-		{
+		else if(event.getKey() == PLAYER_INSPECT.getKey().getKeyCode()){
 			Entity entity = mc.pointedEntity;
-			if(entity instanceof PlayerEntity)
-			{
-				PlayerEntity playerEntity = (PlayerEntity) entity;
-				mc.displayGuiScreen(new ScreenPlayerInspector(mc.currentScreen, playerEntity));
+			if(entity instanceof PlayerEntity){
+				mc.displayGuiScreen(new ScreenPlayerInspector(mc.currentScreen, (PlayerEntity) entity));
 			}
-		} else if(event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {
+		}
+		else if(event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {
 			mc.player.swingArm(Hand.OFF_HAND);
 		}
 	}
