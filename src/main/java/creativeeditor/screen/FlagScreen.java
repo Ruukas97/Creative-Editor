@@ -7,12 +7,11 @@ import creativeeditor.widgets.CEWButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class FlagScreen extends ParentItemScreen {
 
-	public FlagScreen(ITextComponent title, Screen lastScreen, NBTItemBase editing) {
+	public FlagScreen(Screen lastScreen, NBTItemBase editing) {
 		super(new TranslationTextComponent("gui.itemflag"), lastScreen, editing);
 	}
 

@@ -7,7 +7,6 @@ import creativeeditor.widgets.StyleTextField;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class HeadScreen extends ParentScreen {
@@ -16,7 +15,7 @@ public class HeadScreen extends ParentScreen {
 		alphabet, animals, blocks, decoration, food_drinks, humans, humanoid, miscellaneous, monsters, plants
 	}
 
-	public HeadScreen(ITextComponent title, Screen lastScreen) {
+	public HeadScreen(Screen lastScreen) {
 		super(new TranslationTextComponent("gui.headcollection"), lastScreen);
 		
 	}

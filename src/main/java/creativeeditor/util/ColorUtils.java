@@ -25,7 +25,7 @@ public class ColorUtils {
 			this.color = color;
 		}
 
-		public Color(int r, int g, int b, int a) {
+		public Color(int a, int r, int g, int b) {
 			this.color = (a << 24) + (r << 16) + (g << 8) + b;
 		}
 
