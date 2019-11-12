@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 
 import creativeeditor.styles.Style;
 import creativeeditor.util.ColorUtils.Color;
-import creativeeditor.widgets.StyleTextField;
 import creativeeditor.util.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
@@ -55,6 +54,25 @@ public class ParentScreen extends Screen {
 	}
 
 	@Override
+	public void tick() {
+		/*renderWidgets.forEach(w -> {
+			if (w instanceof StyleTextField) {
+				((StyleTextField) w).tick();
+			}
+		});*/
+	}
+
+	@Override
+	public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
+		/*renderWidgets.forEach(w -> {
+			if (w instanceof StyleTextField) {
+				((StyleTextField) w).mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
+			}
+		});*/
+		return super.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
+	}
+	
+	@Override
 	@Deprecated
 	public void render(int mouseX, int mouseY, float p3) {
 		Color color = Style.getCurrentStyle().getMainColor();
@@ -87,25 +105,6 @@ public class ParentScreen extends Screen {
 			w.render(mouseX, mouseY, p3);
 		});
 
-	}
-
-	@Override
-	public void tick() {
-		renderWidgets.forEach(w -> {
-			if (w instanceof StyleTextField) {
-				((StyleTextField) w).tick();
-			}
-		});
-	}
-
-	@Override
-	public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
-		renderWidgets.forEach(w -> {
-			if (w instanceof StyleTextField) {
-				((StyleTextField) w).mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
-			}
-		});
-		return super.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
 	}
 
 	/**
