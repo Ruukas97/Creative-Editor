@@ -37,7 +37,10 @@ public class ParentItemScreen extends ParentScreen {
 			int bwidth = 50;
 			int posX = width / 2 - (bwidth / 2);
 			int posY = height / 7 * 6;
-			addButton(new CEWButton(posX - bwidth - 1, posY, bwidth, 20, I18n.format("gui.main.close"), b -> {
+			String butCloseBack = lastScreen == null ? "gui.main.close" : "gui.main.back";
+			
+			
+			addButton(new CEWButton(posX - bwidth - 1, posY, bwidth, 20, I18n.format(butCloseBack), b -> {
 				mc.displayGuiScreen(lastScreen);
 			}));
 			addButton(new CEWButton(posX, posY - 11, bwidth, 20, I18n.format("gui.main.reset"), b -> {
@@ -63,9 +66,7 @@ public class ParentItemScreen extends ParentScreen {
 	public void mainRender(int mouseX, int mouseY, float p3, Color color) {
 		super.mainRender(mouseX, mouseY, p3, color);
 
-		buttons.forEach(b -> {
-			b.render(mouseX, mouseY, p3);
-		});
+		
 	}
 
 	@Override

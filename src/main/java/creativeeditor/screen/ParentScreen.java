@@ -1,16 +1,23 @@
 package creativeeditor.screen;
 
-import creativeeditor.util.ColorUtils.Color;
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
 import creativeeditor.styles.Style;
+import creativeeditor.util.ColorUtils.Color;
+import creativeeditor.widgets.StyleTextField;
 import creativeeditor.util.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.text.ITextComponent;
 
 public class ParentScreen extends Screen {
 	protected final Screen lastScreen;
 	protected Minecraft mc;
+	protected List<Widget> renderWidgets = Lists.newArrayList();;
 
 	public ParentScreen(ITextComponent title, Screen lastScreen) {
 		super(title);
@@ -42,11 +49,10 @@ public class ParentScreen extends Screen {
 	public boolean isPauseScreen() {
 		return false;
 	}
-	
+
 	public int getBlitOffset() {
 		return blitOffset;
 	}
-	
 
 	@Override
 	@Deprecated
@@ -67,13 +73,39 @@ public class ParentScreen extends Screen {
 		// GUI Title
 		drawCenteredString(font, getTitle().getFormattedText(), width / 2, 9, color.getInt());
 		int sWidthHalf = font.getStringWidth(getTitle().getFormattedText()) / 2 + 3;
-		
+
 		// Title underline
 		AbstractGui.fill(width / 2 - sWidthHalf, 20, width / 2 + sWidthHalf, 21, color.getInt());
 	}
 
 	public void mainRender(int mouseX, int mouseY, float p3, Color color) {
+		buttons.forEach(b -> {
+			b.render(mouseX, mouseY, p3);
+		});
 
+		renderWidgets.forEach(w -> {
+			w.render(mouseX, mouseY, p3);
+		});
+
+	}
+
+	@Override
+	public void tick() {
+		renderWidgets.forEach(w -> {
+			if (w instanceof StyleTextField) {
+				((StyleTextField) w).tick();
+			}
+		});
+	}
+
+	@Override
+	public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
+		renderWidgets.forEach(w -> {
+			if (w instanceof StyleTextField) {
+				((StyleTextField) w).mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
+			}
+		});
+		return super.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
 	}
 
 	/**

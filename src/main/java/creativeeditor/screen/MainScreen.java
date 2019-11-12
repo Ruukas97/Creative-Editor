@@ -22,7 +22,7 @@ public class MainScreen extends ParentItemScreen {
 		super.init();
 
 		addButton(new CEWButton(width / 9 * 7 - 20, height / 11 * 2, 100, 20, I18n.format("gui.main.itemflag"), t -> {
-			minecraft.displayGuiScreen(new FlagScreen(title, lastScreen, editing));
+			minecraft.displayGuiScreen(new FlagScreen(title, this, editing));
 		}));
 
 		addButton(new CEWButton(width / 9 * 7 - 20, height / 11 * 2 + 30, 100, 20, I18n.format("gui.main.colorstyle"),
@@ -32,7 +32,7 @@ public class MainScreen extends ParentItemScreen {
 				}));
 
 		addButton(new CEWButton(width / 9 * 7 - 20, height / 11 * 2 + 60, 100, 20, "Heads", b -> {
-			mc.displayGuiScreen(new HeadScreen(title, lastScreen));
+			mc.displayGuiScreen(new HeadScreen(title, this));
 		}));
 
 		CountSlider countSlider = new CountSlider(width / 2 + 5, 60, 50, 20, (double)(editing.getCount() / 64.0), s -> {
