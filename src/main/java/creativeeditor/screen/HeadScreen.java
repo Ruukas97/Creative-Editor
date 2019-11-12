@@ -1,10 +1,13 @@
 package creativeeditor.screen;
 
 import creativeeditor.util.ColorUtils.Color;
+
 import creativeeditor.util.GuiUtils;
 import creativeeditor.widgets.CEWButton;
 import creativeeditor.widgets.StyleTextField;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -24,6 +27,10 @@ public class HeadScreen extends ParentScreen {
 
 	@Override
 	protected void init() {
+		super.init();
+		
+		minecraft.keyboardListener.enableRepeatEvents(true);
+
 		int i = 0;
 		// Still requires fit for resizing
 		for (HeadCategories hc : HeadCategories.values()) {
@@ -36,9 +43,31 @@ public class HeadScreen extends ParentScreen {
 			mc.displayGuiScreen(lastScreen);
 		}));
 		
+		//If added on each init, it should also be cleared sometimes
 		renderWidgets.add(new StyleTextField(width / 8 * 5, height / 10 + 2, width / 12 * 3, 14 , ""));
-		super.init();
 	}
+	
+	@Override
+	public void removed() {
+		minecraft.keyboardListener.enableRepeatEvents(false);
+
+	}
+	
+	
+	@Override
+	public boolean charTyped(char p_charTyped_1_, int p_charTyped_2_) {
+		//Backspace not supported yet
+		for(Widget w : renderWidgets) {
+			if(w instanceof TextFieldWidget) {
+				if(((TextFieldWidget)w).charTyped(p_charTyped_1_, p_charTyped_2_)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+		   
+
 
 	@Override
 	public void backRender(int mouseX, int mouseY, float p3, Color color) {
@@ -52,9 +81,5 @@ public class HeadScreen extends ParentScreen {
 
 		// Top bar
 		fill(width / 12, height / 10, width / 12 * 11, height / 13 * 2 + 5, color.getInt());
-		
-		
-
 	}
-
 }
