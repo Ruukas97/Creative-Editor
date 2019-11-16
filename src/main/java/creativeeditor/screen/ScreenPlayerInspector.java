@@ -39,14 +39,21 @@ public class ScreenPlayerInspector extends ParentScreen {
 		int i = 0;
 		int y = height/2 - 30;
 		int x = width/2 + 100;
-		GlStateManager.scalef(1.2f, 1.2f, 1f);
 		for ( ItemStack stack : target.getEquipmentAndArmor() ) 
 		{
 		    stacks[i++] = stack;
 		    y -= 15;
+		    GlStateManager.scalef(1.25f, 1.25f, 1f);
 		    itemRenderer.renderItemIntoGUI(stack, x, y);
 		    itemRenderer.renderItemOverlayIntoGUI(font, stack.getStack(), x, y, null);
+		    
+		    GlStateManager.scalef(.8f, .8f, 1f);
+		    if(mouseX >= x*1.25-8 && mouseX <= x*1.25+8 && mouseY <= y*1.25+8 && mouseY >= y*1.25-8)
+		    {
+		    	renderTooltip(stack, mouseX, mouseY);
+		    }
 		}
+		
 	}
 	
 }

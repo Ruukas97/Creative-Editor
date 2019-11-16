@@ -93,8 +93,11 @@ public class CreativeEditor {
 		
 		else if(event.getKey() == PLAYER_INSPECT.getKey().getKeyCode()){
 			Entity entity = mc.pointedEntity;
-			if(entity instanceof PlayerEntity){
-				mc.displayGuiScreen(new ScreenPlayerInspector(mc.currentScreen, (PlayerEntity) entity));
+			//if(entity instanceof PlayerEntity){
+			//	mc.displayGuiScreen(new ScreenPlayerInspector(mc.currentScreen, (PlayerEntity) entity));
+			//}
+			if(entity != null){
+				mc.displayGuiScreen(new ScreenPlayerInspector(mc.currentScreen, mc.player));
 			}
 		}
 		else if(event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {
