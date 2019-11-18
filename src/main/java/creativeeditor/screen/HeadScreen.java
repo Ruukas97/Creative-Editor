@@ -1,7 +1,9 @@
 package creativeeditor.screen;
 
-import creativeeditor.util.ColorUtils.Color;
+import java.util.ArrayList;
+import java.util.HashMap;
 
+import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtils;
 import creativeeditor.widgets.CEWButton;
 import creativeeditor.widgets.StyleTextField;
@@ -10,20 +12,21 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class HeadScreen extends ParentScreen {
 
-	enum HeadCategories {
+	public enum HeadCategories {
 		alphabet, animals, blocks, decoration, food_drinks, humans, humanoid, miscellaneous, monsters, plants
 	}
-
+	
 	public HeadScreen(Screen lastScreen) {
 		super(new TranslationTextComponent("gui.headcollection"), lastScreen);
 		
 	}
 	
-	
+	public static HashMap<HeadCategories, ArrayList<ItemStack>> headLibrary = new HashMap<>();
 
 	@Override
 	protected void init() {
@@ -45,6 +48,12 @@ public class HeadScreen extends ParentScreen {
 		
 		//If added on each init, it should also be cleared sometimes
 		renderWidgets.add(new StyleTextField(width / 8 * 5, height / 10 + 2, width / 12 * 3, 14 , ""));
+		postInit();
+	}
+	
+	
+	protected void postInit() {
+		
 	}
 	
 	@Override

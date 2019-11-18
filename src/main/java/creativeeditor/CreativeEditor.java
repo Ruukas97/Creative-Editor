@@ -16,12 +16,13 @@ import creativeeditor.screen.ScreenPlayerInspector;
 import creativeeditor.styles.Style;
 import creativeeditor.styles.StyleSpectrum;
 import creativeeditor.styles.StyleVanilla;
+import creativeeditor.util.LoadSkullThread;
+import creativeeditor.util.PlayerHead;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Hand;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
@@ -38,21 +39,21 @@ public class CreativeEditor {
 	private static KeyBinding OPEN_EDITOR_KEY;
 	private static KeyBinding PLAYER_INSPECT;
 	private static KeyBinding OFF_HAND_SWING;
-	
+
 	private Minecraft mc;
 
-	//private ArrayList<ItemGroup> itemGroupArray = new ArrayList<>();
+	// private ArrayList<ItemGroup> itemGroupArray = new ArrayList<>();
 	@SuppressWarnings("unused")
 	private ItemGroup tabUnavailable;
 
 	public CreativeEditor() {
 		mc = Minecraft.getInstance();
 		final ModLoadingContext context = ModLoadingContext.get();
-		
+
 		LOGGER.info("Registering config");
 		context.registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
 		Style.setCurrentStyle(ConfigHandler.CLIENT.currentStyle.get() == 0 ? new StyleSpectrum() : new StyleVanilla());
-		
+
 		LOGGER.info("Registering keybindings");
 		OPEN_EDITOR_KEY = new KeyBinding("key.editor", GLFW.GLFW_KEY_U, "creativeeditor");
 		PLAYER_INSPECT = new KeyBinding("key.inspector", GLFW.GLFW_KEY_G, "creativeeditor");
@@ -60,7 +61,7 @@ public class CreativeEditor {
 		ClientRegistry.registerKeyBinding(OPEN_EDITOR_KEY);
 		ClientRegistry.registerKeyBinding(OFF_HAND_SWING);
 		ClientRegistry.registerKeyBinding(PLAYER_INSPECT);
-		
+
 		// Register Events
 		LOGGER.info("Registering events");
 		registerEventHandler(new CEGuiScreenEvent());
@@ -71,6 +72,13 @@ public class CreativeEditor {
 
 		// Register Creative Tabs
 		registerTabs();
+
+		downloadHeads();
+	}
+
+	private void downloadHeads() {
+		Thread thread = new Thread(new LoadSkullThread());
+		thread.start();
 	}
 
 	private void registerEventHandler(Object target) {
@@ -84,24 +92,26 @@ public class CreativeEditor {
 
 	@SubscribeEvent
 	public void onKeyInput(final KeyInputEvent event) {
-		if(mc.world == null || event.getAction() != GLFW.GLFW_PRESS || (mc.currentScreen != null && mc.currentScreen instanceof ChatScreen))
+		if (mc.world == null || event.getAction() != GLFW.GLFW_PRESS
+				|| (mc.currentScreen != null && mc.currentScreen instanceof ChatScreen))
 			return;
 
 		if (event.getKey() == OPEN_EDITOR_KEY.getKey().getKeyCode()) {
 			mc.displayGuiScreen(new MainScreen(mc.currentScreen, new NBTItemBase(mc.player.getHeldItemMainhand())));
 		}
-		
-		else if(event.getKey() == PLAYER_INSPECT.getKey().getKeyCode()){
+
+		else if (event.getKey() == PLAYER_INSPECT.getKey().getKeyCode()) {
 			Entity entity = mc.pointedEntity;
-			//if(entity instanceof PlayerEntity){
-			//	mc.displayGuiScreen(new ScreenPlayerInspector(mc.currentScreen, (PlayerEntity) entity));
-			//}
-			if(entity != null){
+			// if(entity instanceof PlayerEntity){
+			// mc.displayGuiScreen(new ScreenPlayerInspector(mc.currentScreen,
+			// (PlayerEntity) entity));
+			// }
+			if (entity != null) {
 				mc.displayGuiScreen(new ScreenPlayerInspector(mc.currentScreen, mc.player));
 			}
-		}
-		else if(event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {
+		} else if (event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {
 			mc.player.swingArm(Hand.OFF_HAND);
+			System.out.println(PlayerHead.getLatest().getTag().toString());
 		}
 	}
 }
