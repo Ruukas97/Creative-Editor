@@ -1,5 +1,7 @@
 package creativeeditor;
 
+import java.util.ArrayList;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
@@ -11,19 +13,21 @@ import creativeeditor.events.CEGuiScreenEvent;
 import creativeeditor.events.CERegistryEvent;
 import creativeeditor.events.CEScreenshotEvent;
 import creativeeditor.nbt.NBTItemBase;
+import creativeeditor.screen.HeadScreen;
+import creativeeditor.screen.HeadScreen.HeadCategories;
 import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.ScreenPlayerInspector;
 import creativeeditor.styles.Style;
 import creativeeditor.styles.StyleSpectrum;
 import creativeeditor.styles.StyleVanilla;
 import creativeeditor.util.LoadSkullThread;
-import creativeeditor.util.PlayerHead;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -72,8 +76,18 @@ public class CreativeEditor {
 
 		// Register Creative Tabs
 		registerTabs();
+		
+		// Register head library arrays
+		registerHeadArrays();
 
+		// Download Head Collection
 		downloadHeads();
+	}
+	
+	private void registerHeadArrays() {
+		for(HeadCategories hc : HeadCategories.values()) {
+			HeadScreen.headLibrary.put(hc, new ArrayList<ItemStack>());
+		}
 	}
 
 	private void downloadHeads() {
@@ -111,7 +125,7 @@ public class CreativeEditor {
 			}
 		} else if (event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {
 			mc.player.swingArm(Hand.OFF_HAND);
-			System.out.println(PlayerHead.getLatest().getTag().toString());
+			
 		}
 	}
 }

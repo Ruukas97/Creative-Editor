@@ -6,7 +6,7 @@ import net.minecraft.nbt.CompoundNBT;
 
 public class PlayerHead {
 
-	private static ItemStack skull;
+	private ItemStack skull;
 
 	public PlayerHead(ItemStack is) {
 		if (is.getItem() == Items.PLAYER_HEAD) {
@@ -24,15 +24,15 @@ public class PlayerHead {
 
 	}
 
-	public static ItemStack getLatest() {
+	public ItemStack getLatest() {
 		return skull;
 	}
 
-	public void setUUID() {
+	public void setUUID(String uuid) {
 
 	}
 
-	public void setName() {
+	public void setName(String name) {
 
 	}
 }
