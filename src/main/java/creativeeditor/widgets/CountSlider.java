@@ -12,9 +12,11 @@ public class CountSlider extends AbstractSlider {
 		this.onSlide = onSlide;
 	}
 	
+	// Can't be 64 cause slider will be used for other purposes
 	public int getCount() {
 		return (int) (this.value * 64);
 	}
+	
 
 	@Override
 	protected void updateMessage() {

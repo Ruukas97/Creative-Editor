@@ -17,6 +17,9 @@
 	"gui.heads.category.miscellaneous":"Miscellaneous",
 	"gui.heads.category.monsters":"Monsters",
 	"gui.heads.category.plants":"Plants",
+	"gui.heads.credit":"Special thanks to minecraft-heads.com",
+	"gui.main.head":"Heads",
+	"gui.main.player":"Player",
 	
 	
 	
@@ -44,7 +47,11 @@
 	"flag.candestroy": "CanDestroy",
 	"flag.canplaceon": "CanPlaceOn",
 	"flag.iteminfo": "ItemInfo",
-	"flag.switchall": "Switch all"
+	"flag.switchall": "Switch all",
+	
+	
+	"gui.player.flight":"Toggle Flight",
+	"gui.player":"Player Capabilities"
 	
 	
 	

@@ -76,6 +76,8 @@ public class MainScreen extends ParentItemScreen {
 		this.itemIDTextField.setFocused2(true);
 		this.computeSuggestions();
 
+		
+		// Might want to put the buttons in a list and loop them
 		addButton(new CEWButton(width / 9 * 7 - 20, height / 11 * 2, 100, 20, I18n.format("gui.main.itemflag"), b -> {
 			minecraft.displayGuiScreen(new FlagScreen(this, editing));
 		}));
@@ -86,8 +88,12 @@ public class MainScreen extends ParentItemScreen {
 							Style.getCurrentStyle() instanceof StyleVanilla ? new StyleSpectrum() : new StyleVanilla());
 				}));
 
-		addButton(new CEWButton(width / 9 * 7 - 20, height / 11 * 2 + 60, 100, 20, "Heads", b -> {
+		addButton(new CEWButton(width / 9 * 7 - 20, height / 11 * 2 + 60, 100, 20, I18n.format("gui.main.head"), b -> {
 			mc.displayGuiScreen(new HeadScreen(this));
+		}));
+		
+		addButton(new CEWButton(width / 9 * 7 - 20, height / 11 * 2 + 90, 100, 20, I18n.format("gui.main.player"), b -> {
+			mc.displayGuiScreen(new PlayerScreen(this));
 		}));
 
 		CountSlider countSlider = new CountSlider(width / 2 + 5, 60, 50, 20, (double) (editing.getCount() / 64.0),
