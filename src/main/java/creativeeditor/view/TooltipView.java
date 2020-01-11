@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import creativeeditor.nbt.DataItem;
+import creativeeditor.data.DataItem;
 import creativeeditor.screen.ParentItemScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.RenderComponentsUtil;

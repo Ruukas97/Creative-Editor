@@ -1,7 +1,7 @@
 package creativeeditor.screen;
 
-import creativeeditor.nbt.DataItem;
 import creativeeditor.util.ColorUtils.Color;
+import creativeeditor.data.DataItem;
 import creativeeditor.util.HideFlagUtils;
 import creativeeditor.widgets.StyledButton;
 import net.minecraft.client.gui.screen.Screen;

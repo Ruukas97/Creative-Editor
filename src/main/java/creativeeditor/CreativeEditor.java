@@ -8,10 +8,9 @@ import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.config.ConfigHandler;
 import creativeeditor.creativetabs.TabUnavailable;
-import creativeeditor.eventhandlers.ChatHandler;
+import creativeeditor.data.DataItem;
 import creativeeditor.eventhandlers.ScreenHandler;
 import creativeeditor.eventhandlers.ScreenshotHandler;
-import creativeeditor.nbt.DataItem;
 import creativeeditor.screen.HeadScreen;
 import creativeeditor.screen.HeadScreen.HeadCategories;
 import creativeeditor.screen.MainScreen;
@@ -45,8 +44,6 @@ public class CreativeEditor {
 
 	private Minecraft mc;
 
-	// private ArrayList<ItemGroup> itemGroupArray = new ArrayList<>();
-	@SuppressWarnings("unused")
 	private ItemGroup tabUnavailable;
 
 	public CreativeEditor() {
@@ -73,16 +70,16 @@ public class CreativeEditor {
 
 		// Register Creative Tabs
 		registerTabs();
-		
+
 		// Register head library arrays
 		registerHeadArrays();
 
 		// Download Head Collection
 		downloadHeads();
 	}
-	
+
 	private void registerHeadArrays() {
-		for(HeadCategories hc : HeadCategories.values()) {
+		for (HeadCategories hc : HeadCategories.values()) {
 			HeadScreen.headLibrary.put(hc, new ArrayList<ItemStack>());
 		}
 	}
@@ -97,7 +94,7 @@ public class CreativeEditor {
 	}
 
 	private void registerTabs() {
-		LOGGER.info("Registering Creative tabs");
+		LOGGER.info("Adding Creative Tabs");
 		tabUnavailable = new TabUnavailable();
 	}
 
@@ -118,7 +115,7 @@ public class CreativeEditor {
 			}
 		} else if (event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {
 			mc.player.swingArm(Hand.OFF_HAND);
-			
+
 		}
 	}
 }

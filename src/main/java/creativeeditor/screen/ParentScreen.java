@@ -14,7 +14,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.text.ITextComponent;
 
-public class ParentScreen extends Screen {
+public abstract class ParentScreen extends Screen {
 	protected final Screen lastScreen;
 	protected Minecraft mc;
 	protected List<Widget> renderWidgets = Lists.newArrayList();
@@ -27,7 +27,6 @@ public class ParentScreen extends Screen {
 
 	@Override
 	protected void init() {
-		super.init();
 	}
 
 	@Override

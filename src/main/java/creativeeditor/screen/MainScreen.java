@@ -1,6 +1,6 @@
 package creativeeditor.screen;
 
-import creativeeditor.nbt.DataItem;
+import creativeeditor.data.DataItem;
 import creativeeditor.styles.Style;
 import creativeeditor.styles.StyleSpectrum;
 import creativeeditor.styles.StyleVanilla;

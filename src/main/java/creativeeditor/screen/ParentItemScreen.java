@@ -2,8 +2,8 @@ package creativeeditor.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import creativeeditor.nbt.DataItem;
 import creativeeditor.util.ColorUtils.Color;
+import creativeeditor.data.DataItem;
 import creativeeditor.util.GuiUtils;
 import creativeeditor.widgets.StyledButton;
 import net.minecraft.client.gui.screen.Screen;
@@ -72,8 +72,6 @@ public class ParentItemScreen extends ParentScreen {
 	@Override
 	public void mainRender(int mouseX, int mouseY, float p3, Color color) {
 		super.mainRender(mouseX, mouseY, p3, color);
-
-		
 	}
 
 	@Override
