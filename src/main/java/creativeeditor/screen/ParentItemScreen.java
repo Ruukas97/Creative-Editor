@@ -2,17 +2,17 @@ package creativeeditor.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import creativeeditor.nbt.NBTItemBase;
+import creativeeditor.nbt.DataItem;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtils;
-import creativeeditor.widgets.CEWButton;
+import creativeeditor.widgets.StyledButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.ITextComponent;
 
 public class ParentItemScreen extends ParentScreen {
-	protected NBTItemBase editing;
+	protected DataItem item;
 
 	// Back, reset, drop, save button (has essential buttons)
 	protected boolean hasEssButtons = true;
@@ -24,9 +24,9 @@ public class ParentItemScreen extends ParentScreen {
 	// render tooltip top left
 	boolean renderToolTip = false;
 
-	public ParentItemScreen(ITextComponent title, Screen lastScreen, NBTItemBase editing) {
+	public ParentItemScreen(ITextComponent title, Screen lastScreen, DataItem editing) {
 		super(title, lastScreen);
-		this.editing = editing;
+		this.item = editing;
 	}
 
 	@Override
@@ -43,20 +43,24 @@ public class ParentItemScreen extends ParentScreen {
 			String butCloseBack = lastScreen == null ? "gui.main.close" : "gui.main.back";
 			
 			
-			addButton(new CEWButton(posX - bwidth - 1, posY, bwidth, 20, I18n.format(butCloseBack), b -> {
+			addButton(new StyledButton(posX - bwidth - 1, posY, bwidth, 20, I18n.format(butCloseBack), b -> {
 				mc.displayGuiScreen(lastScreen);
 			}));
-			addButton(new CEWButton(posX, posY - 11, bwidth, 20, I18n.format("gui.main.reset"), b -> {
-				editing.setTag(null);
+			addButton(new StyledButton(posX, posY - 11, bwidth, 20, I18n.format("gui.main.reset"), b -> {
+				item.setTag(null);
 			}));
-			addButton(new CEWButton(posX, posY + 10, bwidth, 20, I18n.format("gui.main.save"), b -> {
-				mc.playerController.sendSlotPacket(editing.getItemStack(), 36 + mc.player.inventory.currentItem);
+			addButton(new StyledButton(posX, posY + 10, bwidth, 20, I18n.format("gui.main.save"), b -> {
+				mc.playerController.sendSlotPacket(item.getItemStack(), 36 + mc.player.inventory.currentItem);
 			}));
-			addButton(new CEWButton(posX + bwidth + 1, posY, bwidth, 20, I18n.format("gui.main.drop"), b -> {
-				mc.playerController.sendPacketDropItem(editing.getItemStack());
+			addButton(new StyledButton(posX + bwidth + 1, posY, bwidth, 20, I18n.format("gui.main.drop"), b -> {
+				mc.playerController.sendPacketDropItem(item.getItemStack());
 				// Shift for /give
 			}));
 		}
+	}
+	
+	public DataItem getItem() {
+		return this.item;
 	}
 
 	public void setRenderItem(boolean shouldRender, float scale) {
@@ -81,8 +85,8 @@ public class ParentItemScreen extends ParentScreen {
 			RenderHelper.enableGUIStandardItemLighting();
 			int x = (int) (width / (2 * itemScale) - 8);
 			int y = (int) (height / (2 * itemScale) - 8);
-			itemRenderer.renderItemIntoGUI(editing.getItemStack(), x, y);
-			itemRenderer.renderItemOverlayIntoGUI(font, editing.getItemStack(), x, y, null);
+			itemRenderer.renderItemIntoGUI(item.getItemStack(), x, y);
+			itemRenderer.renderItemOverlayIntoGUI(font, item.getItemStack(), x, y, null);
 
 			GlStateManager.scalef(1f / itemScale, 1f / itemScale, 1f);
 
@@ -90,7 +94,7 @@ public class ParentItemScreen extends ParentScreen {
 			GuiUtils.drawFrame(width / 2 - 20, height / 2 - 20, width / 2 + 20, height / 2 + 20, 1, color);
 
 			if (GuiUtils.isMouseIn(mouseX, mouseY, width / 2 - 17, height / 2 - 17, 34, 34)) {
-				renderTooltip(editing.getItemStack(), mouseX, mouseY);
+				renderTooltip(item.getItemStack(), mouseX, mouseY);
 			}
 		}
 	}

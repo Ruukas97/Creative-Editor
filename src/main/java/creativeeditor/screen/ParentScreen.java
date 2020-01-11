@@ -7,7 +7,7 @@ import com.google.common.collect.Lists;
 import creativeeditor.styles.Style;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtils;
-import creativeeditor.widgets.StyleTextField;
+import creativeeditor.widgets.StyledTextField;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.Screen;
@@ -57,8 +57,8 @@ public class ParentScreen extends Screen {
 	@Override
 	public void tick() {
 		renderWidgets.forEach(w -> {
-			if (w instanceof StyleTextField) {
-				((StyleTextField) w).tick();
+			if (w instanceof StyledTextField) {
+				((StyledTextField) w).tick();
 			}
 		});
 	}
@@ -66,8 +66,8 @@ public class ParentScreen extends Screen {
 	@Override
 	public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
 		renderWidgets.forEach(w -> {
-			if (w instanceof StyleTextField) {
-				((StyleTextField) w).mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
+			if (w instanceof StyledTextField) {
+				((StyledTextField) w).mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
 			}
 		});
 		return super.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);

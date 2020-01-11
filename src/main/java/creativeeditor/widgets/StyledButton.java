@@ -5,8 +5,8 @@ import creativeeditor.styles.Style.ButtonColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 
-public class CEWButton extends Button {
-	public CEWButton(int x, int y, int width, int height, String text, IPressable onPress) {
+public class StyledButton extends Button {
+	public StyledButton(int x, int y, int width, int height, String text, IPressable onPress) {
 		super(x, y, width, height, text, onPress);
 	}
 

@@ -1,6 +1,6 @@
 package creativeeditor.screen;
 
-import creativeeditor.widgets.CEWButton;
+import creativeeditor.widgets.StyledButton;
 import creativeeditor.widgets.CountSlider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
@@ -19,7 +19,7 @@ public class PlayerScreen extends ParentScreen {
 	public void init(Minecraft p_init_1_, int p_init_2_, int p_init_3_) {
 		super.init(p_init_1_, p_init_2_, p_init_3_);
 		PlayerAbilities playerAb = mc.player.abilities;
-		addButton(new CEWButton(10, 10, 10, 10, I18n.format("gui.player.flight"), t -> {
+		addButton(new StyledButton(10, 10, 10, 10, I18n.format("gui.player.flight"), t -> {
 			if(playerAb.isCreativeMode || mc.isSingleplayer()) {
 				if(playerAb.isFlying) {
 					playerAb.allowFlying = false;

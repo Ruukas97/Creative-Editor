@@ -2,7 +2,7 @@ package creativeeditor.styles;
 
 import creativeeditor.screen.ParentScreen;
 import creativeeditor.util.ColorUtils.Color;
-import creativeeditor.widgets.CEWButton;
+import creativeeditor.widgets.StyledButton;
 
 public abstract class Style {
 	protected ButtonColor buttonColor;
@@ -26,7 +26,7 @@ public abstract class Style {
 	
 	public abstract void renderBackground(ParentScreen screen);
 	
-	public abstract void renderButton(CEWButton button, int mouseX, int mouseY, float alpha);
+	public abstract void renderButton(StyledButton button, int mouseX, int mouseY, float alpha);
 	
 	public void tick() {
 	}

@@ -5,22 +5,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 
-public class NBTItemBase extends EditNBT {
+public class DataItem extends Data {
 	// Wiki: https://minecraft.gamepedia.com/Player.dat_format#Item_structure
 	protected byte count;
 	protected byte slot = 0;
 	protected Item item; // Should be translated to "id" String, if making an Item tag
 	protected CompoundNBT tag;
 
-	public NBTItemBase() {
+	public DataItem() {
 		this(ItemStack.EMPTY);
 	}
 
-	public NBTItemBase(ItemStack stack) {
+	public DataItem(ItemStack stack) {
 		setItemStack(stack);
 	}
 
-	public NBTItemBase(byte count, byte slot, Item item, CompoundNBT tag) {
+	public DataItem(byte count, byte slot, Item item, CompoundNBT tag) {
 		this.count = count;
 		this.slot = slot;
 		this.item = item;

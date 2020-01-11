@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import creativeeditor.screen.ParentScreen;
 import creativeeditor.util.ColorUtils.Color;
-import creativeeditor.widgets.CEWButton;
+import creativeeditor.widgets.StyledButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.Widget;
@@ -28,7 +28,7 @@ public class StyleVanilla extends Style {
 	}
 
 	@Override
-	public void renderButton(CEWButton button, int mouseX, int mouseY, float alpha) {
+	public void renderButton(StyledButton button, int mouseX, int mouseY, float alpha) {
 		Minecraft minecraft = Minecraft.getInstance();
 		FontRenderer fontrenderer = minecraft.fontRenderer;
 		int j = getMainColor().getInt();

@@ -2,7 +2,6 @@ package creativeeditor.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import creativeeditor.util.GuiUtils;
 import creativeeditor.util.ColorUtils.Color;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;

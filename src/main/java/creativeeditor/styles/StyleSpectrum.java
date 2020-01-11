@@ -4,7 +4,7 @@ import creativeeditor.screen.ParentScreen;
 import creativeeditor.util.ColorUtils;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtils;
-import creativeeditor.widgets.CEWButton;
+import creativeeditor.widgets.StyledButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.math.MathHelper;
@@ -33,7 +33,7 @@ public class StyleSpectrum extends Style {
 	}
 
 	@Override
-	public void renderButton(CEWButton button, int mouseX, int mouseY, float alpha) {
+	public void renderButton(StyledButton button, int mouseX, int mouseY, float alpha) {
 		Minecraft mc = Minecraft.getInstance();
 		FontRenderer font = mc.fontRenderer;
 		int j = button.getFGColor();

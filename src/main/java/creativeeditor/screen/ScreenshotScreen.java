@@ -9,13 +9,13 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraftforge.client.event.ScreenshotEvent;
 
-public class CEScreenshotScreen {
+public class ScreenshotScreen {
 
 	private ScreenshotEvent e;
 	private boolean enableAnimation;
 	private Minecraft mc;
 
-	public CEScreenshotScreen(ScreenshotEvent event) {
+	public ScreenshotScreen(ScreenshotEvent event) {
 		if (event != null) {
 			this.e = event;
 			this.mc = Minecraft.getInstance();

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import creativeeditor.util.ColorUtils;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtils;
-import creativeeditor.widgets.CEWButton;
+import creativeeditor.widgets.StyledButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.Widget;
@@ -34,7 +34,7 @@ public class HeadScreen extends ParentScreen {
 
 		minecraft.keyboardListener.enableRepeatEvents(true);
 
-		addButton(new CEWButton(width / 24 - 12, height / 20 * 18, 60, 20, I18n.format("gui.main.back"), (Button b) -> {
+		addButton(new StyledButton(width / 24 - 12, height / 20 * 18, 60, 20, I18n.format("gui.main.back"), (Button b) -> {
 			mc.displayGuiScreen(lastScreen);
 		}));
 

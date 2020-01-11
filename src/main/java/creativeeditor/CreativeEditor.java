@@ -8,11 +8,10 @@ import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.config.ConfigHandler;
 import creativeeditor.creativetabs.TabUnavailable;
-import creativeeditor.events.CEClientChatReceivedEvent;
-import creativeeditor.events.CEGuiScreenEvent;
-import creativeeditor.events.CERegistryEvent;
-import creativeeditor.events.CEScreenshotEvent;
-import creativeeditor.nbt.NBTItemBase;
+import creativeeditor.eventhandlers.ChatHandler;
+import creativeeditor.eventhandlers.ScreenHandler;
+import creativeeditor.eventhandlers.ScreenshotHandler;
+import creativeeditor.nbt.DataItem;
 import creativeeditor.screen.HeadScreen;
 import creativeeditor.screen.HeadScreen.HeadCategories;
 import creativeeditor.screen.MainScreen;
@@ -68,10 +67,8 @@ public class CreativeEditor {
 
 		// Register Events
 		LOGGER.info("Registering events");
-		registerEventHandler(new CEGuiScreenEvent());
-		registerEventHandler(new CERegistryEvent());
-		registerEventHandler(new CEScreenshotEvent());
-		registerEventHandler(new CEClientChatReceivedEvent());
+		registerEventHandler(new ScreenHandler());
+		registerEventHandler(new ScreenshotHandler());
 		registerEventHandler(this);
 
 		// Register Creative Tabs
@@ -111,15 +108,11 @@ public class CreativeEditor {
 			return;
 
 		if (event.getKey() == OPEN_EDITOR_KEY.getKey().getKeyCode()) {
-			mc.displayGuiScreen(new MainScreen(mc.currentScreen, new NBTItemBase(mc.player.getHeldItemMainhand())));
+			mc.displayGuiScreen(new MainScreen(mc.currentScreen, new DataItem(mc.player.getHeldItemMainhand())));
 		}
 
 		else if (event.getKey() == PLAYER_INSPECT.getKey().getKeyCode()) {
 			Entity entity = mc.pointedEntity;
-			// if(entity instanceof PlayerEntity){
-			// mc.displayGuiScreen(new ScreenPlayerInspector(mc.currentScreen,
-			// (PlayerEntity) entity));
-			// }
 			if (entity != null) {
 				mc.displayGuiScreen(new ScreenPlayerInspector(mc.currentScreen, mc.player));
 			}
