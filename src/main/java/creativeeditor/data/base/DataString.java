@@ -6,9 +6,13 @@ import net.minecraft.nbt.StringNBT;
 
 public class DataString implements Data {
 	private String value;
+	
+	public DataString() {
+		this("");
+	}
 
 	public DataString(String value) {
-		this.value = value;
+		set(value);
 	}
 	
 	public DataString(StringNBT nbt) {
@@ -20,7 +24,7 @@ public class DataString implements Data {
 	}
 
 	public void set(String value) {
-		this.value = value;
+		this.value = value != null ? value : "";
 	}
 
 	@Override

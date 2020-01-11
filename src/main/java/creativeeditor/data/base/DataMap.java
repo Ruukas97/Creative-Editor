@@ -3,6 +3,9 @@ package creativeeditor.data.base;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.collect.Maps;
 
 import creativeeditor.data.Data;
@@ -34,8 +37,21 @@ public class DataMap implements Data {
 		});
 	}
 
-	public Map<String, Data> get() {
+	public Map<String, Data> getMap() {
 		return map;
+	}
+	
+	@Nullable
+	public Data getData(String key) {
+		return map.get(key);
+	}
+	
+	@Nonnull
+	public Data getDataDefaulted(String key, Data defaultValue) {
+		if(map.containsKey(key))
+			return map.get(key);
+		put(key, defaultValue);
+		return defaultValue;
 	}
 
 	public void put(String key, Data value) {

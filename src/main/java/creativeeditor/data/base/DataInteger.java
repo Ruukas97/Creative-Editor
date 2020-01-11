@@ -7,6 +7,10 @@ import net.minecraft.nbt.IntNBT;
 
 public class DataInteger implements Data, INumber {
 	private int value;
+	
+	public DataInteger() {
+		this(0);
+	}
 
 	public DataInteger(int value) {
 		this.value = value;

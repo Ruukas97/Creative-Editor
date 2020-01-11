@@ -47,7 +47,7 @@ public class ParentItemScreen extends ParentScreen {
 				mc.displayGuiScreen(lastScreen);
 			}));
 			addButton(new StyledButton(posX, posY - 11, bwidth, 20, I18n.format("gui.main.reset"), b -> {
-				item.setTag(null);
+				item.getItemNBTTag().clear();
 			}));
 			addButton(new StyledButton(posX, posY + 10, bwidth, 20, I18n.format("gui.main.save"), b -> {
 				mc.playerController.sendSlotPacket(item.getItemStack(), 36 + mc.player.inventory.currentItem);

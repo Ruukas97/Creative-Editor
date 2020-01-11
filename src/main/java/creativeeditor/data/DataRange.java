@@ -22,6 +22,10 @@ public class DataRange implements Data, INumber {
 		return max;
 	}
 	
+	public KeyTag key(String key) {
+		return new KeyTag(key, this);
+	}
+	
 	@Override
 	public Number getNumber() {
 		return number.getNumber();

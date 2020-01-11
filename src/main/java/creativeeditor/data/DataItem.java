@@ -1,84 +1,95 @@
 package creativeeditor.data;
 
-import creativeeditor.data.tag.TagItem;
+import javax.annotation.Nullable;
+
+import creativeeditor.data.base.DataMap;
+import creativeeditor.data.tag.TagItemID;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
 
-public class DataItem implements Data {
+public class DataItem extends DataMap {
 	// Wiki: https://minecraft.gamepedia.com/Player.dat_format#Item_structure
-	protected DataRange count = new DataRange(0, 1, 64);
-	protected DataRange slot = new DataRange(1, 1, 45);
-	protected TagItem item = new TagItem(Items.AIR);
-	protected CompoundNBT tag;
 
 	public DataItem() {
-		this(ItemStack.EMPTY);
+		super(getKeyTags());
 	}
 
 	public DataItem(ItemStack stack) {
+		super(getKeyTags());
 		setItemStack(stack);
 	}
 
 	public DataItem(byte count, byte slot, Item item, CompoundNBT tag) {
+		this();
 		setCount(count);
 		setSlot(slot);
 		setItem(item);
-		this.tag = tag;
+		setItemNBT(tag);
 	}
-	
+
+	public static KeyTag[] getKeyTags() {
+		return new KeyTag[] { new DataRange(1, 1, 64).key("Count"), new DataRange(1, 1, 45).key("Slot"),
+				new KeyTag("id", new TagItemID(Items.AIR)), new KeyTag("tag", new DataMap()) };
+	}
+
 	public ItemStack getItemStack() {
-		return new ItemStack(getItem(), getCount(), tag);
+		return new ItemStack(getItem(), getCount(), getItemNBT());
 	}
 
 	public void setItemStack(ItemStack stack) {
 		setCount(stack.getCount());
 		setItem(stack.getItem());
-		this.tag = stack.getTag();
+		setItemNBT(stack.getTag());
 	}
 	
+	@Nullable
+	public TagItemID getItemTag() {
+		return (TagItemID)getData("id");
+	}
+
 	public Item getItem() {
-		return item.getItem();
+		return getItemTag().getItem();
 	}
 
 	public void setItem(Item item) {
-		this.item.setItem(item);
+		getItemTag().setItem(item);
 	}
 	
+	public DataRange getCountTag() {
+		return (DataRange)getData("Count");
+	}
+
 	public byte getCount() {
-		return count.getNumber().byteValue();
+		return getCountTag().getNumber().byteValue();
 	}
 
 	public void setCount(Number count) {
-		this.count.setNumber(count);
+		getCountTag().setNumber(count);
+	}
+	
+	public DataRange getSlotTag() {
+		return (DataRange)getData("Slot");
 	}
 
 	public byte getSlot() {
-		return slot.getNumber().byteValue();
+		return getSlotTag().getNumber().byteValue();
 	}
 
 	public void setSlot(Number slot) {
-		this.slot.setNumber(slot.byteValue());
+		getSlotTag().setNumber(slot.byteValue());
 	}
 	
-	public CompoundNBT getTag() {
-		return tag;
+	public DataMap getItemNBTTag() {
+		return (DataMap)getData("tag");
 	}
 	
-	public void setTag(CompoundNBT tag) {
-		this.tag = tag;
+	public CompoundNBT getItemNBT() {
+		return (CompoundNBT)getItemNBTTag().getNBT();
 	}
-
-
-	@Override
-	public INBT getNBT() {
-		CompoundNBT root = new CompoundNBT();
-		root.put("Count", count.getNBT());
-		root.put("Slot", slot.getNBT());
-		root.put("id", item.getNBT());
-		root.put("tag", tag);
-		return root;
+	
+	public void setItemNBT(CompoundNBT nbt) {
+		put("tag", new DataMap(nbt));
 	}
 }

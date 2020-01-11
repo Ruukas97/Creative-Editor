@@ -7,12 +7,12 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.GameData;
 
-public class TagItem extends DataString {
-	public TagItem(String value) {
+public class TagItemID extends DataString {
+	public TagItemID(String value) {
 		super(value);
 	}
 
-	public TagItem(Item item) {
+	public TagItemID(Item item) {
 		this(item != null ? item.getRegistryName().getPath() : null);
 	}
 
