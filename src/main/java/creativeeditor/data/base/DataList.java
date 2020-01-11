@@ -1,5 +1,6 @@
 package creativeeditor.data.base;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -8,7 +9,7 @@ import creativeeditor.data.Data;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
 
-public class DataList implements Data {
+public class DataList implements Data, Iterable<Data> {
 	private List<Data> list;
 
 	public DataList() {
@@ -40,6 +41,11 @@ public class DataList implements Data {
 
 	public void clear() {
 		list.clear();
+	}
+	
+	@Override
+	public Iterator<Data> iterator() {
+		return list.listIterator();
 	}
 
 	@Override
