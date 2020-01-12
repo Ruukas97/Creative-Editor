@@ -4,20 +4,20 @@ import javax.annotation.Nullable;
 
 import creativeeditor.data.base.DataMap;
 import creativeeditor.data.tag.TagItemID;
+import creativeeditor.data.tag.TagItemNBT;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 
 public class DataItem extends DataMap {
 	// Wiki: https://minecraft.gamepedia.com/Player.dat_format#Item_structure
 
 	public DataItem() {
-		super(getKeyTags());
+		super();
 	}
 
 	public DataItem(ItemStack stack) {
-		super(getKeyTags());
+		super();
 		setItemStack(stack);
 	}
 
@@ -29,13 +29,8 @@ public class DataItem extends DataMap {
 		setItemNBT(tag);
 	}
 
-	public static KeyTag[] getKeyTags() {
-		return new KeyTag[] { new DataRange(1, 1, 64).key("Count"), new DataRange(1, 1, 45).key("Slot"),
-				new KeyTag("id", new TagItemID(Items.AIR)), new KeyTag("tag", new DataMap()) };
-	}
-
 	public ItemStack getItemStack() {
-		return new ItemStack(getItem(), getCount(), getItemNBT());
+		return ItemStack.read((CompoundNBT) getNBT());
 	}
 
 	public void setItemStack(ItemStack stack) {
@@ -43,10 +38,10 @@ public class DataItem extends DataMap {
 		setItem(stack.getItem());
 		setItemNBT(stack.getTag());
 	}
-	
+
 	@Nullable
 	public TagItemID getItemTag() {
-		return (TagItemID)getData("id");
+		return (TagItemID) getDataDefaulted("id", new TagItemID());
 	}
 
 	public Item getItem() {
@@ -56,9 +51,9 @@ public class DataItem extends DataMap {
 	public void setItem(Item item) {
 		getItemTag().setItem(item);
 	}
-	
-	public DataRange getCountTag() {
-		return (DataRange)getData("Count");
+
+	public NumberRange getCountTag() {
+		return (NumberRange) getDataDefaulted("Count", new NumberRange(1, 64));
 	}
 
 	public byte getCount() {
@@ -68,9 +63,9 @@ public class DataItem extends DataMap {
 	public void setCount(Number count) {
 		getCountTag().setNumber(count);
 	}
-	
-	public DataRange getSlotTag() {
-		return (DataRange)getData("Slot");
+
+	public NumberRange getSlotTag() {
+		return (NumberRange) getDataDefaulted("Slot", new NumberRange(1, 45));
 	}
 
 	public byte getSlot() {
@@ -80,16 +75,17 @@ public class DataItem extends DataMap {
 	public void setSlot(Number slot) {
 		getSlotTag().setNumber(slot.byteValue());
 	}
-	
-	public DataMap getItemNBTTag() {
-		return (DataMap)getData("tag");
+
+	public TagItemNBT getItemNBTTag() {
+		return (TagItemNBT) getDataDefaulted("tag", new TagItemNBT());
 	}
-	
+
 	public CompoundNBT getItemNBT() {
-		return (CompoundNBT)getItemNBTTag().getNBT();
+		CompoundNBT nbt = (CompoundNBT) getItemNBTTag().getNBT();
+		return nbt;
 	}
-	
+
 	public void setItemNBT(CompoundNBT nbt) {
-		put("tag", new DataMap(nbt));
+		put("tag", new TagItemNBT(nbt));
 	}
 }

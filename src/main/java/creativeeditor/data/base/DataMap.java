@@ -65,9 +65,17 @@ public class DataMap implements Data {
 	}
 
 	@Override
+	public boolean isDefault() {
+		return map.isEmpty();
+	}
+
+	@Override
 	public INBT getNBT() {
 		CompoundNBT nbt = new CompoundNBT();
-		map.forEach((key, value) -> nbt.put(key, value.getNBT()));
+		map.forEach((key, value) -> {
+			if (!value.isDefault())
+				nbt.put(key, value.getNBT());
+		});
 		return nbt;
 	}
 }

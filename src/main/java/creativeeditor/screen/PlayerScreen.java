@@ -25,6 +25,7 @@ public class PlayerScreen extends ParentScreen {
 					playerAb.isFlying = false;
 				} else {
 					playerAb.allowFlying = true;
+					playerAb.isFlying = !mc.player.onGround;
 				}
 			}
 		}));

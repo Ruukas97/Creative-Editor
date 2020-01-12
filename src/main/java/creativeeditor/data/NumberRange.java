@@ -4,16 +4,25 @@ import creativeeditor.data.base.DataInteger;
 import creativeeditor.widgets.StyledSlider;
 import creativeeditor.widgets.StyledSlider.SliderHandler;
 import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.IntNBT;
 import net.minecraft.util.math.MathHelper;
 
-public class DataRange implements Data, INumber, SliderHandler {
+public class NumberRange implements Data, INumber, SliderHandler {
 	private INumber number;
 	private int min, max;
 
-	public DataRange(int value, int min, int max) {
-		number = new DataInteger(value);
+	public NumberRange(INumber number, int min, int max) {
+		this.number = number;
 		this.min = min;
 		this.max = max;
+	}
+
+	public NumberRange(int value, int min, int max) {
+		this(new DataInteger(value), min, max);
+	}
+
+	public NumberRange(int min, int max) {
+		this(min, min, max);
 	}
 
 	public int getMin() {
@@ -48,6 +57,6 @@ public class DataRange implements Data, INumber, SliderHandler {
 		if (number != null && number instanceof Data) {
 			return ((Data) number).getNBT();
 		}
-		return null;
+		return new IntNBT(0);
 	}
 }

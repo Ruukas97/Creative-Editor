@@ -30,6 +30,11 @@ public class DataBoolean implements Data {
 	public void toggle() {
 		set(!value);
 	}
+	
+	@Override
+	public boolean isDefault() {
+		return !value;
+	}
 
 	@Override
 	public INBT getNBT() {

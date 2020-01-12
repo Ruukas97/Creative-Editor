@@ -26,6 +26,11 @@ public class DataString implements Data {
 	public void set(String value) {
 		this.value = value != null ? value : "";
 	}
+	
+	@Override
+	public boolean isDefault() {
+		return value.isEmpty();
+	}
 
 	@Override
 	public INBT getNBT() {

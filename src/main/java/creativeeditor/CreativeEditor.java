@@ -16,8 +16,6 @@ import creativeeditor.screen.HeadScreen.HeadCategories;
 import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.ScreenPlayerInspector;
 import creativeeditor.styles.StyleManager;
-import creativeeditor.styles.StyleSpectrum;
-import creativeeditor.styles.StyleVanilla;
 import creativeeditor.util.LoadSkullThread;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
@@ -53,7 +51,7 @@ public class CreativeEditor {
 
 		LOGGER.info("Registering config");
 		context.registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
-		StyleManager.setCurrentStyle(ConfigHandler.CLIENT.currentStyle.get() == 0 ? new StyleSpectrum() : new StyleVanilla());
+		StyleManager.loadConfig();
 
 		LOGGER.info("Registering keybindings");
 		OPEN_EDITOR_KEY = new KeyBinding("key.editor", GLFW.GLFW_KEY_U, "creativeeditor");

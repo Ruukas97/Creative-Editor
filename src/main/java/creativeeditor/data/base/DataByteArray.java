@@ -18,6 +18,11 @@ public class DataByteArray implements Data {
 	public byte[] get() {
 		return values;
 	}
+	
+	@Override
+	public boolean isDefault() {
+		return values.length == 0;
+	}
 
 	@Override
 	public INBT getNBT() {

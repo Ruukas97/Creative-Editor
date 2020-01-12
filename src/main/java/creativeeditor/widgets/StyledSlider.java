@@ -88,11 +88,13 @@ public class StyledSlider extends Widget implements IStyledSlider {
 	public boolean keyPressed(int key1, int key2, int key3) {
 		if (key1 == GLFW.GLFW_KEY_LEFT && value > min) {
 			value--;
+			updateSlider();
 			return true;
 		}
 
 		if (key1 == GLFW.GLFW_KEY_RIGHT && value < max) {
 			value++;
+			updateSlider();
 			return true;
 		}
 

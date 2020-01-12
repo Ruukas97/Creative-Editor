@@ -18,6 +18,11 @@ public class DataIntegerArray implements Data {
 	public int[] get() {
 		return values;
 	}
+	
+	@Override
+	public boolean isDefault() {
+		return values.length == 0;
+	}
 
 	@Override
 	public INBT getNBT() {

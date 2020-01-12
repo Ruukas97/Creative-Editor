@@ -44,6 +44,11 @@ public class DataList implements Data, Iterable<Data> {
 	}
 	
 	@Override
+	public boolean isDefault() {
+		return list.isEmpty();
+	}
+	
+	@Override
 	public Iterator<Data> iterator() {
 		return list.listIterator();
 	}
@@ -51,7 +56,10 @@ public class DataList implements Data, Iterable<Data> {
 	@Override
 	public INBT getNBT() {
 		ListNBT nbt = new ListNBT();
-		list.forEach(data -> nbt.add(data.getNBT()));
+		list.forEach(data -> {
+			if(!data.isDefault())
+				nbt.add(data.getNBT());
+		});
 		return nbt;
 	}
 }

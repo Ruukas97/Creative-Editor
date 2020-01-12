@@ -1,12 +1,14 @@
 package creativeeditor.screen;
 
+import java.util.Arrays;
+import java.util.List;
+
+import creativeeditor.config.ConfigHandler;
 import creativeeditor.data.DataItem;
-import creativeeditor.styles.StyleManager;
-import creativeeditor.styles.StyleSpectrum;
-import creativeeditor.styles.StyleVanilla;
+import creativeeditor.data.NumberRange;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.widgets.SliderTag;
-import creativeeditor.widgets.StyledButton;
+import creativeeditor.widgets.StyledTextButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
@@ -27,30 +29,57 @@ public class MainScreen extends ParentItemScreen {
 
 		minecraft.keyboardListener.enableRepeatEvents(true);
 
-		// Might want to put the buttons in a list and loop them
-		addButton(
-				new StyledButton(width / 9 * 7 - 20, height / 11 * 2, 100, 20, I18n.format("gui.main.itemflag"), b -> {
-					minecraft.displayGuiScreen(new FlagScreen(this, item));
-				}));
+		String nbtLocal = I18n.format("gui.main.nbt");
+		String tooltipLocal = I18n.format("gui.main.tooltip");
+		String toolsLocal = I18n.format("gui.main.tools");
+		String rightOne = I18n.format("gui.main.display");
+		String rightTwo = I18n.format("gui.main.data");
+		String rightThree = I18n.format("gui.main.other");
 
-		addButton(new StyledButton(width / 9 * 7 - 20, height / 11 * 2 + 30, 100, 20,
-				I18n.format("gui.main.colorstyle"), b -> {
-					StyleManager.setCurrentStyle(
-							StyleManager.getCurrentStyle() instanceof StyleVanilla ? new StyleSpectrum()
-									: new StyleVanilla());
-				}));
+		int nbtWidth = font.getStringWidth(nbtLocal);
+		int tooltipWidth = font.getStringWidth(tooltipLocal);
+		int toolsWidth = font.getStringWidth(toolsLocal);
+		int rightOneWidth = font.getStringWidth(rightOne);
+		int rightTwoWidth = font.getStringWidth(rightTwo);
+		int rightThreeWidth = font.getStringWidth(rightThree);
 
-		addButton(
-				new StyledButton(width / 9 * 7 - 20, height / 11 * 2 + 60, 100, 20, I18n.format("gui.main.head"), b -> {
-					mc.displayGuiScreen(new HeadScreen(this));
-				}));
+		int nbtX = 21 + nbtWidth / 2;
+		int toolsX = width / 3 - 16 - toolsWidth / 2;
+		int tooltipX = (nbtX + toolsX) / 2;
 
-		addButton(new StyledButton(width / 9 * 7 - 20, height / 11 * 2 + 90, 100, 20, I18n.format("gui.main.player"),
-				b -> {
-					mc.displayGuiScreen(new PlayerScreen(this));
-				}));
+		int rightThreeX = width - 21 - rightThreeWidth / 2;
+		int rightOneX = 2 * width / 3 + 17 + rightOneWidth / 2;
+		int rightTwoX = ((rightOneX + rightOneWidth / 2) + (rightThreeX - rightThreeWidth / 2)) / 2;
 
-		addButton(new SliderTag(width / 2 + 5, 60, 50, 20, item.getCountTag()));
+		addButton(new StyledTextButton(nbtX, 35, nbtWidth, nbtLocal, b -> {
+			ConfigHandler.CLIENT.currentLeftSideview.set(0);
+		}));
+
+		addButton(new StyledTextButton(tooltipX, 35, tooltipWidth, tooltipLocal, b -> {
+			ConfigHandler.CLIENT.currentLeftSideview.set(1);
+		}));
+
+		addButton(new StyledTextButton(toolsX, 35, toolsWidth, toolsLocal, b -> {
+			ConfigHandler.CLIENT.currentLeftSideview.set(2);
+		}));
+
+		addButton(new StyledTextButton(rightOneX, 35, rightOneWidth, rightOne, b -> {
+			ConfigHandler.CLIENT.currentRightSideview.set(0);
+		}));
+
+		addButton(new StyledTextButton(rightTwoX, 35, rightTwoWidth, rightTwo, b -> {
+			ConfigHandler.CLIENT.currentRightSideview.set(1);
+		}));
+
+		addButton(new StyledTextButton(rightThreeX, 35, rightThreeWidth, rightThree, b -> {
+			ConfigHandler.CLIENT.currentRightSideview.set(2);
+		}));
+
+
+		addButton(new SliderTag(width / 2 + 5, 61, 50, 16, item.getCountTag()));
+
+		addButton(new SliderTag(width / 2 + 5, 81, 50, 16,
+				new NumberRange(item.getItemNBTTag().getDamageTag(), 0, item.getItemStack().getMaxDamage())));
 	}
 
 	@Override
@@ -65,9 +94,7 @@ public class MainScreen extends ParentItemScreen {
 
 	@Override
 	public boolean keyPressed(int key1, int key2, int key3) {
-		// TODO Esc close or unselect
-		// TODO Tab select next element
-		return false;
+		return super.keyPressed(key1, key2, key3);
 	}
 
 	@Override
@@ -95,13 +122,33 @@ public class MainScreen extends ParentItemScreen {
 
 		String id = I18n.format("gui.main.id");
 		int idWidth = font.getStringWidth(id);
-		drawString(font, id, width / 2 - idWidth, 47, color.getInt());
-		drawString(font, item.getItem().getRegistryName().getPath(), width / 2 + 5, 47, color.getInt());
+		drawString(font, id, width / 2 - idWidth, 45, color.getInt());
+		drawString(font, item.getItem().getRegistryName().getPath(), width / 2 + 5, 45, color.getInt());
 
 		String count = I18n.format("gui.main.count");
 		int countWidth = font.getStringWidth(count);
-		drawString(font, count, width / 2 - countWidth, 67, color.getInt());
-		// drawString(font, ""+editing.getCount(), width / 2 + 5, 67, color.getInt());
+		drawString(font, count, width / 2 - countWidth, 65, color.getInt());
 
+		String damage = I18n.format("gui.main.damage");
+		int damageWidth = font.getStringWidth(damage);
+		drawString(font, damage, width / 2 - damageWidth, 85, color.getInt());
+
+	}
+
+	@Override
+	public void overlayRender(int mouseX, int mouseY, float p3, Color color) {
+		super.overlayRender(mouseX, mouseY, p3, color);
+
+		if (ConfigHandler.CLIENT.currentLeftSideview.get() == 0) {
+			// NBT
+			List<String> nbtLines = Arrays
+					.asList(item.getItemNBT().toFormattedComponent(" ", 0).getFormattedText().split("\n"));
+
+			renderTooltip(nbtLines, 0, 60);
+		}
+
+		else if (ConfigHandler.CLIENT.currentLeftSideview.get() == 1) {
+			renderTooltip(item.getItemStack(), 0, 60);
+		}
 	}
 }

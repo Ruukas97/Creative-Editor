@@ -28,7 +28,7 @@ import net.minecraft.nbt.StringNBT;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public interface Data {
-	public abstract INBT getNBT();
+	public INBT getNBT();
 
 	@Nullable
 	public static Data fromNBT(INBT nbt) {
@@ -60,6 +60,14 @@ public interface Data {
 		default:
 			return null;
 		}
+	}
+	
+	public default boolean isDefault() {
+		if(this instanceof INumber) {
+			return ((INumber)this).getNumber().byteValue() == 0;
+		}
+		
+		return false;
 	}
 
 	public static boolean isNumber(INBT nbt) {

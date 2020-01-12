@@ -21,7 +21,7 @@ public class PlayerHead {
 			skull.getTag().put("Properties", new CompoundNBT());
 		}
 		skull.getTag().putString("Properties", texture);
-		System.out.println(skull.getTag().toString());
+		//System.out.println(skull.getTag().toString());
 
 	}
 

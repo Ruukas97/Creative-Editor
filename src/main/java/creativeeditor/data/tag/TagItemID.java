@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import creativeeditor.data.base.DataString;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.GameData;
 
@@ -13,7 +14,11 @@ public class TagItemID extends DataString {
 	}
 
 	public TagItemID(Item item) {
-		this(item != null ? item.getRegistryName().getPath() : null);
+		setItem(item);
+	}
+
+	public TagItemID() {
+		this(Items.AIR);
 	}
 
 	@Nonnull
@@ -22,10 +27,6 @@ public class TagItemID extends DataString {
 	}
 
 	public void setItem(Item item) {
-		if (item != null) {
-			set(item.getRegistryName().getPath());
-		} else {
-			set(null);
-		}
+		set(item != null ? item.getRegistryName().getPath() : "minecraft:air");
 	}
 }
