@@ -15,7 +15,7 @@ import creativeeditor.screen.HeadScreen;
 import creativeeditor.screen.HeadScreen.HeadCategories;
 import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.ScreenPlayerInspector;
-import creativeeditor.styles.Style;
+import creativeeditor.styles.StyleManager;
 import creativeeditor.styles.StyleSpectrum;
 import creativeeditor.styles.StyleVanilla;
 import creativeeditor.util.LoadSkullThread;
@@ -44,6 +44,7 @@ public class CreativeEditor {
 
 	private Minecraft mc;
 
+	@SuppressWarnings("unused")
 	private ItemGroup tabUnavailable;
 
 	public CreativeEditor() {
@@ -52,7 +53,7 @@ public class CreativeEditor {
 
 		LOGGER.info("Registering config");
 		context.registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
-		Style.setCurrentStyle(ConfigHandler.CLIENT.currentStyle.get() == 0 ? new StyleSpectrum() : new StyleVanilla());
+		StyleManager.setCurrentStyle(ConfigHandler.CLIENT.currentStyle.get() == 0 ? new StyleSpectrum() : new StyleVanilla());
 
 		LOGGER.info("Registering keybindings");
 		OPEN_EDITOR_KEY = new KeyBinding("key.editor", GLFW.GLFW_KEY_U, "creativeeditor");

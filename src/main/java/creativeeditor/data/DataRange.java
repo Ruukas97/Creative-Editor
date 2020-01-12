@@ -1,10 +1,12 @@
 package creativeeditor.data;
 
 import creativeeditor.data.base.DataInteger;
+import creativeeditor.widgets.StyledSlider;
+import creativeeditor.widgets.StyledSlider.SliderHandler;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.math.MathHelper;
 
-public class DataRange implements Data, INumber {
+public class DataRange implements Data, INumber, SliderHandler {
 	private INumber number;
 	private int min, max;
 
@@ -21,11 +23,11 @@ public class DataRange implements Data, INumber {
 	public int getMax() {
 		return max;
 	}
-	
+
 	public KeyTag key(String key) {
 		return new KeyTag(key, this);
 	}
-	
+
 	@Override
 	public Number getNumber() {
 		return number.getNumber();
@@ -36,11 +38,15 @@ public class DataRange implements Data, INumber {
 		this.number.setNumber(MathHelper.clamp(number.intValue(), min, max));
 	}
 
+	@Override
+	public void onSlideValue(StyledSlider slider) {
+		setNumber(slider.value);
+	}
 
 	@Override
 	public INBT getNBT() {
-		if(number != null && number instanceof Data) {
-			return ((Data)number).getNBT();
+		if (number != null && number instanceof Data) {
+			return ((Data) number).getNBT();
 		}
 		return null;
 	}

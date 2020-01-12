@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import creativeeditor.styles.Style;
+import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtils;
 import creativeeditor.widgets.StyledTextField;
@@ -71,19 +71,19 @@ public abstract class ParentScreen extends Screen {
 		});
 		return super.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
 	}
-	
+
 	@Override
 	@Deprecated
 	public void render(int mouseX, int mouseY, float p3) {
-		Color color = Style.getCurrentStyle().getMainColor();
+		Color color = StyleManager.getCurrentStyle().getMainColor();
 		backRender(mouseX, mouseY, p3, color);
 		mainRender(mouseX, mouseY, p3, color);
 		overlayRender(mouseX, mouseY, p3, color);
-		Style.getCurrentStyle().tick();
+		StyleManager.getCurrentStyle().update();
 	}
 
 	public void backRender(int mouseX, int mouseY, float p3, Color color) {
-		Style.getCurrentStyle().renderBackground(this);
+		StyleManager.getCurrentStyle().renderBackground(this);
 
 		// Frame
 		GuiUtils.drawFrame(5, 5, width - 5, height - 5, 1, color);

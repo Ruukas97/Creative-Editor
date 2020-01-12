@@ -1,5 +1,5 @@
 package creativeeditor.widgets;
 
-public class Toggle {
+public class StyledToggle {
 
 }

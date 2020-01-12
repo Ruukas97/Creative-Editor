@@ -29,6 +29,8 @@ public class DataMap implements Data {
 
 	public DataMap(CompoundNBT nbt) {
 		map = Maps.newHashMap();
+		if (nbt == null)
+			return;
 		Set<String> keys = nbt.keySet();
 		keys.forEach(key -> {
 			Data data = Data.fromNBT(nbt.get(key));
@@ -40,15 +42,15 @@ public class DataMap implements Data {
 	public Map<String, Data> getMap() {
 		return map;
 	}
-	
+
 	@Nullable
 	public Data getData(String key) {
 		return map.get(key);
 	}
-	
+
 	@Nonnull
 	public Data getDataDefaulted(String key, Data defaultValue) {
-		if(map.containsKey(key))
+		if (map.containsKey(key))
 			return map.get(key);
 		put(key, defaultValue);
 		return defaultValue;

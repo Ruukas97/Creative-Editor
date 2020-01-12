@@ -1,12 +1,12 @@
 package creativeeditor.screen;
 
 import creativeeditor.data.DataItem;
-import creativeeditor.styles.Style;
+import creativeeditor.styles.StyleManager;
 import creativeeditor.styles.StyleSpectrum;
 import creativeeditor.styles.StyleVanilla;
 import creativeeditor.util.ColorUtils.Color;
+import creativeeditor.widgets.SliderTag;
 import creativeeditor.widgets.StyledButton;
-import creativeeditor.widgets.CountSlider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
@@ -28,42 +28,42 @@ public class MainScreen extends ParentItemScreen {
 		minecraft.keyboardListener.enableRepeatEvents(true);
 
 		// Might want to put the buttons in a list and loop them
-		addButton(new StyledButton(width / 9 * 7 - 20, height / 11 * 2, 100, 20, I18n.format("gui.main.itemflag"), b -> {
-			minecraft.displayGuiScreen(new FlagScreen(this, item));
-		}));
-
-		addButton(new StyledButton(width / 9 * 7 - 20, height / 11 * 2 + 30, 100, 20, I18n.format("gui.main.colorstyle"),
-				b -> {
-					Style.setCurrentStyle(
-							Style.getCurrentStyle() instanceof StyleVanilla ? new StyleSpectrum() : new StyleVanilla());
+		addButton(
+				new StyledButton(width / 9 * 7 - 20, height / 11 * 2, 100, 20, I18n.format("gui.main.itemflag"), b -> {
+					minecraft.displayGuiScreen(new FlagScreen(this, item));
 				}));
 
-		addButton(new StyledButton(width / 9 * 7 - 20, height / 11 * 2 + 60, 100, 20, I18n.format("gui.main.head"), b -> {
-			mc.displayGuiScreen(new HeadScreen(this));
-		}));
+		addButton(new StyledButton(width / 9 * 7 - 20, height / 11 * 2 + 30, 100, 20,
+				I18n.format("gui.main.colorstyle"), b -> {
+					StyleManager.setCurrentStyle(
+							StyleManager.getCurrentStyle() instanceof StyleVanilla ? new StyleSpectrum()
+									: new StyleVanilla());
+				}));
 
 		addButton(
-				new StyledButton(width / 9 * 7 - 20, height / 11 * 2 + 90, 100, 20, I18n.format("gui.main.player"), b -> {
+				new StyledButton(width / 9 * 7 - 20, height / 11 * 2 + 60, 100, 20, I18n.format("gui.main.head"), b -> {
+					mc.displayGuiScreen(new HeadScreen(this));
+				}));
+
+		addButton(new StyledButton(width / 9 * 7 - 20, height / 11 * 2 + 90, 100, 20, I18n.format("gui.main.player"),
+				b -> {
 					mc.displayGuiScreen(new PlayerScreen(this));
 				}));
 
-		addButton(new CountSlider(width / 2 + 5, 60, 50, 20, (double) (item.getCount() / 64.0), s -> {
-			item.setCount((byte) s.getCount());
-		})).setMessage(Byte.toString(item.getCount()));
+		addButton(new SliderTag(width / 2 + 5, 60, 50, 20, item.getCountTag()));
 	}
 
-	public void resize(Minecraft minecraft, int p_resize_2_, int p_resize_3_) {
-		this.init(minecraft, p_resize_2_, p_resize_3_);
+	@Override
+	public void resize(Minecraft minecraft, int par2, int par3) {
+		this.init(minecraft, par2, par3);
 	}
 
-	protected void close() {
-		this.minecraft.displayGuiScreen((Screen) null);
-	}
-
+	@Override
 	public void removed() {
 		this.minecraft.keyboardListener.enableRepeatEvents(false);
 	}
 
+	@Override
 	public boolean keyPressed(int key1, int key2, int key3) {
 		// TODO Esc close or unselect
 		// TODO Tab select next element

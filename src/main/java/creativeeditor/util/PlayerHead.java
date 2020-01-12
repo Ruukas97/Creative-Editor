@@ -16,6 +16,7 @@ public class PlayerHead {
 	}
 
 	public void setTexture(String texture) {
+		//TODO null check
 		if (!skull.getTag().contains("Properties")) {
 			skull.getTag().put("Properties", new CompoundNBT());
 		}

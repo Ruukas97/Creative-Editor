@@ -1,7 +1,6 @@
 package creativeeditor.screen;
 
 import creativeeditor.widgets.StyledButton;
-import creativeeditor.widgets.CountSlider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
@@ -30,13 +29,11 @@ public class PlayerScreen extends ParentScreen {
 			}
 		}));
 		
-		// Max is still 64, needs to change
-		CountSlider countSlider = new CountSlider(width / 2 + 5, 60, 50, 20, playerAb.getWalkSpeed(),
+		/*SliderCount countSlider = addButton(new SliderCount(width / 2 + 5, 60, 50, 20, playerAb.getWalkSpeed(),
 				s -> {
 					playerAb.setWalkSpeed(s.getCount());
-				});
-		countSlider.setMessage("" + playerAb.getWalkSpeed());
-		addButton(countSlider);
+				}));
+		countSlider.setMessage("" + playerAb.getWalkSpeed());*/
 	}
 	
 	
