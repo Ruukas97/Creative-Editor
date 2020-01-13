@@ -36,6 +36,7 @@
 	"gui.main.display": "Lore",
 	"gui.main.data": "Edit",
 	"gui.main.other": "Advanced",
+	"gui.main.style": "Change Style",
 	"gui.main.save": "Save",
 	"gui.main.drop": "Drop",
 	"gui.main.close": "Close",
@@ -58,5 +59,8 @@
 	
 	
 	"gui.player.flight":"Toggle Flight",
-	"gui.player":"Player Capabilities"
+	"gui.player":"Player Capabilities",
+
+	"item.tag.unbreakable.false": "Can Break",
+	"item.tag.unbreakable.true": "Unbreakable"
 }

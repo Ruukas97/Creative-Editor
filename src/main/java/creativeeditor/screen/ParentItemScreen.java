@@ -47,7 +47,9 @@ public class ParentItemScreen extends ParentScreen {
 				mc.displayGuiScreen(lastScreen);
 			}));
 			addButton(new StyledButton(posX, posY - 11, bwidth, 20, I18n.format("gui.main.reset"), b -> {
+				item.setCount(0);
 				item.getItemNBTTag().clear();
+				this.init();
 			}));
 			addButton(new StyledButton(posX, posY + 10, bwidth, 20, I18n.format("gui.main.save"), b -> {
 				mc.playerController.sendSlotPacket(item.getItemStack(), 36 + mc.player.inventory.currentItem);
@@ -82,16 +84,17 @@ public class ParentItemScreen extends ParentScreen {
 			GlStateManager.scalef(itemScale, itemScale, 1f);
 			RenderHelper.enableGUIStandardItemLighting();
 			int x = (int) (width / (2 * itemScale) - 8);
-			int y = (int) (height / (2 * itemScale) - 8);
+			int y = (int) (30 / itemScale + height / (2 * itemScale) - 8);
 			itemRenderer.renderItemIntoGUI(item.getItemStack(), x, y);
 			itemRenderer.renderItemOverlayIntoGUI(font, item.getItemStack(), x, y, null);
+			RenderHelper.disableStandardItemLighting();
 
 			GlStateManager.scalef(1f / itemScale, 1f / itemScale, 1f);
 
 			// Item frame
-			GuiUtils.drawFrame(width / 2 - 20, height / 2 - 20, width / 2 + 20, height / 2 + 20, 1, color);
+			GuiUtils.drawFrame(width / 2 - 20, height / 2 + 10, width / 2 + 20, height / 2 + 50, 1, color);
 
-			if (GuiUtils.isMouseIn(mouseX, mouseY, width / 2 - 17, height / 2 - 17, 34, 34)) {
+			if (GuiUtils.isMouseIn(mouseX, mouseY, width / 2 - 17, height / 2 + 13, 34, 34)) {
 				renderTooltip(item.getItemStack(), mouseX, mouseY);
 			}
 		}

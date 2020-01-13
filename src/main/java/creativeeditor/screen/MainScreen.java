@@ -6,9 +6,12 @@ import java.util.List;
 import creativeeditor.config.ConfigHandler;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.NumberRange;
+import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.widgets.SliderTag;
+import creativeeditor.widgets.StringTag;
 import creativeeditor.widgets.StyledTextButton;
+import creativeeditor.widgets.StyledToggle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
@@ -16,11 +19,20 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class MainScreen extends ParentItemScreen {
 
+	private StyledTextButton nbtButton, tooltipButton, toolsButton, loreButton, editButton, advancedButton;
+
+	// Tools
+	private StyledTextButton styleButton;
+
+	// Lore
+	private StringTag nameField;
+
 	public MainScreen(Screen lastScreen, DataItem editing) {
 		super(new TranslationTextComponent("gui.main"), lastScreen, editing);
 	}
 
 	public void tick() {
+		nameField.tick();
 	}
 
 	@Override
@@ -32,54 +44,118 @@ public class MainScreen extends ParentItemScreen {
 		String nbtLocal = I18n.format("gui.main.nbt");
 		String tooltipLocal = I18n.format("gui.main.tooltip");
 		String toolsLocal = I18n.format("gui.main.tools");
-		String rightOne = I18n.format("gui.main.display");
-		String rightTwo = I18n.format("gui.main.data");
-		String rightThree = I18n.format("gui.main.other");
+		String loreLocal = I18n.format("gui.main.display");
+		String editLocal = I18n.format("gui.main.data");
+		String advancedLocal = I18n.format("gui.main.other");
 
 		int nbtWidth = font.getStringWidth(nbtLocal);
 		int tooltipWidth = font.getStringWidth(tooltipLocal);
 		int toolsWidth = font.getStringWidth(toolsLocal);
-		int rightOneWidth = font.getStringWidth(rightOne);
-		int rightTwoWidth = font.getStringWidth(rightTwo);
-		int rightThreeWidth = font.getStringWidth(rightThree);
+		int loreWidth = font.getStringWidth(loreLocal);
+		int editWidth = font.getStringWidth(editLocal);
+		int advancedWidth = font.getStringWidth(advancedLocal);
 
 		int nbtX = 21 + nbtWidth / 2;
 		int toolsX = width / 3 - 16 - toolsWidth / 2;
 		int tooltipX = (nbtX + toolsX) / 2;
 
-		int rightThreeX = width - 21 - rightThreeWidth / 2;
-		int rightOneX = 2 * width / 3 + 17 + rightOneWidth / 2;
-		int rightTwoX = ((rightOneX + rightOneWidth / 2) + (rightThreeX - rightThreeWidth / 2)) / 2;
+		int advancedX = width - 21 - advancedWidth / 2;
+		int loreX = 2 * width / 3 + 17 + loreWidth / 2;
+		int editX = ((loreX + loreWidth / 2) + (advancedX - advancedWidth / 2)) / 2;
 
-		addButton(new StyledTextButton(nbtX, 35, nbtWidth, nbtLocal, b -> {
+		nbtButton = addButton(new StyledTextButton(nbtX, 35, nbtWidth, nbtLocal, b -> {
 			ConfigHandler.CLIENT.currentLeftSideview.set(0);
+			nbtButton.active = false;
+			tooltipButton.active = true;
+			toolsButton.active = true;
+			styleButton.visible = false;
 		}));
 
-		addButton(new StyledTextButton(tooltipX, 35, tooltipWidth, tooltipLocal, b -> {
+		tooltipButton = addButton(new StyledTextButton(tooltipX, 35, tooltipWidth, tooltipLocal, b -> {
 			ConfigHandler.CLIENT.currentLeftSideview.set(1);
+			nbtButton.active = true;
+			tooltipButton.active = false;
+			toolsButton.active = true;
+			styleButton.visible = false;
 		}));
 
-		addButton(new StyledTextButton(toolsX, 35, toolsWidth, toolsLocal, b -> {
+		toolsButton = addButton(new StyledTextButton(toolsX, 35, toolsWidth, toolsLocal, b -> {
 			ConfigHandler.CLIENT.currentLeftSideview.set(2);
+			nbtButton.active = true;
+			tooltipButton.active = true;
+			toolsButton.active = false;
+			styleButton.visible = true;
 		}));
 
-		addButton(new StyledTextButton(rightOneX, 35, rightOneWidth, rightOne, b -> {
+		loreButton = addButton(new StyledTextButton(loreX, 35, loreWidth, loreLocal, b -> {
 			ConfigHandler.CLIENT.currentRightSideview.set(0);
+			loreButton.active = false;
+			editButton.active = true;
+			advancedButton.active = true;
+			nameField.visible = true;
 		}));
 
-		addButton(new StyledTextButton(rightTwoX, 35, rightTwoWidth, rightTwo, b -> {
+		editButton = addButton(new StyledTextButton(editX, 35, editWidth, editLocal, b -> {
 			ConfigHandler.CLIENT.currentRightSideview.set(1);
+			loreButton.active = true;
+			editButton.active = false;
+			advancedButton.active = true;
+			nameField.visible = false;
 		}));
 
-		addButton(new StyledTextButton(rightThreeX, 35, rightThreeWidth, rightThree, b -> {
+		advancedButton = addButton(new StyledTextButton(advancedX, 35, advancedWidth, advancedLocal, b -> {
 			ConfigHandler.CLIENT.currentRightSideview.set(2);
+			loreButton.active = true;
+			editButton.active = true;
+			advancedButton.active = false;
+			nameField.visible = false;
 		}));
 
+		// Tools
+		String styleLocal = I18n.format("gui.main.style");
+		styleButton = addButton(new StyledTextButton((15 + width / 3) / 2, 55, font.getStringWidth(styleLocal),
+				styleLocal, b -> StyleManager.setNext()));
 
+		// Lore
+		nameField = addButton(new StringTag(font, width - width / 6 - 30, 55, 60, 20,
+				item.getItemNBTTag().getDisplayTag().getNameTag()));
+
+		// General Item
 		addButton(new SliderTag(width / 2 + 5, 61, 50, 16, item.getCountTag()));
 
 		addButton(new SliderTag(width / 2 + 5, 81, 50, 16,
 				new NumberRange(item.getItemNBTTag().getDamageTag(), 0, item.getItemStack().getMaxDamage())));
+
+		addButton(new StyledToggle(width / 2 - 40, 101, 80, 16, "item.tag.unbreakable.true",
+				"item.tag.unbreakable.false", item.getItemNBTTag().getUnbreakableTag()));
+
+		switch (ConfigHandler.CLIENT.currentLeftSideview.get()) {
+		case 0:
+			nbtButton.active = false;
+			styleButton.visible = false;
+			break;
+		case 1:
+			tooltipButton.active = false;
+			styleButton.visible = false;
+			break;
+		case 2:
+			toolsButton.active = false;
+			styleButton.visible = true;
+		}
+
+		switch (ConfigHandler.CLIENT.currentRightSideview.get()) {
+		case 0:
+			loreButton.active = false;
+			nameField.visible = true;
+			break;
+		case 1:
+			editButton.active = false;
+			nameField.visible = false;
+			break;
+		case 2:
+			advancedButton.active = false;
+			nameField.visible = false;
+		}
 	}
 
 	@Override
@@ -133,6 +209,7 @@ public class MainScreen extends ParentItemScreen {
 		int damageWidth = font.getStringWidth(damage);
 		drawString(font, damage, width / 2 - damageWidth, 85, color.getInt());
 
+		nameField.render(mouseX, mouseY, p3);
 	}
 
 	@Override

@@ -120,8 +120,8 @@ public class TagItemNBT extends DataMap {
 	// Display: https://minecraft.gamepedia.com/Player.dat_format#Display_Properties
 
 	@Nonnull
-	public DataMap getDisplayTag() {
-		return (DataMap) getDataDefaulted("display", new DataMap());
+	public TagDisplay getDisplayTag() {
+		return (TagDisplay) getDataDefaulted("display", new TagDisplay());
 	}
 
 	@Nonnull

@@ -163,4 +163,9 @@ public class StyledSlider extends Widget implements IStyledSlider {
 	public static interface SliderHandler {
 		void onSlideValue(StyledSlider slider);
 	}
+
+	@Override
+	public void setHovered(boolean b) {
+		isHovered = b;
+	}
 }

@@ -1,12 +1,15 @@
 package creativeeditor.data.base;
 
 import creativeeditor.data.Data;
+import creativeeditor.widgets.StyledToggle;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.widget.button.Button.IPressable;
 import net.minecraft.nbt.ByteNBT;
 import net.minecraft.nbt.INBT;
 
-public class DataBoolean implements Data {
+public class DataBoolean implements Data, IPressable {
 	private boolean value;
-	
+
 	public DataBoolean() {
 		this(false);
 	}
@@ -30,7 +33,7 @@ public class DataBoolean implements Data {
 	public void toggle() {
 		set(!value);
 	}
-	
+
 	@Override
 	public boolean isDefault() {
 		return !value;
@@ -39,5 +42,13 @@ public class DataBoolean implements Data {
 	@Override
 	public INBT getNBT() {
 		return new ByteNBT((byte) (value ? 1 : 0));
+	}
+
+	@Override
+	public void onPress(Button button) {
+		toggle();
+		if (button instanceof StyledToggle) {
+			((StyledToggle) button).updateMessage(value);
+		}
 	}
 }

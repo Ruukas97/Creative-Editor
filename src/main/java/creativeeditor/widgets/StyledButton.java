@@ -40,4 +40,9 @@ public class StyledButton extends Button implements IStyledButton {
 	public int getBlitOffset() {
 		return blitOffset;
 	}
+
+	@Override
+	public void setHovered(boolean b) {
+		isHovered = b;
+	}
 }

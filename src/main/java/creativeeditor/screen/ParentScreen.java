@@ -97,14 +97,8 @@ public abstract class ParentScreen extends Screen {
 	}
 
 	public void mainRender(int mouseX, int mouseY, float p3, Color color) {
-		buttons.forEach(b -> {
-			b.render(mouseX, mouseY, p3);
-		});
-
-		renderWidgets.forEach(w -> {
-			w.render(mouseX, mouseY, p3);
-		});
-
+		buttons.forEach(b -> b.render(mouseX, mouseY, p3));
+		renderWidgets.forEach(w -> w.render(mouseX, mouseY, p3));
 	}
 
 	/**

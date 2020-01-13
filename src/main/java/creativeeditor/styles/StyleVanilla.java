@@ -1,13 +1,9 @@
 package creativeeditor.styles;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-
 import creativeeditor.screen.ParentScreen;
 import creativeeditor.util.ColorUtils.Color;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
 public class StyleVanilla extends StyleBase {
@@ -29,30 +25,30 @@ public class StyleVanilla extends StyleBase {
 
 	@Override
 	public void renderButton(IStyledWidget button, int mouseX, int mouseY, float alpha) {
-		Minecraft minecraft = Minecraft.getInstance();
-		FontRenderer fontrenderer = minecraft.fontRenderer;
-		int j = getMainColor().getInt();
+		Widget widget = button.getWidget();
+		if (!widget.visible)
+			return;
 
-		minecraft.getTextureManager().bindTexture(Widget.WIDGETS_LOCATION);
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, alpha);
-		int i = button.getYImage(button.getWidget().isHovered());
-		GlStateManager.enableBlend();
-		GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA,
-				GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE,
-				GlStateManager.DestFactor.ZERO);
-		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		button.getWidget().blit(button.getWidget().x, button.getWidget().y, 0, 46 + i * 20,
-				button.getWidget().getWidth() / 2, button.getWidget().getHeight());
-		button.getWidget().blit(button.getWidget().x + button.getWidget().getWidth() / 2, button.getWidget().y,
-				200 - button.getWidget().getWidth() / 2, 46 + i * 20, button.getWidget().getWidth() / 2,
-				button.getWidget().getHeight());
+		Minecraft mc = Minecraft.getInstance();
+		button.setHovered(mouseX >= widget.x && mouseY >= widget.y && mouseX < widget.x + widget.getWidth()
+				&& mouseY < widget.y + widget.getHeight());
+		int k = button.getYImage(widget.isHovered());
+		GuiUtils.drawContinuousTexturedBox(Widget.WIDGETS_LOCATION, widget.x, widget.y, 0, 46 + k * 20,
+				widget.getWidth(), widget.getHeight(), 200, 20, 2, 3, 2, 2, button.getBlitOffset());
+		button.renderBg(mc, mouseX, mouseY);
 
-		button.renderBg(minecraft, mouseX, mouseY);
+		int color = getFGColor(widget).getInt();
 
-		button.getWidget().drawCenteredString(fontrenderer, button.getWidget().getMessage(),
-				button.getWidget().x + button.getWidget().getWidth() / 2,
-				button.getWidget().y + (button.getWidget().getHeight() - 8) / 2,
-				j | MathHelper.ceil(alpha * 255.0F) << 24);
+		String buttonText = widget.getMessage();
+		int strWidth = mc.fontRenderer.getStringWidth(buttonText);
+		int ellipsisWidth = mc.fontRenderer.getStringWidth("...");
+
+		if (strWidth > widget.getWidth() - 6 && strWidth > ellipsisWidth)
+			buttonText = mc.fontRenderer.trimStringToWidth(buttonText, widget.getWidth() - 6 - ellipsisWidth).trim()
+					+ "...";
+
+		widget.drawCenteredString(mc.fontRenderer, buttonText, widget.x + widget.getWidth() / 2,
+				widget.y + (widget.getHeight() - 8) / 2, color);
 	}
 
 	@Override

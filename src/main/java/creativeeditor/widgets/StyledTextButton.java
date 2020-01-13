@@ -10,7 +10,8 @@ public class StyledTextButton extends StyledButton {
 
 	@Override
 	public void renderButton(int mouseX, int mouseY, float unused) {
-		drawString(Minecraft.getInstance().fontRenderer, getMessage(), x + 1, y + 1,
-				StyleManager.getCurrentStyle().getFGColor(this).getInt());
+		if (this.visible)
+			drawString(Minecraft.getInstance().fontRenderer, getMessage(), x + 1, y + 1,
+					StyleManager.getCurrentStyle().getFGColor(this).getInt());
 	}
 }

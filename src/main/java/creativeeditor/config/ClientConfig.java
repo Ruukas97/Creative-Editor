@@ -11,7 +11,8 @@ public class ClientConfig {
 	public final ForgeConfigSpec.ConfigValue<List<String>> clientStringList;
 	public final ForgeConfigSpec.ConfigValue<DyeColor> clientEnumDyeColor;
 	public final ForgeConfigSpec.ConfigValue<Integer> currentStyle;
-	public final ForgeConfigSpec.ConfigValue<Integer> currentSideview;
+	public final ForgeConfigSpec.ConfigValue<Integer> currentLeftSideview;
+	public final ForgeConfigSpec.ConfigValue<Integer> currentRightSideview;
 
 	ClientConfig(final ForgeConfigSpec.Builder builder) {
 		builder.push("general");
@@ -31,10 +32,14 @@ public class ClientConfig {
 				.comment("Sets the style to use in GUIs. 0: Spectrum, 1: Vanilla.")
 				.translation("creativeeditor.config.currentStyle")
 				.defineInRange("currentStyle", 0, 0, 1);
-		currentSideview = builder
+		currentLeftSideview = builder
 				.comment("Saves the currently active sidebar view. This is updated by the game, so no need to change in config. 0: NBT, 1: Tooltip, 2: Tools")
 				.translation("creativeeditor.config.currentStyle")
-				.defineInRange("currentSideview", 0, 0, 2);
+				.defineInRange("currentLeftSideview", 0, 0, 2);
+		currentRightSideview = builder
+				.comment("Saves the currently active sidebar view. This is updated by the game, so no need to change in config. 0: Lore, 1: Edit, 2: Advanced")
+				.translation("creativeeditor.config.currentStyle")
+				.defineInRange("currentRightSideview", 0, 0, 2);
 		builder.pop();
 	}
 }
