@@ -1,37 +1,34 @@
 package creativeeditor.data.base;
 
 import creativeeditor.data.Data;
-import creativeeditor.data.INumber;
-import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.LongNBT;
 
-public class DataLong implements Data, INumber {
-	private long value;
+public class DataLong extends SingularData<Long, LongNBT> {
+	
+	public DataLong() {
+		this(0);
+	}
 
 	public DataLong(long value) {
-		this.value = value;
+		super(value);
 	}
 
 	public DataLong(LongNBT nbt) {
 		this(nbt.getLong());
 	}
 
-	public long get() {
-		return value;
+	@Override
+	public Data<Long, LongNBT> copy() {
+		return new DataLong(data);
 	}
 
 	@Override
-	public Number getNumber() {
-		return value;
+	public boolean isDefault() {
+		return data == 0;
 	}
 
 	@Override
-	public void setNumber(Number number) {
-		value = number.longValue();
-	}
-
-	@Override
-	public INBT getNBT() {
-		return new LongNBT(value);
+	public LongNBT getNBT() {
+		return new LongNBT(data);
 	}
 }

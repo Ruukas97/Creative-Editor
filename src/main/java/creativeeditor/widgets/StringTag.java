@@ -1,10 +1,12 @@
 package creativeeditor.widgets;
 
+import creativeeditor.data.Data;
 import creativeeditor.data.base.DataString;
+import creativeeditor.screen.DataController;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.SharedConstants;
 
-public class StringTag extends StyledTextField {
+public class StringTag extends StyledTextField implements DataController {
 	private DataString data;
 
 	public StringTag(FontRenderer fontIn, int x, int y, int width, int height, DataString msg) {
@@ -109,5 +111,10 @@ public class StringTag extends StyledTextField {
 	private void setTag(String text) {
 		data.set(text);
 		this.text = text;
+	}
+
+	@Override
+	public Data getDataTag() {
+		return data;
 	}
 }

@@ -1,37 +1,29 @@
 package creativeeditor.data.base;
 
-import creativeeditor.data.Data;
-import creativeeditor.data.INumber;
 import net.minecraft.nbt.FloatNBT;
-import net.minecraft.nbt.INBT;
 
-public class DataFloat implements Data, INumber {
-	private float value;
+public class DataFloat extends SingularData<Float, FloatNBT> {
 
 	public DataFloat(float value) {
-		this.value = value;
+		super(value);
 	}
 
 	public DataFloat(FloatNBT nbt) {
 		this(nbt.getLong());
 	}
 
-	public float get() {
-		return value;
+	@Override
+	public DataFloat copy() {
+		return new DataFloat(data);
 	}
 
 	@Override
-	public Number getNumber() {
-		return value;
+	public boolean isDefault() {
+		return data == 0;
 	}
 
 	@Override
-	public void setNumber(Number number) {
-		value = number.floatValue();
-	}
-
-	@Override
-	public INBT getNBT() {
-		return new FloatNBT(value);
+	public FloatNBT getNBT() {
+		return new FloatNBT(data);
 	}
 }

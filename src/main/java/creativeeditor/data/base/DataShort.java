@@ -1,38 +1,33 @@
 package creativeeditor.data.base;
 
 import creativeeditor.data.Data;
-import creativeeditor.data.INumber;
-import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ShortNBT;
 
-public class DataShort implements Data, INumber {
-	private short value;
+public class DataShort extends SingularData<Short, ShortNBT> {
+	public DataShort() {
+		this((short) 0);
+	}
 
 	public DataShort(short value) {
-		this.value = value;
+		super(value);
 	}
 
 	public DataShort(ShortNBT nbt) {
 		this(nbt.getShort());
 	}
 
-	public short get() {
-		return value;
+	@Override
+	public Data<Short, ShortNBT> copy() {
+		return new DataShort(data);
 	}
 
 	@Override
-	public Number getNumber() {
-		return value;
+	public boolean isDefault() {
+		return data == 0;
 	}
 
 	@Override
-	public void setNumber(Number number) {
-		value = number.shortValue();
+	public ShortNBT getNBT() {
+		return new ShortNBT(data);
 	}
-
-	@Override
-	public INBT getNBT() {
-		return new ShortNBT(value);
-	}
-
 }

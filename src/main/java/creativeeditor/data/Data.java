@@ -27,11 +27,62 @@ import net.minecraft.nbt.ShortNBT;
 import net.minecraft.nbt.StringNBT;
 import net.minecraftforge.common.util.Constants.NBT;
 
-public interface Data {
-	public INBT getNBT();
+public interface Data<E, T extends INBT> {
 
+	/**
+	 * Gets the value of this Data object 
+	 * @return Data value
+	 */
+	public E get();
+
+	/**
+	 * Sets the value of this Data object
+	 * @param value Value to se to
+	 */
+	public void set(E value);
+	
+	/**
+	 * Creates a new instance with the same data
+	 * @return copy instance
+	 */
+	public Data<E, T> copy();
+
+	/**
+	 * Returns whether or not this should be ignored, when saving data.
+	 * If it has the default value, we save space by not including it.
+	 * @return true or false
+	 */
+	public boolean isDefault();
+
+	/**
+	 * Creates an INBT object with this objects data
+	 * @return created IBNT object
+	 */
+	public T getNBT();
+
+	/**
+	 * Takes values and inserts them into this object.
+	 * @param from Data to take values from.
+	 */
+	public default void copyFrom(Data<E, T> from) {
+		set(from.get());
+	}
+	
+	public static <T> T convertInstanceOfObject(Object o, Class<T> clazz) {
+	    try {
+	        return clazz.cast(o);
+	    } catch(ClassCastException e) {
+	        return null;
+	    }
+	}
+
+	/**
+	 * Creates a Data object from the given INBT
+	 * @param nbt source to get data from
+	 * @return the created data object
+	 */
 	@Nullable
-	public static Data fromNBT(INBT nbt) {
+	public static Data<?, ?> fromNBT(INBT nbt) {
 		switch (nbt.getId()) {
 		case NBT.TAG_BYTE:
 			return new DataByte((ByteNBT) nbt);
@@ -61,15 +112,12 @@ public interface Data {
 			return null;
 		}
 	}
-	
-	public default boolean isDefault() {
-		if(this instanceof INumber) {
-			return ((INumber)this).getNumber().byteValue() == 0;
-		}
-		
-		return false;
-	}
 
+	/**
+	 * Returns true if the given NBT tag has the ID of a number value
+	 * @param nbt The nbt to check
+	 * @return true or false
+	 */
 	public static boolean isNumber(INBT nbt) {
 		int id = nbt.getId();
 		return id == NBT.TAG_ANY_NUMERIC || (NBT.TAG_BYTE <= id && id <= NBT.TAG_DOUBLE);

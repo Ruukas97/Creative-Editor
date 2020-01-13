@@ -1,31 +1,28 @@
 package creativeeditor.data.base;
 
-import creativeeditor.data.Data;
 import net.minecraft.nbt.ByteArrayNBT;
-import net.minecraft.nbt.INBT;
 
-public class DataByteArray implements Data {
-	private byte[] values;
-
+public class DataByteArray extends SingularData<byte[], ByteArrayNBT> {
 	public DataByteArray(byte... values) {
-		this.values = values;
+		super(values);
 	}
 
 	public DataByteArray(ByteArrayNBT nbt) {
 		this(nbt.getByteArray());
 	}
 
-	public byte[] get() {
-		return values;
-	}
-	
 	@Override
-	public boolean isDefault() {
-		return values.length == 0;
+	public DataByteArray copy() {
+		return new DataByteArray(data.clone());
 	}
 
 	@Override
-	public INBT getNBT() {
-		return new ByteArrayNBT(values);
+	public boolean isDefault() {
+		return data.length == 0;
+	}
+
+	@Override
+	public ByteArrayNBT getNBT() {
+		return new ByteArrayNBT(data);
 	}
 }

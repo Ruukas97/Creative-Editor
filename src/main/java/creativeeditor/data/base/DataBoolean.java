@@ -5,50 +5,46 @@ import creativeeditor.widgets.StyledToggle;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.Button.IPressable;
 import net.minecraft.nbt.ByteNBT;
-import net.minecraft.nbt.INBT;
 
-public class DataBoolean implements Data, IPressable {
-	private boolean value;
+public class DataBoolean extends SingularData<Boolean, ByteNBT> implements IPressable {
 
 	public DataBoolean() {
 		this(false);
 	}
 
-	public DataBoolean(boolean value) {
-		this.value = value;
-	}
-
 	public DataBoolean(ByteNBT nbt) {
 		this(nbt.getByte() != 0);
 	}
-
-	public boolean get() {
-		return value;
+	
+	public DataBoolean(boolean value) {
+		super(value);
 	}
 
-	public void set(boolean value) {
-		this.value = value;
-	}
 
 	public void toggle() {
-		set(!value);
+		set(!data);
+	}
+	
+	@Override
+	public Data<Boolean, ByteNBT> copy() {
+		return new DataBoolean(data);
 	}
 
 	@Override
 	public boolean isDefault() {
-		return !value;
+		return !data;
 	}
 
 	@Override
-	public INBT getNBT() {
-		return new ByteNBT((byte) (value ? 1 : 0));
+	public ByteNBT getNBT() {
+		return new ByteNBT((byte) (data ? 1 : 0));
 	}
-
+	
 	@Override
 	public void onPress(Button button) {
 		toggle();
 		if (button instanceof StyledToggle) {
-			((StyledToggle) button).updateMessage(value);
+			((StyledToggle) button).updateMessage(data);
 		}
 	}
 }

@@ -1,40 +1,38 @@
 package creativeeditor.data.base;
 
 import creativeeditor.data.Data;
-import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.StringNBT;
 
-public class DataString implements Data {
-	private String value;
+public class DataString extends SingularData<String, StringNBT> {
 	
 	public DataString() {
 		this("");
 	}
 
 	public DataString(String value) {
-		set(value);
+		super(value);
 	}
 	
 	public DataString(StringNBT nbt) {
 		this(nbt.getString());
 	}
 
-	public String get() {
-		return value;
+	public void set(String value) {
+		data = value != null ? value : "";
 	}
 
-	public void set(String value) {
-		this.value = value != null ? value : "";
+	@Override
+	public Data<String, StringNBT> copy() {
+		return new DataString(new String(data));
 	}
-	
+
 	@Override
 	public boolean isDefault() {
-		return value.isEmpty();
+		return false;
 	}
 
 	@Override
-	public INBT getNBT() {
-		return new StringNBT(value);
+	public StringNBT getNBT() {
+		return null;
 	}
-
 }

@@ -10,7 +10,7 @@ public class ColorUtils {
 		return new Color(MathHelper.multiplyColor(color.getInt(), color2.getInt()));
 	}
 
-	public static Color hsvToRGBInt(float hue, float saturation, float value) {
+	public static Color hsvToRGBInt(int hue, int saturation, int value) {
 		return new Color(255, MathHelper.hsvToRGB(hue / 255f, saturation / 255f, value / 255f));
 	}
 

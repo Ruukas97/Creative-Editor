@@ -2,10 +2,10 @@ package creativeeditor.data.tag;
 
 import javax.annotation.Nonnull;
 
+import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataInteger;
 import creativeeditor.data.base.DataList;
 import creativeeditor.data.base.DataMap;
-import creativeeditor.data.base.DataString;
 import creativeeditor.util.ColorUtils.Color;
 
 public class TagDisplay extends DataMap {
@@ -15,8 +15,8 @@ public class TagDisplay extends DataMap {
 	}
 	
 	@Nonnull
-	public DataString getNameTag() {
-		return (DataString) getDataDefaulted("Name", new DataString());
+	public TagDisplayName getNameTag(DataItem item) {
+		return (TagDisplayName) getDataDefaultedForced("Name", new TagDisplayName(item));
 	}
 	
 	@Nonnull

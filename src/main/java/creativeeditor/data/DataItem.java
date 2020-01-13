@@ -13,11 +13,10 @@ public class DataItem extends DataMap {
 	// Wiki: https://minecraft.gamepedia.com/Player.dat_format#Item_structure
 
 	public DataItem() {
-		super();
+		this(ItemStack.EMPTY);
 	}
 
 	public DataItem(ItemStack stack) {
-		super();
 		setItemStack(stack);
 	}
 
@@ -27,6 +26,10 @@ public class DataItem extends DataMap {
 		setSlot(slot);
 		setItem(item);
 		setItemNBT(tag);
+	}
+
+	public DataItem(CompoundNBT nbt) {
+		this(ItemStack.read(nbt));
 	}
 
 	public ItemStack getItemStack() {
@@ -41,7 +44,7 @@ public class DataItem extends DataMap {
 
 	@Nullable
 	public TagItemID getItemTag() {
-		return (TagItemID) getDataDefaulted("id", new TagItemID());
+		return (TagItemID) getDataDefaultedForced("id", new TagItemID());
 	}
 
 	public Item getItem() {
@@ -53,36 +56,35 @@ public class DataItem extends DataMap {
 	}
 
 	public NumberRange getCountTag() {
-		return (NumberRange) getDataDefaulted("Count", new NumberRange(1, 64));
+		return (NumberRange) getDataDefaultedForced("Count", new NumberRange(1, 64));
 	}
 
-	public byte getCount() {
-		return getCountTag().getNumber().byteValue();
+	public int getCount() {
+		return getCountTag().get();
 	}
 
-	public void setCount(Number count) {
-		getCountTag().setNumber(count);
+	public void setCount(int count) {
+		getCountTag().set(count);
 	}
 
 	public NumberRange getSlotTag() {
-		return (NumberRange) getDataDefaulted("Slot", new NumberRange(1, 45));
+		return (NumberRange) getDataDefaultedForced("Slot", new NumberRange(1, 45));
 	}
 
-	public byte getSlot() {
-		return getSlotTag().getNumber().byteValue();
+	public int getSlot() {
+		return getSlotTag().get();
 	}
 
-	public void setSlot(Number slot) {
-		getSlotTag().setNumber(slot.byteValue());
+	public void setSlot(int slot) {
+		getSlotTag().set(slot);
 	}
 
 	public TagItemNBT getItemNBTTag() {
-		return (TagItemNBT) getDataDefaulted("tag", new TagItemNBT());
+		return (TagItemNBT) getDataDefaultedForced("tag", new TagItemNBT());
 	}
 
 	public CompoundNBT getItemNBT() {
-		CompoundNBT nbt = (CompoundNBT) getItemNBTTag().getNBT();
-		return nbt;
+		return getItemNBTTag().getNBT();
 	}
 
 	public void setItemNBT(CompoundNBT nbt) {

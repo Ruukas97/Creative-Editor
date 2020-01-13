@@ -10,7 +10,8 @@ import com.google.common.base.Predicates;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import creativeeditor.styles.StyleManager;
-import creativeeditor.styles.StyleSpectrum;
+import creativeeditor.styles.StyleVanilla;
+import creativeeditor.util.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
@@ -438,8 +439,8 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
 	public void renderButton(int p_renderButton_1_, int p_renderButton_2_, float p_renderButton_3_) {
 		if (this.getVisible()) {
 			if (this.getEnableBackgroundDrawing()) {
-				fill(this.x - 1, this.y - 1, this.x + this.width + 1, this.y + this.height + 1, -6250336);
-				fill(this.x, this.y, this.x + this.width, this.y + this.height, -16777216);
+				fill(this.x - 1, this.y - 1, this.x + this.width + 1, this.y + this.height + 1, StyleManager.getCurrentStyle().getMainColor().getInt());
+				fill(this.x, this.y, this.x + this.width, this.y + this.height, StyleManager.getCurrentStyle() instanceof StyleVanilla ? -16777216 : ColorUtils.hsvToRGBInt(0, 0, 55).getInt());
 			}
 
 			int i = StyleManager.getCurrentStyle().getFGColor(this).getInt();
@@ -568,7 +569,8 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
 	 * (true if so).
 	 */
 	private boolean getEnableBackgroundDrawing() {
-		return !(StyleManager.getCurrentStyle() instanceof StyleSpectrum);
+		return true;
+		//return !(StyleManager.getCurrentStyle() instanceof StyleSpectrum);
 	}
 
 	@Override

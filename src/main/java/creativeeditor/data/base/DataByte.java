@@ -1,37 +1,28 @@
 package creativeeditor.data.base;
 
-import creativeeditor.data.Data;
-import creativeeditor.data.INumber;
 import net.minecraft.nbt.ByteNBT;
-import net.minecraft.nbt.INBT;
 
-public class DataByte implements Data, INumber {
-	private byte value;
-
+public class DataByte extends SingularData<Byte, ByteNBT> {
 	public DataByte(byte value) {
-		this.value = value;
+		super(value);
 	}
 
 	public DataByte(ByteNBT nbt) {
 		this(nbt.getByte());
 	}
+
+	@Override
+	public DataByte copy() {
+		return new DataByte(data);
+	}
+
+	@Override
+	public boolean isDefault() {
+		return data == 0;
+	}
 	
-	public byte get() {
-		return value;
-	}
-
 	@Override
-	public Number getNumber() {
-		return value;
-	}
-
-	@Override
-	public void setNumber(Number number) {
-		value = number.byteValue();
-	}
-
-	@Override
-	public INBT getNBT() {
-		return new ByteNBT(value);
+	public ByteNBT getNBT() {
+		return new ByteNBT(data);
 	}
 }

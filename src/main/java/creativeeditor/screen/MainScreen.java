@@ -6,6 +6,7 @@ import java.util.List;
 import creativeeditor.config.ConfigHandler;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.NumberRange;
+import creativeeditor.data.base.DataString;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.widgets.SliderTag;
@@ -117,14 +118,15 @@ public class MainScreen extends ParentItemScreen {
 				styleLocal, b -> StyleManager.setNext()));
 
 		// Lore
-		nameField = addButton(new StringTag(font, width - width / 6 - 30, 55, 60, 20,
-				item.getItemNBTTag().getDisplayTag().getNameTag()));
+		nameField = new StringTag(font, width - width / 6 - 30, 55, 60, 20,
+				item.getItemNBTTag().getDisplayTag().getNameTag(item));
+		children.add(nameField);
+		System.out.println(((DataString) nameField.getDataTag()).get());
 
 		// General Item
 		addButton(new SliderTag(width / 2 + 5, 61, 50, 16, item.getCountTag()));
 
-		addButton(new SliderTag(width / 2 + 5, 81, 50, 16,
-				new NumberRange(item.getItemNBTTag().getDamageTag(), 0, item.getItemStack().getMaxDamage())));
+		addButton(new SliderTag(width / 2 + 5, 81, 50, 16, item.getItemNBTTag().getDamageTag(item)));
 
 		addButton(new StyledToggle(width / 2 - 40, 101, 80, 16, "item.tag.unbreakable.true",
 				"item.tag.unbreakable.false", item.getItemNBTTag().getUnbreakableTag()));
@@ -188,8 +190,8 @@ public class MainScreen extends ParentItemScreen {
 	}
 
 	@Override
-	public void mainRender(int mouseX, int mouseY, float p3, Color color) {
-		super.mainRender(mouseX, mouseY, p3, color);
+	public void mainRender(int mouseX, int mouseY, float partialTicks, Color color) {
+		super.mainRender(mouseX, mouseY, partialTicks, color);
 
 		// Item Name
 		String itemCount = item.getCount() > 1 ? item.getCount() + "x " : "";
@@ -209,7 +211,7 @@ public class MainScreen extends ParentItemScreen {
 		int damageWidth = font.getStringWidth(damage);
 		drawString(font, damage, width / 2 - damageWidth, 85, color.getInt());
 
-		nameField.render(mouseX, mouseY, p3);
+		nameField.render(mouseY, mouseY, partialTicks);
 	}
 
 	@Override

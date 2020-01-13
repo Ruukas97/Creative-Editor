@@ -1,31 +1,30 @@
 package creativeeditor.data.base;
 
 import creativeeditor.data.Data;
-import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.LongArrayNBT;
 
-public class DataLongArray implements Data {
-	private long[] values;
+public class DataLongArray extends SingularData<long[], LongArrayNBT> {
 
 	public DataLongArray(long... values) {
-		this.values = values;
+		super(values);
 	}
 
 	public DataLongArray(LongArrayNBT nbt) {
 		this(nbt.getAsLongArray());
 	}
 
-	public long[] get() {
-		return values;
-	}
-	
 	@Override
-	public boolean isDefault() {
-		return values.length == 0;
+	public Data<long[], LongArrayNBT> copy() {
+		return new DataLongArray(data.clone());
 	}
 
 	@Override
-	public INBT getNBT() {
-		return new LongArrayNBT(values);
+	public boolean isDefault() {
+		return data.length == 0;
+	}
+
+	@Override
+	public LongArrayNBT getNBT() {
+		return new LongArrayNBT(data);
 	}
 }

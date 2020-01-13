@@ -2,6 +2,7 @@ package creativeeditor.data.tag;
 
 import javax.annotation.Nonnull;
 
+import creativeeditor.data.DataItem;
 import creativeeditor.data.NumberRange;
 import creativeeditor.data.base.DataBoolean;
 import creativeeditor.data.base.DataInteger;
@@ -23,8 +24,8 @@ public class TagItemNBT extends DataMap {
 	// General Tags: https://minecraft.gamepedia.com/Player.dat_format#General_Tags
 
 	@Nonnull
-	public DataInteger getDamageTag() {
-		return (DataInteger) getDataDefaulted("Damage", new DataInteger());
+	public TagDamage getDamageTag(DataItem item) {
+		return (TagDamage) getDataDefaultedForced("Damage", new TagDamage(item));
 	}
 
 	@Nonnull
@@ -121,7 +122,7 @@ public class TagItemNBT extends DataMap {
 
 	@Nonnull
 	public TagDisplay getDisplayTag() {
-		return (TagDisplay) getDataDefaulted("display", new TagDisplay());
+		return (TagDisplay) getDataDefaultedForced("display", new TagDisplay());
 	}
 
 	@Nonnull
