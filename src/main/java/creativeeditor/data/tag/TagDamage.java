@@ -12,6 +12,11 @@ public class TagDamage extends NumberRange {
 	}
 	
 	@Override
+	public NumberRange copy() {
+		return new NumberRange(data, getMin(), getMax());
+	}
+	
+	@Override
 	public int getMax() {
 		return item.getItemStack().getMaxDamage();
 	}

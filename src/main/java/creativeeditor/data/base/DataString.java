@@ -1,6 +1,5 @@
 package creativeeditor.data.base;
 
-import creativeeditor.data.Data;
 import net.minecraft.nbt.StringNBT;
 
 public class DataString extends SingularData<String, StringNBT> {
@@ -18,11 +17,11 @@ public class DataString extends SingularData<String, StringNBT> {
 	}
 
 	public void set(String value) {
-		data = value != null ? value : "";
+		data = (value != null ? value : "");
 	}
 
 	@Override
-	public Data<String, StringNBT> copy() {
+	public DataString copy() {
 		return new DataString(new String(data));
 	}
 
@@ -33,6 +32,6 @@ public class DataString extends SingularData<String, StringNBT> {
 
 	@Override
 	public StringNBT getNBT() {
-		return null;
+		return new StringNBT(data);
 	}
 }

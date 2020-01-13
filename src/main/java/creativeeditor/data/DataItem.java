@@ -1,8 +1,12 @@
 package creativeeditor.data;
 
+import java.util.Map;
+
 import javax.annotation.Nullable;
 
 import creativeeditor.data.base.DataMap;
+import creativeeditor.data.tag.TagDamage;
+import creativeeditor.data.tag.TagDisplayName;
 import creativeeditor.data.tag.TagItemID;
 import creativeeditor.data.tag.TagItemNBT;
 import net.minecraft.item.Item;
@@ -17,28 +21,42 @@ public class DataItem extends DataMap {
 	}
 
 	public DataItem(ItemStack stack) {
+		super();
 		setItemStack(stack);
 	}
 
 	public DataItem(byte count, byte slot, Item item, CompoundNBT tag) {
-		this();
+		super();
+		setItem(item);
 		setCount(count);
 		setSlot(slot);
-		setItem(item);
 		setItemNBT(tag);
 	}
 
 	public DataItem(CompoundNBT nbt) {
-		this(ItemStack.read(nbt));
+		super(nbt);
 	}
 
+	public DataItem(Map<String, Data<?, ?>> map) {
+		super(map);
+	}
+	
+	/**
+	 * This reads the map into an ItemStack including all keys. So no default checks are made.
+	 * This should be used mainly when the itemstack is needed in an isDefault check to avoid creating endless loops.
+	 * @return An itemstack including all data, with no cleanup.
+	 */
 	public ItemStack getItemStack() {
-		return ItemStack.read((CompoundNBT) getNBT());
+		return ItemStack.read(getNBTIncludeAll());
+	}
+	
+	public ItemStack getItemStackClean() {
+		return ItemStack.read(getNBT());
 	}
 
 	public void setItemStack(ItemStack stack) {
-		setCount(stack.getCount());
 		setItem(stack.getItem());
+		setCount(stack.getCount());
 		setItemNBT(stack.getTag());
 	}
 
@@ -89,5 +107,22 @@ public class DataItem extends DataMap {
 
 	public void setItemNBT(CompoundNBT nbt) {
 		put("tag", new TagItemNBT(nbt));
+	}
+
+	public TagDisplayName getDisplayNameTag() {
+		return getItemNBTTag().getDisplayTag().getNameTag(this);
+	}
+
+	public void clearCustomName() {
+		getItemNBTTag().getDisplayTag().get().remove("Name");
+	}
+
+	public TagDamage getDamageTag() {
+		return getItemNBTTag().getDamageTag(this);
+	}
+
+	@Override
+	public DataItem copy() {
+		return new DataItem(getMapCopy());
 	}
 }

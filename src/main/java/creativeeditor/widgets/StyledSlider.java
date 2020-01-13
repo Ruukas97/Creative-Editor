@@ -49,10 +49,12 @@ public class StyledSlider extends Widget implements IStyledSlider {
 		setMessage(drawString ? display + value : "");
 	}
 
+	@Override
 	public int getYImage(boolean par1) {
 		return 0;
 	}
 
+	@Override
 	protected String getNarrationMessage() {
 		return I18n.format("gui.narrate.slider", getMessage());
 	}

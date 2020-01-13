@@ -18,18 +18,13 @@ public class NumberRange extends DataInteger {
 
 	@Override
 	public void set(Integer number) {
-		super.set(MathHelper.clamp(data, getMin(), getMax()));
-	}
-	
-	@Override
-	public boolean isDefault() {
-		return data == min;
+		super.set(MathHelper.clamp(number, getMin(), getMax()));
 	}
 
 	public int getMin() {
 		return min;
 	}
-	
+
 	public int getMax() {
 		return max;
 	}

@@ -2,16 +2,28 @@ package creativeeditor.widgets;
 
 import creativeeditor.data.Data;
 import creativeeditor.data.base.DataString;
+import creativeeditor.data.base.DataTextComponent;
 import creativeeditor.screen.DataController;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.SharedConstants;
+import net.minecraft.util.text.StringTextComponent;
 
-public class StringTag extends StyledTextField implements DataController {
-	private DataString data;
+public class StyledDataTextField extends StyledTextField implements DataController {
+	private Data<?, StringNBT> data;
 
-	public StringTag(FontRenderer fontIn, int x, int y, int width, int height, DataString msg) {
-		super(fontIn, x, y, width, height, msg.get());
-		this.data = msg;
+	public StyledDataTextField(FontRenderer fontIn, int x, int y, int width, int height, Data<?, StringNBT> data) {
+		super(fontIn, x, y, width, height, data.getNBT().getString());
+		this.data = data;
+		if (data instanceof DataTextComponent) {
+			DataTextComponent dataT = (DataTextComponent) data;
+			this.text = dataT.getFormattedText();
+
+		} else if (data instanceof DataString) {
+			DataString dataS = (DataString) data;
+			this.text = dataS.get();
+		}
+		setMaxStringLength(1000);
 	}
 
 	/**
@@ -109,12 +121,20 @@ public class StringTag extends StyledTextField implements DataController {
 	}
 
 	private void setTag(String text) {
-		data.set(text);
-		this.text = text;
+		if (data instanceof DataTextComponent) {
+			DataTextComponent dataT = (DataTextComponent) data;
+			dataT.set(new StringTextComponent(text));
+			this.text = dataT.getFormattedText();
+
+		} else if (data instanceof DataString) {
+			DataString dataS = (DataString) data;
+			dataS.set(text);
+			this.text = dataS.get();
+		}
 	}
 
 	@Override
-	public Data getDataTag() {
+	public Data<?, ?> getDataTag() {
 		return data;
 	}
 }

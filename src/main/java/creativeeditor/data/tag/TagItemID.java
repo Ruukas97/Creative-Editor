@@ -14,7 +14,7 @@ public class TagItemID extends DataString {
 	}
 
 	public TagItemID(Item item) {
-		setItem(item);
+		this(getIDFromItem(item));
 	}
 
 	public TagItemID() {
@@ -27,6 +27,20 @@ public class TagItemID extends DataString {
 	}
 
 	public void setItem(Item item) {
-		set(item != null ? item.getRegistryName().getPath() : "minecraft:air");
+		set(getIDFromItem(item));
+	}
+	
+	public static String getIDFromItem(Item item) {
+		return item != null ? item.getRegistryName().getPath() : "minecraft:air";
+	}
+	
+	@Override
+	public TagItemID copy() {
+		return new TagItemID(new String(data));
+	}
+	
+	@Override
+	public boolean isDefault() {
+		return false;
 	}
 }

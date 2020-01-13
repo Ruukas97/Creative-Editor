@@ -1,7 +1,10 @@
 package creativeeditor.data.tag;
 
+import java.util.Map;
+
 import javax.annotation.Nonnull;
 
+import creativeeditor.data.Data;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.NumberRange;
 import creativeeditor.data.base.DataBoolean;
@@ -21,6 +24,10 @@ public class TagItemNBT extends DataMap {
 		super(nbt);
 	}
 
+	public TagItemNBT(Map<String, Data<?,?>> asMap) {
+		super(asMap);
+	}
+
 	// General Tags: https://minecraft.gamepedia.com/Player.dat_format#General_Tags
 
 	@Nonnull
@@ -30,7 +37,7 @@ public class TagItemNBT extends DataMap {
 
 	@Nonnull
 	public DataBoolean getUnbreakableTag() {
-		return (DataBoolean) getDataDefaulted("Unbreakable", new DataBoolean());
+		return (DataBoolean) getDataDefaultedForced("Unbreakable", new DataBoolean());
 	}
 
 	@Nonnull
@@ -231,5 +238,10 @@ public class TagItemNBT extends DataMap {
 	@Nonnull
 	public DataMap getDebugPropertysTag() {
 		return (DataMap) getDataDefaulted("DebugProperty", new DataMap());
+	}
+	
+	@Override
+	public TagItemNBT copy() {
+		return new TagItemNBT(getMapCopy());
 	}
 }

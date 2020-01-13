@@ -63,13 +63,11 @@ public abstract class ParentScreen extends Screen {
 	}
 
 	@Override
-	public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
+	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
 		renderWidgets.forEach(w -> {
-			if (w instanceof StyledTextField) {
-				((StyledTextField) w).mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
-			}
+			w.mouseClicked(mouseX, mouseY, mouseButton);
 		});
-		return super.mouseClicked(p_mouseClicked_1_, p_mouseClicked_3_, p_mouseClicked_5_);
+		return super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	@Override

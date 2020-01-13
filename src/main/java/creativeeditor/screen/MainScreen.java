@@ -5,12 +5,10 @@ import java.util.List;
 
 import creativeeditor.config.ConfigHandler;
 import creativeeditor.data.DataItem;
-import creativeeditor.data.NumberRange;
-import creativeeditor.data.base.DataString;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.widgets.SliderTag;
-import creativeeditor.widgets.StringTag;
+import creativeeditor.widgets.StyledDataTextField;
 import creativeeditor.widgets.StyledTextButton;
 import creativeeditor.widgets.StyledToggle;
 import net.minecraft.client.Minecraft;
@@ -26,7 +24,7 @@ public class MainScreen extends ParentItemScreen {
 	private StyledTextButton styleButton;
 
 	// Lore
-	private StringTag nameField;
+	private StyledDataTextField nameField;
 
 	public MainScreen(Screen lastScreen, DataItem editing) {
 		super(new TranslationTextComponent("gui.main"), lastScreen, editing);
@@ -118,10 +116,8 @@ public class MainScreen extends ParentItemScreen {
 				styleLocal, b -> StyleManager.setNext()));
 
 		// Lore
-		nameField = new StringTag(font, width - width / 6 - 30, 55, 60, 20,
-				item.getItemNBTTag().getDisplayTag().getNameTag(item));
+		nameField = new StyledDataTextField(font, width - width / 6 - 30, 55, 60, 20, item.getDisplayNameTag());
 		children.add(nameField);
-		System.out.println(((DataString) nameField.getDataTag()).get());
 
 		// General Item
 		addButton(new SliderTag(width / 2 + 5, 61, 50, 16, item.getCountTag()));
@@ -195,13 +191,13 @@ public class MainScreen extends ParentItemScreen {
 
 		// Item Name
 		String itemCount = item.getCount() > 1 ? item.getCount() + "x " : "";
-		String itemOverview = itemCount + item.getItemStack().getDisplayName().getFormattedText();
+		String itemOverview = itemCount + item.getItemStackClean().getDisplayName().getFormattedText();
 		drawCenteredString(font, itemOverview, width / 2, 27, color.getInt());
 
 		String id = I18n.format("gui.main.id");
 		int idWidth = font.getStringWidth(id);
 		drawString(font, id, width / 2 - idWidth, 45, color.getInt());
-		drawString(font, item.getItem().getRegistryName().getPath(), width / 2 + 5, 45, color.getInt());
+		drawString(font, item.getItemTag().get(), width / 2 + 5, 45, color.getInt());
 
 		String count = I18n.format("gui.main.count");
 		int countWidth = font.getStringWidth(count);
@@ -221,13 +217,13 @@ public class MainScreen extends ParentItemScreen {
 		if (ConfigHandler.CLIENT.currentLeftSideview.get() == 0) {
 			// NBT
 			List<String> nbtLines = Arrays
-					.asList(item.getItemNBT().toFormattedComponent(" ", 0).getFormattedText().split("\n"));
+					.asList(item.getNBT().toFormattedComponent(" ", 0).getFormattedText().split("\n"));
 
 			renderTooltip(nbtLines, 0, 60);
 		}
 
 		else if (ConfigHandler.CLIENT.currentLeftSideview.get() == 1) {
-			renderTooltip(item.getItemStack(), 0, 60);
+			renderTooltip(item.getItemStackClean(), 0, 60);
 		}
 	}
 }

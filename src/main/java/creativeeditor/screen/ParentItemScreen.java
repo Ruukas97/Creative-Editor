@@ -2,13 +2,14 @@ package creativeeditor.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.data.DataItem;
+import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtils;
 import creativeeditor.widgets.StyledButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 
 public class ParentItemScreen extends ParentScreen {
@@ -47,12 +48,12 @@ public class ParentItemScreen extends ParentScreen {
 				mc.displayGuiScreen(lastScreen);
 			}));
 			addButton(new StyledButton(posX, posY - 11, bwidth, 20, I18n.format("gui.main.reset"), b -> {
-				item.setCount(0);
+				item.setCount(1);
 				item.getItemNBTTag().clear();
 				this.init();
 			}));
 			addButton(new StyledButton(posX, posY + 10, bwidth, 20, I18n.format("gui.main.save"), b -> {
-				mc.playerController.sendSlotPacket(item.getItemStack(), 36 + mc.player.inventory.currentItem);
+				mc.playerController.sendSlotPacket(item.getItemStackClean(), 36 + mc.player.inventory.currentItem);
 			}));
 			addButton(new StyledButton(posX + bwidth + 1, posY, bwidth, 20, I18n.format("gui.main.drop"), b -> {
 				mc.playerController.sendPacketDropItem(item.getItemStack());
@@ -81,11 +82,12 @@ public class ParentItemScreen extends ParentScreen {
 		super.overlayRender(mouseX, mouseY, p3, color);
 		// Item (Tooltip must render last or colors will be messed up)
 		if (renderItem) {
+			ItemStack stack = item.getItemStackClean();
 			GlStateManager.scalef(itemScale, itemScale, 1f);
 			RenderHelper.enableGUIStandardItemLighting();
 			int x = (int) (width / (2 * itemScale) - 8);
 			int y = (int) (30 / itemScale + height / (2 * itemScale) - 8);
-			itemRenderer.renderItemIntoGUI(item.getItemStack(), x, y);
+			itemRenderer.renderItemIntoGUI(stack, x, y);
 			itemRenderer.renderItemOverlayIntoGUI(font, item.getItemStack(), x, y, null);
 			RenderHelper.disableStandardItemLighting();
 
@@ -95,7 +97,7 @@ public class ParentItemScreen extends ParentScreen {
 			GuiUtils.drawFrame(width / 2 - 20, height / 2 + 10, width / 2 + 20, height / 2 + 50, 1, color);
 
 			if (GuiUtils.isMouseIn(mouseX, mouseY, width / 2 - 17, height / 2 + 13, 34, 34)) {
-				renderTooltip(item.getItemStack(), mouseX, mouseY);
+				renderTooltip(stack, mouseX, mouseY);
 			}
 		}
 	}

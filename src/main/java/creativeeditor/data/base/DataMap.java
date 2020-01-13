@@ -1,8 +1,8 @@
 package creativeeditor.data.base;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,8 +27,7 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
 		this();
 		if (nbt == null)
 			return;
-		Set<String> keys = nbt.keySet();
-		for (String key : keys) {
+		for (String key : nbt.keySet()) {
 			INBT value = nbt.get(key);
 			if (value != null)
 				put(key, Data.fromNBT(value));
@@ -38,6 +37,26 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
 	@Nullable
 	public Data<?, ?> getData(String key) {
 		return data.get(key);
+	}
+
+	@Nullable
+	public Data<?, ?> getDataCopy(String key) {
+		//System.out.println("Copying from: " + data);
+		//System.out.println("Getting data: " + key);
+		Data<?, ?> dat = getData(key);
+		//System.out.println("Result: " + dat);
+		return dat != null ? dat.copy() : null;
+	}
+	
+	public Map<String, Data<?, ?>> getMapCopy(){
+		Map<String, Data<?, ?>> map = new HashMap<String, Data<?,?>>();
+		data.keySet().forEach(key -> {
+			Data<?,?> copy = getDataCopy(key);
+			if(copy != null) {
+				map.put(key, copy);
+			}
+		});
+		return map;
 	}
 
 	@Nonnull
@@ -53,6 +72,8 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
 	@SuppressWarnings("unchecked")
 	@Nonnull
 	public <T extends Data<?, ?>> T getDataDefaultedForced(String key, T defaultValue) {
+		//System.out.println("Data: " + data.toString() + ", Key: " + key + ", Value: " + defaultValue);
+
 		if (data.containsKey(key)) {
 			Data<?, ?> existing = data.get(key);
 			if (existing.getClass() == defaultValue.getClass()) {
@@ -61,20 +82,22 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
 		}
 
 		put(key, defaultValue);
+		//System.out.println("Put default: " + data.toString());
 		return defaultValue;
 	}
 
-	public void put(String key, Data<?,?> value) {
-		data.put(key, value);
+	public void put(String key, Data<?, ?> value) {
+		if (value != null)
+			data.put(key, value);
 	}
 
 	public void clear() {
 		data.clear();
 	}
-	
+
 	@Override
-	public Data<Map<String, Data<?, ?>>, CompoundNBT> copy() {
-		return new DataMap(Maps.newHashMap(data));
+	public DataMap copy() {
+		return new DataMap(getMapCopy());
 	}
 
 	@Override
@@ -82,12 +105,23 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
 		if (data.isEmpty())
 			return true;
 
-		for (Entry<String, Data<?,?>> entry : data.entrySet()) {
+		for (Entry<String, Data<?, ?>> entry : data.entrySet()) {
 			if (!entry.getValue().isDefault())
 				return false;
 		}
 
 		return true;
+	}
+
+	public CompoundNBT getNBTIncludeAll() {
+		CompoundNBT nbt = new CompoundNBT();
+		data.forEach((key, value) -> {
+			if (value instanceof DataMap)
+				nbt.put(key, ((DataMap) value).getNBTIncludeAll());
+			else
+				nbt.put(key, value.getNBT());
+		});
+		return nbt;
 	}
 
 	@Override

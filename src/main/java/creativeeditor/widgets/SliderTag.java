@@ -9,6 +9,7 @@ import creativeeditor.styles.StyleSpectrum;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.resources.I18n;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -31,8 +32,19 @@ public class SliderTag extends Widget implements IStyledSlider {
 		super(x, y, width, height, display);
 		this.display = display;
 		this.drawString = drawString;
+		this.range = range;
 
 		setMessage(drawString ? display + range.get() : "");
+	}
+	
+	@Override
+	public int getYImage(boolean b) {
+		return 0;
+	}
+	
+	@Override
+	protected String getNarrationMessage() {
+		return I18n.format("gui.narrate.slider", getMessage());
 	}
 
 	@Override
@@ -54,7 +66,8 @@ public class SliderTag extends Widget implements IStyledSlider {
 			updateValue = ((double) mouseX - (x + 1d)) / (double) (width - 2.5d);
 		else
 			updateValue = ((double) mouseX - (x + 4)) / (double) (width - 8);
-		setValue((int) Math.round(updateValue * (range.getMax() - range.getMin()) + range.getMin()));
+		int round = (int) Math.round(updateValue * (range.getMax() - range.getMin()) + range.getMin());
+		setValue(round);
 	}
 
 	@Override
@@ -122,18 +135,13 @@ public class SliderTag extends Widget implements IStyledSlider {
 	}
 
 	@Override
-	public int getYImage(boolean b) {
-		return super.getYImage(b);
-	}
-
-	@Override
 	public void setHovered(boolean b) {
 		isHovered = b;
 	}
 
 	@Override
 	public int getValue() {
-		return range.getMin();
+		return range.get();
 	}
 
 	@Override
