@@ -42,6 +42,7 @@
 	"gui.main.close": "Close",
 	"gui.main.back": "Back",
 	"gui.main.reset": "Reset",
+	"gui.main.clear": "Clear",
 	"gui.main.itemflag": "Item Flags",
 	"gui.main.colorstyle": "Change Style",
 	

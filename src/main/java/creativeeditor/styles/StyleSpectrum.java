@@ -41,6 +41,15 @@ public class StyleSpectrum implements Style {
 				button.getWidget().x + button.getWidget().getWidth() / 2,
 				button.getWidget().y + (button.getWidget().getHeight() - 8) / 2,
 				j | MathHelper.ceil(alpha * 255.0F) << 24);
+		
+        String buttonText = button.getWidget().getMessage();
+        int strWidth = mc.fontRenderer.getStringWidth(buttonText);
+        int ellipsisWidth = mc.fontRenderer.getStringWidth("...");
+
+        if (strWidth > button.getWidget().getWidth() - 6 && strWidth > ellipsisWidth)
+            buttonText = mc.fontRenderer.trimStringToWidth(buttonText, button.getWidget().getWidth() - 6 - ellipsisWidth).trim() + "...";
+
+        button.getWidget().drawCenteredString(mc.fontRenderer, buttonText, button.getWidget().x + button.getWidget().getWidth() / 2, button.getWidget().y + (button.getWidget().getHeight() - 8) / 2, getMainColor().getInt());
 	}
 
 	@Override

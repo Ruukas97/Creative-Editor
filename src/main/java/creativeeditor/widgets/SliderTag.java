@@ -25,7 +25,7 @@ public class SliderTag extends Widget implements IStyledSlider {
 	}
 
 	public SliderTag(int x, int y, int width, int height, NumberRange range) {
-		this(x, y, width, height, "", false, range);
+		this(x, y, width, height, "", true, range);
 	}
 
 	public SliderTag(int x, int y, int width, int height, String display, boolean drawString, NumberRange range) {
@@ -49,14 +49,14 @@ public class SliderTag extends Widget implements IStyledSlider {
 
 	@Override
 	public void renderButton(int mouseX, int mouseY, float p3) {
-		// super.renderButton(mouseX, mouseY, p3);
+		//super.renderButton(mouseX, mouseY, p3);
 		StyleManager.getCurrentStyle().renderButton(this, mouseX, mouseY, p3);
 	}
 
 	public void renderBg(Minecraft mc, int mouseX, int mouseY) {
 		if (!this.visible)
 			return;
-
+		
 		StyleManager.getCurrentStyle().renderSlider(this, mouseX, mouseY);
 	}
 

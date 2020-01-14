@@ -41,10 +41,7 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
 
 	@Nullable
 	public Data<?, ?> getDataCopy(String key) {
-		//System.out.println("Copying from: " + data);
-		//System.out.println("Getting data: " + key);
 		Data<?, ?> dat = getData(key);
-		//System.out.println("Result: " + dat);
 		return dat != null ? dat.copy() : null;
 	}
 	

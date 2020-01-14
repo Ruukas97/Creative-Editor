@@ -20,7 +20,6 @@ public class ScreenPlayerInspector extends ParentScreen {
 	
 	@Override
 	protected void init() {
-		// TODO Auto-generated method stub
 		super.init();
 		playerUUID = PlayerEntity.getUUID(target.getGameProfile()).toString();
 	}

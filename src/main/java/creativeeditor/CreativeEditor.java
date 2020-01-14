@@ -19,6 +19,7 @@ import creativeeditor.styles.StyleManager;
 import creativeeditor.util.LoadSkullThread;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
@@ -71,10 +72,10 @@ public class CreativeEditor {
 		registerTabs();
 
 		// Register head library arrays
-		registerHeadArrays();
+		//registerHeadArrays();
 
 		// Download Head Collection
-		downloadHeads();
+		//downloadHeads();
 	}
 
 	private void registerHeadArrays() {
@@ -100,7 +101,7 @@ public class CreativeEditor {
 	@SubscribeEvent
 	public void onKeyInput(final KeyInputEvent event) {
 		if (mc.world == null || event.getAction() != GLFW.GLFW_PRESS
-				|| (mc.currentScreen != null && mc.currentScreen instanceof ChatScreen))
+				 || mc.currentScreen instanceof ChatScreen || (mc.currentScreen != null && !(mc.currentScreen instanceof ContainerScreen<?>)))
 			return;
 
 		if (event.getKey() == OPEN_EDITOR_KEY.getKey().getKeyCode()) {

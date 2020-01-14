@@ -14,7 +14,9 @@ import creativeeditor.widgets.StyledToggle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fml.client.config.GuiUtils;
 
 public class MainScreen extends ParentItemScreen {
 
@@ -25,6 +27,7 @@ public class MainScreen extends ParentItemScreen {
 
 	// Lore
 	private StyledDataTextField nameField;
+	private StyledTextButton clearButton;
 
 	public MainScreen(Screen lastScreen, DataItem editing) {
 		super(new TranslationTextComponent("gui.main"), lastScreen, editing);
@@ -92,6 +95,7 @@ public class MainScreen extends ParentItemScreen {
 			editButton.active = true;
 			advancedButton.active = true;
 			nameField.visible = true;
+			clearButton.visible = true;
 		}));
 
 		editButton = addButton(new StyledTextButton(editX, 35, editWidth, editLocal, b -> {
@@ -100,6 +104,7 @@ public class MainScreen extends ParentItemScreen {
 			editButton.active = false;
 			advancedButton.active = true;
 			nameField.visible = false;
+			clearButton.visible = false;
 		}));
 
 		advancedButton = addButton(new StyledTextButton(advancedX, 35, advancedWidth, advancedLocal, b -> {
@@ -108,6 +113,7 @@ public class MainScreen extends ParentItemScreen {
 			editButton.active = true;
 			advancedButton.active = false;
 			nameField.visible = false;
+			clearButton.visible = false;
 		}));
 
 		// Tools
@@ -116,8 +122,18 @@ public class MainScreen extends ParentItemScreen {
 				styleLocal, b -> StyleManager.setNext()));
 
 		// Lore
-		nameField = new StyledDataTextField(font, width - width / 6 - 30, 55, 60, 20, item.getDisplayNameTag());
+		String clearLocal = I18n.format("gui.main.clear");
+		int clearWidth = font.getStringWidth(clearLocal);
+		int clearX = width - 22 - clearWidth / 2;
+		int nameX = 2 * width / 3 + 16;
+		nameField = new StyledDataTextField(font, nameX, 55, clearX - nameX - clearWidth / 2 - 7, 20,
+				item.getDisplayNameTag());
 		children.add(nameField);
+		clearButton = addButton(new StyledTextButton(clearX, 67, clearWidth, clearLocal, b -> {
+			nameField.setText(item.getDisplayNameTag().getDefault().getFormattedText());
+			nameField.setCursorPos(0);
+			nameField.setSelectionPos(0);
+		}));
 
 		// General Item
 		addButton(new SliderTag(width / 2 + 5, 61, 50, 16, item.getCountTag()));
@@ -145,14 +161,17 @@ public class MainScreen extends ParentItemScreen {
 		case 0:
 			loreButton.active = false;
 			nameField.visible = true;
+			clearButton.visible = true;
 			break;
 		case 1:
 			editButton.active = false;
 			nameField.visible = false;
+			clearButton.visible = false;
 			break;
 		case 2:
 			advancedButton.active = false;
 			nameField.visible = false;
+			clearButton.visible = false;
 		}
 	}
 
@@ -172,8 +191,8 @@ public class MainScreen extends ParentItemScreen {
 	}
 
 	@Override
-	public void backRender(int mouseX, int mouseY, float p3, Color color) {
-		super.backRender(mouseX, mouseY, p3, color);
+	public void backRender(int mouseX, int mouseY, float partialTicks, Color color) {
+		super.backRender(mouseX, mouseY, partialTicks, color);
 
 		// First vertical line
 		fill(width / 3, 20, width / 3 + 1, height - 20, color.getInt());
@@ -183,6 +202,8 @@ public class MainScreen extends ParentItemScreen {
 		fill(20, 40, width / 3 - 15, 41, color.getInt());
 		// Right horizontal line
 		fill(width * 2 / 3 + 16, 40, width - 20, 41, color.getInt());
+
+		nameField.render(mouseY, mouseY, partialTicks);
 	}
 
 	@Override
@@ -192,7 +213,9 @@ public class MainScreen extends ParentItemScreen {
 		// Item Name
 		String itemCount = item.getCount() > 1 ? item.getCount() + "x " : "";
 		String itemOverview = itemCount + item.getItemStackClean().getDisplayName().getFormattedText();
-		drawCenteredString(font, itemOverview, width / 2, 27, color.getInt());
+		String overviewTrimmed = font.trimStringToWidth(itemOverview, width / 3 - 15);
+		drawCenteredString(font, overviewTrimmed.equals(itemOverview) ? overviewTrimmed : overviewTrimmed + "...",
+				width / 2, 27, color.getInt());
 
 		String id = I18n.format("gui.main.id");
 		int idWidth = font.getStringWidth(id);
@@ -206,24 +229,27 @@ public class MainScreen extends ParentItemScreen {
 		String damage = I18n.format("gui.main.damage");
 		int damageWidth = font.getStringWidth(damage);
 		drawString(font, damage, width / 2 - damageWidth, 85, color.getInt());
-
-		nameField.render(mouseY, mouseY, partialTicks);
 	}
 
 	@Override
-	public void overlayRender(int mouseX, int mouseY, float p3, Color color) {
-		super.overlayRender(mouseX, mouseY, p3, color);
+	public void overlayRender(int mouseX, int mouseY, float partialTicks, Color color) {
+		super.overlayRender(mouseX, mouseY, partialTicks, color);
 
 		if (ConfigHandler.CLIENT.currentLeftSideview.get() == 0) {
 			// NBT
-			List<String> nbtLines = Arrays
-					.asList(item.getNBT().toFormattedComponent(" ", 0).getFormattedText().split("\n"));
+			List<String> nbtLines = Arrays.asList(
+					(minecraft.gameSettings.advancedItemTooltips ? item.getNBT() : item.getItemNBTTag().getNBT())
+							.toFormattedComponent(" ", 0).getFormattedText().split("\n"));
 
-			renderTooltip(nbtLines, 0, 60);
+			GuiUtils.drawHoveringText(item.getItemStackClean(), nbtLines, 0, 60, width / 3 - 1, height, -1, font);
 		}
 
 		else if (ConfigHandler.CLIENT.currentLeftSideview.get() == 1) {
-			renderTooltip(item.getItemStackClean(), 0, 60);
+			// renderTooltip(item.getItemStackClean(), 0, 60);
+			ItemStack stack = item.getItemStackClean();
+
+			GuiUtils.drawHoveringText(item.getItemStackClean(), getTooltipFromItem(stack), 0, 60, width / 3 - 1, height,
+					-1, font);
 		}
 	}
 }

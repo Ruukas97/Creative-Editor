@@ -43,7 +43,6 @@ public class ParentItemScreen extends ParentScreen {
 			int posY = height / 7 * 6;
 			String butCloseBack = lastScreen == null ? "gui.main.close" : "gui.main.back";
 			
-			
 			addButton(new StyledButton(posX - bwidth - 1, posY, bwidth, 20, I18n.format(butCloseBack), b -> {
 				mc.displayGuiScreen(lastScreen);
 			}));

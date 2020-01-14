@@ -38,7 +38,6 @@ public class ScreenshotScreen {
 				mc.ingameGUI.blit(59, 50, 50, 50, 20, 20);
 				dyntex.close();
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		});
