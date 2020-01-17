@@ -1,24 +1,6 @@
 package creativeeditor.view;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import com.mojang.blaze3d.platform.GlStateManager;
-
-import creativeeditor.data.DataItem;
 import creativeeditor.screen.ParentItemScreen;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.RenderComponentsUtil;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.client.gui.ScrollPanel;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.util.Size2i;
-import net.minecraftforge.fml.client.config.GuiUtils;
-import net.minecraftforge.fml.client.gui.GuiModList;
 
 public class TooltipView extends ItemView {
 	public TooltipView(int x, int y, int width, int height, ParentItemScreen parent) {

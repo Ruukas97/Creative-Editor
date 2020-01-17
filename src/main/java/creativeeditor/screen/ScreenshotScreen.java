@@ -12,6 +12,7 @@ import net.minecraftforge.client.event.ScreenshotEvent;
 public class ScreenshotScreen {
 
 	private ScreenshotEvent e;
+	@SuppressWarnings("unused")
 	private boolean enableAnimation;
 	private Minecraft mc;
 

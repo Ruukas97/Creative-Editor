@@ -56,7 +56,7 @@ public class StyleVanilla extends StyleBase {
 		GuiUtils.drawContinuousTexturedBox(Widget.WIDGETS_LOCATION,
 				(int) (slider.getWidget().x
 						+ (slider.getWidget().getWidth() - 8) * ((float) (slider.getValue() - slider.getMin())
-								/ (float) (slider.getMax() - slider.getMin()))),
+								/ (float) Math.max(1, (slider.getMax() - slider.getMin())))),
 				slider.getWidget().y, 0, 66, 8, slider.getWidget().getHeight(), 200, 20, 2, 3, 2, 2,
 				slider.getBlitOffset());
 	}

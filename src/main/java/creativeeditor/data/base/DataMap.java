@@ -25,7 +25,7 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
 
 	public DataMap(CompoundNBT nbt) {
 		this();
-		if (nbt == null)
+		if (nbt == null || nbt.isEmpty())
 			return;
 		for (String key : nbt.keySet()) {
 			INBT value = nbt.get(key);
@@ -44,12 +44,12 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
 		Data<?, ?> dat = getData(key);
 		return dat != null ? dat.copy() : null;
 	}
-	
-	public Map<String, Data<?, ?>> getMapCopy(){
-		Map<String, Data<?, ?>> map = new HashMap<String, Data<?,?>>();
+
+	public Map<String, Data<?, ?>> getMapCopy() {
+		Map<String, Data<?, ?>> map = new HashMap<String, Data<?, ?>>();
 		data.keySet().forEach(key -> {
-			Data<?,?> copy = getDataCopy(key);
-			if(copy != null) {
+			Data<?, ?> copy = getDataCopy(key);
+			if (copy != null) {
 				map.put(key, copy);
 			}
 		});
@@ -57,20 +57,20 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
 	}
 
 	@Nonnull
-	public Data<?, ?> getDataDefaulted(String key, Data<?, ?> defaultValue) {
+	public Data<?, ?> getDataDefaulted(String key, @Nonnull Data<?, ?> defaultValue) {
 		if (!data.containsKey(key)) {
-			put(key, defaultValue);
-			return defaultValue;
+			Data<?, ?> dat = data.get(key);
+			if (dat != null)
+				return dat;
 		}
 
-		return data.get(key);
+		put(key, defaultValue);
+		return defaultValue;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Nonnull
-	public <T extends Data<?, ?>> T getDataDefaultedForced(String key, T defaultValue) {
-		//System.out.println("Data: " + data.toString() + ", Key: " + key + ", Value: " + defaultValue);
-
+	public <T extends Data<?, ?>> T getDataDefaultedForced(String key, @Nonnull T defaultValue) {
 		if (data.containsKey(key)) {
 			Data<?, ?> existing = data.get(key);
 			if (existing.getClass() == defaultValue.getClass()) {
@@ -79,7 +79,6 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
 		}
 
 		put(key, defaultValue);
-		//System.out.println("Put default: " + data.toString());
 		return defaultValue;
 	}
 

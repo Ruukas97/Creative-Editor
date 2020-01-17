@@ -11,10 +11,12 @@ import creativeeditor.data.base.DataIntegerArray;
 import creativeeditor.data.base.DataList;
 import creativeeditor.data.base.DataLong;
 import creativeeditor.data.base.DataLongArray;
+import creativeeditor.data.base.DataMap;
 import creativeeditor.data.base.DataShort;
 import creativeeditor.data.base.DataString;
 import net.minecraft.nbt.ByteArrayNBT;
 import net.minecraft.nbt.ByteNBT;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.DoubleNBT;
 import net.minecraft.nbt.FloatNBT;
 import net.minecraft.nbt.INBT;
@@ -89,7 +91,7 @@ public interface Data<E, T extends INBT> {
 		case NBT.TAG_BYTE_ARRAY:
 			return new DataByteArray((ByteArrayNBT) nbt);
 		case NBT.TAG_COMPOUND:
-			return null;
+			return new DataMap((CompoundNBT) nbt);
 		case NBT.TAG_DOUBLE:
 			return new DataDouble((DoubleNBT) nbt);
 		case NBT.TAG_FLOAT:

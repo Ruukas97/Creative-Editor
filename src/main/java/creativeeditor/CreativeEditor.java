@@ -11,12 +11,14 @@ import creativeeditor.creativetabs.TabUnavailable;
 import creativeeditor.data.DataItem;
 import creativeeditor.eventhandlers.ScreenHandler;
 import creativeeditor.eventhandlers.ScreenshotHandler;
+import creativeeditor.render.ShieldRenderer;
 import creativeeditor.screen.HeadScreen;
 import creativeeditor.screen.HeadScreen.HeadCategories;
 import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.ScreenPlayerInspector;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.LoadSkullThread;
+import creativeeditor.util.ReflectionUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -25,6 +27,7 @@ import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -67,9 +70,13 @@ public class CreativeEditor {
 		registerEventHandler(new ScreenHandler());
 		registerEventHandler(new ScreenshotHandler());
 		registerEventHandler(this);
+		
 
 		// Register Creative Tabs
 		registerTabs();
+		
+		
+		ReflectionUtils.setTeisr(Items.SHIELD, () -> ShieldRenderer::new);
 
 		// Register head library arrays
 		//registerHeadArrays();
@@ -78,12 +85,14 @@ public class CreativeEditor {
 		//downloadHeads();
 	}
 
+	@SuppressWarnings("unused")
 	private void registerHeadArrays() {
 		for (HeadCategories hc : HeadCategories.values()) {
 			HeadScreen.headLibrary.put(hc, new ArrayList<ItemStack>());
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void downloadHeads() {
 		Thread thread = new Thread(new LoadSkullThread());
 		thread.start();

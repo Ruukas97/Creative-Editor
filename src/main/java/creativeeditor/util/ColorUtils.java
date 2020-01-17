@@ -36,5 +36,25 @@ public class ColorUtils {
 		public int getInt() {
 			return color;
 		}
+
+		public float getRed() {
+			float red = (color & 16711680) >> 16;
+			return red/255f;
+		}
+
+		public float getGreen() {
+			float green = (color & '\uff00') >> 8;
+			return green/255f;
+		}
+
+		public float getBlue() {
+			float blue = (color & 255);
+			return blue/255f;
+		}
+		
+		@Override
+		public String toString() {
+			return String.format("Color: r:%f, g:%f, b:%f", getRed(), getGreen(), getBlue());
+		}
 	}
 }
