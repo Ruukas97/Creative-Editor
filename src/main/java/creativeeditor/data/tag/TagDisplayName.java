@@ -14,7 +14,7 @@ public class TagDisplayName extends DataTextComponent {
 
 	@Override
 	public boolean isDefault() {
-		if(getUnformattedText().length() == 0) {
+		if(getUnformatted().length() == 0) {
 			return true;
 		}
 		DataItem copy = item.copy();

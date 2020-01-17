@@ -17,7 +17,7 @@ public class StyledDataTextField extends StyledTextField implements DataControll
 		this.data = data;
 		if (data instanceof DataTextComponent) {
 			DataTextComponent dataT = (DataTextComponent) data;
-			this.text = dataT.getFormattedText();
+			this.text = dataT.getFormatted();
 
 		} else if (data instanceof DataString) {
 			DataString dataS = (DataString) data;
@@ -124,7 +124,7 @@ public class StyledDataTextField extends StyledTextField implements DataControll
 		if (data instanceof DataTextComponent) {
 			DataTextComponent dataT = (DataTextComponent) data;
 			dataT.set(new StringTextComponent(text));
-			this.text = dataT.getFormattedText();
+			this.text = dataT.getFormatted();
 
 		} else if (data instanceof DataString) {
 			DataString dataS = (DataString) data;
