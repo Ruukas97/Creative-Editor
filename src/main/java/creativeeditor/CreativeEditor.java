@@ -9,6 +9,7 @@ import org.lwjgl.glfw.GLFW;
 import creativeeditor.config.ConfigHandler;
 import creativeeditor.creativetabs.TabUnavailable;
 import creativeeditor.data.DataItem;
+import creativeeditor.eventhandlers.GameOverlayHandler;
 import creativeeditor.eventhandlers.ScreenHandler;
 import creativeeditor.eventhandlers.ScreenshotHandler;
 import creativeeditor.render.ShieldRenderer;
@@ -16,6 +17,7 @@ import creativeeditor.screen.HeadScreen;
 import creativeeditor.screen.HeadScreen.HeadCategories;
 import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.ScreenPlayerInspector;
+import creativeeditor.screen.ScreenshotScreen;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.LoadSkullThread;
 import creativeeditor.util.ReflectionUtils;
@@ -43,6 +45,7 @@ public class CreativeEditor {
 	private static KeyBinding OPEN_EDITOR_KEY;
 	private static KeyBinding PLAYER_INSPECT;
 	private static KeyBinding OFF_HAND_SWING;
+	public static KeyBinding PREVIEW_SCREENSHOT;
 
 	private Minecraft mc;
 
@@ -61,14 +64,18 @@ public class CreativeEditor {
 		OPEN_EDITOR_KEY = new KeyBinding("key.editor", GLFW.GLFW_KEY_U, "creativeeditor");
 		PLAYER_INSPECT = new KeyBinding("key.inspector", GLFW.GLFW_KEY_G, "creativeeditor");
 		OFF_HAND_SWING = new KeyBinding("key.offhandswing", InputMappings.INPUT_INVALID.getKeyCode(), "creativeeditor");
+		PREVIEW_SCREENSHOT = new KeyBinding("key.previewscreen", GLFW.GLFW_KEY_V, "creativeeditor");
 		ClientRegistry.registerKeyBinding(OPEN_EDITOR_KEY);
 		ClientRegistry.registerKeyBinding(OFF_HAND_SWING);
 		ClientRegistry.registerKeyBinding(PLAYER_INSPECT);
+		ClientRegistry.registerKeyBinding(PREVIEW_SCREENSHOT);
 
 		// Register Events
 		LOGGER.info("Registering events");
 		registerEventHandler(new ScreenHandler());
 		registerEventHandler(new ScreenshotHandler());
+		registerEventHandler(new GameOverlayHandler());
+		
 		registerEventHandler(this);
 		
 
@@ -125,6 +132,10 @@ public class CreativeEditor {
 		} else if (event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {
 			mc.player.swingArm(Hand.OFF_HAND);
 
+		} else if (event.getKey() == PREVIEW_SCREENSHOT.getKey().getKeyCode()) {
+			if(GameOverlayHandler.dyntex != null) {
+				mc.displayGuiScreen(new ScreenshotScreen(null));
+			}
 		}
 	}
 }
