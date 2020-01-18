@@ -27,10 +27,7 @@ public class DataBitField extends SingularData<boolean[], IntNBT> {
 
 	@Override
 	public boolean isDefault() {
-		for (boolean b : data)
-			if (b)
-				return true;
-		return false;
+		return getInt() == 0;
 	}
 
 	public int getInt() {
