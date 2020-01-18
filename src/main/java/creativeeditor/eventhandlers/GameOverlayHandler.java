@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
@@ -30,6 +31,7 @@ public class GameOverlayHandler {
 	public static boolean firstRun = false;
 	public static DynamicTexture dyntex;
 	private ResourceLocation screenshotLocation;
+	public static ScreenshotEvent event;
 
 	@SubscribeEvent
 	public void onOverlay(RenderGameOverlayEvent e) {
@@ -41,7 +43,7 @@ public class GameOverlayHandler {
 			x = 0;
 			x1 = 10;
 			y = 0;
-			duration = 300;
+			duration = 200;
 			speed = ((double) opacity / (double) duration);
 			increaseSpeed = 0.999;
 			this.screenshotLocation = Screenshot.screenshotLocation;
@@ -49,8 +51,8 @@ public class GameOverlayHandler {
 			Minecraft.getInstance().textureManager.loadTexture(screenshotLocation, dyntex);
 
 		}
-		if (e.getType() == ElementType.ALL) {
-			if (duration >= 0 && dyntex != null) {
+		if (e.getType() == ElementType.ALL && dyntex != null) {
+			if (duration > 1) {
 
 				Color color = new Color(opacity, 255, 255, 255);
 				AbstractGui.fill(0, calculateMove(0, 10, duration),
@@ -63,7 +65,8 @@ public class GameOverlayHandler {
 					hold--;
 				}
 
-			} else if (duration == -1) {
+			}
+			if (duration <= 10 && duration > 0) {
 				Minecraft.getInstance().getTextureManager().bindTexture(screenshotLocation);
 				GlStateManager.enableBlend();
 				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);

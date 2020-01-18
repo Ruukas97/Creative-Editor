@@ -2,8 +2,8 @@ package creativeeditor.util;
 
 import creativeeditor.eventhandlers.GameOverlayHandler;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ScreenshotEvent;
 
 public class Screenshot {
 
@@ -13,12 +13,13 @@ public class Screenshot {
 	double speed = 0.99;
 	public static ResourceLocation screenshotLocation = new ResourceLocation("creativeeditor", "screenshot");
 
-	public void makeScreenshot(NativeImage img) {
+	public void makeScreenshot(ScreenshotEvent e) {
 		GameOverlayHandler.hold = hold;
 		GameOverlayHandler.opacity = opacity;
 		GameOverlayHandler.speed = speed;
 		GameOverlayHandler.firstRun = true;
-		GameOverlayHandler.dyntex = new DynamicTexture(img);
+		GameOverlayHandler.dyntex = new DynamicTexture(e.getImage());
+		GameOverlayHandler.event = e;
 	}
 
 	public void animationEnabled(boolean bool) {

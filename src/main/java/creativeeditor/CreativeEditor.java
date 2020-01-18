@@ -134,7 +134,11 @@ public class CreativeEditor {
 
 		} else if (event.getKey() == PREVIEW_SCREENSHOT.getKey().getKeyCode()) {
 			if(GameOverlayHandler.dyntex != null) {
-				mc.displayGuiScreen(new ScreenshotScreen(null));
+				if(GameOverlayHandler.duration > 0) {
+					GameOverlayHandler.dyntex.close();
+					mc.displayGuiScreen(new ScreenshotScreen());
+				}
+				GameOverlayHandler.duration = 0;	
 			}
 		}
 	}
