@@ -48,7 +48,7 @@ public interface Data<E, T extends INBT> {
 	 * @return copy instance
 	 */
 	public Data<E, T> copy();
-
+	
 	/**
 	 * Returns whether or not this should be ignored, when saving data.
 	 * If it has the default value, we save space by not including it.
@@ -61,6 +61,9 @@ public interface Data<E, T extends INBT> {
 	 * @return created IBNT object
 	 */
 	public T getNBT();
+	
+	
+	//public void loadNBT(T nbt);
 
 	/**
 	 * Takes values and inserts them into this object.
@@ -84,7 +87,7 @@ public interface Data<E, T extends INBT> {
 	 * @return the created data object
 	 */
 	@Nullable
-	public static Data<?, ?> fromNBT(INBT nbt) {
+	public static Data<?, ?> getDataFromNBT(INBT nbt) {
 		switch (nbt.getId()) {
 		case NBT.TAG_BYTE:
 			return new DataByte((ByteNBT) nbt);

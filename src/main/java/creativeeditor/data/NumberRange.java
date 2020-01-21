@@ -15,6 +15,12 @@ public class NumberRange extends DataInteger {
 	public NumberRange(int min, int max) {
 		this(min, min, max);
 	}
+	
+	@Override
+	public NumberRange copy() {
+		return new NumberRange(data, min, max);
+	}
+	
 
 	@Override
 	public void set(Integer number) {

@@ -2,7 +2,9 @@ package creativeeditor.data;
 
 import java.util.Map;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
+
+import com.google.common.collect.Maps;
 
 import creativeeditor.data.base.DataMap;
 import creativeeditor.data.tag.TagDamage;
@@ -14,99 +16,73 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 
 public class DataItem extends DataMap {
-	// Wiki: https://minecraft.gamepedia.com/Player.dat_format#Item_structure
+	private TagItemID item;
+	private NumberRange count, slot;
+	private TagItemNBT tag;
+
+	public DataItem(TagItemID item, NumberRange count, TagItemNBT tag, NumberRange slot,
+			Map<String, Data<?, ?>> extra) {
+		super(extra);
+		this.item = item;
+		this.count = count;
+		this.slot = slot;
+		this.tag = tag;
+	}
 
 	public DataItem() {
-		this(ItemStack.EMPTY);
+		this(ItemStack.EMPTY, 0);
 	}
 
 	public DataItem(ItemStack stack) {
-		super();
-		setItemStack(stack);
+		this(stack, 0);
 	}
 
-	public DataItem(byte count, byte slot, Item item, CompoundNBT tag) {
-		super();
-		setItem(item);
-		setCount(count);
-		setSlot(slot);
-		setItemNBT(tag);
+	public DataItem(ItemStack stack, int slot) {
+		this(stack.getItem(), stack.getCount(), stack.getTag(), slot);
 	}
 
-	public DataItem(CompoundNBT nbt) {
-		super(nbt);
+	public DataItem(Item item, int count, CompoundNBT tag, int slot) {
+		this(new TagItemID(item), new NumberRange(count, 1, 64), new TagItemNBT(tag), new NumberRange(slot, 0, 45),
+				Maps.newHashMap());
 	}
 
-	public DataItem(Map<String, Data<?, ?>> map) {
-		super(map);
-	}
-	
 	/**
-	 * This reads the map into an ItemStack including all keys. So no default checks are made.
-	 * This should be used mainly when the itemstack is needed in an isDefault check to avoid creating endless loops.
+	 * This reads the map into an ItemStack including all keys. So no default checks
+	 * are made. This should be used mainly when the itemstack is needed in an
+	 * isDefault check to avoid creating endless loops.
+	 * 
 	 * @return An itemstack including all data, with no cleanup.
 	 */
 	public ItemStack getItemStack() {
 		return ItemStack.read(getNBTIncludeAll());
 	}
-	
+
 	public ItemStack getItemStackClean() {
 		return ItemStack.read(getNBT());
 	}
 
-	public void setItemStack(ItemStack stack) {
-		setItem(stack.getItem());
-		setCount(stack.getCount());
-		setItemNBT(stack.getTag());
+	public void setFromItemStack(ItemStack stack) {
+		item.setItem(stack.getItem());
+		count.set(stack.getCount());
+		tag = new TagItemNBT(stack.getTag());
 	}
 
-	@Nullable
+	@Nonnull
 	public TagItemID getItemTag() {
-		return (TagItemID) getDataDefaultedForced("id", new TagItemID());
+		return this.getItemTag();
 	}
 
-	public Item getItem() {
-		return getItemTag().getItem();
-	}
-
-	public void setItem(Item item) {
-		getItemTag().setItem(item);
-	}
-
+	@Nonnull
 	public NumberRange getCountTag() {
-		return (NumberRange) getDataDefaultedForced("Count", new NumberRange(1, 64));
-	}
-
-	public int getCount() {
-		return getCountTag().get();
-	}
-
-	public void setCount(int count) {
-		getCountTag().set(count);
+		return count;
 	}
 
 	public NumberRange getSlotTag() {
-		return (NumberRange) getDataDefaultedForced("Slot", new NumberRange(1, 45));
-	}
-
-	public int getSlot() {
-		return getSlotTag().get();
-	}
-
-	public void setSlot(int slot) {
-		getSlotTag().set(slot);
+		return slot;
 	}
 
 	public TagItemNBT getItemNBTTag() {
-		return (TagItemNBT) getDataDefaultedForced("tag", new TagItemNBT());
-	}
-
-	public CompoundNBT getItemNBT() {
-		return getItemNBTTag().getNBT();
-	}
-
-	public void setItemNBT(CompoundNBT nbt) {
-		put("tag", new TagItemNBT(nbt));
+		return tag;
 	}
 
 	public TagDisplayName getDisplayNameTag() {
@@ -123,6 +99,19 @@ public class DataItem extends DataMap {
 
 	@Override
 	public DataItem copy() {
-		return new DataItem(getMapCopy());
+		return new DataItem(item.copy(), count.copy(), tag.copy(), slot.copy(), getMapCopy());
+	}
+
+	@Override
+	public CompoundNBT getNBT() {
+		CompoundNBT nbt = new CompoundNBT();
+		nbt.put("id", item.getNBT());
+		nbt.put("Count", count.getNBT());
+		nbt.put("tag", tag.getNBT());
+		data.forEach((key, value) -> {
+			if (!value.isDefault())
+				nbt.put(key, value.getNBT());
+		});
+		return nbt;
 	}
 }

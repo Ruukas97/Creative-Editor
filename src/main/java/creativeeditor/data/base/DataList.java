@@ -28,7 +28,7 @@ public class DataList extends SingularData<List<Data<?, ?>>, ListNBT> implements
 	}
 
 	public void add(INBT nbt) {
-		Data<?, ?> d = Data.fromNBT(nbt);
+		Data<?, ?> d = Data.getDataFromNBT(nbt);
 		if (d != null) {
 			this.add(d);
 		}

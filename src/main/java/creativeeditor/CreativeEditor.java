@@ -85,6 +85,7 @@ public class CreativeEditor {
 		
 		ReflectionUtils.setTeisr(Items.SHIELD, () -> ShieldRenderer::new);
 
+
 		// Register head library arrays
 		//registerHeadArrays();
 

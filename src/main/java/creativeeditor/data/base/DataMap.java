@@ -30,7 +30,7 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
 		for (String key : nbt.keySet()) {
 			INBT value = nbt.get(key);
 			if (value != null)
-				put(key, Data.fromNBT(value));
+				put(key, Data.getDataFromNBT(value));
 		}
 	}
 

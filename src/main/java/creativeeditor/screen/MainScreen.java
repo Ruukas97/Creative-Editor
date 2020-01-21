@@ -211,7 +211,7 @@ public class MainScreen extends ParentItemScreen {
 		super.mainRender(mouseX, mouseY, partialTicks, color);
 
 		// Item Name
-		String itemCount = item.getCount() > 1 ? item.getCount() + "x " : "";
+		String itemCount = item.getCountTag().get() > 1 ? item.getCountTag().get() + "x " : "";
 		String itemOverview = itemCount + item.getItemStackClean().getDisplayName().getFormattedText();
 		String overviewTrimmed = font.trimStringToWidth(itemOverview, width / 3 - 15);
 		drawCenteredString(font, overviewTrimmed.equals(itemOverview) ? overviewTrimmed : overviewTrimmed + "...",

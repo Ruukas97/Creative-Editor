@@ -47,7 +47,7 @@ public class ParentItemScreen extends ParentScreen {
 				mc.displayGuiScreen(lastScreen);
 			}));
 			addButton(new StyledButton(posX, posY - 11, bwidth, 20, I18n.format("gui.main.reset"), b -> {
-				item.setCount(1);
+				item.getCountTag().set(1);
 				item.getItemNBTTag().clear();
 				this.init();
 			}));

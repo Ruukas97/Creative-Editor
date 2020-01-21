@@ -35,5 +35,4 @@ public class DataTextComponent extends SingularData<ITextComponent, StringNBT> {
 	public StringNBT getNBT() {
 		return new StringNBT(ITextComponent.Serializer.toJson(data));
 	}
-
 }
