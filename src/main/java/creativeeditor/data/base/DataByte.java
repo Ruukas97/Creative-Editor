@@ -12,11 +12,6 @@ public class DataByte extends SingularData<Byte, ByteNBT> {
 	}
 
 	@Override
-	public DataByte copy() {
-		return new DataByte(data);
-	}
-
-	@Override
 	public boolean isDefault() {
 		return data == 0;
 	}

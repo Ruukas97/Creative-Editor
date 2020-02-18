@@ -44,11 +44,6 @@ public class DataList extends SingularData<List<Data<?, ?>>, ListNBT> implements
 	}
 
 	@Override
-	public Data<List<Data<?, ?>>, ListNBT> copy() {
-		return new DataList(Lists.newArrayList(data));
-	}
-
-	@Override
 	public ListNBT getNBT() {
 		ListNBT nbt = new ListNBT();
 		data.forEach(dat -> {

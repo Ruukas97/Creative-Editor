@@ -1,6 +1,5 @@
 package creativeeditor.data.base;
 
-import creativeeditor.data.Data;
 import net.minecraft.nbt.LongNBT;
 
 public class DataLong extends SingularData<Long, LongNBT> {
@@ -15,11 +14,6 @@ public class DataLong extends SingularData<Long, LongNBT> {
 
 	public DataLong(LongNBT nbt) {
 		this(nbt.getLong());
-	}
-
-	@Override
-	public Data<Long, LongNBT> copy() {
-		return new DataLong(data);
 	}
 
 	@Override

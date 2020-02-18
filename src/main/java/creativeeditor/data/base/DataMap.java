@@ -1,6 +1,5 @@
 package creativeeditor.data.base;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -28,6 +27,7 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
 		if (nbt == null || nbt.isEmpty())
 			return;
 		for (String key : nbt.keySet()) {
+			System.out.println("key: " + key);
 			INBT value = nbt.get(key);
 			if (value != null)
 				put(key, Data.getDataFromNBT(value));
@@ -37,23 +37,6 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
 	@Nullable
 	public Data<?, ?> getData(String key) {
 		return data.get(key);
-	}
-
-	@Nullable
-	public Data<?, ?> getDataCopy(String key) {
-		Data<?, ?> dat = getData(key);
-		return dat != null ? dat.copy() : null;
-	}
-
-	public Map<String, Data<?, ?>> getMapCopy() {
-		Map<String, Data<?, ?>> map = new HashMap<String, Data<?, ?>>();
-		data.keySet().forEach(key -> {
-			Data<?, ?> copy = getDataCopy(key);
-			if (copy != null) {
-				map.put(key, copy);
-			}
-		});
-		return map;
 	}
 
 	@Nonnull
@@ -89,11 +72,6 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
 
 	public void clear() {
 		data.clear();
-	}
-
-	@Override
-	public DataMap copy() {
-		return new DataMap(getMapCopy());
 	}
 
 	@Override

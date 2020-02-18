@@ -10,14 +10,20 @@ public abstract class SingularData<E, T extends INBT> implements Data<E, T> {
 		this.data = data;
 	}
 
-	@Override
+	/**
+	 * Gets the value of this Data object 
+	 * @return Data value
+	 */
 	public E get() {
 		return data;
 	}
 
-	@Override
+	/**
+	 * Sets the value of this Data object
+	 * @param value Value to set to
+	 */
 	public void set(E value) {
-		this.data = value;
+		data = value;
 	}
 	
 	@Override

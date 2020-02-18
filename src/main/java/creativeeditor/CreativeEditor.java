@@ -19,7 +19,6 @@ import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.ScreenPlayerInspector;
 import creativeeditor.screen.ScreenshotScreen;
 import creativeeditor.styles.StyleManager;
-import creativeeditor.util.LoadSkullThread;
 import creativeeditor.util.ReflectionUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
@@ -41,19 +40,19 @@ import net.minecraftforge.fml.config.ModConfig;
 
 @Mod("creativeeditor")
 public class CreativeEditor {
-	private static final Logger LOGGER = LogManager.getLogger();
+	public static final Logger LOGGER = LogManager.getLogger();
+		
 	private static KeyBinding OPEN_EDITOR_KEY;
+	private static KeyBinding SWITCH_GAMEMODE;
 	private static KeyBinding PLAYER_INSPECT;
 	private static KeyBinding OFF_HAND_SWING;
 	public static KeyBinding PREVIEW_SCREENSHOT;
-
-	private Minecraft mc;
+	
 
 	@SuppressWarnings("unused")
 	private ItemGroup tabUnavailable;
 
 	public CreativeEditor() {
-		mc = Minecraft.getInstance();
 		final ModLoadingContext context = ModLoadingContext.get();
 
 		LOGGER.info("Registering config");
@@ -62,10 +61,12 @@ public class CreativeEditor {
 
 		LOGGER.info("Registering keybindings");
 		OPEN_EDITOR_KEY = new KeyBinding("key.editor", GLFW.GLFW_KEY_U, "creativeeditor");
+		SWITCH_GAMEMODE = new KeyBinding("key.switchgamemode", InputMappings.INPUT_INVALID.getKeyCode(), "creativeeditor");
 		PLAYER_INSPECT = new KeyBinding("key.inspector", GLFW.GLFW_KEY_G, "creativeeditor");
 		OFF_HAND_SWING = new KeyBinding("key.offhandswing", InputMappings.INPUT_INVALID.getKeyCode(), "creativeeditor");
 		PREVIEW_SCREENSHOT = new KeyBinding("key.previewscreen", GLFW.GLFW_KEY_V, "creativeeditor");
 		ClientRegistry.registerKeyBinding(OPEN_EDITOR_KEY);
+		ClientRegistry.registerKeyBinding(SWITCH_GAMEMODE);
 		ClientRegistry.registerKeyBinding(OFF_HAND_SWING);
 		ClientRegistry.registerKeyBinding(PLAYER_INSPECT);
 		ClientRegistry.registerKeyBinding(PREVIEW_SCREENSHOT);
@@ -78,19 +79,10 @@ public class CreativeEditor {
 		
 		registerEventHandler(this);
 		
-
 		// Register Creative Tabs
 		registerTabs();
-		
-		
+				
 		ReflectionUtils.setTeisr(Items.SHIELD, () -> ShieldRenderer::new);
-
-
-		// Register head library arrays
-		//registerHeadArrays();
-
-		// Download Head Collection
-		//downloadHeads();
 	}
 
 	@SuppressWarnings("unused")
@@ -98,12 +90,6 @@ public class CreativeEditor {
 		for (HeadCategories hc : HeadCategories.values()) {
 			HeadScreen.headLibrary.put(hc, new ArrayList<ItemStack>());
 		}
-	}
-
-	@SuppressWarnings("unused")
-	private void downloadHeads() {
-		Thread thread = new Thread(new LoadSkullThread());
-		thread.start();
 	}
 
 	private void registerEventHandler(Object target) {
@@ -117,6 +103,7 @@ public class CreativeEditor {
 
 	@SubscribeEvent
 	public void onKeyInput(final KeyInputEvent event) {
+		Minecraft mc = Minecraft.getInstance();
 		if (mc.world == null || event.getAction() != GLFW.GLFW_PRESS
 				 || mc.currentScreen instanceof ChatScreen || (mc.currentScreen != null && !(mc.currentScreen instanceof ContainerScreen<?>)))
 			return;

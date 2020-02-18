@@ -16,11 +16,6 @@ public class DataInteger extends SingularData<Integer, IntNBT> {
 	}
 
 	@Override
-	public DataInteger copy() {
-		return new DataInteger(data);
-	}
-
-	@Override
 	public boolean isDefault() {
 		return data == 0;
 	}

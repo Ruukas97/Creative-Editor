@@ -12,11 +12,6 @@ public class DataDouble extends SingularData<Double, DoubleNBT> {
 	}
 
 	@Override
-	public DataDouble copy() {
-		return new DataDouble(data);
-	}
-
-	@Override
 	public boolean isDefault() {
 		return data == 0;
 	}

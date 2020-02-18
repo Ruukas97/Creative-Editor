@@ -21,11 +21,6 @@ public class DataString extends SingularData<String, StringNBT> {
 	}
 
 	@Override
-	public DataString copy() {
-		return new DataString(new String(data));
-	}
-
-	@Override
 	public boolean isDefault() {
 		return false;
 	}
