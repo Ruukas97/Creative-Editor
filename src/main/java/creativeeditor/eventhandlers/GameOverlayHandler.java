@@ -44,7 +44,7 @@ public class GameOverlayHandler {
 			x1 = 10;
 			y = 0;
 			duration = 200;
-			speed = ((double) opacity / (double) duration);
+			speed = ((double) opacity / (double) duration) ;
 			increaseSpeed = 0.999;
 			this.screenshotLocation = Screenshot.screenshotLocation;
 			firstRun = false;
@@ -55,37 +55,48 @@ public class GameOverlayHandler {
 			if (duration > 1) {
 
 				Color color = new Color(opacity, 255, 255, 255);
-				AbstractGui.fill(0, calculateMove(0, 10, duration),
-						calculateMove(width, dyntex.getTextureData().getWidth(), duration), height, color.getInt());
+				AbstractGui.fill(calculateMove(0, 10, duration), calculateMove(0, 10, duration),
+						calculateMove(width, width / 4, duration),
+						calculateMove(height, height / 30, duration), color.getInt());
+					// calculate move method not working as it's supposed to
 				if (hold <= 0) {
-
-					opacity = (int) (duration * speed);
 					duration--;
+					// calculate opacity?
+
 				} else {
 					hold--;
 				}
+				
 
 			}
 			if (duration <= 10 && duration > 0) {
+				opacity = (int) (duration * speed);
 				Minecraft.getInstance().getTextureManager().bindTexture(screenshotLocation);
 				GlStateManager.enableBlend();
 				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				GuiUtils.drawInscribedRect(10, -10, 100, 100, dyntex.getTextureData().getWidth(),
+				int x1 = 10;
+				int x2 = 100;
+				GuiUtils.drawInscribedRect(x1, -10, x2, 100, dyntex.getTextureData().getWidth(),
 						dyntex.getTextureData().getHeight());
 				// View the method above to calculate center for the string
 				GlStateManager.pushMatrix();
 				GlStateManager.scalef(0.7F, 0.7F, 0.7F);
 				char c = (char) CreativeEditor.PREVIEW_SCREENSHOT.getKey().getKeyCode();
-				Minecraft.getInstance().fontRenderer.drawStringWithShadow("Press " + c + " to view", 35, 100,
-						new Color(255, 255, 255, 255).getInt());
+				Minecraft.getInstance().fontRenderer.drawStringWithShadow("Press [" + c + "] to view",
+						(x2 / 2) + x1 - 16, 100, new Color(255, 255, 255, 255).getInt());
 				GlStateManager.popMatrix();
+			
+				
 			}
 		}
 
 	}
-
+	
+	//100 -> 20 
+	// 5 steps
+	// 100 - (x * 20) + 20
 	private int calculateMove(int start, int end, int duration) {
-		return duration * ((end - start) / 600) + start;
+		return start - ((end / 200) * duration);
 
 	}
 
