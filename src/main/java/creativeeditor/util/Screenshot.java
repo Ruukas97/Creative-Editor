@@ -12,8 +12,9 @@ public class Screenshot {
 	int hold = 20;
 	double speed = 0.99;
 	public static ResourceLocation screenshotLocation = new ResourceLocation("creativeeditor", "screenshot");
-
-	public void makeScreenshot(ScreenshotEvent e) {
+	
+	
+	public Screenshot(ScreenshotEvent e) {
 		GameOverlayHandler.hold = hold;
 		GameOverlayHandler.opacity = opacity;
 		GameOverlayHandler.speed = speed;

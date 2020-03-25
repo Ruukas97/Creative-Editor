@@ -24,6 +24,8 @@ public class ScreenshotScreen extends Screen {
 		super(new TranslationTextComponent("gui.screenshot"));
 		this.screenshotLocation = Screenshot.screenshotLocation;
 		this.e = GameOverlayHandler.event;
+		minecraft.getTextureManager().bindTexture(screenshotLocation);
+		
 	}
 
 	@Override
@@ -42,11 +44,6 @@ public class ScreenshotScreen extends Screen {
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		super.render(mouseX, mouseY, partialTicks);
 		titleField.render(mouseX, mouseY, partialTicks);
-
-	}
-
-	public void displayScreen() {
-		minecraft.getTextureManager().bindTexture(screenshotLocation);
 		GlStateManager.enableBlend();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GuiUtils.drawInscribedRect(10, -10, 100, 100, dyntex.getTextureData().getWidth(),
