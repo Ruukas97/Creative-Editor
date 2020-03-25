@@ -35,11 +35,6 @@ public class TagItemID extends DataString {
 	}
 	
 	@Override
-	public TagItemID copy() {
-		return new TagItemID(new String(data));
-	}
-	
-	@Override
 	public boolean isDefault() {
 		return false;
 	}

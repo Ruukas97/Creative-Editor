@@ -1,6 +1,5 @@
 package creativeeditor.data.base;
 
-import creativeeditor.data.Data;
 import net.minecraft.nbt.ShortNBT;
 
 public class DataShort extends SingularData<Short, ShortNBT> {
@@ -14,11 +13,6 @@ public class DataShort extends SingularData<Short, ShortNBT> {
 
 	public DataShort(ShortNBT nbt) {
 		this(nbt.getShort());
-	}
-
-	@Override
-	public Data<Short, ShortNBT> copy() {
-		return new DataShort(data);
 	}
 
 	@Override

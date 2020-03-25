@@ -2,11 +2,16 @@ package creativeeditor.data.tag;
 
 import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataTextComponent;
+import creativeeditor.data.version.NBTKeys;
+import lombok.Getter;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
 public class TagDisplayName extends DataTextComponent {
-	private DataItem item;
+	private @Getter DataItem item;
+	
 	public TagDisplayName(DataItem item) {
 		super(new StringTextComponent(item.getItemStack().getDisplayName().getFormattedText()));
 		this.item = item;
@@ -17,9 +22,8 @@ public class TagDisplayName extends DataTextComponent {
 		if(getUnformatted().length() == 0) {
 			return true;
 		}
-		DataItem copy = item.copy();
-		copy.clearCustomName();
-		return item.getItemStack().getDisplayName().getFormattedText().equals(copy.getItemStack().getDisplayName().getFormattedText());
+
+		return item.getItemStack().getDisplayName().getFormattedText().equals(getDefault().getFormattedText());
 	}
 
 	public void reset() {
@@ -27,8 +31,12 @@ public class TagDisplayName extends DataTextComponent {
 	}
 	
 	public ITextComponent getDefault() {
-		DataItem copy = item.copy();
-		copy.clearCustomName();
-		return new StringTextComponent(copy.getItemStack().getDisplayName().getFormattedText());
+		NBTKeys keys = NBTKeys.keys;
+		ItemStack copy = item.getItemStack();
+		CompoundNBT display = copy.getChildTag(keys.tagDisplay());
+		if(display != null) {
+			display.remove(keys.displayName());
+		}
+		return copy.getDisplayName();
 	}
 }

@@ -136,12 +136,12 @@ public class MainScreen extends ParentItemScreen {
 		}));
 
 		// General Item
-		addButton(new SliderTag(width / 2 + 5, 61, 50, 16, item.getCountTag()));
+		addButton(new SliderTag(width / 2 + 5, 61, 50, 16, item.getCount()));
 
-		addButton(new SliderTag(width / 2 + 5, 81, 50, 16, item.getItemNBTTag().getDamageTag(item)));
+		addButton(new SliderTag(width / 2 + 5, 81, 50, 16, item.getTag().getDamage()));
 
 		addButton(new StyledToggle(width / 2 - 40, 101, 80, 16, "item.tag.unbreakable.true",
-				"item.tag.unbreakable.false", item.getItemNBTTag().getUnbreakableTag()));
+				"item.tag.unbreakable.false", item.getTag().getUnbreakable()));
 
 		switch (ConfigHandler.CLIENT.currentLeftSideview.get()) {
 		case 0:
@@ -211,7 +211,7 @@ public class MainScreen extends ParentItemScreen {
 		super.mainRender(mouseX, mouseY, partialTicks, color);
 
 		// Item Name
-		String itemCount = item.getCountTag().get() > 1 ? item.getCountTag().get() + "x " : "";
+		String itemCount = item.getCount().get() > 1 ? item.getCount().get() + "x " : "";
 		String itemOverview = itemCount + item.getItemStackClean().getDisplayName().getFormattedText();
 		String overviewTrimmed = font.trimStringToWidth(itemOverview, width / 3 - 15);
 		drawCenteredString(font, overviewTrimmed.equals(itemOverview) ? overviewTrimmed : overviewTrimmed + "...",
@@ -220,7 +220,7 @@ public class MainScreen extends ParentItemScreen {
 		String id = I18n.format("gui.main.id");
 		int idWidth = font.getStringWidth(id);
 		drawString(font, id, width / 2 - idWidth, 45, color.getInt());
-		drawString(font, item.getItemTag().get(), width / 2 + 5, 45, color.getInt());
+		drawString(font, item.getItem().get(), width / 2 + 5, 45, color.getInt());
 
 		String count = I18n.format("gui.main.count");
 		int countWidth = font.getStringWidth(count);
@@ -238,7 +238,7 @@ public class MainScreen extends ParentItemScreen {
 		if (ConfigHandler.CLIENT.currentLeftSideview.get() == 0) {
 			// NBT
 			List<String> nbtLines = Arrays.asList(
-					(minecraft.gameSettings.advancedItemTooltips ? item.getNBT() : item.getItemNBTTag().getNBT())
+					(minecraft.gameSettings.advancedItemTooltips ? item.getNBT() : item.getTag().getNBT())
 							.toFormattedComponent(" ", 0).getFormattedText().split("\n"));
 
 			GuiUtils.drawHoveringText(item.getItemStackClean(), nbtLines, 0, 60, width / 3 - 1, height, -1, font);

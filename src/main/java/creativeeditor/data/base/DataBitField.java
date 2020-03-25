@@ -21,11 +21,6 @@ public class DataBitField extends SingularData<boolean[], IntNBT> {
 	}
 
 	@Override
-	public DataBitField copy() {
-		return new DataBitField(keepSize, data.clone());
-	}
-
-	@Override
 	public boolean isDefault() {
 		return getInt() == 0;
 	}
@@ -50,5 +45,4 @@ public class DataBitField extends SingularData<boolean[], IntNBT> {
 	public IntNBT getNBT() {
 		return new IntNBT(getInt());
 	}
-
 }

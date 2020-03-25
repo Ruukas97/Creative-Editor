@@ -13,11 +13,6 @@ public class DataFloat extends SingularData<Float, FloatNBT> {
 	}
 
 	@Override
-	public DataFloat copy() {
-		return new DataFloat(data);
-	}
-
-	@Override
 	public boolean isDefault() {
 		return data == 0;
 	}

@@ -1,28 +1,21 @@
 package creativeeditor.data;
 
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
-import com.google.common.collect.Maps;
-
-import creativeeditor.data.base.DataMap;
 import creativeeditor.data.tag.TagDamage;
 import creativeeditor.data.tag.TagDisplayName;
 import creativeeditor.data.tag.TagItemID;
 import creativeeditor.data.tag.TagItemNBT;
+import creativeeditor.data.version.NBTKeys;
+import lombok.Getter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 
-public class DataItem extends DataMap {
-	private TagItemID item;
-	private NumberRange count, slot;
-	private TagItemNBT tag;
+public class DataItem implements Data<DataItem, CompoundNBT> {
+	private @Getter TagItemID item;
+	private @Getter NumberRange count, slot;
+	private @Getter TagItemNBT tag;
 
-	public DataItem(TagItemID item, NumberRange count, TagItemNBT tag, NumberRange slot,
-			Map<String, Data<?, ?>> extra) {
-		super(extra);
+	public DataItem(TagItemID item, NumberRange count, TagItemNBT tag, NumberRange slot) {
 		this.item = item;
 		this.count = count;
 		this.slot = slot;
@@ -42,8 +35,10 @@ public class DataItem extends DataMap {
 	}
 
 	public DataItem(Item item, int count, CompoundNBT tag, int slot) {
-		this(new TagItemID(item), new NumberRange(count, 1, 64), new TagItemNBT(tag), new NumberRange(slot, 0, 45),
-				Maps.newHashMap());
+		this.item = new TagItemID(item);
+		this.count = new NumberRange(count, 1, 64);
+		this.slot = new NumberRange(slot, 0, 45);
+		this.tag = new TagItemNBT(this, tag);
 	}
 
 	/**
@@ -54,64 +49,37 @@ public class DataItem extends DataMap {
 	 * @return An itemstack including all data, with no cleanup.
 	 */
 	public ItemStack getItemStack() {
-		return ItemStack.read(getNBTIncludeAll());
+		return ItemStack.read(getNBT());
 	}
 
 	public ItemStack getItemStackClean() {
 		return ItemStack.read(getNBT());
 	}
 
-	public void setFromItemStack(ItemStack stack) {
-		item.setItem(stack.getItem());
-		count.set(stack.getCount());
-		tag = new TagItemNBT(stack.getTag());
-	}
-
-	@Nonnull
-	public TagItemID getItemTag() {
-		return this.getItemTag();
-	}
-
-	@Nonnull
-	public NumberRange getCountTag() {
-		return count;
-	}
-
-	public NumberRange getSlotTag() {
-		return slot;
-	}
-
-	public TagItemNBT getItemNBTTag() {
-		return tag;
-	}
-
 	public TagDisplayName getDisplayNameTag() {
-		return getItemNBTTag().getDisplayTag().getNameTag(this);
+		return getTag().getDisplay().getName();
 	}
 
 	public void clearCustomName() {
-		getItemNBTTag().getDisplayTag().get().remove("Name");
+		getDisplayNameTag().reset();
 	}
 
 	public TagDamage getDamageTag() {
-		return getItemNBTTag().getDamageTag(this);
-	}
-
-	@Override
-	public DataItem copy() {
-		return new DataItem(item.copy(), count.copy(), tag.copy(), slot.copy(), getMapCopy());
+		return getTag().getDamage();
 	}
 
 	@Override
 	public CompoundNBT getNBT() {
+		NBTKeys keys = NBTKeys.keys;
 		CompoundNBT nbt = new CompoundNBT();
-		nbt.put("id", item.getNBT());
-		nbt.put("Count", count.getNBT());
-		nbt.put("tag", tag.getNBT());
-		data.forEach((key, value) -> {
-			if (!value.isDefault())
-				nbt.put(key, value.getNBT());
-		});
+		nbt.put(keys.stackID(), getItem().getNBT());
+		nbt.put(keys.stackCount(), getCount().getNBT());
+		nbt.put(keys.stackTag(), getTag().getNBT());
 		return nbt;
+	}
+
+	@Override
+	public boolean isDefault() {
+		return getItemStack().isEmpty();
 	}
 }

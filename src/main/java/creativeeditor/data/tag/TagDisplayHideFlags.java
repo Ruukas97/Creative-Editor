@@ -8,12 +8,6 @@ public class TagDisplayHideFlags extends SingularData<TagDisplayHideFlags.HideFl
 		super(hideFlags);
 	}
 
-	@Override
-	public TagDisplayHideFlags copy() {
-		return new TagDisplayHideFlags(new HideFlags(data.enchants, data.attributes, data.unbreakable, data.canDestroy,
-				data.canPlaceOn, data.itemInfo));
-	}
-
 	public boolean getEnchantsHidden() {
 		return data.enchants;
 	}

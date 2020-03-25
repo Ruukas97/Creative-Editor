@@ -10,12 +10,7 @@ public class DataIntegerArray extends SingularData<int[], IntArrayNBT> {
 	public DataIntegerArray(IntArrayNBT nbt) {
 		this(nbt.getIntArray());
 	}
-
-	@Override
-	public DataIntegerArray copy() {
-		return new DataIntegerArray(data.clone());
-	}
-
+	
 	@Override
 	public boolean isDefault() {
 		return data.length == 0;

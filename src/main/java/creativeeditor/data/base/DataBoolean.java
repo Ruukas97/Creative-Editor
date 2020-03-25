@@ -1,6 +1,5 @@
 package creativeeditor.data.base;
 
-import creativeeditor.data.Data;
 import creativeeditor.widgets.StyledToggle;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.Button.IPressable;
@@ -23,11 +22,6 @@ public class DataBoolean extends SingularData<Boolean, ByteNBT> implements IPres
 
 	public void toggle() {
 		set(!data);
-	}
-	
-	@Override
-	public Data<Boolean, ByteNBT> copy() {
-		return new DataBoolean(data);
 	}
 
 	@Override

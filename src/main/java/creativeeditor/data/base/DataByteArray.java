@@ -12,11 +12,6 @@ public class DataByteArray extends SingularData<byte[], ByteArrayNBT> {
 	}
 
 	@Override
-	public DataByteArray copy() {
-		return new DataByteArray(data.clone());
-	}
-
-	@Override
 	public boolean isDefault() {
 		return data.length == 0;
 	}
