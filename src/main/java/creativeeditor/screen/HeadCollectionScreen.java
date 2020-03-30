@@ -3,192 +3,319 @@ package creativeeditor.screen;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.google.gson.Gson;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import creativeeditor.data.DataItem;
-import creativeeditor.util.ColorUtils;
-import creativeeditor.util.ColorUtils.Color;
-import creativeeditor.util.GuiUtils;
 import creativeeditor.util.MinecraftHead;
-import creativeeditor.widgets.StyledButton;
+import net.java.games.input.Keyboard;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class HeadCollectionScreen extends ParentScreen {
 
-	private Color hoverColor;
+	public static final String[] CATEGORIES = { "alphabet", "animals", "blocks", "decoration", "food-drinks", "humans",
+			"humanoid", "miscellaneous", "monsters", "plants" };
+	private static final String API_URL = "https://minecraft-heads.com/scripts/api.php?cat=";
 
-	private HeadCategories selectedCategory = HeadCategories.values()[0];
+	private static int selCat = 0;
+	private static int currentElement = 0;
+	private static String filteredString = null;
+	private static String searchString = "";
 
-	private String API_URL = "https://minecraft-heads.com/scripts/api.php?cat=";
+	private int maxInRow;
+	private int amountInPage;
 
-	private HashMap<HeadCategories, ArrayList<DataItem>> headsMap = new HashMap<HeadCollectionScreen.HeadCategories, ArrayList<DataItem>>();
-	private HashMap<Integer, ArrayList<DataItem>> filteredHeads = new HashMap<Integer, ArrayList<DataItem>>();
-	private int selectedPage = 0;
-	private int amountOfSkullsX = 10;
-	private int amountOfSkullsY = 15;
+	private int loaded = -1;
 
-	public enum HeadCategories {
-		alphabet, animals, blocks, decoration, food_drinks, humans, humanoid, miscellaneous, monsters, plants
-	}
+	private final Screen lastScreen;
+	private List<ItemStack> allSkulls = new LinkedList<ItemStack>();
+	private List<ItemStack> filteredSkulls = new LinkedList<ItemStack>();
 
 	public HeadCollectionScreen(Screen lastScreen) {
 		super(new TranslationTextComponent("gui.headcollection"), lastScreen);
+		this.lastScreen = lastScreen;
 
 	}
 
 	@Override
-	protected void init() {
+	public void init() {
 		super.init();
-
-		minecraft.keyboardListener.enableRepeatEvents(true);
-
-		addButton(new StyledButton(width / 24 - 12, height / 20 * 18, 60, 20, I18n.format("gui.main.back"),
-				(Button b) -> {
-					mc.displayGuiScreen(lastScreen);
-				}));
-
-		postInit();
-	}
-
-	protected void postInit() {
-		loadSkulls(selectedCategory);
-		int amount = headsMap.get(selectedCategory).size();
-		for(int i = 0; i < (amountOfSkullsX * amountOfSkullsY); i++) {
-			filteredHeads.get(0).add(headsMap.get(selectedCategory).get(i));
-		}
-		
-		for(int i = 0; i < amount; i++) {
-			
-			
-		}
-		
-		
-	}
-
-	private void loadSkulls(HeadCategories cat) {
-		if (headsMap.get(cat) != null) {
-			headsMap.get(cat).clear();
-		}
-		headsMap.put(cat, new ArrayList<DataItem>());
-		URL url;
-		MinecraftHead[] headArray = null;
-		try {
-			url = new URL(API_URL + cat.toString().replaceAll("_", "-"));
-			InputStreamReader reader = new InputStreamReader(url.openStream());
-			Gson gson = new Gson();
-			headArray = gson.fromJson(reader, MinecraftHead[].class);
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		if (headArray != null) {
-			MinecraftHead head = headArray[0];
+		Keyboard.enableRepeatEvents(true);
+		if (loaded != selCat) {
 			try {
-				System.out.println(head.getName());
-				String nbt = "{SkullOwner:{Id:\"" + head.getUuid() + "\",Properties:{textures:[{Value:\""
-						+ head.getValue() + "\"}]}}}";
-				DataItem skull = new DataItem(Items.PLAYER_HEAD, nbt);
-				skull.getDisplayNameTag().set(new StringTextComponent(head.getName()));
-				mc.player.inventory.addItemStackToInventory(skull.getItemStack());
-				headsMap.get(cat).add(skull);
-			} catch (CommandSyntaxException e) {
+				loadSkulls();
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
 		}
+		if (!searchString.equals(filteredString)) {
+			filteredSkulls.clear();
 
-	}
-
-	@Override
-	public void removed() {
-		minecraft.keyboardListener.enableRepeatEvents(false);
-
-	}
-
-	@Override
-	public boolean charTyped(char p_charTyped_1_, int p_charTyped_2_) {
-		// Backspace not supported yet
-		for (Widget w : renderWidgets) {
-			if (w instanceof TextFieldWidget) {
-				if (((TextFieldWidget) w).charTyped(p_charTyped_1_, p_charTyped_2_)) {
-					return true;
+			for (ItemStack s : allSkulls) {
+				if (s.getDisplayName().toString().toLowerCase().contains(searchString.toLowerCase())) {
+					filteredSkulls.add(s);
 				}
 			}
+
+			currentElement = 0;
+			filteredString = searchString;
 		}
-		return false;
+
+		maxInRow = (width - 250) / 16;
+		amountInPage = maxInRow * 10;
 	}
 
 	@Override
-	public void backRender(int mouseX, int mouseY, float p3, Color color) {
-		super.mainRender(mouseX, mouseY, p3, color);
-
-		hoverColor = ColorUtils.multiplyColor(color, new Color(1, 180, 180, 180));
-		Color c = ColorUtils.multiplyColor(color, new Color(1, 220, 220, 220));
-
-		int rightSideFromFrame = width / 12;
-		int topFromBottomFrame = height / 10 * 9 - 3;
-		int topFromTopFrame = height / 18;
-
-		// Background
-		fill(rightSideFromFrame, topFromTopFrame, width / 12 * 11, topFromBottomFrame,
-				new Color(100, 0, 0, 0).getInt());
-
-		// Main frame
-		GuiUtils.drawFrame(rightSideFromFrame, height / 10, width / 12 * 11, topFromBottomFrame, 2, c);
-
-		// Split line
-		int leftSideFromLeft = width / 7 * 2 - 10;
-		fill(width / 7 * 2 - 8, height / 10, leftSideFromLeft, height / 10 * 8 + 7, c.getInt());
-
-		// Top bar
-		int bottomFromTop = height / 16 * 2 + 2;
-		fill(rightSideFromFrame, topFromTopFrame, width / 12 * 11, bottomFromTop, c.getInt());
-
-		// Search bar (not fixed)
-		fill(rightSideFromFrame, topFromTopFrame, width / 12 * 11, height / 13 * 2 + 2,
-				new Color(10, 240, 240, 240).getInt());
-
-		// Bottom bar
-		int topFromBottom = height / 10 * 8 + 6;
-		int bottomFromBottom = height / 10 * 8 + 8;
-		fill(width / 12, topFromBottom, width / 12 * 11, bottomFromBottom, c.getInt());
-
-		int i = 0;
-		int add = (topFromBottom - bottomFromTop) / (HeadCategories.values().length);
-		int posX1 = leftSideFromLeft - rightSideFromFrame - 2;
-		for (HeadCategories hc : HeadCategories.values()) {
-
-			int posY1 = bottomFromTop + i + (add / 3);
-			Color textColor = color;
-			if (GuiUtils.isMouseIn(mouseX, mouseY, posX1 / 2, posY1 - 2, posX1, 11)) {
-				textColor = hoverColor;
-			} else {
-			}
-			drawCenteredString(mc.fontRenderer, I18n.format("gui.heads.category." + hc.name()), posX1, posY1,
-					textColor.getInt());
-			i += add;
-		}
-
-		// Credits to head api
-		drawCenteredString(mc.fontRenderer, I18n.format("gui.heads.credit"), width / 2,
-				(topFromBottomFrame - topFromBottom) / 2 + topFromBottom - 3, color.getInt());
-
+	public void onClose() {
+		Keyboard.enableRepeatEvents(false);
 	}
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
 		return super.mouseClicked(mouseX, mouseY, mouseButton);
+
+		if (mouseButton != 0) {
+			return false;
+		}
+
+		int letterSpace = 80;
+		int space = ((width - (maxInRow * 16)) - letterSpace) / 2;
+		int nextPageW = fontRenderer.getStringWidth("-->");
+		int topbar = 20;
+
+		int currentPage = currentElement / amountInPage;
+		int amountPages = ((int) Math.ceil(filteredSkulls.size() / amountInPage) + 1);
+
+		int searchW = fontRenderer.getStringWidth(searchString);
+		if (searchString.length() > 0 && !searchString.equals(filteredString)
+				&& HelperGui.isMouseInRegion(mouseX, mouseY, (width / 2) - searchW / 2, 56, searchW, 8)) {
+			init();
+		}
+
+		// Next page
+		else if (currentPage + 1 < amountPages && HelperGui.isMouseInRegion(mouseX, mouseY,
+				space + letterSpace + maxInRow * 16 - 3 - nextPageW, 50 + topbar + 168, nextPageW, 8)) {
+			currentElement = Math.min(filteredSkulls.size() - 1, (currentPage + 1) * amountInPage);
+			return false;
+		} else if (currentPage > 0 && HelperGui.isMouseInRegion(mouseX, mouseY,
+				space + letterSpace + maxInRow * 16 - 25 - nextPageW * 2, 50 + topbar + 168, nextPageW, 8)) {
+			currentElement = Math.max(0, (currentPage - 1) * amountInPage);
+			return false;
+		}
+
+		for (int i = 0; i < CATEGORIES.length; i++) {
+			int x = space + letterSpace / 2;
+			int y = i * 15 + 59 + topbar;
+
+			int sWH = fontRenderer.getStringWidth(CATEGORIES[i]) / 2;
+			if (mouseX > x - sWH && mouseX < x + sWH && mouseY > y - 1 && mouseY < y + 9) {
+				selCat = i;
+				currentElement = 0;
+				init();
+				return false;
+			}
+		}
+
+		if (filteredSkulls.size() > 0) {
+			for (int i = (int) Math.min(filteredSkulls.size() - 1, currentPage * amountInPage); i < (int) Math
+					.min(filteredSkulls.size(), (currentPage + 1) * amountInPage); i++) {
+				int x = space + letterSpace + (16 * (i % maxInRow));
+				int y = 50 + topbar + (16 * ((i % amountInPage) / maxInRow));
+
+				if (mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16) {
+					if (isShiftKeyDown()) {
+						mc.playerController.sendPacketDropItem(filteredSkulls.get(i));
+					} else {
+						int slot = InventoryUtils.getEmptySlot(mc.player.inventory);
+						if (slot < 0)
+							mc.playerController.sendPacketDropItem(filteredSkulls.get(i));
+						else
+							mc.playerController.sendSlotPacket(filteredSkulls.get(i), slot);
+					}
+					return true;
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean keyPressed(int key1, int key2, int key3) {
+		if (keyCode == 1) {
+			this.mc.displayGuiScreen(lastScreen);
+
+			if (this.mc.currentScreen == null) {
+				this.mc.setGameFocused(true);
+			}
+		} else if (keyCode == Keyboard.KEY_BACK) {
+			searchString = searchString.substring(0, Math.max(searchString.length() - 1, 0));
+			if (searchString.length() < 1 && !searchString.equals(filteredString)) {
+				init();
+			}
+		} else if ((keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER)
+				&& !searchString.equals(filteredString)) {
+			init();
+		} else if (ChatAllowedCharacters.isAllowedCharacter(typedChar)) {
+			if (searchString.length() < 20) {
+				searchString += typedChar;
+			}
+		}
+		return super.keyPressed(key1, key2, key3);
+	}
+
+	@Override
+	public void render(int mouseX, int mouseY, float partialTicks) {
+		int topbar = 20;
+		int letterSpace = 80;
+		int space = ((width - (maxInRow * 16 + 3)) - letterSpace) / 2;
+		int currentPage = currentElement / amountInPage;
+		int blandColor = HelperGui.getColorFromRGB(255, 150, 200, 255);
+		int amountPages = ((int) Math.ceil(filteredSkulls.size() / amountInPage) + 1);
+
+		// Topbar
+		drawRect(space, 50, space + letterSpace + (maxInRow * 16) + 3, 50 + topbar,
+				HelperGui.getColorFromRGB(200, 0, 122, 255));
+		// Outlines
+		drawRect(space, 50 + topbar, space + 2, 50 + topbar + 161 + topbar,
+				HelperGui.getColorFromRGB(200, 0, 122, 255));
+		drawRect(space + letterSpace + maxInRow * 16 + 1, 50 + topbar, space + letterSpace + maxInRow * 16 + 3,
+				50 + topbar + 161 + topbar, HelperGui.getColorFromRGB(200, 0, 122, 255));
+		drawRect(space + 2, 50 + topbar + 161, space + letterSpace + (maxInRow * 16) + 1, 50 + topbar + 163,
+				HelperGui.getColorFromRGB(200, 0, 122, 255));
+		drawRect(space, 50 + topbar * 2 + 161, space + letterSpace + (maxInRow * 16) + 3, 50 + topbar * 2 + 163,
+				HelperGui.getColorFromRGB(200, 0, 122, 255));
+
+		// Background
+		drawRect(space, 50 + topbar, space + letterSpace + (maxInRow * 16) + 3, 50 + topbar * 2 + 163,
+				HelperGui.getColorFromRGB(100, 70, 50, 200));
+		// Letterspace
+		drawRect(space + 2, 50 + topbar, space + letterSpace - 2, 50 + topbar + 161,
+				HelperGui.getColorFromRGB(100, 50, 50, 50));
+
+		for (int i = 0; i < CATEGORIES.length; i++) {
+			int x = space + letterSpace / 2;
+			int y = i * 15 + 59 + topbar;
+			int sWH = fontRenderer.getStringWidth(CATEGORIES[i]) / 2;
+
+			drawCenteredString(fontRenderer, I18n.format("gui.headcollection.category." + CATEGORIES[i]), x, y,
+					(i == selCat || (mouseX > x - sWH && mouseX < x + sWH && mouseY > y - 1 && mouseY < y + 9)
+							? InfinityConfig.CONTRAST_COLOR
+							: InfinityConfig.MAIN_COLOR));
+		}
+
+		drawString(fontRenderer, I18n.format("gui.headcollection") + " (" + filteredSkulls.size() + ")", space + 7, 56,
+				blandColor);
+
+		drawCenteredString(fontRenderer,
+				searchString.length() > 0 ? searchString : I18n.format("gui.headcollection.typesearch"), width / 2, 56,
+				blandColor);
+
+		String pageString = I18n.format("gui.headcollection.currentpage", currentPage + 1, amountPages);
+		drawString(fontRenderer, pageString,
+				space + letterSpace + maxInRow * 16 - fontRenderer.getStringWidth(pageString), 56, blandColor);
+
+		String nextPage = "-->";
+		int nextPageW = fontRenderer.getStringWidth(nextPage);
+		if (currentPage + 1 < amountPages) {
+			boolean selectedN = HelperGui.isMouseInRegion(mouseX, mouseY,
+					space + letterSpace + maxInRow * 16 - 3 - nextPageW, 50 + topbar + 168, nextPageW, 8);
+			drawString(fontRenderer, nextPage, space + letterSpace + maxInRow * 16 - 3 - nextPageW, 50 + topbar + 168,
+					selectedN ? InfinityConfig.CONTRAST_COLOR : blandColor);
+		}
+
+		drawCenteredString(fontRenderer, "" + (currentPage + 1), space + letterSpace + maxInRow * 16 - 13 - nextPageW,
+				50 + topbar + 168, blandColor);
+
+		if (currentPage > 0) {
+			String previousPage = "<--";
+			boolean selectedP = HelperGui.isMouseInRegion(mouseX, mouseY,
+					space + letterSpace + maxInRow * 16 - 25 - nextPageW * 2, 50 + topbar + 168, nextPageW, 8);
+			drawString(fontRenderer, previousPage, space + letterSpace + maxInRow * 16 - 25 - nextPageW * 2,
+					50 + topbar + 168, selectedP ? InfinityConfig.CONTRAST_COLOR : blandColor);
+		}
+
+		drawString(fontRenderer, "From https://minecraft-heads.com API", space + 7, 50 + topbar + 168, blandColor);
+
+		GlStateManager.pushMatrix();
+		RenderHelper.enableGUIStandardItemLighting();
+		GlStateManager.disableLighting();
+		GlStateManager.enableRescaleNormal();
+		GlStateManager.enableColorMaterial();
+		GlStateManager.enableLighting();
+		itemRender.zLevel = 100.0F;
+		ItemStack hovered = null;
+		if (filteredSkulls.size() > 0) {
+			for (int i = (int) Math.min(filteredSkulls.size() - 1, currentPage * amountInPage); i < (int) Math
+					.min(filteredSkulls.size(), (currentPage + 1) * amountInPage); i++) {
+				int x = space + letterSpace + (16 * (i % maxInRow));
+				int y = 50 + topbar + (16 * ((i % amountInPage) / maxInRow));
+				itemRender.renderItemAndEffectIntoGUI(filteredSkulls.get(i), x, y);
+				if (mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16) {
+					drawRect(x, y, x + 16, y + 16, HelperGui.getColorFromRGB(150, 150, 150, 150));
+					hovered = filteredSkulls.get(i);
+				}
+			}
+		}
+
+		GlStateManager.enableLighting();
+		GlStateManager.popMatrix();
+
+		int searchW = fontRenderer.getStringWidth(searchString);
+
+		if (hovered != null) {
+			HelperGui.addToolTip(0, 0, width, height, mouseX, mouseY, hovered.getDisplayName(),
+					I18n.format("gui.headcollection.clickhead"), I18n.format("gui.headcollection.clickheadshift"));
+		} else if (!searchString.equals(filteredString)
+				&& HelperGui.isMouseInRegion(mouseX, mouseY, (width / 2) - searchW / 2, 56, searchW, 8)) {
+			drawHoveringText(I18n.format("gui.headcollection.clicksearch"), mouseX, mouseY);
+		} else {
+			HelperGui.addTooltipTranslated(space + 2, 50 + topbar, letterSpace - 4, 161, mouseX, mouseY,
+					"gui.headcollection.changecategory");
+		}
+
+		drawCenteredString(fontRenderer, "Free slots: " + InventoryUtils.getEmptySlots(mc.player.inventory), width / 2,
+				height - 45, blandColor);
+		drawCenteredString(fontRenderer,
+				"Heads in inventory: " + InventoryUtils.countItem(mc.player.inventory, Items.SKULL, 3), width / 2,
+				height - 35, blandColor);
+
+	}
+
+	public void loadSkulls() throws IOException {
+		allSkulls.clear();
+		URL url = new URL(API_URL + CATEGORIES[selCat]);
+		InputStreamReader reader = new InputStreamReader(url.openStream());
+		Gson gson = new Gson();
+		MinecraftHead[] headArray = gson.fromJson(reader, MinecraftHead[].class);
+		reader.close();
+		for (MinecraftHead head : headArray) {
+			try {
+				String nbt = "{SkullOwner:{Id:\"" + head.getUuid() + "\",Properties:{textures:[{Value:\""
+						+ head.getValue() + "\"}]}}}";
+				DataItem skull = new DataItem(Items.PLAYER_HEAD, nbt);
+				skull.getDisplayNameTag().set(new StringTextComponent(head.getName()));
+				allSkulls.add(skull.getItemStack());
+			} catch (CommandSyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		loaded = selCat;
+		filteredString = null;
+	}
+
+	@Override
+	public boolean isPauseScreen() {
+		return false;
 	}
 
 }
