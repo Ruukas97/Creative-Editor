@@ -141,4 +141,9 @@ public class NBTKeysLatest extends NBTKeys {
 	public String attributeUUIDLeast() {
 		return "UUIDLeast";
 	}
+
+	@Override
+	public String tagSkullOwner() {
+		return "SkullOwner";
+	}
 }

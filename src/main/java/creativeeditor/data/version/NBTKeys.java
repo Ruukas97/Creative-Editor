@@ -43,4 +43,7 @@ public abstract class NBTKeys {
 	public abstract String attributeAmount();
 	public abstract String attributeUUIDMost();
 	public abstract String attributeUUIDLeast();
+	
+	//Item Specific
+	public abstract String tagSkullOwner();
 }

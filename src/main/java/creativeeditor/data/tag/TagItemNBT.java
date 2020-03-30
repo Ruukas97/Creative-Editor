@@ -1,11 +1,14 @@
 package creativeeditor.data.tag;
 
+import org.apache.commons.lang3.StringUtils;
+
 import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataBoolean;
 import creativeeditor.data.base.DataList;
 import creativeeditor.data.base.DataMap;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants.NBT;
 
@@ -22,8 +25,10 @@ public class TagItemNBT extends DataMap {
 
 	// Display
 	private final @Getter TagDisplay display;
-	
 
+	private final @Getter TagGameProfile skullOwner;
+
+	@SuppressWarnings("resource")
 	public TagItemNBT(DataItem item, CompoundNBT nbt) {
 		super();
 		nbt = nbt.copy();
@@ -40,6 +45,14 @@ public class TagItemNBT extends DataMap {
 		// Display
 		display = new TagDisplay(item, nbt);
 
+		if (nbt.contains(keys.tagSkullOwner(), NBT.TAG_COMPOUND)) {
+			skullOwner = new TagGameProfile(nbt.getCompound(keys.tagSkullOwner()));
+		} else if (nbt.contains(keys.tagSkullOwner(), NBT.TAG_STRING)
+				&& !StringUtils.isBlank(nbt.getString(keys.tagSkullOwner()))) {
+			skullOwner = new TagGameProfile(nbt.getString(keys.tagSkullOwner()));
+		} else {
+			skullOwner = new TagGameProfile(Minecraft.getInstance().player.getGameProfile());
+		}
 	}
 
 	@Override
