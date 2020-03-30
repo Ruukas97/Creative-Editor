@@ -1,16 +1,14 @@
 package creativeeditor.screen;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
 
 import com.google.gson.Gson;
 
+import creativeeditor.data.DataItem;
 import creativeeditor.util.ColorUtils;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtils;
@@ -23,8 +21,6 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class HeadCollectionScreen extends ParentScreen {
@@ -35,7 +31,7 @@ public class HeadCollectionScreen extends ParentScreen {
 	
 	private String API_URL = "https://minecraft-heads.com/scripts/api.php?cat=";
 	
-	private HashMap<HeadCategories, ArrayList<ItemStack>> headsMap = new HashMap<HeadCollectionScreen.HeadCategories, ArrayList<ItemStack>>();
+	private HashMap<HeadCategories, ArrayList<DataItem>> headsMap = new HashMap<HeadCollectionScreen.HeadCategories, ArrayList<DataItem>>();
 	
 	
 	
@@ -72,7 +68,7 @@ public class HeadCollectionScreen extends ParentScreen {
 		if(headsMap.get(cat) != null) {
 			headsMap.get(cat).clear();
 		}
-		headsMap.put(cat, new ArrayList<ItemStack>());
+		headsMap.put(cat, new ArrayList<DataItem>());
 		URL url;
 		MinecraftHead[] headArray = null;
 		try {
@@ -86,12 +82,8 @@ public class HeadCollectionScreen extends ParentScreen {
 		}
 		if(headArray != null) {
 			for (MinecraftHead head : headArray) {
-				ItemStack skull = new ItemStack(Items.PLAYER_HEAD, 1);
-				char c = '"';
-				skull.getOrCreateChildTag("display").putString("Name", "{\"text\":\"TNT\"}");
-				CompoundNBT nbt = skull.getOrCreateChildTag("SkullOwner");
-				nbt.putString("Id", head.getUuid());
-				nbt.putByteArray("textures", head.getValue().getBytes());
+				DataItem skull = new DataItem(new ItemStack(Items.PLAYER_HEAD));
+				
 				
 				
 				headsMap.get(cat).add(skull);
@@ -99,9 +91,7 @@ public class HeadCollectionScreen extends ParentScreen {
 			}
 			
 		}
-		ItemStack is = headsMap.get(cat).get(0);
-		System.out.println(is.getTag().toString());
-		mc.player.inventory.addItemStackToInventory(is);
+		
 		
 	}
 
