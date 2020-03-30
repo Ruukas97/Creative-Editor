@@ -1,5 +1,7 @@
 package creativeeditor.data;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+
 import creativeeditor.data.tag.TagDamage;
 import creativeeditor.data.tag.TagDisplayName;
 import creativeeditor.data.tag.TagItemID;
@@ -9,6 +11,7 @@ import lombok.Getter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.JsonToNBT;
 
 public class DataItem implements Data<DataItem, CompoundNBT> {
 	private @Getter TagItemID item;
@@ -28,6 +31,10 @@ public class DataItem implements Data<DataItem, CompoundNBT> {
 
 	public DataItem(ItemStack stack) {
 		this(stack, 0);
+	}
+	
+	public DataItem(Item item, String nbtString) throws CommandSyntaxException {
+		this(item, 1, JsonToNBT.getTagFromJson(nbtString), 0);
 	}
 
 	public DataItem(ItemStack stack, int slot) {
