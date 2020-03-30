@@ -2,13 +2,15 @@ package creativeeditor.data.tag;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.mojang.authlib.GameProfile;
+
 import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataBoolean;
 import creativeeditor.data.base.DataList;
 import creativeeditor.data.base.DataMap;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
-import net.minecraft.client.Minecraft;
+import lombok.Setter;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants.NBT;
 
@@ -26,12 +28,11 @@ public class TagItemNBT extends DataMap {
 	// Display
 	private final @Getter TagDisplay display;
 
-	private final @Getter TagGameProfile skullOwner;
+	private @Getter @Setter TagGameProfile skullOwner;
 
-	@SuppressWarnings("resource")
 	public TagItemNBT(DataItem item, CompoundNBT nbt) {
 		super();
-		nbt = nbt.copy();
+		nbt = nbt != null ? nbt.copy() : new CompoundNBT();
 		this.item = item;
 		NBTKeys keys = NBTKeys.keys;
 		// General
@@ -51,7 +52,7 @@ public class TagItemNBT extends DataMap {
 				&& !StringUtils.isBlank(nbt.getString(keys.tagSkullOwner()))) {
 			skullOwner = new TagGameProfile(nbt.getString(keys.tagSkullOwner()));
 		} else {
-			skullOwner = new TagGameProfile(Minecraft.getInstance().player.getGameProfile());
+			skullOwner = new TagGameProfile((GameProfile)null);
 		}
 	}
 
@@ -59,8 +60,18 @@ public class TagItemNBT extends DataMap {
 	public CompoundNBT getNBT() {
 		NBTKeys keys = NBTKeys.keys;
 		CompoundNBT nbt = new CompoundNBT();
-		nbt.put(keys.tagDamage(), damage.getNBT());
-		nbt.put(keys.tagDisplay(), display.getNBT());
+		if(!damage.isDefault())
+			nbt.put(keys.tagDamage(), damage.getNBT());
+		if(!unbreakable.isDefault())
+			nbt.put(keys.tagUnbreakable(), unbreakable.getNBT());
+		if(!canDestroy.isDefault())
+			nbt.put(keys.tagCanDestroy(), canDestroy.getNBT());
+		if(!canPlaceOn.isDefault())
+			nbt.put(keys.tagCanPlaceOn(), canPlaceOn.getNBT());
+		if(!display.isDefault())
+			nbt.put(keys.tagDisplay(), display.getNBT());
+		if(!skullOwner.isDefault())
+			nbt.put(keys.tagSkullOwner(), skullOwner.getNBT());
 		return nbt;
 	}
 

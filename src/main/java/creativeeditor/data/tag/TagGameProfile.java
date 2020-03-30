@@ -25,7 +25,7 @@ public class TagGameProfile implements Data<GameProfile, CompoundNBT> {
 
 	@Override
 	public boolean isDefault() {
-		return false;
+		return profile == null;
 	}
 
 	@Override

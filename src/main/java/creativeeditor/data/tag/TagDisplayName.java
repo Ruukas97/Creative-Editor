@@ -10,20 +10,21 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
 public class TagDisplayName extends DataTextComponent {
+	private boolean returnEmpty = false;
 	private @Getter DataItem item;
 	
 	public TagDisplayName(DataItem item) {
-		super(new StringTextComponent(item.getItemStack().getDisplayName().getFormattedText()));
+		super(new StringTextComponent("Custom Name"));
 		this.item = item;
 	}
 
 	@Override
 	public boolean isDefault() {
-		if(getUnformatted().length() == 0) {
+		if(returnEmpty || getUnformatted().length() == 0 || getUnformatted().equals("Custom Name")) {
 			return true;
 		}
 
-		return item.getItemStack().getDisplayName().getFormattedText().equals(getDefault().getFormattedText());
+		return data.getFormattedText().equals(getDefault().getFormattedText());
 	}
 
 	public void reset() {
@@ -32,7 +33,9 @@ public class TagDisplayName extends DataTextComponent {
 	
 	public ITextComponent getDefault() {
 		NBTKeys keys = NBTKeys.keys;
+		returnEmpty = true;
 		ItemStack copy = item.getItemStack();
+		returnEmpty = false;
 		CompoundNBT display = copy.getChildTag(keys.tagDisplay());
 		if(display != null) {
 			display.remove(keys.displayName());

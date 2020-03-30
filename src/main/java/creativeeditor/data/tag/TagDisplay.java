@@ -27,7 +27,7 @@ public class TagDisplay implements Data<TagDisplay, CompoundNBT> {
 
 	@Override
 	public boolean isDefault() {
-		return false;
+		return color.isDefault() && name.isDefault() && lore.isDefault();
 	}
 
 	@Override

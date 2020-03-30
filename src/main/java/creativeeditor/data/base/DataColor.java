@@ -20,7 +20,7 @@ public class DataColor extends SingularData<Color, IntNBT> {
 	
 	@Override
 	public boolean isDefault() {
-		return false;
+		return data.getInt() == 0;
 	}
 
 	@Override
