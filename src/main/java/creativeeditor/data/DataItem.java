@@ -81,8 +81,7 @@ public class DataItem implements Data<DataItem, CompoundNBT> {
 		CompoundNBT nbt = new CompoundNBT();
 		nbt.put(keys.stackID(), getItem().getNBT());
 		nbt.put(keys.stackCount(), getCount().getNBT());
-		if(!getTag().isDefault())
-			nbt.put(keys.stackTag(), getTag().getNBT());
+		nbt.put(keys.stackTag(), getTag().getNBT());
 		return nbt;
 	}
 

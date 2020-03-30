@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import creativeeditor.data.DataItem;
 import creativeeditor.util.ColorUtils;
@@ -21,20 +22,19 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class HeadCollectionScreen extends ParentScreen {
-	
+
 	private Color hoverColor;
-	
+
 	private HeadCategories selectedCategory = HeadCategories.values()[0];
-	
+
 	private String API_URL = "https://minecraft-heads.com/scripts/api.php?cat=";
-	
+
 	private HashMap<HeadCategories, ArrayList<DataItem>> headsMap = new HashMap<HeadCollectionScreen.HeadCategories, ArrayList<DataItem>>();
-	
-	
-	
+
 	public enum HeadCategories {
 		alphabet, animals, blocks, decoration, food_drinks, humans, humanoid, miscellaneous, monsters, plants
 	}
@@ -47,7 +47,7 @@ public class HeadCollectionScreen extends ParentScreen {
 	@Override
 	protected void init() {
 		super.init();
-		
+
 		minecraft.keyboardListener.enableRepeatEvents(true);
 
 		addButton(new StyledButton(width / 24 - 12, height / 20 * 18, 60, 20, I18n.format("gui.main.back"),
@@ -59,13 +59,13 @@ public class HeadCollectionScreen extends ParentScreen {
 	}
 
 	protected void postInit() {
-		if(headsMap.get(selectedCategory) == null) {
+		if (headsMap.get(selectedCategory) == null) {
 			loadSkulls(selectedCategory);
 		}
-	} 
-	
+	}
+
 	private void loadSkulls(HeadCategories cat) {
-		if(headsMap.get(cat) != null) {
+		if (headsMap.get(cat) != null) {
 			headsMap.get(cat).clear();
 		}
 		headsMap.put(cat, new ArrayList<DataItem>());
@@ -80,19 +80,22 @@ public class HeadCollectionScreen extends ParentScreen {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if(headArray != null) {
-			for (MinecraftHead head : headArray) {
-				DataItem skull = new DataItem(new ItemStack(Items.PLAYER_HEAD));
-				
-				
-				
+		if (headArray != null) {
+			MinecraftHead head = headArray[0];
+			try {
+				System.out.println(head.getName());
+				String nbt = "{SkullOwner:{Id:\"" + head.getUuid() + "\",Properties:{textures:[{Value:\""
+						+ head.getValue() + "\"}]}}}";
+				DataItem skull = new DataItem(Items.PLAYER_HEAD, nbt);
+				skull.getDisplayNameTag().set(new StringTextComponent(head.getName()));
+				mc.player.inventory.addItemStackToInventory(skull.getItemStack());
 				headsMap.get(cat).add(skull);
-				
+			} catch (CommandSyntaxException e) {
+				e.printStackTrace();
 			}
-			
+
 		}
-		
-		
+
 	}
 
 	@Override
@@ -117,17 +120,17 @@ public class HeadCollectionScreen extends ParentScreen {
 	@Override
 	public void backRender(int mouseX, int mouseY, float p3, Color color) {
 		super.mainRender(mouseX, mouseY, p3, color);
-		
+
 		hoverColor = ColorUtils.multiplyColor(color, new Color(1, 180, 180, 180));
 		Color c = ColorUtils.multiplyColor(color, new Color(1, 220, 220, 220));
-		
+
 		int rightSideFromFrame = width / 12;
 		int topFromBottomFrame = height / 10 * 9 - 3;
 		int topFromTopFrame = height / 18;
-		
-		//Background
-		fill(rightSideFromFrame, topFromTopFrame, width / 12 * 11, topFromBottomFrame, new Color(100, 0, 0, 0).getInt());
-		
+
+		// Background
+		fill(rightSideFromFrame, topFromTopFrame, width / 12 * 11, topFromBottomFrame,
+				new Color(100, 0, 0, 0).getInt());
 
 		// Main frame
 		GuiUtils.drawFrame(rightSideFromFrame, height / 10, width / 12 * 11, topFromBottomFrame, 2, c);
@@ -141,21 +144,19 @@ public class HeadCollectionScreen extends ParentScreen {
 		fill(rightSideFromFrame, topFromTopFrame, width / 12 * 11, bottomFromTop, c.getInt());
 
 		// Search bar (not fixed)
-		fill(rightSideFromFrame, topFromTopFrame, width / 12 * 11, height / 13 * 2 + 2, new Color(10, 240, 240, 240).getInt());
+		fill(rightSideFromFrame, topFromTopFrame, width / 12 * 11, height / 13 * 2 + 2,
+				new Color(10, 240, 240, 240).getInt());
 
 		// Bottom bar
 		int topFromBottom = height / 10 * 8 + 6;
 		int bottomFromBottom = height / 10 * 8 + 8;
 		fill(width / 12, topFromBottom, width / 12 * 11, bottomFromBottom, c.getInt());
 
-		
-		
 		int i = 0;
 		int add = (topFromBottom - bottomFromTop) / (HeadCategories.values().length);
 		int posX1 = leftSideFromLeft - rightSideFromFrame - 2;
 		for (HeadCategories hc : HeadCategories.values()) {
-			
-			
+
 			int posY1 = bottomFromTop + i + (add / 3);
 			Color textColor = color;
 			if (GuiUtils.isMouseIn(mouseX, mouseY, posX1 / 2, posY1 - 2, posX1, 11)) {
@@ -169,10 +170,10 @@ public class HeadCollectionScreen extends ParentScreen {
 
 		// Credits to head api
 		drawCenteredString(mc.fontRenderer, I18n.format("gui.heads.credit"), width / 2,
-				(topFromBottomFrame - topFromBottom) /2 + topFromBottom - 3, color.getInt());
+				(topFromBottomFrame - topFromBottom) / 2 + topFromBottom - 3, color.getInt());
 
 	}
-	
+
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
 		return super.mouseClicked(mouseX, mouseY, mouseButton);
