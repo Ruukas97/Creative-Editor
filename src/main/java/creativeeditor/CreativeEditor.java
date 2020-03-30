@@ -53,8 +53,6 @@ public class CreativeEditor {
 
 		LOGGER.info("Registering keybindings");
 		OPEN_EDITOR_KEY = new KeyBinding("key.editor", GLFW.GLFW_KEY_U, "creativeeditor");
-		SWITCH_GAMEMODE = new KeyBinding("key.switchgamemode", InputMappings.INPUT_INVALID.getKeyCode(),
-				"creativeeditor");
 		PLAYER_INSPECT = new KeyBinding("key.inspector", GLFW.GLFW_KEY_G, "creativeeditor");
 		OFF_HAND_SWING = new KeyBinding("key.offhandswing", InputMappings.INPUT_INVALID.getKeyCode(), "creativeeditor");
 		HEAD_COLLECTION = new KeyBinding("key.previewscreen", GLFW.GLFW_KEY_V, "creativeeditor");

@@ -47,12 +47,10 @@ public class ParentItemScreen extends ParentScreen {
 				mc.displayGuiScreen(lastScreen);
 			}));
 			addButton(new StyledButton(posX, posY - 11, bwidth, 20, I18n.format("gui.main.reset"), b -> {
-				item.getCount().set(1);
-				item.getTag().clear();
-				this.init();
+				mc.displayGuiScreen(new MainScreen(this.lastScreen, new DataItem(item.getItem().getItem(), 1, null, item.getSlot().get())));
 			}));
 			addButton(new StyledButton(posX, posY + 10, bwidth, 20, I18n.format("gui.main.save"), b -> {
-				mc.playerController.sendSlotPacket(item.getItemStackClean(), 36 + mc.player.inventory.currentItem);
+				mc.playerController.sendSlotPacket(item.getItemStack(), 36 + mc.player.inventory.currentItem);
 			}));
 			addButton(new StyledButton(posX + bwidth + 1, posY, bwidth, 20, I18n.format("gui.main.drop"), b -> {
 				mc.playerController.sendPacketDropItem(item.getItemStack());
@@ -81,7 +79,7 @@ public class ParentItemScreen extends ParentScreen {
 		super.overlayRender(mouseX, mouseY, p3, color);
 		// Item (Tooltip must render last or colors will be messed up)
 		if (renderItem) {
-			ItemStack stack = item.getItemStackClean();
+			ItemStack stack = item.getItemStack();
 			GlStateManager.scalef(itemScale, itemScale, 1f);
 			RenderHelper.enableGUIStandardItemLighting();
 			int x = (int) (width / (2 * itemScale) - 8);

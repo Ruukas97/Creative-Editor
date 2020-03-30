@@ -1,21 +1,25 @@
 package creativeeditor.data.tag;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.mojang.authlib.GameProfile;
 
+import creativeeditor.data.Data;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataBoolean;
 import creativeeditor.data.base.DataList;
-import creativeeditor.data.base.DataMap;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants.NBT;
 
-public class TagItemNBT extends DataMap {
+public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
 	private final @Getter DataItem item;
+	private final CompoundNBT unserializedNBT;
 
 	// General
 	private final @Getter TagDamage damage;
@@ -54,29 +58,51 @@ public class TagItemNBT extends DataMap {
 		} else {
 			skullOwner = new TagGameProfile((GameProfile)null);
 		}
+		
+		unserializedNBT = nbt.copy();
+		
+		Map<String, Data<?, ?>> dataMap = getKeyToDataMap();
+		for(String key : dataMap.keySet()) {
+			unserializedNBT.remove(key);
+		}
+	}
+	
+	
+	private Map<String, Data<?, ?>> getKeyToDataMap(){
+		Map<String, Data<?, ?>> map = new HashMap<>();
+		NBTKeys keys = NBTKeys.keys;
+		map.put(keys.tagDamage(), damage);
+		map.put(keys.tagUnbreakable(), unbreakable);
+		map.put(keys.tagCanDestroy(), canDestroy);
+		map.put(keys.tagCanPlaceOn(), canPlaceOn);
+		map.put(keys.tagDisplay(), display);
+		map.put(keys.tagSkullOwner(), skullOwner);
+		return map;
 	}
 
 	@Override
 	public CompoundNBT getNBT() {
-		NBTKeys keys = NBTKeys.keys;
-		CompoundNBT nbt = new CompoundNBT();
-		if(!damage.isDefault())
-			nbt.put(keys.tagDamage(), damage.getNBT());
-		if(!unbreakable.isDefault())
-			nbt.put(keys.tagUnbreakable(), unbreakable.getNBT());
-		if(!canDestroy.isDefault())
-			nbt.put(keys.tagCanDestroy(), canDestroy.getNBT());
-		if(!canPlaceOn.isDefault())
-			nbt.put(keys.tagCanPlaceOn(), canPlaceOn.getNBT());
-		if(!display.isDefault())
-			nbt.put(keys.tagDisplay(), display.getNBT());
-		if(!skullOwner.isDefault())
-			nbt.put(keys.tagSkullOwner(), skullOwner.getNBT());
+		CompoundNBT nbt = unserializedNBT.copy();
+		Map<String, Data<?, ?>> dataMap = getKeyToDataMap();
+		for(String key : dataMap.keySet()) {
+			Data<?,?> data = dataMap.get(key);
+			if(!data.isDefault())
+				nbt.put(key, data.getNBT());
+		}
 		return nbt;
 	}
 
 	@Override
 	public boolean isDefault() {
-		return super.isDefault();
+		if(!unserializedNBT.isEmpty())
+			return false;
+		
+		Map<String, Data<?, ?>> dataMap = getKeyToDataMap();
+		for(String key : dataMap.keySet()) {
+			Data<?,?> data = dataMap.get(key);
+			if(!data.isDefault())
+				return false;
+		}	
+		return false;
 	}
 }

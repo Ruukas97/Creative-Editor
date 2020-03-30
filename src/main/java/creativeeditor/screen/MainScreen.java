@@ -212,7 +212,7 @@ public class MainScreen extends ParentItemScreen {
 
 		// Item Name
 		String itemCount = item.getCount().get() > 1 ? item.getCount().get() + "x " : "";
-		String itemOverview = itemCount + item.getItemStackClean().getDisplayName().getFormattedText();
+		String itemOverview = itemCount + item.getItemStack().getDisplayName().getFormattedText();
 		String overviewTrimmed = font.trimStringToWidth(itemOverview, width / 3 - 15);
 		drawCenteredString(font, overviewTrimmed.equals(itemOverview) ? overviewTrimmed : overviewTrimmed + "...",
 				width / 2, 27, color.getInt());
@@ -241,14 +241,14 @@ public class MainScreen extends ParentItemScreen {
 					(minecraft.gameSettings.advancedItemTooltips ? item.getNBT() : item.getTag().getNBT())
 							.toFormattedComponent(" ", 0).getFormattedText().split("\n"));
 
-			GuiUtils.drawHoveringText(item.getItemStackClean(), nbtLines, 0, 60, width / 3 - 1, height, -1, font);
+			GuiUtils.drawHoveringText(item.getItemStack(), nbtLines, 0, 60, width / 3 - 1, height, -1, font);
 		}
 
 		else if (ConfigHandler.CLIENT.currentLeftSideview.get() == 1) {
 			// renderTooltip(item.getItemStackClean(), 0, 60);
-			ItemStack stack = item.getItemStackClean();
+			ItemStack stack = item.getItemStack();
 
-			GuiUtils.drawHoveringText(item.getItemStackClean(), getTooltipFromItem(stack), 0, 60, width / 3 - 1, height,
+			GuiUtils.drawHoveringText(item.getItemStack(), getTooltipFromItem(stack), 0, 60, width / 3 - 1, height,
 					-1, font);
 		}
 	}

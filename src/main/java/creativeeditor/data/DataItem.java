@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
 
-public class DataItem implements Data<DataItem, CompoundNBT> {
+public class DataItem implements Data<ItemStack, CompoundNBT> {
 	private @Getter TagItemID item;
 	private @Getter NumberRange count, slot;
 	private @Getter TagItemNBT tag;
@@ -59,7 +59,7 @@ public class DataItem implements Data<DataItem, CompoundNBT> {
 		return ItemStack.read(getNBT());
 	}
 
-	public ItemStack getItemStackClean() {
+	public ItemStack getItemStackFull() {
 		return ItemStack.read(getNBT());
 	}
 
@@ -79,9 +79,12 @@ public class DataItem implements Data<DataItem, CompoundNBT> {
 	public CompoundNBT getNBT() {
 		NBTKeys keys = NBTKeys.keys;
 		CompoundNBT nbt = new CompoundNBT();
+		if(!getSlot().isDefault())
+			nbt.put(keys.stackSlot(), getSlot().getNBT());
 		nbt.put(keys.stackID(), getItem().getNBT());
 		nbt.put(keys.stackCount(), getCount().getNBT());
-		nbt.put(keys.stackTag(), getTag().getNBT());
+		if(!getTag().isDefault())
+			nbt.put(keys.stackTag(), getTag().getNBT());
 		return nbt;
 	}
 

@@ -17,7 +17,6 @@ public class DataTextComponent extends SingularData<ITextComponent, StringNBT> {
 	public String getFormatted() {
 		if(this instanceof TagDisplayName) {
 			TagDisplayName name = (TagDisplayName) this;
-			System.out.println(name.getItem().getItem().getItem().getName());
 		}
 		return data.getFormattedText();
 	}
