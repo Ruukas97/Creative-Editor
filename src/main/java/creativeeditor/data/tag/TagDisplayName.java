@@ -6,15 +6,21 @@ import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class TagDisplayName extends DataTextComponent {
-	private boolean returnEmpty = false;
+	private boolean returnEmpty = true;
 	private @Getter DataItem item;
 	
-	public TagDisplayName(DataItem item) {
-		super(new StringTextComponent("Custom Name"));
+	public TagDisplayName(StringNBT name, DataItem item) {
+		this(name.getString(), item);
+	}
+	
+	public TagDisplayName(String name, DataItem item) {
+		super(name.equals("") ? new TranslationTextComponent(item.getItem().getItem().getTranslationKey()) : ITextComponent.Serializer.fromJson(name));
+		returnEmpty = false;
 		this.item = item;
 	}
 

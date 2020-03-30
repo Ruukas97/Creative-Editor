@@ -21,7 +21,7 @@ public class TagDisplay implements Data<TagDisplay, CompoundNBT> {
 		NBTKeys keys = NBTKeys.keys;
 		CompoundNBT display = nbt.getCompound(keys.tagDisplay());
 		color = new DataColor(display);
-		name = new TagDisplayName(this.item);
+		name = new TagDisplayName(display.getString(keys.displayName()), this.item);
 		lore = new DataList(display.getList(keys.displayLore(), NBT.TAG_STRING));
 	}
 

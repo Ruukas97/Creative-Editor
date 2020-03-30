@@ -1,6 +1,5 @@
 package creativeeditor.data.base;
 
-import creativeeditor.data.tag.TagDisplayName;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -10,14 +9,15 @@ public class DataTextComponent extends SingularData<ITextComponent, StringNBT> {
 		super(data);
 	}
 	
+	public DataTextComponent(String data) {
+		this(new StringTextComponent(data));
+	}
+	
 	public String getUnformatted() {
 		return data.getUnformattedComponentText();
 	}
 	
 	public String getFormatted() {
-		if(this instanceof TagDisplayName) {
-			TagDisplayName name = (TagDisplayName) this;
-		}
 		return data.getFormattedText();
 	}
 	
