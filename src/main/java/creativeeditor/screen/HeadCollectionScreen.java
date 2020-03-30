@@ -20,7 +20,6 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -34,6 +33,10 @@ public class HeadCollectionScreen extends ParentScreen {
 	private String API_URL = "https://minecraft-heads.com/scripts/api.php?cat=";
 
 	private HashMap<HeadCategories, ArrayList<DataItem>> headsMap = new HashMap<HeadCollectionScreen.HeadCategories, ArrayList<DataItem>>();
+	private HashMap<Integer, ArrayList<DataItem>> filteredHeads = new HashMap<Integer, ArrayList<DataItem>>();
+	private int selectedPage = 0;
+	private int amountOfSkullsX = 10;
+	private int amountOfSkullsY = 15;
 
 	public enum HeadCategories {
 		alphabet, animals, blocks, decoration, food_drinks, humans, humanoid, miscellaneous, monsters, plants
@@ -59,9 +62,18 @@ public class HeadCollectionScreen extends ParentScreen {
 	}
 
 	protected void postInit() {
-		if (headsMap.get(selectedCategory) == null) {
-			loadSkulls(selectedCategory);
+		loadSkulls(selectedCategory);
+		int amount = headsMap.get(selectedCategory).size();
+		for(int i = 0; i < (amountOfSkullsX * amountOfSkullsY); i++) {
+			filteredHeads.get(0).add(headsMap.get(selectedCategory).get(i));
 		}
+		
+		for(int i = 0; i < amount; i++) {
+			
+			
+		}
+		
+		
 	}
 
 	private void loadSkulls(HeadCategories cat) {
