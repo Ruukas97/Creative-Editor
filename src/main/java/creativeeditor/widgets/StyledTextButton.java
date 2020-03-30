@@ -8,6 +8,7 @@ public class StyledTextButton extends StyledButton {
 		super(xIn - (stringWidth / 2) - 1, yIn - 7, stringWidth + 2, 9, msg, onPress);
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public void renderButton(int mouseX, int mouseY, float unused) {
 		if (this.visible)

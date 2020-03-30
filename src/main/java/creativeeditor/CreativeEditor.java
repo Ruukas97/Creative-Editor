@@ -1,7 +1,5 @@
 package creativeeditor;
 
-import java.util.ArrayList;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
@@ -12,7 +10,6 @@ import creativeeditor.data.DataItem;
 import creativeeditor.eventhandlers.ScreenHandler;
 import creativeeditor.render.ShieldRenderer;
 import creativeeditor.screen.HeadCollectionScreen;
-import creativeeditor.screen.HeadCollectionScreen.HeadCategories;
 import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.ScreenPlayerInspector;
 import creativeeditor.styles.StyleManager;
@@ -24,7 +21,6 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;

@@ -310,6 +310,7 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
 		this.setCursorPosition(this.text.length());
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	// TODO replace hardcoded key ints
 	public boolean keyPressed(int key1, int key2, int key3) {
