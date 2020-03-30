@@ -1,11 +1,20 @@
 package creativeeditor.screen;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
+
+import com.google.gson.Gson;
 
 import creativeeditor.util.ColorUtils;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtils;
+import creativeeditor.util.MinecraftHead;
 import creativeeditor.widgets.StyledButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -13,13 +22,23 @@ import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class HeadCollectionScreen extends ParentScreen {
 	
 	private Color hoverColor;
-	private HeadCategories hoverCategory;
-
+	
+	private HeadCategories selectedCategory = HeadCategories.values()[0];
+	
+	private String API_URL = "https://minecraft-heads.com/scripts/api.php?cat=";
+	
+	private HashMap<HeadCategories, ArrayList<ItemStack>> headsMap = new HashMap<HeadCollectionScreen.HeadCategories, ArrayList<ItemStack>>();
+	
+	
+	
 	public enum HeadCategories {
 		alphabet, animals, blocks, decoration, food_drinks, humans, humanoid, miscellaneous, monsters, plants
 	}
@@ -28,8 +47,6 @@ public class HeadCollectionScreen extends ParentScreen {
 		super(new TranslationTextComponent("gui.headcollection"), lastScreen);
 
 	}
-
-	public static HashMap<HeadCategories, ArrayList<ItemStack>> headLibrary = new HashMap<>();
 
 	@Override
 	protected void init() {
@@ -46,7 +63,46 @@ public class HeadCollectionScreen extends ParentScreen {
 	}
 
 	protected void postInit() {
-
+		if(headsMap.get(selectedCategory) == null) {
+			loadSkulls(selectedCategory);
+		}
+	} 
+	
+	private void loadSkulls(HeadCategories cat) {
+		if(headsMap.get(cat) != null) {
+			headsMap.get(cat).clear();
+		}
+		headsMap.put(cat, new ArrayList<ItemStack>());
+		URL url;
+		MinecraftHead[] headArray = null;
+		try {
+			url = new URL(API_URL + cat.toString().replaceAll("_", "-"));
+			InputStreamReader reader = new InputStreamReader(url.openStream());
+			Gson gson = new Gson();
+			headArray = gson.fromJson(reader, MinecraftHead[].class);
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if(headArray != null) {
+			for (MinecraftHead head : headArray) {
+				ItemStack skull = new ItemStack(Items.PLAYER_HEAD, 1);
+				char c = '"';
+				skull.getOrCreateChildTag("display").putString("Name", "{\"text\":\"TNT\"}");
+				CompoundNBT nbt = skull.getOrCreateChildTag("SkullOwner");
+				nbt.putString("Id", head.getUuid());
+				nbt.putByteArray("textures", head.getValue().getBytes());
+				
+				
+				headsMap.get(cat).add(skull);
+				
+			}
+			
+		}
+		ItemStack is = headsMap.get(cat).get(0);
+		System.out.println(is.getTag().toString());
+		mc.player.inventory.addItemStackToInventory(is);
+		
 	}
 
 	@Override
@@ -114,9 +170,7 @@ public class HeadCollectionScreen extends ParentScreen {
 			Color textColor = color;
 			if (GuiUtils.isMouseIn(mouseX, mouseY, posX1 / 2, posY1 - 2, posX1, 11)) {
 				textColor = hoverColor;
-				hoverCategory = hc;
 			} else {
-				hoverCategory = null;
 			}
 			drawCenteredString(mc.fontRenderer, I18n.format("gui.heads.category." + hc.name()), posX1, posY1,
 					textColor.getInt());

@@ -80,13 +80,6 @@ public class CreativeEditor {
 		ReflectionUtils.setTeisr(Items.SHIELD, () -> ShieldRenderer::new);
 	}
 
-	@SuppressWarnings("unused")
-	private void registerHeadArrays() {
-		for (HeadCategories hc : HeadCategories.values()) {
-			HeadCollectionScreen.headLibrary.put(hc, new ArrayList<ItemStack>());
-		}
-	}
-
 	private void registerEventHandler(Object target) {
 		MinecraftForge.EVENT_BUS.register(target);
 	}
