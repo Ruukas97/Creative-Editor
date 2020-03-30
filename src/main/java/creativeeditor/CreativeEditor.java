@@ -36,7 +36,6 @@ public class CreativeEditor {
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	private static KeyBinding OPEN_EDITOR_KEY;
-	private static KeyBinding SWITCH_GAMEMODE;
 	private static KeyBinding PLAYER_INSPECT;
 	private static KeyBinding OFF_HAND_SWING;
 	public static KeyBinding HEAD_COLLECTION;
@@ -57,7 +56,6 @@ public class CreativeEditor {
 		OFF_HAND_SWING = new KeyBinding("key.offhandswing", InputMappings.INPUT_INVALID.getKeyCode(), "creativeeditor");
 		HEAD_COLLECTION = new KeyBinding("key.previewscreen", GLFW.GLFW_KEY_V, "creativeeditor");
 		ClientRegistry.registerKeyBinding(OPEN_EDITOR_KEY);
-		ClientRegistry.registerKeyBinding(SWITCH_GAMEMODE);
 		ClientRegistry.registerKeyBinding(OFF_HAND_SWING);
 		ClientRegistry.registerKeyBinding(PLAYER_INSPECT);
 		ClientRegistry.registerKeyBinding(HEAD_COLLECTION);
