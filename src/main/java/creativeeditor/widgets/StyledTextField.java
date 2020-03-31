@@ -11,7 +11,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import creativeeditor.styles.StyleManager;
 import creativeeditor.styles.StyleVanilla;
-import creativeeditor.util.GuiUtils;
+import creativeeditor.util.GuiUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
@@ -445,7 +445,7 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
 					fill(this.x, this.y, this.x + this.width, this.y + this.height, /*StyleManager.getCurrentStyle() instanceof StyleVanilla ?*/ -16777216 /*:ColorUtils.hsvToRGBInt(0, 0, 55).getInt()*/);
 				}
 				else {
-					GuiUtils.drawFrame(x, y, x+width, y+height, 1, StyleManager.getCurrentStyle().getMainColor());
+					GuiUtil.drawFrame(x, y, x+width, y+height, 1, StyleManager.getCurrentStyle().getMainColor());
 				}
 			}
 

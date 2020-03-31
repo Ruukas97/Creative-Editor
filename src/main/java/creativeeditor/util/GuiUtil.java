@@ -1,15 +1,31 @@
 package creativeeditor.util;
 
+import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import creativeeditor.screen.ParentScreen;
 import creativeeditor.util.ColorUtils.Color;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.client.config.GuiUtils;
 
-public class GuiUtils {
+public class GuiUtil extends GuiUtils {
+	@SuppressWarnings("resource")
+	public static FontRenderer getFontRenderer() {
+		return Minecraft.getInstance().fontRenderer;
+	}
+	
 	public static boolean isMouseIn(int mouseX, int mouseY, int x, int y, int width, int height) {
 		return x <= mouseX && mouseX < x + width && y <= mouseY && mouseY < y + height;
 	}
@@ -57,5 +73,54 @@ public class GuiUtils {
 		GlStateManager.disableBlend();
 		GlStateManager.enableAlphaTest();
 		GlStateManager.enableTexture();
+	}
+
+	@SuppressWarnings("resource")
+	@Nullable
+	public static Screen getCurrentScreen() {
+		return Minecraft.getInstance().currentScreen;
+	}
+
+	
+	public static boolean isMouseInRegion(double mouseX, double mouseY, int xPos, int yPos, int width, int height) {
+		return mouseX >= xPos && mouseY >= yPos && mouseX < xPos + width && mouseY < yPos + height;
+	}
+
+	
+	public static void addToolTip(Screen screen, int xPos, int yPos, int width, int height, int mouseX, int mouseY, String... str) {
+		if (isMouseInRegion(mouseX, mouseY, xPos, yPos, width, height)) {
+			addToolTip(screen, mouseX, mouseY, str);
+		}
+	}
+	
+	public static void addToolTip(Screen screen, int xPos, int yPos, String... str) {
+		List<String> list = Arrays.asList(str);   
+		drawHoveringText(null, list, xPos, yPos, screen.width, screen.height, -1, getFontRenderer());
+	}
+
+	@SuppressWarnings("resource")
+	public static void dropStack(ItemStack stack) {
+		if (!stack.isEmpty()) {
+			Minecraft.getInstance().player.inventory.player.dropItem(stack, true);
+			Minecraft.getInstance().playerController.sendPacketDropItem(stack);
+		}
+	}
+
+	public static int getColorFromRGB(int alpha, int red, int green, int blue) {
+		int color = alpha << 24;
+		color += red << 16;
+		color += green << 8;
+		color += blue;
+		return color;
+	}
+
+	public static void openWebLink(URI url) {
+		try {
+			Class<?> oclass = Class.forName("java.awt.Desktop");
+			Object object = oclass.getMethod("getDesktop").invoke((Object) null);
+			oclass.getMethod("browse", URI.class).invoke(object, url);
+		} catch (Throwable throwable1) {
+			//Throwable throwable = throwable1.getCause();
+		}
 	}
 }

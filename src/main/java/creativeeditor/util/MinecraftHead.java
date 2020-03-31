@@ -1,5 +1,7 @@
 package creativeeditor.util;
 
+import java.util.UUID;
+
 public class MinecraftHead {
 
 	private String name;
@@ -10,8 +12,8 @@ public class MinecraftHead {
 		return name;
 	}
 
-	public String getUuid() {
-		return uuid;
+	public UUID getUUID() {
+		return UUID.fromString( uuid );
 	}
 
 	public String getValue() {

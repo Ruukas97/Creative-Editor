@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import creativeeditor.data.DataItem;
 import creativeeditor.util.ColorUtils.Color;
-import creativeeditor.util.GuiUtils;
+import creativeeditor.util.GuiUtil;
 import creativeeditor.widgets.StyledButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.RenderHelper;
@@ -91,9 +91,9 @@ public class ParentItemScreen extends ParentScreen {
 			GlStateManager.scalef(1f / itemScale, 1f / itemScale, 1f);
 
 			// Item frame
-			GuiUtils.drawFrame(width / 2 - 20, height / 2 + 10, width / 2 + 20, height / 2 + 50, 1, color);
+			GuiUtil.drawFrame(width / 2 - 20, height / 2 + 10, width / 2 + 20, height / 2 + 50, 1, color);
 
-			if (GuiUtils.isMouseIn(mouseX, mouseY, width / 2 - 17, height / 2 + 13, 34, 34)) {
+			if (GuiUtil.isMouseIn(mouseX, mouseY, width / 2 - 17, height / 2 + 13, 34, 34)) {
 				renderTooltip(stack, mouseX, mouseY);
 			}
 		}
