@@ -25,7 +25,6 @@ public class MinecraftHeads {
     public static List<ItemStack> loadCategory( List<ItemStack> list, MinecraftHeadsCategory category ) {
         try {
             InputStreamReader reader = new InputStreamReader( category.getURL().openStream() );
-            System.out.println( category.getURL().toString() );
             Gson gson = new Gson();
             MinecraftHeadsResponse[] response = gson.fromJson( reader, MinecraftHeadsResponse[].class );
             reader.close();
@@ -41,6 +40,9 @@ public class MinecraftHeads {
             e.printStackTrace();
         }
         catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
 
