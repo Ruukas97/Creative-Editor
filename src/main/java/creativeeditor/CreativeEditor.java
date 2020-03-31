@@ -51,10 +51,10 @@ public class CreativeEditor {
 		StyleManager.loadConfig();
 
 		LOGGER.info("Registering keybindings");
-		OPEN_EDITOR_KEY = new KeyBinding("key.editor", GLFW.GLFW_KEY_U, "creativeeditor");
-		PLAYER_INSPECT = new KeyBinding("key.inspector", GLFW.GLFW_KEY_G, "creativeeditor");
-		OFF_HAND_SWING = new KeyBinding("key.offhandswing", InputMappings.INPUT_INVALID.getKeyCode(), "creativeeditor");
-		HEAD_COLLECTION = new KeyBinding("key.previewscreen", GLFW.GLFW_KEY_V, "creativeeditor");
+		OPEN_EDITOR_KEY = new KeyBinding("key.editor", GLFW.GLFW_KEY_U, "Creative Editor");
+		PLAYER_INSPECT = new KeyBinding("key.inspector", GLFW.GLFW_KEY_G, "Creative Editor");
+		OFF_HAND_SWING = new KeyBinding("key.offhandswing", InputMappings.INPUT_INVALID.getKeyCode(), "Creative Editor");
+		HEAD_COLLECTION = new KeyBinding("key.previewscreen", GLFW.GLFW_KEY_V, "Creative Editor");
 		ClientRegistry.registerKeyBinding(OPEN_EDITOR_KEY);
 		ClientRegistry.registerKeyBinding(OFF_HAND_SWING);
 		ClientRegistry.registerKeyBinding(PLAYER_INSPECT);
