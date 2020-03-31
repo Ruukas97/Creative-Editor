@@ -5,16 +5,12 @@ import java.util.UUID;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.yggdrasil.response.MinecraftProfilePropertiesResponse;
 
-import creativeeditor.data.Data;
+import creativeeditor.data.base.SingularData;
 import creativeeditor.json.MinecraftHeadsResponse;
-import lombok.Getter;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 
-public class TagGameProfile implements Data<GameProfile, CompoundNBT> {
-    private final @Getter GameProfile profile;
-
-
+public class TagGameProfile extends SingularData<GameProfile, CompoundNBT> {
     public TagGameProfile(String username) {
         this( new GameProfile( (UUID) null, username ) );
     }
@@ -26,29 +22,30 @@ public class TagGameProfile implements Data<GameProfile, CompoundNBT> {
 
 
     public TagGameProfile(GameProfile profile) {
-        this.profile = profile;
+        super( profile );
     }
 
 
     public TagGameProfile(MinecraftProfilePropertiesResponse profile) {
-        this.profile = new GameProfile( profile.getId(), profile.getName() );
-        this.profile.getProperties().putAll( profile.getProperties() );
+        super( new GameProfile( profile.getId(), profile.getName() ) );
+        data.getProperties().putAll( profile.getProperties() );
     }
-    
+
+
     public TagGameProfile(MinecraftHeadsResponse profile) {
-        this.profile = new GameProfile( profile.getUUID(), profile.getName() );
-        this.profile.getProperties().putAll( profile.getProperties() );
+        super( new GameProfile( profile.getUUID(), profile.getName() ) );
+        data.getProperties().putAll( profile.getProperties() );
     }
 
 
     @Override
     public boolean isDefault() {
-        return profile == null;
+        return data == null;
     }
 
 
     @Override
     public CompoundNBT getNBT() {
-        return NBTUtil.writeGameProfile( new CompoundNBT(), profile );
+        return NBTUtil.writeGameProfile( new CompoundNBT(), data );
     }
 }

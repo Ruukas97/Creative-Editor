@@ -6,7 +6,7 @@ import java.net.URL;
 import lombok.Getter;
 
 public enum MinecraftHeadsCategory {
-    alphabet( "alphabet" ), animals( "animals" ), blocks( "blocks" ), decoration( "decoration" ), fooddrink( "food-drink" ), humans( "humans" ), humanoid( "humanoid" ), miscellaneous( "miscellaneous" ), monsters( "monsters" ), plants( "plants" );
+    alphabet( "alphabet" ), animals( "animals" ), blocks( "blocks" ), decoration( "decoration" ), fooddrink( "food-drinks" ), humans( "humans" ), humanoid( "humanoid" ), miscellaneous( "miscellaneous" ), monsters( "monsters" ), plants( "plants" );
 
 
     private @Getter String name;

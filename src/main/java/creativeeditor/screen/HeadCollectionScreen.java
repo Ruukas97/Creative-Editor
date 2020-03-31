@@ -45,7 +45,6 @@ public class HeadCollectionScreen extends ParentScreen {
     @Override
     public void init() {
         super.init();
-        mc.keyboardListener.enableRepeatEvents( true );
         if (loaded != selCat) {
             loadSkulls();
         }
@@ -64,6 +63,8 @@ public class HeadCollectionScreen extends ParentScreen {
 
         maxInRow = (width - 250) / 16;
         amountInPage = maxInRow * 10;
+        
+        mc.keyboardListener.enableRepeatEvents( true );
     }
 
 
