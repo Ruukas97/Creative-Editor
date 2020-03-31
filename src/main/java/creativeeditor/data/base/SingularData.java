@@ -1,15 +1,15 @@
 package creativeeditor.data.base;
 
 import creativeeditor.data.Data;
+import lombok.Getter;
 import net.minecraft.nbt.INBT;
 
 public abstract class SingularData<E, T extends INBT> implements Data<E, T> {
-	protected E data;
+	protected @Getter E data;
 
 	public SingularData(E data) {
 		this.data = data;
 	}
-
 	/**
 	 * Gets the value of this Data object 
 	 * @return Data value

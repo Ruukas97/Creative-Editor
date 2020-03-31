@@ -47,6 +47,11 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
 		this.slot = new NumberRange(slot, 0, 45);
 		this.tag = new TagItemNBT(this, tag);
 	}
+	
+	@Override
+	public ItemStack getData() {
+	    return getItemStack();
+	}
 
 	/**
 	 * This reads the map into an ItemStack including all keys. So no default checks

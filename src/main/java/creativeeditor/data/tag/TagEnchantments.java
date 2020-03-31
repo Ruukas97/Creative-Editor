@@ -1,37 +1,43 @@
-package creativeeditor.data.base;
+package creativeeditor.data.tag;
 
 import java.util.List;
 import java.util.ListIterator;
 
 import com.google.common.collect.Lists;
 
-import creativeeditor.data.Data;
+import creativeeditor.data.base.SingularData;
+import creativeeditor.data.tag.TagEnchantment;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraftforge.common.util.Constants.NBT;
 
-public abstract class DataList<E extends Data<?, ?>>extends SingularData<List<E>, ListNBT> implements Iterable<E> {
-    public DataList() {
+public class TagEnchantments extends SingularData<List<TagEnchantment>, ListNBT> implements Iterable<TagEnchantment> {
+    public TagEnchantments() {
         this( Lists.newArrayList() );
     }
 
 
-    public DataList(ListNBT nbt) {
+    public TagEnchantments(ListNBT nbt) {
         this();
         nbt.forEach( this::add );
     }
 
 
-    public DataList(List<E> list) {
+    public TagEnchantments(List<TagEnchantment> list) {
         super( list );
     }
 
 
-    public void add( E value ) {
+    public void add( TagEnchantment value ) {
         data.add( value );
     }
 
 
-    public abstract <T extends INBT> void add( T nbt );
+    public void add( INBT nbt ) {
+        if (nbt.getId() == NBT.TAG_COMPOUND)
+            add( (CompoundNBT) nbt );
+    }
 
 
     public void clear() {
@@ -57,7 +63,7 @@ public abstract class DataList<E extends Data<?, ?>>extends SingularData<List<E>
 
 
     @Override
-    public ListIterator<E> iterator() {
+    public ListIterator<TagEnchantment> iterator() {
         return data.listIterator();
     }
 }

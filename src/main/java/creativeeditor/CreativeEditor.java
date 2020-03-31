@@ -10,6 +10,7 @@ import creativeeditor.data.DataItem;
 import creativeeditor.eventhandlers.ScreenHandler;
 import creativeeditor.render.ShieldRenderer;
 import creativeeditor.screen.HeadCollectionScreen;
+import creativeeditor.screen.ItemInspectorScreen;
 import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.ScreenPlayerInspector;
 import creativeeditor.styles.StyleManager;
@@ -96,6 +97,9 @@ public class CreativeEditor {
 			Entity entity = mc.pointedEntity;
 			if (entity != null) {
 				mc.displayGuiScreen(new ScreenPlayerInspector(mc.currentScreen, mc.player));
+			}
+			else {
+	             mc.displayGuiScreen(new ItemInspectorScreen(mc.currentScreen, new DataItem( mc.player.getHeldItemMainhand() )));
 			}
 		} else if (event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {
 			mc.player.swingArm(Hand.OFF_HAND);
