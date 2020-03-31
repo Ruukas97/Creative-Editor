@@ -67,9 +67,9 @@ public class StyleSpectrum implements Style {
 
     @Override
     public Color getFGColor( boolean active, boolean hovered ) {
-        if (!active)
+        if (active)
             return ColorUtils.hsvToRGB( ((spectrumTick - 350) % 5000) / 5000f, 0.85f, 1f );
-        if (!hovered)
+        if (hovered)
             return ColorUtils.hsvToRGB( ((spectrumTick + 500) % 5000) / 5000f, 1f, 1f );
         return getMainColor();
     }

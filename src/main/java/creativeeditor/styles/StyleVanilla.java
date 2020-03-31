@@ -8,7 +8,7 @@ import net.minecraftforge.fml.client.config.GuiUtils;
 
 public class StyleVanilla extends StyleBase {
     public StyleVanilla() {
-        super( new StaticButtonColor( 16777120, 14737632, 10526880 ) );
+        super( new StaticButtonColor( 14737632, 16777120, 10526880 ) );
     }
 
 
