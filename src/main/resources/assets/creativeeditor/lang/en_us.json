@@ -5,25 +5,22 @@
 	"itemGroup.unavailable": "Unavailable",
 	"gui.optionsound":"Change output",
 	
-	
-	
-	"gui.heads":"Head Collection",
-	"gui.heads.category.alphabet":"Alphabet",
-	"gui.heads.category.animals":"Animals",
-	"gui.heads.category.blocks":"Blocks",
-	"gui.heads.category.decoration":"Decoration",
-	"gui.heads.category.food_drinks":"Food-drinks",
-	"gui.heads.category.humans":"Humans",
-	"gui.heads.category.humanoid":"Humanoid",
-	"gui.heads.category.miscellaneous":"Miscellaneous",
-	"gui.heads.category.monsters":"Monsters",
-	"gui.heads.category.plants":"Plants",
-	"gui.heads.credit":"Special thanks to minecraft-heads.com",
+	"gui.headcollection":"Head Collection",
+	"gui.headcollection.category.alphabet":"Alphabet",
+	"gui.headcollection.category.animals":"Animals",
+	"gui.headcollection.category.blocks":"Blocks",
+	"gui.headcollection.category.decoration":"Decoration",
+	"gui.headcollection.category.food-drink":"Food & drinks",
+	"gui.headcollection.category.humans":"Humans",
+	"gui.headcollection.category.humanoid":"Humanoid",
+	"gui.headcollection.category.miscellaneous":"Miscellaneous",
+	"gui.headcollection.category.monsters":"Monsters",
+	"gui.headcollection.category.plants":"Plants",
+	"gui.headcollection.credit":"Special thanks to minecraft-heads.com",
+	"gui.headcollection.currentpage":"Page %s/%s",
+	"gui.headcollection.typesearch":"Type to search",
 	"gui.main.head":"Heads",
 	"gui.main.player":"Player",
-	
-	
-	
 	
 	"gui.soundoutput": "Change sound output",
 
@@ -47,9 +44,6 @@
 	"gui.main.itemflag": "Item Flags",
 	"gui.main.colorstyle": "Change Style",
 	
-	"gui.headcollection":"Head Collection",
-	
-	
 	"gui.itemflag": "Item Flags Editor",
 	"flag.enchantment": "Enchantments",
 	"flag.attributemod": "AttributeMod",
@@ -58,7 +52,6 @@
 	"flag.canplaceon": "CanPlaceOn",
 	"flag.iteminfo": "ItemInfo",
 	"flag.switchall": "Switch all",
-	
 	
 	"gui.player.flight":"Toggle Flight",
 	"gui.player":"Player Capabilities",

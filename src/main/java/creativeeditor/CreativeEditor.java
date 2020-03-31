@@ -101,7 +101,7 @@ public class CreativeEditor {
 			mc.player.swingArm(Hand.OFF_HAND);
 
 		} else if (event.getKey() == HEAD_COLLECTION.getKey().getKeyCode()) {
-			mc.displayGuiScreen(new HeadCollectionScreen(null));
+			mc.displayGuiScreen(new HeadCollectionScreen(mc.currentScreen));
 		}
 	}
 }

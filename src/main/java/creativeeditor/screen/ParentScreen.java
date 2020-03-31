@@ -42,8 +42,8 @@ public abstract class ParentScreen extends Screen {
 
 
     @Override
-    public void onClose() {
-        super.onClose();
+    public void onClose() {        
+        this.minecraft.displayGuiScreen(lastScreen);
     }
 
 

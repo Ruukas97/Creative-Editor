@@ -12,15 +12,15 @@ version="${file.jarVersion}" #mandatory
  # A display name for the mod
 displayName="Creative Editor" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
-updateJSONURL="http://myurl.me/" #optional
+#updateJSONURL="http://myurl.me/" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
-displayURL="http://example.com/" #optional
+#displayURL="http://example.com/" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-logoFile="examplemod.png" #optional
+#logoFile="examplemod.png" #optional
 # A text field displayed in the mod UI
 credits="Thanks to the patient community on discord." #optional
 # A text field displayed in the mod UI
-authors="Ruukas" #optional
+authors="Ruukas and Thieme" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 And in-game item editor that strives to provide the best tools for item spawning and editing.
