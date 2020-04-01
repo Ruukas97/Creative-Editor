@@ -43,6 +43,9 @@
 	"gui.main.clear": "Clear",
 	"gui.main.itemflag": "Item Flags",
 	"gui.main.colorstyle": "Change Style",
+
+	"gui.texteditor": "Text Editor",
+	"gui.texteditor.preview": "Preview",
 	
 	"gui.itemflag": "Item Flags Editor",
 	"flag.enchantment": "Enchantments",

@@ -69,11 +69,9 @@ public class HeadCollectionScreen extends ParentScreen {
 
 
     @Override
-    public void onClose() {
-        super.onClose();
+    public void removed() {
         mc.keyboardListener.enableRepeatEvents( false );
     }
-
 
     @Override
     public boolean mouseClicked( double mouseX, double mouseY, int mouseButton ) {
@@ -84,13 +82,13 @@ public class HeadCollectionScreen extends ParentScreen {
 
         int letterSpace = 80;
         int space = ((width - (maxInRow * 16)) - letterSpace) / 2;
-        int nextPageW = fontRenderer.getStringWidth( "-->" );
+        int nextPageW = font.getStringWidth( "-->" );
         int topbar = 20;
 
         int currentPage = currentElement / amountInPage;
         int amountPages = ((int) Math.ceil( filteredHeads.size() / amountInPage ) + 1);
 
-        int searchW = fontRenderer.getStringWidth( searchString );
+        int searchW = font.getStringWidth( searchString );
         if (searchString.length() > 0 && !searchString.equals( filteredString ) && GuiUtil.isMouseInRegion( (int) mouseX, (int) mouseY, (width / 2) - searchW / 2, 56, searchW, 8 )) {
             init();
         }
@@ -109,7 +107,7 @@ public class HeadCollectionScreen extends ParentScreen {
             int x = space + letterSpace / 2;
             int y = category.ordinal() * 15 + 59 + topbar;
 
-            int sWH = fontRenderer.getStringWidth( category.getName() ) / 2;
+            int sWH = font.getStringWidth( category.getName() ) / 2;
             if (mouseX > x - sWH && mouseX < x + sWH && mouseY > y - 1 && mouseY < y + 9) {
                 selCat = category;
                 currentElement = 0;
@@ -205,35 +203,35 @@ public class HeadCollectionScreen extends ParentScreen {
         for (MinecraftHeadsCategory category : MinecraftHeadsCategory.values()) {
             int x = space + letterSpace / 2;
             int y = category.ordinal() * 15 + 59 + topbar;
-            int sW = fontRenderer.getStringWidth( category.getName() );
+            int sW = font.getStringWidth( category.getName() );
             int sWH = sW / 2;
 
-            drawCenteredString( fontRenderer, I18n.format( "gui.headcollection.category." + category.getName() ), x, y, (style.getFGColor( true, category == selCat || GuiUtil.isMouseInRegion( mouseX, mouseY, x - sWH, y - 1, sW, 10 ) ).getInt()) );
+            drawCenteredString( font, I18n.format( "gui.headcollection.category." + category.getName() ), x, y, (style.getFGColor( true, category == selCat || GuiUtil.isMouseInRegion( mouseX, mouseY, x - sWH, y - 1, sW, 10 ) ).getInt()) );
         }
 
-        drawString( fontRenderer, I18n.format( "gui.headcollection" ) + " (" + filteredHeads.size() + ")", space + 7, 56, blandColor );
+        drawString( font, I18n.format( "gui.headcollection" ) + " (" + filteredHeads.size() + ")", space + 7, 56, blandColor );
 
-        drawCenteredString( fontRenderer, searchString.length() > 0 ? searchString : I18n.format( "gui.headcollection.typesearch" ), width / 2, 56, blandColor );
+        drawCenteredString( font, searchString.length() > 0 ? searchString : I18n.format( "gui.headcollection.typesearch" ), width / 2, 56, blandColor );
 
         String pageString = I18n.format( "gui.headcollection.currentpage", currentPage + 1, amountPages );
-        drawString( fontRenderer, pageString, space + letterSpace + maxInRow * 16 - fontRenderer.getStringWidth( pageString ), 56, blandColor );
+        drawString( font, pageString, space + letterSpace + maxInRow * 16 - font.getStringWidth( pageString ), 56, blandColor );
 
         String nextPage = "-->";
-        int nextPageW = fontRenderer.getStringWidth( nextPage );
+        int nextPageW = font.getStringWidth( nextPage );
         if (currentPage + 1 < amountPages) {
             boolean selectedN = GuiUtil.isMouseInRegion( mouseX, mouseY, space + letterSpace + maxInRow * 16 - 3 - nextPageW, 50 + topbar + 168, nextPageW, 8 );
-            drawString( fontRenderer, nextPage, space + letterSpace + maxInRow * 16 - 3 - nextPageW, 50 + topbar + 168, style.getFGColor( true, selectedN ).getInt() );
+            drawString( font, nextPage, space + letterSpace + maxInRow * 16 - 3 - nextPageW, 50 + topbar + 168, style.getFGColor( true, selectedN ).getInt() );
         }
 
-        drawCenteredString( fontRenderer, "" + (currentPage + 1), space + letterSpace + maxInRow * 16 - 13 - nextPageW, 50 + topbar + 168, blandColor );
+        drawCenteredString( font, "" + (currentPage + 1), space + letterSpace + maxInRow * 16 - 13 - nextPageW, 50 + topbar + 168, blandColor );
 
         if (currentPage > 0) {
             String previousPage = "<--";
             boolean selectedP = GuiUtil.isMouseInRegion( mouseX, mouseY, space + letterSpace + maxInRow * 16 - 25 - nextPageW * 2, 50 + topbar + 168, nextPageW, 8 );
-            drawString( fontRenderer, previousPage, space + letterSpace + maxInRow * 16 - 25 - nextPageW * 2, 50 + topbar + 168, style.getFGColor( true, selectedP ).getInt() );
+            drawString( font, previousPage, space + letterSpace + maxInRow * 16 - 25 - nextPageW * 2, 50 + topbar + 168, style.getFGColor( true, selectedP ).getInt() );
         }
 
-        drawString( fontRenderer, I18n.format( "gui.headcollection.credit" ), space + 7, 50 + topbar + 168, blandColor );
+        drawString( font, I18n.format( "gui.headcollection.credit" ), space + 7, 50 + topbar + 168, blandColor );
 
         GlStateManager.pushMatrix();
         RenderHelper.enableGUIStandardItemLighting();
@@ -258,7 +256,7 @@ public class HeadCollectionScreen extends ParentScreen {
         GlStateManager.enableLighting();
         GlStateManager.popMatrix();
 
-        int searchW = fontRenderer.getStringWidth( searchString );
+        int searchW = font.getStringWidth( searchString );
 
         if (hovered != null) {
             GuiUtil.addToolTip( this, mouseX, mouseY, width, height, mouseX, mouseY, hovered.getDisplayName().getFormattedText(), I18n.format( "gui.headcollection.clickhead" ), I18n.format( "gui.headcollection.clickheadshift" ) );
@@ -270,8 +268,8 @@ public class HeadCollectionScreen extends ParentScreen {
             GuiUtil.addToolTip( this, space + 2, 50 + topbar, letterSpace - 4, 161, mouseX, mouseY, "gui.headcollection.changecategory" );
         }
 
-        drawCenteredString( fontRenderer, "Free slots: " + InventoryUtils.getEmptySlots( mc.player.inventory ), width / 2, height - 45, blandColor );
-        drawCenteredString( fontRenderer, "Heads in inventory: " + InventoryUtils.countItem( mc.player.inventory, Items.PLAYER_HEAD ), width / 2, height - 35, blandColor );
+        drawCenteredString( font, "Free slots: " + InventoryUtils.getEmptySlots( mc.player.inventory ), width / 2, height - 45, blandColor );
+        drawCenteredString( font, "Heads in inventory: " + InventoryUtils.countItem( mc.player.inventory, Items.PLAYER_HEAD ), width / 2, height - 35, blandColor );
 
     }
 

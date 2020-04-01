@@ -13,7 +13,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class ItemInspectorScreen extends ParentScreen {
     private DataItem item;
     private boolean isScrolling;
-    private float rotX = 0f, rotY = 0f, rotZ = 0f;
+    private float rotX = 0f, rotY = 0f;
     private float itemScale = 10.0f;
 
 
@@ -30,59 +30,46 @@ public class ItemInspectorScreen extends ParentScreen {
             this.isScrolling = false;
             return false;
         }
-        else {
-            if (!this.isScrolling) {
-                this.isScrolling = true;
-            }
-            else {
-                // this.selectedTab.func_195626_a(p_mouseDragged_6_, p_mouseDragged_8_);
-                rotX += p_mouseDragged_6_;
-                rotY += p_mouseDragged_8_;
-            }
-
-            return true;
+        else if (!this.isScrolling) {
+            this.isScrolling = true;
         }
-    }
-
-
-    @Override
-    public void backRender( int mouseX, int mouseY, float p3, Color color ) {
-        super.backRender( mouseX, mouseY, p3, color );
-    }
-
-
-    @Override
-    public void mainRender( int mouseX, int mouseY, float p3, Color color ) {
-        super.mainRender( mouseX, mouseY, p3, color );
+        else {
+            rotX += p_mouseDragged_6_;
+            rotY += p_mouseDragged_8_;
+        }
+        return true;
     }
 
 
     @Override
     public void overlayRender( int mouseX, int mouseY, float p3, Color color ) {
         super.overlayRender( mouseX, mouseY, p3, color );
-        ItemRendererUtils itemRenderUtils = new ItemRendererUtils(this.itemRenderer);
+        ItemRendererUtils itemRenderUtils = new ItemRendererUtils( this.itemRenderer );
 
         ItemStack stack = item.getItemStack();
-        //GlStateManager.rotated( rotX * 3, 0.0f, 0.0f, -1.0f );
-        //GlStateManager.rotatef( rotX, 0.0f, 1.0f, 0f );
+        // GlStateManager.rotated( rotX * 3, 0.0f, 0.0f, -1.0f );
+        // GlStateManager.rotatef( rotX, 0.0f, 1.0f, 0f );
         GlStateManager.scalef( itemScale, itemScale, 1f );
         RenderHelper.enableGUIStandardItemLighting();
         int x = (int) (width / (2 * itemScale) - 8);
         int y = (int) (30 / itemScale + height / (2 * itemScale) - 8);
         itemRenderUtils.renderItemIntoGUI( stack, x, y, rotX, rotY );
-        //itemRenderer.renderItemIntoGUI( stack, x, y );
-        //itemRenderer.renderItemOverlayIntoGUI( font, item.getItemStack(), x, y, null );
+        // itemRenderer.renderItemIntoGUI( stack, x, y );
+        // itemRenderer.renderItemOverlayIntoGUI( font, item.getItemStack(), x, y, null
+        // );
         RenderHelper.disableStandardItemLighting();
 
         GlStateManager.scalef( 1f / itemScale, 1f / itemScale, 1f );
-        //GlStateManager.rotatef( 0.1f, -rotX, -rotY, -rotZ );
+        // GlStateManager.rotatef( 0.1f, -rotX, -rotY, -rotZ );
 
         // Item frame
-        //GuiUtil.drawFrame( width / 2 - 20, height / 2 + 10, width / 2 + 20, height / 2 + 50, 1, color );
+        // GuiUtil.drawFrame( width / 2 - 20, height / 2 + 10, width / 2 + 20, height /
+        // 2 + 50, 1, color );
 
-        //if (GuiUtil.isMouseIn( mouseX, mouseY, width / 2 - 17, height / 2 + 13, 34, 34 )) {
-         //   renderTooltip( stack, mouseX, mouseY );
-        //}
+        // if (GuiUtil.isMouseIn( mouseX, mouseY, width / 2 - 17, height / 2 + 13, 34,
+        // 34 )) {
+        // renderTooltip( stack, mouseX, mouseY );
+        // }
     }
 
 }

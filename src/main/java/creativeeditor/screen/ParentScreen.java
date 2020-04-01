@@ -10,7 +10,6 @@ import creativeeditor.util.GuiUtil;
 import creativeeditor.widgets.StyledTextField;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.text.ITextComponent;
@@ -18,7 +17,6 @@ import net.minecraft.util.text.ITextComponent;
 public abstract class ParentScreen extends Screen {
     protected final Screen lastScreen;
     protected Minecraft mc;
-    protected FontRenderer fontRenderer;
     protected List<Widget> renderWidgets = Lists.newArrayList();
 
 
@@ -26,7 +24,6 @@ public abstract class ParentScreen extends Screen {
         super( title );
         this.lastScreen = lastScreen;
         this.mc = Minecraft.getInstance();
-        this.fontRenderer = mc.fontRenderer;
     }
 
 
