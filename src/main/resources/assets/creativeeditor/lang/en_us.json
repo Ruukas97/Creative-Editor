@@ -6,6 +6,11 @@
 	"gui.optionsound":"Change output",
 	
 	"gui.headcollection":"Head Collection",
+	"gui.headcollection.clickhead":"Click to add to your inventory",
+	"gui.headcollection.clickheadshift":"Shift + Click to drop",
+	"gui.headcollection.freeslots":"Free Slots",
+	"gui.headcollection.headsininventory":"Heads in inventory",
+	"gui.headcollection.changecategory":"Click to change category",
 	"gui.headcollection.category.alphabet":"Alphabet",
 	"gui.headcollection.category.animals":"Animals",
 	"gui.headcollection.category.blocks":"Blocks",
