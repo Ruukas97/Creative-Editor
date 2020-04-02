@@ -19,11 +19,11 @@ public class ParentItemScreen extends ParentScreen {
     protected boolean hasEssButtons = true;
 
     // render item
-    private boolean renderItem = true;
-    private float itemScale = 2.0f;
+    protected boolean renderItem = true;
+    protected float itemScale = 2.0f;
 
     // render tooltip top left
-    boolean renderToolTip = false;
+    protected boolean renderToolTip = false;
 
 
     public ParentItemScreen(ITextComponent title, Screen lastScreen, DataItem editing) {
