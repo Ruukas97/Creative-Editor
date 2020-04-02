@@ -27,6 +27,8 @@
 	"gui.main.head":"Heads",
 	"gui.main.player":"Player",
 	
+	"gui.armorstand":"ArmorStand Editor",
+	
 	"gui.soundoutput": "Change sound output",
 
 	"gui.main": "Creative Editor",

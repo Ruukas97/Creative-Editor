@@ -39,11 +39,12 @@ public class ShieldRenderer extends ItemStackTileEntityRenderer {
 			GlStateManager.pushMatrix();
 			GlStateManager.scalef(1.0F, -1.0F, -1.0F);
 
-			//TODO Add Shield spectrum tooltip information
-			//TODO Shield spectrum condition
+			// TODO Add Shield spectrum tooltip information
+			// TODO Shield spectrum condition
 			String displayName = itemStackIn.getDisplayName().getUnformattedComponentText();
-			if (mc.world != null && (displayName.contains("Spectrum") || displayName.contains("Creative") || displayName.contains("Chroma"))) {
-				float hue = ((float)(Util.milliTime()%50000)) / 50000;
+			if (mc.world != null && (displayName.contains("Spectrum") || displayName.contains("Creative")
+					|| displayName.contains("Chroma"))) {
+				float hue = ((float) (Util.milliTime() % 50000)) / 50000;
 				Color color = ColorUtils.hsvToRGB(hue, 1f, 1f);
 				GlStateManager.color3f(color.getRed(), color.getGreen(), color.getBlue());
 			}

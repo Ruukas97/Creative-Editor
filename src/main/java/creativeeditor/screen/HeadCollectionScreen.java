@@ -135,8 +135,8 @@ public class HeadCollectionScreen extends ParentScreen {
 						if (slot <= 0) {
 							mc.playerController.sendPacketDropItem(is);
 						} else {
-							
-							mc.player.inventory.addItemStackToInventory(is);
+							int emptySlot = InventoryUtils.getEmptySlot(mc.player.inventory);
+							mc.playerController.sendSlotPacket(is, emptySlot);
 							mc.player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.1F, 1.01F);
 						}
 
@@ -173,7 +173,7 @@ public class HeadCollectionScreen extends ParentScreen {
 			char c = (char) key;
 			String cha = String.valueOf(c);
 			if (cha.matches("[a-zA-Z0-9]")) {
-				if(!hasShiftDown()) {
+				if (!hasShiftDown()) {
 					cha = cha.toLowerCase();
 				}
 				searchString += cha;

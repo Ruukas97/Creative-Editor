@@ -17,20 +17,24 @@ public class FlagScreen extends ParentItemScreen {
 
 	@Override
 	protected void init() {
-		//render Item
+		// render Item
 		setRenderItem(true, 1f);
-		
+
 		hasEssButtons = true;
-		
-		int thirdWidth = width/3;
+
+		int thirdWidth = width / 3;
 		int amount = HideFlagUtils.Flags.values().length;
 		for (int i = 0; i < amount; i++) {
-			//later: make this a toggle button
-			int x = (i<amount/2?thirdWidth:2*thirdWidth)-60; // 1/3 of width if i < 3, other 2/3 of width
-			int y = height / 7 * 2 + (30 * (i<amount/2?i:i-amount/2)); //i*30, or (i-3)*30 if i>=3
-			addButton(new StyledButton(x, y, 120, 20, I18n.format(HideFlagUtils.Flags.values()[i].getKey()), (Button b) -> {}));
+			// later: make this a toggle button
+			int x = (i < amount / 2 ? thirdWidth : 2 * thirdWidth) - 60; // 1/3 of width if i < 3, other 2/3 of width
+			int y = height / 7 * 2 + (30 * (i < amount / 2 ? i : i - amount / 2)); // i*30, or (i-3)*30 if i>=3
+			addButton(new StyledButton(x, y, 120, 20, I18n.format(HideFlagUtils.Flags.values()[i].getKey()),
+					(Button b) -> {
+					}));
 		}
-		addButton(new StyledButton(width / 2 - 60, height / 7 * 4, 120, 20, I18n.format("flag.switchall"), (Button b) -> {}));
+		addButton(
+				new StyledButton(width / 2 - 60, height / 7 * 4, 120, 20, I18n.format("flag.switchall"), (Button b) -> {
+				}));
 		super.init();
 	}
 
