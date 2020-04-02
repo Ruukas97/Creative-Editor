@@ -32,6 +32,7 @@ import net.minecraftforge.common.util.Constants.NBT;
 public interface Data<E, T extends INBT> {
     public E getData();
 
+
     /**
      * Returns whether or not this should be ignored, when saving data. If it has
      * the default value, we save space by not including it.
@@ -39,6 +40,7 @@ public interface Data<E, T extends INBT> {
      * @return true or false
      */
     public boolean isDefault();
+
 
     /**
      * Creates an INBT object with this objects data

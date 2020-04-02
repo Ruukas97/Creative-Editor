@@ -6,10 +6,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class NetworkHandler {
 
-	@SubscribeEvent
-	public void onNetwork(ClientPlayerNetworkEvent.LoggedInEvent e) {
-		System.out.println(Minecraft.getInstance().getIntegratedServer().getMinecraftVersion());
-		
-		// Get network version?
-	}
+    @SubscribeEvent
+    public void onNetwork( ClientPlayerNetworkEvent.LoggedInEvent e ) {
+        System.out.println( Minecraft.getInstance().getIntegratedServer().getMinecraftVersion() );
+
+        // Get network version?
+    }
 }

@@ -9,33 +9,39 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.GameData;
 
 public class TagItemID extends DataString {
-	public TagItemID(String value) {
-		super(value);
-	}
+    public TagItemID(String value) {
+        super( value );
+    }
 
-	public TagItemID(Item item) {
-		this(getIDFromItem(item));
-	}
 
-	public TagItemID() {
-		this(Items.AIR);
-	}
+    public TagItemID(Item item) {
+        this( getIDFromItem( item ) );
+    }
 
-	@Nonnull
-	public Item getItem() {
-		return GameData.getWrapperDefaulted(Item.class).getOrDefault(new ResourceLocation(get()));
-	}
 
-	public void setItem(Item item) {
-		set(getIDFromItem(item));
-	}
-	
-	public static String getIDFromItem(Item item) {
-		return item != null ? item.getRegistryName().getPath() : "minecraft:air";
-	}
-	
-	@Override
-	public boolean isDefault() {
-		return false;
-	}
+    public TagItemID() {
+        this( Items.AIR );
+    }
+
+
+    @Nonnull
+    public Item getItem() {
+        return GameData.getWrapperDefaulted( Item.class ).getOrDefault( new ResourceLocation( get() ) );
+    }
+
+
+    public void setItem( Item item ) {
+        set( getIDFromItem( item ) );
+    }
+
+
+    public static String getIDFromItem( Item item ) {
+        return item != null ? item.getRegistryName().getPath() : "minecraft:air";
+    }
+
+
+    @Override
+    public boolean isDefault() {
+        return false;
+    }
 }

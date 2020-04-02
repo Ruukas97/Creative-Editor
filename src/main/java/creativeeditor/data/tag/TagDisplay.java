@@ -10,38 +10,42 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class TagDisplay implements Data<TagDisplay, CompoundNBT> {
-	private final DataItem item;
+    private final DataItem item;
 
-	private final @Getter DataColor color;
-	private final @Getter TagDisplayName name;
-	private final @Getter DataListString lore;
+    private final @Getter DataColor color;
+    private final @Getter TagDisplayName name;
+    private final @Getter DataListString lore;
 
-	public TagDisplay(DataItem item, CompoundNBT nbt) {
-		this.item = item;
-		NBTKeys keys = NBTKeys.keys;
-		CompoundNBT display = nbt.getCompound(keys.tagDisplay());
-		color = new DataColor(display);
-		name = new TagDisplayName(display.getString(keys.displayName()), this.item);
-		lore = new DataListString(display.getList(keys.displayLore(), NBT.TAG_STRING));
-	}
 
-	@Override
-	public boolean isDefault() {
-		return color.isDefault() && name.isDefault() && lore.isDefault();
-	}
+    public TagDisplay(DataItem item, CompoundNBT nbt) {
+        this.item = item;
+        NBTKeys keys = NBTKeys.keys;
+        CompoundNBT display = nbt.getCompound( keys.tagDisplay() );
+        color = new DataColor( display );
+        name = new TagDisplayName( display.getString( keys.displayName() ), this.item );
+        lore = new DataListString( display.getList( keys.displayLore(), NBT.TAG_STRING ) );
+    }
 
-	@Override
-	public CompoundNBT getNBT() {
-		NBTKeys keys = NBTKeys.keys;
-		CompoundNBT nbt = new CompoundNBT();
-		if(!color.isDefault())
-			nbt.put(keys.displayColor(), color.getNBT());
-		if(!name.isDefault())
-			nbt.put(keys.displayName(), name.getNBT());
-		if(!lore.isDefault())
-			nbt.put(keys.displayLore(), lore.getNBT());
-		return nbt;
-	}
+
+    @Override
+    public boolean isDefault() {
+        return color.isDefault() && name.isDefault() && lore.isDefault();
+    }
+
+
+    @Override
+    public CompoundNBT getNBT() {
+        NBTKeys keys = NBTKeys.keys;
+        CompoundNBT nbt = new CompoundNBT();
+        if (!color.isDefault())
+            nbt.put( keys.displayColor(), color.getNBT() );
+        if (!name.isDefault())
+            nbt.put( keys.displayName(), name.getNBT() );
+        if (!lore.isDefault())
+            nbt.put( keys.displayLore(), lore.getNBT() );
+        return nbt;
+    }
+
 
     @Override
     public TagDisplay getData() {

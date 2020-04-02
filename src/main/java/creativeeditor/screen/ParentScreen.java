@@ -39,8 +39,8 @@ public abstract class ParentScreen extends Screen {
 
 
     @Override
-    public void onClose() {        
-        this.minecraft.displayGuiScreen(lastScreen);
+    public void onClose() {
+        this.minecraft.displayGuiScreen( lastScreen );
     }
 
 
@@ -73,7 +73,7 @@ public abstract class ParentScreen extends Screen {
 
     @Override
     public boolean mouseClicked( double mouseX, double mouseY, int mouseButton ) {
-        for(Widget w : renderWidgets) {
+        for (Widget w : renderWidgets) {
             if (w.mouseClicked( mouseX, mouseY, mouseButton )) {
                 this.setFocused( w );
                 if (mouseButton == 0) {

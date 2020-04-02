@@ -11,41 +11,46 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class TagDisplayName extends DataTextComponent {
-	private boolean returnEmpty = true;
-	private @Getter DataItem item;
-	
-	public TagDisplayName(StringNBT name, DataItem item) {
-		this(name.getString(), item);
-	}
-	
-	public TagDisplayName(String name, DataItem item) {
-		super(name.equals("") ? new TranslationTextComponent(item.getItem().getItem().getTranslationKey()) : ITextComponent.Serializer.fromJson(name));
-		returnEmpty = false;
-		this.item = item;
-	}
+    private boolean returnEmpty = true;
+    private @Getter DataItem item;
 
-	@Override
-	public boolean isDefault() {
-		if(returnEmpty || getUnformatted().length() == 0 || getUnformatted().equals("Custom Name")) {
-			return true;
-		}
 
-		return data.getFormattedText().equals(getDefault().getFormattedText());
-	}
+    public TagDisplayName(StringNBT name, DataItem item) {
+        this( name.getString(), item );
+    }
 
-	public void reset() {
-		set(getDefault());
-	}
-	
-	public ITextComponent getDefault() {
-		NBTKeys keys = NBTKeys.keys;
-		returnEmpty = true;
-		ItemStack copy = item.getItemStack();
-		returnEmpty = false;
-		CompoundNBT display = copy.getChildTag(keys.tagDisplay());
-		if(display != null) {
-			display.remove(keys.displayName());
-		}
-		return copy.getDisplayName();
-	}
+
+    public TagDisplayName(String name, DataItem item) {
+        super( name.equals( "" ) ? new TranslationTextComponent( item.getItem().getItem().getTranslationKey() ) : ITextComponent.Serializer.fromJson( name ) );
+        returnEmpty = false;
+        this.item = item;
+    }
+
+
+    @Override
+    public boolean isDefault() {
+        if (returnEmpty || getUnformatted().length() == 0 || getUnformatted().equals( "Custom Name" )) {
+            return true;
+        }
+
+        return data.getFormattedText().equals( getDefault().getFormattedText() );
+    }
+
+
+    public void reset() {
+        set( getDefault() );
+    }
+
+
+    public ITextComponent getDefault() {
+        NBTKeys keys = NBTKeys.keys;
+        returnEmpty = true;
+        ItemStack copy = item.getItemStack();
+        returnEmpty = false;
+        CompoundNBT display = copy.getChildTag( keys.tagDisplay() );
+        if (display != null) {
+            display.remove( keys.displayName() );
+        }
+        return copy.getDisplayName();
+    }
 }

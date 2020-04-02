@@ -15,8 +15,9 @@ public enum MinecraftHeadsCategory {
     MinecraftHeadsCategory(String name) {
         this.name = name;
     }
-    
+
+
     public URL getURL() throws MalformedURLException {
-        return new URL(MinecraftHeads.API_URL + name);
+        return new URL( MinecraftHeads.API_URL + name );
     }
 }

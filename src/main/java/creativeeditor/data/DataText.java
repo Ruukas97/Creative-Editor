@@ -9,10 +9,12 @@ public class DataText implements Data<DataText, CompoundNBT> {
         return this;
     }
 
+
     @Override
     public boolean isDefault() {
         return false;
     }
+
 
     @Override
     public CompoundNBT getNBT() {
