@@ -4,6 +4,10 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.math.Rotations;
 
 public class DataRotation extends SingularData<Rotations, ListNBT> {
+    
+    public DataRotation(ListNBT data) {
+        this( new Rotations( data ) );
+    }
 
     public DataRotation(Rotations data) {
         super( data );

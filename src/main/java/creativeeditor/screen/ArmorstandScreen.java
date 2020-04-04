@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import creativeeditor.data.DataItem;
 import creativeeditor.data.NumberRange;
-import creativeeditor.data.tag.TagEntityArmorStand;
+import creativeeditor.data.tag.entity.TagEntityArmorStand;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.widgets.SliderTag;
 import net.minecraft.client.gui.screen.Screen;
