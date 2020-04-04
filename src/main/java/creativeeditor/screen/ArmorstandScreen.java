@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import creativeeditor.data.DataItem;
 import creativeeditor.data.NumberRange;
+import creativeeditor.data.tag.TagEntityArmorStand;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.widgets.SliderTag;
 import net.minecraft.client.gui.screen.Screen;
@@ -39,17 +40,17 @@ public class ArmorstandScreen extends ParentItemScreen {
         int x1 = width / divideX;
         int y1 = height / divideY;
         int i = 1;
-        poseHeadx = addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight,  new NumberRange( 0, 360 ) ) );
-        poseHeady = addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, new NumberRange( 0, 360 ) ) );
-        poseHeadz = addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, new NumberRange( 0, 360 ) ) );
-        i = 0;
-        x1 += buttonHeight;
-
+        
         if (item.getItemStack().getItem() instanceof ArmorStandItem) {
             ArmorStandEntity entity = new ArmorStandEntity( mc.world, mc.player.posX, mc.player.posY, mc.player.posZ );
             if (entity != null) {
-                
                 armorStand = (ArmorStandEntity) entity;
+                poseHeadx = addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight,  new NumberRange( 0, 360 ) ) );
+                poseHeady = addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, new NumberRange( 0, 360 ) ) );
+                poseHeadz = addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, new NumberRange( 0, 360 ) ) );
+                i = 0;
+                x1 += buttonHeight;
+
             }
         }
 

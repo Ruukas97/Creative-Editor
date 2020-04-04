@@ -1,14 +1,18 @@
 package creativeeditor.data.tag;
 
-import creativeeditor.data.NumberRange;
+import creativeeditor.data.base.DataRotation;
 import lombok.Getter;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.World;
 
 public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
 
-    private @Getter NumberRange headX, headY, headZ;
+    private @Getter DataRotation head, body, leftArm, rightArm, leftLeg, rightLeg;
+
+
+    public TagEntityArmorStand(CompoundNBT nbt) {
+        
+    }
 
 
     @Override
