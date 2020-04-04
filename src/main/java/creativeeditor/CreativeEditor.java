@@ -4,10 +4,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
-import creativeeditor.config.ConfigHandler;
+import creativeeditor.config.Config;
+import creativeeditor.creativetabs.TabHead;
 import creativeeditor.creativetabs.TabUnavailable;
 import creativeeditor.data.DataItem;
 import creativeeditor.eventhandlers.ScreenHandler;
+import creativeeditor.json.MinecraftHeadsCategory;
 import creativeeditor.render.ShieldRenderer;
 import creativeeditor.screen.HeadCollectionScreen;
 import creativeeditor.screen.ItemInspectorScreen;
@@ -32,10 +34,13 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.loading.FMLPaths;
 
-@Mod( "creativeeditor" )
+@Mod( CreativeEditor.MODID )
 public class CreativeEditor {
     public static final Logger LOGGER = LogManager.getLogger();
+    public static final String MODID = "creativeeditor";
+    public static final String NAME = "Creative Editor";
 
     private static KeyBinding OPEN_EDITOR_KEY;
     private static KeyBinding PLAYER_INSPECT;
@@ -50,29 +55,34 @@ public class CreativeEditor {
         final ModLoadingContext context = ModLoadingContext.get();
 
         LOGGER.info( "Registering config" );
-        context.registerConfig( ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC );
+        context.registerConfig( ModConfig.Type.CLIENT, Config.CLIENT );
+        Config.loadConfig(Config.CLIENT, FMLPaths.CONFIGDIR.get().resolve(MODID + ".toml"));
         StyleManager.loadConfig();
 
         LOGGER.info( "Registering keybindings" );
-        OPEN_EDITOR_KEY = new KeyBinding( "key.editor", GLFW.GLFW_KEY_U, "Creative Editor" );
-        PLAYER_INSPECT = new KeyBinding( "key.inspector", GLFW.GLFW_KEY_G, "Creative Editor" );
-        OFF_HAND_SWING = new KeyBinding( "key.offhandswing", InputMappings.INPUT_INVALID.getKeyCode(), "Creative Editor" );
-        HEAD_COLLECTION = new KeyBinding( "key.previewscreen", GLFW.GLFW_KEY_V, "Creative Editor" );
-        ClientRegistry.registerKeyBinding( OPEN_EDITOR_KEY );
-        ClientRegistry.registerKeyBinding( OFF_HAND_SWING );
-        ClientRegistry.registerKeyBinding( PLAYER_INSPECT );
-        ClientRegistry.registerKeyBinding( HEAD_COLLECTION );
+        OPEN_EDITOR_KEY = registerKeybind( "editor", GLFW.GLFW_KEY_U );
+        PLAYER_INSPECT = registerKeybind( "inspector", GLFW.GLFW_KEY_G);
+        OFF_HAND_SWING = registerKeybind( "offhandswing", InputMappings.INPUT_INVALID.getKeyCode() );
+        HEAD_COLLECTION = registerKeybind( "headcollection", GLFW.GLFW_KEY_V );
+
 
         // Register Events
         LOGGER.info( "Registering events" );
         registerEventHandler( new ScreenHandler() );
-
         registerEventHandler( this );
+
 
         // Register Creative Tabs
         registerTabs();
 
-        ReflectionUtils.setTeisr( Items.SHIELD, () -> ShieldRenderer::new );
+        if (Config.SPECTRUM_SHIELD_ENABLED.get())
+            ReflectionUtils.setTeisr( Items.SHIELD, () -> ShieldRenderer::new );
+    }
+    
+    private KeyBinding registerKeybind(String name, int keyCode) {
+        KeyBinding key = new KeyBinding( "key." + name, keyCode, NAME );
+        ClientRegistry.registerKeyBinding( key );
+        return key;
     }
 
 
@@ -84,6 +94,12 @@ public class CreativeEditor {
     private void registerTabs() {
         LOGGER.info( "Adding Creative Tabs" );
         tabUnavailable = new TabUnavailable();
+
+        if (Config.HEAD_TABS_ENABLED.get()) {
+            for (MinecraftHeadsCategory cat : MinecraftHeadsCategory.values()) {
+                new TabHead( cat );
+            }
+        }
     }
 
 

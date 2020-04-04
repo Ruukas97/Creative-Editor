@@ -9,13 +9,17 @@ public enum MinecraftHeadsCategory {
     alphabet( "alphabet" ), animals( "animals" ), blocks( "blocks" ), decoration( "decoration" ), fooddrink( "food-drinks" ), humans( "humans" ), humanoid( "humanoid" ), miscellaneous( "miscellaneous" ), monsters( "monsters" ), plants( "plants" );
 
 
-    private @Getter String name;
+    private @Getter
+    String name;
 
 
     MinecraftHeadsCategory(String name) {
         this.name = name;
     }
-
+    
+    public String getTranslationKey() {
+        return "gui.headcollection.category." + name;
+    }
 
     public URL getURL() throws MalformedURLException {
         return new URL( MinecraftHeads.API_URL + name );

@@ -3,7 +3,7 @@ package creativeeditor.screen;
 import java.util.Arrays;
 import java.util.List;
 
-import creativeeditor.config.ConfigHandler;
+import creativeeditor.config.Config;
 import creativeeditor.data.DataItem;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
@@ -70,7 +70,7 @@ public class MainScreen extends ParentItemScreen {
         int editX = ((loreX + loreWidth / 2) + (advancedX - advancedWidth / 2)) / 2;
 
         nbtButton = addButton( new StyledTextButton( nbtX, 35, nbtWidth, nbtLocal, b -> {
-            ConfigHandler.CLIENT.currentLeftSideview.set( 0 );
+            Config.MAIN_LEFT_TAB.set( 0 );
             nbtButton.active = false;
             tooltipButton.active = true;
             toolsButton.active = true;
@@ -78,7 +78,7 @@ public class MainScreen extends ParentItemScreen {
         } ) );
 
         tooltipButton = addButton( new StyledTextButton( tooltipX, 35, tooltipWidth, tooltipLocal, b -> {
-            ConfigHandler.CLIENT.currentLeftSideview.set( 1 );
+            Config.MAIN_LEFT_TAB.set( 1 );
             nbtButton.active = true;
             tooltipButton.active = false;
             toolsButton.active = true;
@@ -86,7 +86,7 @@ public class MainScreen extends ParentItemScreen {
         } ) );
 
         toolsButton = addButton( new StyledTextButton( toolsX, 35, toolsWidth, toolsLocal, b -> {
-            ConfigHandler.CLIENT.currentLeftSideview.set( 2 );
+            Config.MAIN_LEFT_TAB.set( 2 );
             nbtButton.active = true;
             tooltipButton.active = true;
             toolsButton.active = false;
@@ -94,7 +94,7 @@ public class MainScreen extends ParentItemScreen {
         } ) );
 
         loreButton = addButton( new StyledTextButton( loreX, 35, loreWidth, loreLocal, b -> {
-            ConfigHandler.CLIENT.currentRightSideview.set( 0 );
+            Config.MAIN_RIGHT_TAB.set( 0 );
             loreButton.active = false;
             editButton.active = true;
             advancedButton.active = true;
@@ -103,7 +103,7 @@ public class MainScreen extends ParentItemScreen {
         } ) );
 
         editButton = addButton( new StyledTextButton( editX, 35, editWidth, editLocal, b -> {
-            ConfigHandler.CLIENT.currentRightSideview.set( 1 );
+            Config.MAIN_RIGHT_TAB.set( 1 );
             loreButton.active = true;
             editButton.active = false;
             advancedButton.active = true;
@@ -112,7 +112,7 @@ public class MainScreen extends ParentItemScreen {
         } ) );
 
         advancedButton = addButton( new StyledTextButton( advancedX, 35, advancedWidth, advancedLocal, b -> {
-            ConfigHandler.CLIENT.currentRightSideview.set( 2 );
+            Config.MAIN_RIGHT_TAB.set( 2 );
             loreButton.active = true;
             editButton.active = true;
             advancedButton.active = false;
@@ -150,7 +150,7 @@ public class MainScreen extends ParentItemScreen {
 
         addButton( new StyledToggle( width / 2 - 40, 101, 80, 16, "item.tag.unbreakable.true", "item.tag.unbreakable.false", item.getTag().getUnbreakable() ) );
 
-        switch (ConfigHandler.CLIENT.currentLeftSideview.get()) {
+        switch (Config.MAIN_LEFT_TAB.get()) {
         case 0:
             nbtButton.active = false;
             styleButton.visible = false;
@@ -164,7 +164,7 @@ public class MainScreen extends ParentItemScreen {
             styleButton.visible = true;
         }
 
-        switch (ConfigHandler.CLIENT.currentRightSideview.get()) {
+        switch (Config.MAIN_RIGHT_TAB.get()) {
         case 0:
             loreButton.active = false;
             nameField.visible = true;
@@ -247,14 +247,14 @@ public class MainScreen extends ParentItemScreen {
     public void overlayRender( int mouseX, int mouseY, float partialTicks, Color color ) {
         super.overlayRender( mouseX, mouseY, partialTicks, color );
 
-        if (ConfigHandler.CLIENT.currentLeftSideview.get() == 0) {
+        if (Config.MAIN_LEFT_TAB.get() == 0) {
             // NBT
             List<String> nbtLines = Arrays.asList( (minecraft.gameSettings.advancedItemTooltips ? item.getNBT() : item.getTag().getNBT()).toFormattedComponent( " ", 0 ).getFormattedText().split( "\n" ) );
 
             GuiUtils.drawHoveringText( item.getItemStack(), nbtLines, 0, 60, width / 3 - 1, height, -1, font );
         }
 
-        else if (ConfigHandler.CLIENT.currentLeftSideview.get() == 1) {
+        else if (Config.MAIN_LEFT_TAB.get() == 1) {
             // renderTooltip(item.getItemStackClean(), 0, 60);
             ItemStack stack = item.getItemStack();
 

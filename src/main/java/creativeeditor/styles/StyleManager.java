@@ -1,6 +1,6 @@
 package creativeeditor.styles;
 
-import creativeeditor.config.ConfigHandler;
+import creativeeditor.config.Config;
 
 public class StyleManager {
     private static int currentID = -1;
@@ -31,8 +31,7 @@ public class StyleManager {
 
 
     public static void loadConfig() {
-        setCurrentStyle( ConfigHandler.CLIENT.currentStyle.get() );
-
+        setCurrentStyle( Config.ACTIVESTYLE.get() );
     }
 
 

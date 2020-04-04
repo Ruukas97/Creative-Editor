@@ -1,6 +1,5 @@
 package creativeeditor.screen;
 
-import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,8 +24,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class HeadCollectionScreen extends ParentScreen {
-    private static final EnumMap<MinecraftHeadsCategory, LinkedList<DataItem>> CACHED_HEADS = new EnumMap<>( MinecraftHeadsCategory.class );
-    private List<DataItem> filteredHeads = new LinkedList<>();
+    private List<ItemStack> filteredHeads = new LinkedList<>();
 
     private static MinecraftHeadsCategory selCat = MinecraftHeadsCategory.alphabet;
     private static int currentElement = 0;
@@ -37,6 +35,7 @@ public class HeadCollectionScreen extends ParentScreen {
     private int maxInRow;
     private int amountInPage;
 
+
     public HeadCollectionScreen(Screen lastScreen) {
         super( new TranslationTextComponent( "gui.headcollection" ), lastScreen );
     }
@@ -46,14 +45,15 @@ public class HeadCollectionScreen extends ParentScreen {
     public void init() {
         super.init();
 
-        loadSkulls();
-        
+        filteredString = null;
+
         if (!searchString.equals( filteredString )) {
             filteredHeads.clear();
 
-            for (DataItem item : CACHED_HEADS.get( selCat )) {
-                if (item.getTag().getSkullOwner().get().getName().toLowerCase().contains( searchString.toLowerCase() )) {
-                    filteredHeads.add( item );
+            for (ItemStack stack : MinecraftHeads.getHeads( selCat )) {
+                DataItem dItem = new DataItem( stack );
+                if (dItem.getTag().getSkullOwner().get().getName().toLowerCase().contains( searchString.toLowerCase() )) {
+                    filteredHeads.add( stack );
                 }
             }
 
@@ -127,7 +127,7 @@ public class HeadCollectionScreen extends ParentScreen {
                 int y = heightOffset + topbar + (16 * ((i % amountInPage) / maxInRow));
 
                 if (mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16) {
-                    ItemStack is = filteredHeads.get( i ).getItemStack();
+                    ItemStack is = filteredHeads.get( i );
                     if (hasShiftDown()) {
                         mc.playerController.sendPacketDropItem( is );
                     }
@@ -272,7 +272,7 @@ public class HeadCollectionScreen extends ParentScreen {
             for (int i = (int) Math.min( filteredHeads.size() - 1, currentPage * amountInPage ); i < (int) Math.min( filteredHeads.size(), (currentPage + 1) * amountInPage ); i++) {
                 int x = space + letterSpace + (16 * (i % maxInRow));
                 int y = heightOffset + topbar + (16 * ((i % amountInPage) / maxInRow));
-                ItemStack stack = filteredHeads.get( i ).getItemStack();
+                ItemStack stack = filteredHeads.get( i );
                 itemRenderer.renderItemAndEffectIntoGUI( stack, x, y );
                 if (hovered == null && mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16) {
                     fill( x, y, x + 16, y + 16, GuiUtil.getColorFromRGB( 150, 150, 150, 150 ) );
@@ -296,16 +296,5 @@ public class HeadCollectionScreen extends ParentScreen {
             GuiUtil.addToolTip( this, space + 2, heightOffset + topbar, letterSpace - 4, 161, mouseX, mouseY, I18n.format( "gui.headcollection.changecategory" ) );
         }
 
-    }
-
-
-    public void loadSkulls() {
-        LinkedList<DataItem> list = CACHED_HEADS.get( selCat );
-        if(list == null) {
-            list = new LinkedList<>();
-            CACHED_HEADS.put( selCat, list );
-            MinecraftHeads.loadCategoryDataItem( list, selCat );
-        }
-        filteredString = null;
     }
 }
