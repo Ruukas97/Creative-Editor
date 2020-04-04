@@ -45,4 +45,8 @@ public class InventoryUtils {
         }
         return count;
     }
+    
+    public static void addItemStack(PlayerInventory inventory, ItemStack stack) {
+        
+    }
 }

@@ -1,5 +1,6 @@
 package creativeeditor.screen;
 
+import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import creativeeditor.data.DataItem;
 import creativeeditor.json.MinecraftHeads;
 import creativeeditor.json.MinecraftHeadsCategory;
 import creativeeditor.styles.Style;
@@ -23,6 +25,9 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class HeadCollectionScreen extends ParentScreen {
+    private static final EnumMap<MinecraftHeadsCategory, LinkedList<DataItem>> CACHED_HEADS = new EnumMap<>( MinecraftHeadsCategory.class );
+    private List<DataItem> filteredHeads = new LinkedList<>();
+
     private static MinecraftHeadsCategory selCat = MinecraftHeadsCategory.alphabet;
     private static int currentElement = 0;
     private static String filteredString = null;
@@ -32,12 +37,6 @@ public class HeadCollectionScreen extends ParentScreen {
     private int maxInRow;
     private int amountInPage;
 
-    private MinecraftHeadsCategory loaded = null;
-
-    private List<ItemStack> unfilteredHeads = new LinkedList<ItemStack>();
-    private List<ItemStack> filteredHeads = new LinkedList<ItemStack>();
-
-
     public HeadCollectionScreen(Screen lastScreen) {
         super( new TranslationTextComponent( "gui.headcollection" ), lastScreen );
     }
@@ -46,15 +45,15 @@ public class HeadCollectionScreen extends ParentScreen {
     @Override
     public void init() {
         super.init();
-        if (loaded != selCat) {
-            loadSkulls();
-        }
+
+        loadSkulls();
+        
         if (!searchString.equals( filteredString )) {
             filteredHeads.clear();
 
-            for (ItemStack s : unfilteredHeads) {
-                if (s.getDisplayName().toString().toLowerCase().contains( searchString.toLowerCase() )) {
-                    filteredHeads.add( s );
+            for (DataItem item : CACHED_HEADS.get( selCat )) {
+                if (item.getTag().getSkullOwner().get().getName().toLowerCase().contains( searchString.toLowerCase() )) {
+                    filteredHeads.add( item );
                 }
             }
 
@@ -128,7 +127,7 @@ public class HeadCollectionScreen extends ParentScreen {
                 int y = heightOffset + topbar + (16 * ((i % amountInPage) / maxInRow));
 
                 if (mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16) {
-                    ItemStack is = filteredHeads.get( i ).copy();
+                    ItemStack is = filteredHeads.get( i ).getItemStack();
                     if (hasShiftDown()) {
                         mc.playerController.sendPacketDropItem( is );
                     }
@@ -273,10 +272,11 @@ public class HeadCollectionScreen extends ParentScreen {
             for (int i = (int) Math.min( filteredHeads.size() - 1, currentPage * amountInPage ); i < (int) Math.min( filteredHeads.size(), (currentPage + 1) * amountInPage ); i++) {
                 int x = space + letterSpace + (16 * (i % maxInRow));
                 int y = heightOffset + topbar + (16 * ((i % amountInPage) / maxInRow));
-                itemRenderer.renderItemAndEffectIntoGUI( filteredHeads.get( i ), x, y );
-                if (mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16) {
+                ItemStack stack = filteredHeads.get( i ).getItemStack();
+                itemRenderer.renderItemAndEffectIntoGUI( stack, x, y );
+                if (hovered == null && mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16) {
                     fill( x, y, x + 16, y + 16, GuiUtil.getColorFromRGB( 150, 150, 150, 150 ) );
-                    hovered = filteredHeads.get( i );
+                    hovered = stack;
                 }
             }
         }
@@ -300,9 +300,12 @@ public class HeadCollectionScreen extends ParentScreen {
 
 
     public void loadSkulls() {
-        unfilteredHeads.clear();
-        MinecraftHeads.loadCategory( unfilteredHeads, selCat );
-        loaded = selCat;
+        LinkedList<DataItem> list = CACHED_HEADS.get( selCat );
+        if(list == null) {
+            list = new LinkedList<>();
+            CACHED_HEADS.put( selCat, list );
+            MinecraftHeads.loadCategoryDataItem( list, selCat );
+        }
         filteredString = null;
     }
 }
