@@ -6,21 +6,20 @@ import creativeeditor.data.DataItem;
 import creativeeditor.data.NumberRange;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.widgets.SliderTag;
-import creativeeditor.widgets.StyledButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.item.ArmorStandItem;
+import net.minecraft.util.math.Rotations;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class ArmorstandScreen extends ParentItemScreen {
 
     private ArmorStandEntity armorStand = null;
 
-    private StyledButton entityButton, armsButton, smallButton, invisibleButton, baseButton, markerButton, inventoryButton, poseButton;
-    private SliderTag poseHead, poseBody, poseLeftLeg, poseRightLeg, poseLeftArm, poseRightArm;
+    private SliderTag poseHeadx, poseHeady, poseHeadz, poseBodyx, poseBodyy, poseBodyz, poseLeftLeg, poseRightLeg, poseLeftArm, poseRightArm;
     private int buttonWidth = 80;
     private int buttonHeight = 15;
     private int divideX = 120;
@@ -40,12 +39,19 @@ public class ArmorstandScreen extends ParentItemScreen {
         int x1 = width / divideX;
         int y1 = height / divideY;
         int i = 1;
+        poseHeadx = addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight,  new NumberRange( 0, 360 ) ) );
+        poseHeady = addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, new NumberRange( 0, 360 ) ) );
+        poseHeadz = addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, new NumberRange( 0, 360 ) ) );
+        i = 0;
+        x1 += buttonHeight;
 
-        poseHead = addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, new NumberRange( 0, 360 ) ) );
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, new NumberRange( 0, 360 ) ) );
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, new NumberRange( 0, 360 ) ) );
-
-        updateArmorStand();
+        if (item.getItemStack().getItem() instanceof ArmorStandItem) {
+            ArmorStandEntity entity = new ArmorStandEntity( mc.world, mc.player.posX, mc.player.posY, mc.player.posZ );
+            if (entity != null) {
+                
+                armorStand = (ArmorStandEntity) entity;
+            }
+        }
 
     }
 
@@ -55,8 +61,9 @@ public class ArmorstandScreen extends ParentItemScreen {
         int x1 = width / divideX;
         int y1 = height / divideY;
 
-        drawCenteredString( font, I18n.format("gui.armorstandeditor.head"), x1 + (buttonWidth / 3 * 2), y1 + (buttonHeight / 4), color.getInt() );
+        drawCenteredString( font, I18n.format( "gui.armorstandeditor.head" ), x1 + (buttonWidth / 3 * 2), y1 + (buttonHeight / 4), color.getInt() );
 
+        updateArmorStand();
         super.mainRender( mouseX, mouseY, p3, color );
     }
 
@@ -71,12 +78,8 @@ public class ArmorstandScreen extends ParentItemScreen {
 
 
     private void updateArmorStand() {
-        if (item.getItemStack().getItem() instanceof ArmorStandItem) {
-            ArmorStandEntity entity = new ArmorStandEntity( mc.world, mc.player.posX, mc.player.posY, mc.player.posZ );
-            if (entity != null) {
-                armorStand = (ArmorStandEntity) entity;
-
-            }
+        if (armorStand != null) {
+            armorStand.setHeadRotation( new Rotations( poseHeadx.getValue(), poseHeady.getValue(), poseHeadz.getValue() ) );
         }
     }
 
