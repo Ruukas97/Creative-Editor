@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import creativeeditor.json.MinecraftHeads;
 import creativeeditor.json.MinecraftHeadsCategory;
+import creativeeditor.util.RandomUtils;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -25,7 +26,7 @@ public class TabHead extends ItemGroup {
     @Override
     public ItemStack createIcon() {
         ArrayList<ItemStack> heads = MinecraftHeads.getHeads( category );
-        ItemStack head = heads.get( 0 );
+        ItemStack head = RandomUtils.getRandomElement( heads );
         return head != null ? head.copy() : fallbackIcon;
     }
 
