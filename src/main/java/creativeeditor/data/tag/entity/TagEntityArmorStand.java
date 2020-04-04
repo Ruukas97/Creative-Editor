@@ -1,4 +1,4 @@
-package creativeeditor.data.tag;
+package creativeeditor.data.tag.entity;
 
 import creativeeditor.data.Data;
 import creativeeditor.data.base.DataRotation;
@@ -66,45 +66,45 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
 
         @Override
         public boolean isDefault() {
-            return DEFAULT_HEAD_ROTATION.equals(head.get()) && DEFAULT_BODY_ROTATION.equals(body.get()) && DEFAULT_LEFTARM_ROTATION.equals(leftArm.get()) && DEFAULT_RIGHTARM_ROTATION.equals(rightArm.get()) && DEFAULT_LEFTLEG_ROTATION.equals(leftLeg.get()) && DEFAULT_RIGHTLEG_ROTATION.equals(rightLeg.get());
+            return DEFAULT_HEAD_ROTATION.equals(head.getData()) && DEFAULT_BODY_ROTATION.equals(body.getData()) && DEFAULT_LEFTARM_ROTATION.equals(leftArm.getData()) && DEFAULT_RIGHTARM_ROTATION.equals(rightArm.getData()) && DEFAULT_LEFTLEG_ROTATION.equals(leftLeg.getData()) && DEFAULT_RIGHTLEG_ROTATION.equals(rightLeg.getData());
         }
 
         @Override
         public CompoundNBT getNBT() {
             CompoundNBT nbt = new CompoundNBT();
-            if (!DEFAULT_HEAD_ROTATION.equals(head.get())) {
+            if (!DEFAULT_HEAD_ROTATION.equals(head.getData())) {
                 nbt.put("Head", head.getNBT());
             }
 
-            if (!DEFAULT_BODY_ROTATION.equals(body.get())) {
+            if (!DEFAULT_BODY_ROTATION.equals(body.getData())) {
                 nbt.put("Body", body.getNBT());
             }
 
-            if (!DEFAULT_LEFTARM_ROTATION.equals(leftArm.get())) {
+            if (!DEFAULT_LEFTARM_ROTATION.equals(leftArm.getData())) {
                 nbt.put("LeftArm", leftArm.getNBT());
             }
 
-            if (!DEFAULT_RIGHTARM_ROTATION.equals(rightArm.get())) {
+            if (!DEFAULT_RIGHTARM_ROTATION.equals(rightArm.getData())) {
                 nbt.put("RightArm", rightArm.getNBT());
             }
 
-            if (!DEFAULT_LEFTLEG_ROTATION.equals(leftLeg.get())) {
+            if (!DEFAULT_LEFTLEG_ROTATION.equals(leftLeg.getData())) {
                 nbt.put("LeftLeg", leftLeg.getNBT());
             }
 
-            if (!DEFAULT_RIGHTLEG_ROTATION.equals(rightLeg.get())) {
+            if (!DEFAULT_RIGHTLEG_ROTATION.equals(rightLeg.getData())) {
                 nbt.put("RightLeg", rightLeg.getNBT());
             }
             return nbt;
         }
         
         public void applyToArmorStand(ArmorStandEntity stand) {
-            stand.setHeadRotation( head.get() );
-            stand.setBodyRotation( body.get() );
-            stand.setLeftArmRotation( leftArm.get() );
-            stand.setRightArmRotation( rightArm.get() );
+            stand.setHeadRotation( head.getData() );
+            stand.setBodyRotation( body.getData() );
+            stand.setLeftArmRotation( leftArm.getData() );
+            stand.setRightArmRotation( rightArm.getData() );
             stand.setLeftLegRotation( leftLeg.getData() );
-            stand.setRightLegRotation( rightLeg.get() );
+            stand.setRightLegRotation( rightLeg.getData() );
         }
         
     }

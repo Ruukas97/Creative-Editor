@@ -2,7 +2,7 @@ package creativeeditor.widgets;
 
 import org.lwjgl.glfw.GLFW;
 
-import creativeeditor.data.NumberRange;
+import creativeeditor.data.NumberRangeInt;
 import creativeeditor.styles.IStyledSlider;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.styles.StyleSpectrum;
@@ -15,23 +15,23 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn( Dist.CLIENT )
 public class SliderTag extends Widget implements IStyledSlider {
-    private NumberRange range;
+    private NumberRangeInt range;
 
     public String display;
     public boolean drawString;
 
 
-    public SliderTag(int x, int y, int width, int height, String display, NumberRange range) {
+    public SliderTag(int x, int y, int width, int height, String display, NumberRangeInt range) {
         this( x, y, width, height, display, true, range );
     }
 
 
-    public SliderTag(int x, int y, int width, int height, NumberRange range) {
+    public SliderTag(int x, int y, int width, int height, NumberRangeInt range) {
         this( x, y, width, height, "", true, range );
     }
 
 
-    public SliderTag(int x, int y, int width, int height, String display, boolean drawString, NumberRange range) {
+    public SliderTag(int x, int y, int width, int height, String display, boolean drawString, NumberRangeInt range) {
         super( x, y, width, height, display );
         this.display = display;
         this.drawString = drawString;

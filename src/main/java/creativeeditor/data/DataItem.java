@@ -15,11 +15,11 @@ import net.minecraft.nbt.JsonToNBT;
 
 public class DataItem implements Data<ItemStack, CompoundNBT> {
     private @Getter TagItemID item;
-    private @Getter NumberRange count, slot;
+    private @Getter NumberRangeInt count, slot;
     private @Getter TagItemNBT tag;
 
 
-    public DataItem(TagItemID item, NumberRange count, TagItemNBT tag, NumberRange slot) {
+    public DataItem(TagItemID item, NumberRangeInt count, TagItemNBT tag, NumberRangeInt slot) {
         this.item = item;
         this.count = count;
         this.slot = slot;
@@ -49,8 +49,8 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
 
     public DataItem(Item item, int count, CompoundNBT tag, int slot) {
         this.item = new TagItemID( item );
-        this.count = new NumberRange( count, 1, 64 );
-        this.slot = new NumberRange( slot, 0, 45 );
+        this.count = new NumberRangeInt( count, 1, 64 );
+        this.slot = new NumberRangeInt( slot, 0, 45 );
         this.tag = new TagItemNBT( this, tag );
     }
 

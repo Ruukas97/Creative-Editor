@@ -1,11 +1,11 @@
 package creativeeditor.data.tag;
 
 import creativeeditor.data.DataItem;
-import creativeeditor.data.NumberRange;
+import creativeeditor.data.NumberRangeInt;
 import creativeeditor.data.version.NBTKeys;
 import net.minecraft.nbt.CompoundNBT;
 
-public class TagDamage extends NumberRange {
+public class TagDamage extends NumberRangeInt {
     private DataItem item;
 
 

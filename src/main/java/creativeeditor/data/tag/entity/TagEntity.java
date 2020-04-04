@@ -1,4 +1,4 @@
-package creativeeditor.data.tag;
+package creativeeditor.data.tag.entity;
 
 import creativeeditor.data.Data;
 import net.minecraft.entity.Entity;
