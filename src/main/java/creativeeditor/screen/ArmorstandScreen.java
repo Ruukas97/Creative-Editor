@@ -59,27 +59,28 @@ public class ArmorstandScreen extends ParentItemScreen {
 
     @Override
     public void backRender( int mouseX, int mouseY, float p3, Color color ) {
-
+        updateArmorStand();
         super.backRender( mouseX, mouseY, p3, color );
-
     }
 
 
     @Override
     public void mainRender( int mouseX, int mouseY, float p3, Color color ) {
-
         int x1 = width / divideX;
         int y1 = height / divideY;
 
         drawCenteredString( font, I18n.format( "gui.armorstandeditor.head" ), x1 + (buttonWidth / 3 * 2), y1 + (buttonHeight / 4), color.getInt() );
 
-        updateArmorStand();
 
         super.mainRender( mouseX, mouseY, p3, color );
         if (armorStand != null) {
             drawArmorStand( (int) (this.width / 3 * 2.5), (int) (this.height / 5 * 3.8), 70 );
         }
-
+    }
+    
+    @Override
+    public void overlayRender( int mouseX, int mouseY, float p3, Color color ) {
+        super.overlayRender( mouseX, mouseY, p3, color );
     }
 
 
@@ -92,8 +93,9 @@ public class ArmorstandScreen extends ParentItemScreen {
 
     public void drawArmorStand( int posX, int posY, int scale ) {
         ArmorStandEntity ent = armorStand;
-
+        
         GlStateManager.pushMatrix();
+        GlStateManager.color3f( 1f, 1f, 1f );
         GlStateManager.enableColorMaterial();
         GlStateManager.translatef( (float) posX, (float) posY, 50.0F );
         GlStateManager.scalef( (float) (-scale), (float) scale, (float) scale );
