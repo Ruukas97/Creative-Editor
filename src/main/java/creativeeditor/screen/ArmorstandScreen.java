@@ -24,8 +24,6 @@ public class ArmorstandScreen extends ParentItemScreen {
     private ArmorStandEntity armorStand = null;
     private TagEntityArmorStand data;
 
-
-    private SliderTagFloat poseHeadx, poseHeady, poseHeadz, poseBodyx, poseBodyy, poseBodyz, poseLeftLeg, poseRightLeg, poseLeftArm, poseRightArm;
     private int buttonWidth = 80;
     private int buttonHeight = 15;
     private int divideX = 120;
@@ -45,18 +43,14 @@ public class ArmorstandScreen extends ParentItemScreen {
         int x1 = width / divideX;
         int y1 = height / divideY;
         int i = 1;
-        
+        DataRotation head = data.getPose().getHead();
+        addButton( new SliderTagFloat( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, head.getX() ) );
+        addButton( new SliderTagFloat( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, head.getY() ) );
+        addButton( new SliderTagFloat( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, head.getZ() ) );
         if (item.getItemStack().getItem() instanceof ArmorStandItem) {
             ArmorStandEntity entity = new ArmorStandEntity( mc.world, mc.player.posX, mc.player.posY, mc.player.posZ );
             if (entity != null) {
                 armorStand = entity;
-                DataRotation head = data.getPose().getHead();
-                poseHeadx = addButton( new SliderTagFloat( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, head.getX() ) );
-                poseHeady = addButton( new SliderTagFloat( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, head.getY() ) );
-                poseHeadz = addButton( new SliderTagFloat( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, head.getZ() ) );
-                i = 0;
-                x1 += buttonHeight;
-
             }
         }
 
@@ -64,23 +58,28 @@ public class ArmorstandScreen extends ParentItemScreen {
 
 
     @Override
+    public void backRender( int mouseX, int mouseY, float p3, Color color ) {
+
+        super.backRender( mouseX, mouseY, p3, color );
+
+    }
+
+
+    @Override
     public void mainRender( int mouseX, int mouseY, float p3, Color color ) {
+
         int x1 = width / divideX;
         int y1 = height / divideY;
 
         drawCenteredString( font, I18n.format( "gui.armorstandeditor.head" ), x1 + (buttonWidth / 3 * 2), y1 + (buttonHeight / 4), color.getInt() );
 
         updateArmorStand();
+
         super.mainRender( mouseX, mouseY, p3, color );
-    }
-
-
-    @Override
-    public void backRender( int mouseX, int mouseY, float p3, Color color ) {
         if (armorStand != null) {
             drawArmorStand( (int) (this.width / 3 * 2.5), (int) (this.height / 5 * 3.8), 70 );
         }
-        super.backRender( mouseX, mouseY, p3, color );
+
     }
 
 
@@ -94,11 +93,12 @@ public class ArmorstandScreen extends ParentItemScreen {
     public void drawArmorStand( int posX, int posY, int scale ) {
         ArmorStandEntity ent = armorStand;
 
-        GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
+        GlStateManager.enableColorMaterial();
         GlStateManager.translatef( (float) posX, (float) posY, 50.0F );
         GlStateManager.scalef( (float) (-scale), (float) scale, (float) scale );
         GlStateManager.rotatef( 180.0F, 0.0F, 0.0F, 1.0F );
+
         float f = ent.renderYawOffset;
         float f1 = ent.rotationYaw;
         float f2 = ent.rotationPitch;
@@ -114,19 +114,17 @@ public class ArmorstandScreen extends ParentItemScreen {
         EntityRendererManager rendermanager = mc.getRenderManager();
         rendermanager.setPlayerViewY( 180.0F );
         rendermanager.setRenderShadow( false );
-
         rendermanager.renderEntity( armorStand, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false );
-
         rendermanager.setRenderShadow( true );
         ent.renderYawOffset = f;
         ent.rotationYaw = f1;
         ent.rotationPitch = f2;
         ent.prevRotationYawHead = f3;
         ent.rotationYawHead = f4;
-        GlStateManager.popMatrix();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableRescaleNormal();
         GlStateManager.disableTexture();
+        GlStateManager.popMatrix();
     }
 
 
