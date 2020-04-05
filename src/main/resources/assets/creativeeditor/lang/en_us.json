@@ -29,6 +29,11 @@
 	
 	"gui.armorstandeditor":"ArmorStand Editor",
 	"gui.armorstandeditor.head":"Head",
+	"gui.armorstandeditor.body":"Body",
+	"gui.armorstandeditor.rightarm":"Right Arm",
+	"gui.armorstandeditor.leftarm":"Left Arm",
+	"gui.armorstandeditor.rightleg":"Right Leg",
+	"gui.armorstandeditor.leftleg":"Left Leg",
 	
 	"gui.soundoutput": "Change sound output",
 

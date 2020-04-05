@@ -1,32 +1,29 @@
 package creativeeditor.data.base;
 
 import creativeeditor.data.Data;
-import creativeeditor.data.NumberRangeFloat;
+import creativeeditor.data.NumberRangeInt;
 import lombok.Getter;
 import net.minecraft.nbt.FloatNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.math.Rotations;
 
 public class DataRotation implements Data<Rotations, ListNBT> {
-    private @Getter
-    NumberRangeFloat x;
-    private @Getter
-    NumberRangeFloat y;
-    private @Getter
-    NumberRangeFloat z;
+    private @Getter NumberRangeInt x;
+    private @Getter NumberRangeInt y;
+    private @Getter NumberRangeInt z;
 
 
     public DataRotation(ListNBT nbt) {
-        x = new NumberRangeFloat( nbt.getFloat( 0 ), 0f, 360f );
-        y = new NumberRangeFloat( nbt.getFloat( 1 ), 0f, 360f );
-        z = new NumberRangeFloat( nbt.getFloat( 2 ), 0f, 360f );
+        x = new NumberRangeInt( nbt.getInt( 0 ), 0, 360 );
+        y = new NumberRangeInt( nbt.getInt( 1 ), 0, 360 );
+        z = new NumberRangeInt( nbt.getInt( 2 ), 0, 360 );
     }
 
 
     public DataRotation(Rotations rot) {
-        x = new NumberRangeFloat( rot.getX(), 0f, 360f );
-        y = new NumberRangeFloat( rot.getY(), 0f, 360f );
-        z = new NumberRangeFloat( rot.getZ(), 0f, 360f );
+        x = new NumberRangeInt( (int) rot.getX(), 0, 360 );
+        y = new NumberRangeInt( (int) rot.getY(), 0, 360 );
+        z = new NumberRangeInt( (int) rot.getZ(), 0, 360 );
     }
 
 

@@ -11,6 +11,8 @@ import creativeeditor.data.Data;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataBoolean;
 import creativeeditor.data.base.DataListString;
+import creativeeditor.data.tag.entity.TagEntityArmorStand;
+import creativeeditor.data.tag.entity.TagEntityArmorStand.Pose;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +37,8 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
     private final @Getter TagEnchantments enchantments;
 
     private @Getter @Setter TagGameProfile skullOwner;
+    
+    private @Getter TagEntityArmorStand armorStandTag;
 
 
     public TagItemNBT(DataItem item, CompoundNBT nbt) {
