@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import creativeeditor.data.DataItem;
+import creativeeditor.data.base.DataRotation;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
 import creativeeditor.data.tag.entity.TagEntityArmorStand.Pose;
 import creativeeditor.util.ColorUtils.Color;
@@ -35,7 +36,8 @@ public class ArmorstandScreen extends ParentItemScreen {
         this.renderItem = false;
         getStandData().getShowArms().set( true );
     }
-    
+
+
     public TagEntityArmorStand getStandData() {
         return item.getTag().getArmorStandTag();
     }
@@ -46,45 +48,26 @@ public class ArmorstandScreen extends ParentItemScreen {
         super.init();
         int x1 = width / divideX;
         int y1 = height / divideY;
-        int i = 1;
         Pose pose = getStandData().getPose();
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getHead().getX() ) );
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getHead().getY() ) );
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getHead().getZ() ) );
-        i = 1;
+
+        addSliders( x1, y1, pose.getHead() );
         y1 += (int) (buttonHeight * 1.5);
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getBody().getX() ) );
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getBody().getY() ) );
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getBody().getZ() ) );
-        i = 1;
+        addSliders( x1, y1, pose.getBody() );
         y1 += (int) (buttonHeight * 1.5);
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightArm().getX() ) );
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightArm().getY() ) );
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightArm().getZ() ) );
-        i = 1;
+        addSliders( x1, y1, pose.getLeftArm() );
         y1 += (int) (buttonHeight * 1.5);
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftArm().getX() ) );
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftArm().getY() ) );
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftArm().getZ() ) );
-        i = 1;
+        addSliders( x1, y1, pose.getRightArm() );
         y1 += (int) (buttonHeight * 1.5);
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightLeg().getX() ) );
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightLeg().getY() ) );
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightLeg().getZ() ) );
-        i = 1;
+        addSliders( x1, y1, pose.getLeftLeg() );
         y1 += (int) (buttonHeight * 1.5);
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftLeg().getX() ) );
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftLeg().getY() ) );
-        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftLeg().getZ() ) );
-        i = 1;
-        y1 += (int) (buttonHeight * 1.5);
-        
-        
+        addSliders( x1, y1, pose.getRightLeg() );
+
+
         if (armorStand == null) {
             ArmorStandEntity entity = getStandData().getData();
             armorStand = entity;
         }
-        
+
         if (bodyTypes.isEmpty()) {
             bodyTypes.add( "head" );
             bodyTypes.add( "body" );
@@ -93,7 +76,14 @@ public class ArmorstandScreen extends ParentItemScreen {
             bodyTypes.add( "rightleg" );
             bodyTypes.add( "leftleg" );
         }
+    }
 
+
+    public void addSliders( int posX, int posY, DataRotation rot ) {
+        int i = 1;
+        addButton( new SliderTag( posX + ((buttonWidth + 5) * i), posY, buttonWidth, buttonHeight, rot.getX() ) );
+        addButton( new SliderTag( posX + ((buttonWidth + 5) * ++i), posY, buttonWidth, buttonHeight, rot.getY() ) );
+        addButton( new SliderTag( posX + ((buttonWidth + 5) * ++i), posY, buttonWidth, buttonHeight, rot.getZ() ) );
     }
 
 
@@ -126,7 +116,8 @@ public class ArmorstandScreen extends ParentItemScreen {
     public void overlayRender( int mouseX, int mouseY, float p3, Color color ) {
         super.overlayRender( mouseX, mouseY, p3, color );
     }
-    
+
+
     private void updateArmorStand() {
         if (armorStand != null) {
             armorStand.readAdditional( getStandData().getNBT() );
