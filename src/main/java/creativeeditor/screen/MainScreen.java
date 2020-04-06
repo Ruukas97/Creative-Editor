@@ -122,7 +122,7 @@ public class MainScreen extends ParentItemScreen {
 
         if (item.getItem().getItem() == Items.ARMOR_STAND) {
             addButton( new StyledTextButton( width / 2, height / 2, font.getStringWidth( "Armor Stand Editor" ), "Armor Stand Editor", b -> {
-                mc.displayGuiScreen( new ArmorstandScreen( lastScreen, item ) );
+                mc.displayGuiScreen( new ArmorstandScreen( this, item ) );
             } ) );
         }
 

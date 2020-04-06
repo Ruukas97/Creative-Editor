@@ -12,10 +12,8 @@ import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataBoolean;
 import creativeeditor.data.base.DataListString;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
-import creativeeditor.data.tag.entity.TagEntityArmorStand.Pose;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
-import lombok.Setter;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants.NBT;
 
@@ -36,7 +34,7 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
 
     private final @Getter TagEnchantments enchantments;
 
-    private @Getter @Setter TagGameProfile skullOwner;
+    private @Getter TagGameProfile skullOwner;
     
     private @Getter TagEntityArmorStand armorStandTag;
 
@@ -51,14 +49,15 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
         unbreakable = new DataBoolean( nbt.getBoolean( keys.tagUnbreakable() ) );
         canDestroy = new DataListString( nbt.getList( keys.tagCanDestroy(), NBT.TAG_STRING ) );
 
-        // Block tags
-        canPlaceOn = new DataListString( nbt.getList( keys.tagCanPlaceOn(), NBT.TAG_STRING ) );
-
         // Display
         display = new TagDisplay( item, nbt );
 
         // Enchantments
         enchantments = new TagEnchantments( nbt.getList( keys.tagEnchantments(), NBT.TAG_COMPOUND ) );
+
+        
+        // Block tags
+        canPlaceOn = new DataListString( nbt.getList( keys.tagCanPlaceOn(), NBT.TAG_STRING ) );
 
         // Item Specific
         // Heads
@@ -71,6 +70,10 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
         else {
             skullOwner = new TagGameProfile( (GameProfile) null );
         }
+        
+        // Entity Tags
+       armorStandTag = new TagEntityArmorStand( nbt.getCompound( keys.tagEntityTag() ) );
+
 
 
         unserializedNBT = nbt.copy();
@@ -88,9 +91,10 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
         map.put( keys.tagDamage(), damage );
         map.put( keys.tagUnbreakable(), unbreakable );
         map.put( keys.tagCanDestroy(), canDestroy );
-        map.put( keys.tagCanPlaceOn(), canPlaceOn );
         map.put( keys.tagDisplay(), display );
+        map.put( keys.tagCanPlaceOn(), canPlaceOn );
         map.put( keys.tagSkullOwner(), skullOwner );
+        map.put( keys.tagEntityTag(), armorStandTag );
         return map;
     }
 

@@ -174,4 +174,10 @@ public class NBTKeysLatest extends NBTKeys {
     public String tagSkullOwner() {
         return "SkullOwner";
     }
+
+
+    @Override
+    public String tagEntityTag() {
+        return "EntityTag";
+    }
 }

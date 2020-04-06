@@ -37,6 +37,9 @@ public class TagGameProfile extends SingularData<GameProfile, CompoundNBT> {
         data.getProperties().putAll( profile.getProperties() );
     }
 
+    public void set( MinecraftHeadsResponse element ) {
+        data = element.getGameProfile();
+    }
 
     @Override
     public boolean isDefault() {

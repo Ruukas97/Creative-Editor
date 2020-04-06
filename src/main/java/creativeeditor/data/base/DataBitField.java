@@ -12,6 +12,17 @@ public class DataBitField extends SingularData<boolean[], IntNBT> {
     }
 
 
+    public DataBitField(int size, IntNBT data) {
+        this( size, data.getInt() );
+    }
+    
+    public DataBitField(int size, int data) {
+        super( new boolean[size] );
+        this.keepSize = true;
+        setInt( data );
+    }
+
+
     @Override
     public void set( boolean[] value ) {
         if (keepSize && value.length != data.length) {
@@ -31,13 +42,7 @@ public class DataBitField extends SingularData<boolean[], IntNBT> {
 
 
     public int getInt() {
-        int result = 0;
-        for (int i = 0; i < data.length; i++) {
-            if (data[i]) {
-                result += 1 << i;
-            }
-        }
-        return result;
+        return booleanArrayToInt( data );
     }
 
 
@@ -45,6 +50,17 @@ public class DataBitField extends SingularData<boolean[], IntNBT> {
         for (int i = 0; i < data.length; i++) {
             data[i] = (value & (1 << i)) != 0;
         }
+    }
+
+
+    public static int booleanArrayToInt( boolean[] array ) {
+        int result = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i]) {
+                result += 1 << i;
+            }
+        }
+        return result;
     }
 
 

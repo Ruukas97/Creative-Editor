@@ -97,4 +97,8 @@ public abstract class NBTKeys {
 
     // Item Specific
     public abstract String tagSkullOwner();
+
+
+    //Entity Tags
+    public abstract String tagEntityTag();
 }

@@ -51,7 +51,15 @@ public class ParentItemScreen extends ParentScreen {
                 mc.displayGuiScreen( lastScreen );
             } ) );
             addButton( new StyledButton( posX, posY - 11, bwidth, 20, I18n.format( "gui.main.reset" ), b -> {
-                mc.displayGuiScreen( new MainScreen( this.lastScreen, new DataItem( item.getItem().getItem(), 1, null, item.getSlot().get() ) ) );
+                DataItem dItem = new DataItem( item.getItem().getItem(), 1, null, item.getSlot().get() );
+                item = dItem;
+                Screen last = lastScreen;
+                while(last instanceof ParentItemScreen) {
+                    ParentItemScreen lastItemScreen = (ParentItemScreen) last;
+                    lastItemScreen.item = dItem;
+                    last = lastItemScreen.lastScreen;
+                }
+                init();
             } ) );
             addButton( new StyledButton( posX, posY + 10, bwidth, 20, I18n.format( "gui.main.save" ), b -> {
                 if (item.getItem().getItem() != Items.AIR)
@@ -95,7 +103,7 @@ public class ParentItemScreen extends ParentScreen {
             if (ite == Items.AIR) {
                 int x = (int) (width / 2);
                 int y = (int) (30 + height / (2) - 5);
-                drawCenteredString( font, ite.getDisplayName( stack ).getFormattedText(), x, y, -1 );
+                drawCenteredString( font, ite.getDisplayName( stack ).getFormattedText(), x, y, color.getInt() );
             }
             else {
                 GlStateManager.scalef( itemScale, itemScale, 1f );

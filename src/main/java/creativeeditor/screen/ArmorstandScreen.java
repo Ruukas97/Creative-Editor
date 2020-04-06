@@ -1,6 +1,5 @@
 package creativeeditor.screen;
 
-import java.io.DataOutput;
 import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
@@ -8,24 +7,20 @@ import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import creativeeditor.data.DataItem;
-import creativeeditor.data.tag.TagItemNBT;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
 import creativeeditor.data.tag.entity.TagEntityArmorStand.Pose;
 import creativeeditor.util.ColorUtils.Color;
-import creativeeditor.widgets.SliderTagInt;
+import creativeeditor.widgets.SliderTag;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.ArmorStandEntity;
-import net.minecraft.item.ArmorStandItem;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class ArmorstandScreen extends ParentItemScreen {
 
     private ArmorStandEntity armorStand = null;
-    private TagEntityArmorStand data;
 
     private int buttonWidth = 80;
     private int buttonHeight = 15;
@@ -38,7 +33,11 @@ public class ArmorstandScreen extends ParentItemScreen {
     public ArmorstandScreen(Screen lastScreen, DataItem item) {
         super( new TranslationTextComponent( "gui.armorstandeditor" ), lastScreen, item );
         this.renderItem = false;
-        this.data = new TagEntityArmorStand( new CompoundNBT() );
+        getStandData().getShowArms().set( true );
+    }
+    
+    public TagEntityArmorStand getStandData() {
+        return item.getTag().getArmorStandTag();
     }
 
 
@@ -48,48 +47,44 @@ public class ArmorstandScreen extends ParentItemScreen {
         int x1 = width / divideX;
         int y1 = height / divideY;
         int i = 1;
-        Pose pose = data.getPose();
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getHead().getX() ) );
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getHead().getY() ) );
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getHead().getZ() ) );
+        Pose pose = getStandData().getPose();
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getHead().getX() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getHead().getY() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getHead().getZ() ) );
         i = 1;
         y1 += (int) (buttonHeight * 1.5);
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getBody().getX() ) );
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getBody().getY() ) );
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getBody().getZ() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getBody().getX() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getBody().getY() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getBody().getZ() ) );
         i = 1;
         y1 += (int) (buttonHeight * 1.5);
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightArm().getX() ) );
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightArm().getY() ) );
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightArm().getY() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightArm().getX() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightArm().getY() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightArm().getZ() ) );
         i = 1;
         y1 += (int) (buttonHeight * 1.5);
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftArm().getX() ) );
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftArm().getY() ) );
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftArm().getZ() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftArm().getX() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftArm().getY() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftArm().getZ() ) );
         i = 1;
         y1 += (int) (buttonHeight * 1.5);
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightLeg().getX() ) );
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightLeg().getY() ) );
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightLeg().getZ() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightLeg().getX() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightLeg().getY() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getRightLeg().getZ() ) );
         i = 1;
         y1 += (int) (buttonHeight * 1.5);
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftLeg().getX() ) );
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftLeg().getY() ) );
-        addButton( new SliderTagInt( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftLeg().getZ() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftLeg().getX() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftLeg().getY() ) );
+        addButton( new SliderTag( x1 + ((buttonWidth + 5) * i++), y1, buttonWidth, buttonHeight, pose.getLeftLeg().getZ() ) );
         i = 1;
         y1 += (int) (buttonHeight * 1.5);
         
         
-        if (item.getItemStack().getItem() instanceof ArmorStandItem) {
-            ArmorStandEntity entity = new ArmorStandEntity( mc.world, mc.player.posX, mc.player.posY, mc.player.posZ );
-            if (entity != null) {
-                armorStand = entity;
-                CompoundNBT nbt = new CompoundNBT();
-                nbt.putBoolean( "ShowArms", true );
-                armorStand.readAdditional( nbt );
-            }
+        if (armorStand == null) {
+            ArmorStandEntity entity = getStandData().getData();
+            armorStand = entity;
         }
+        
         if (bodyTypes.isEmpty()) {
             bodyTypes.add( "head" );
             bodyTypes.add( "body" );
@@ -131,17 +126,10 @@ public class ArmorstandScreen extends ParentItemScreen {
     public void overlayRender( int mouseX, int mouseY, float p3, Color color ) {
         super.overlayRender( mouseX, mouseY, p3, color );
     }
-
-
-    private void updateItemStack() {
-        item.getTag().getArmorStandTag().
-        
-    }
     
     private void updateArmorStand() {
         if (armorStand != null) {
-            data.getPose().applyToArmorStand( armorStand );
-            updateItemStack();
+            armorStand.readAdditional( getStandData().getNBT() );
         }
     }
 
