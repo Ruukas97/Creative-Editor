@@ -111,6 +111,17 @@ public abstract class NBTKeys {
     public abstract String tagChargedProjectiles();
     public abstract String tagCharged();
     
+    // Fireworks
+    public abstract String tagExplosion();
+    public abstract String explosionFlicker();
+    public abstract String explosionTrail();
+    public abstract String explosionShape();
+    public abstract String explosionColors();
+    public abstract String explosionFadeColor();
+    public abstract String tagFireworks();
+    public abstract String fireworksFlight();
+    public abstract String fireworksExplosions();
+    
     // Heads
     public abstract String tagSkullOwner();
 

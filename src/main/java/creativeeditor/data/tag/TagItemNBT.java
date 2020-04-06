@@ -85,7 +85,10 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
     private final DataBoolean charged;
     
     // Fireworks
-    //private final TagExplosion explosion;
+    @Getter
+    private final TagExplosion explosion;
+    @Getter
+    private final TagFireworks fireworks;
     
 
     // Heads
@@ -139,6 +142,10 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
         // Crossbows
         chargedProjectiles = new TagList<>( nbt.getList( keys.tagChargedProjectiles(), NBT.TAG_STRING ) );
         charged = new DataBoolean( nbt.getBoolean( keys.tagCharged() ) );
+        
+        // Fireworks
+        explosion = new TagExplosion( nbt.getCompound( keys.tagExplosion() ) );
+        fireworks = new TagFireworks( nbt.getCompound( keys.tagFireworks() ) );
 
         // Heads
         if (nbt.contains( keys.tagSkullOwner(), NBT.TAG_COMPOUND )) {
