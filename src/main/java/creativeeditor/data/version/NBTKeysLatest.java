@@ -168,6 +168,11 @@ public class NBTKeysLatest extends NBTKeys {
     public String attributeUUIDLeast() {
         return "UUIDLeast";
     }
+    
+    @Override
+    public String tagCustomPotionEffects() {
+        return "CustomPotionEffects";
+    }
 
 
     @Override
@@ -179,5 +184,59 @@ public class NBTKeysLatest extends NBTKeys {
     @Override
     public String tagEntityTag() {
         return "EntityTag";
+    }
+
+
+    @Override
+    public String tagPotion() {
+        return "Potion";
+    }
+
+
+    @Override
+    public String tagCustomPotionColor() {
+        return "CustomPotionColor";
+    }
+
+
+    @Override
+    public String tagResolved() {
+        return "resolved";
+    }
+
+
+    @Override
+    public String tagGeneration() {
+        return "generation";
+    }
+
+
+    @Override
+    public String tagAuthor() {
+        return "author";
+    }
+
+
+    @Override
+    public String tagTitle() {
+        return "title";
+    }
+
+
+    @Override
+    public String tagPages() {
+        return "pages";
+    }
+
+
+    @Override
+    public String tagChargedProjectiles() {
+        return "ChargedProjectiles";
+    }
+
+
+    @Override
+    public String tagCharged() {
+        return "Charged";
     }
 }

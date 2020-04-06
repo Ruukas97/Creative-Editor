@@ -44,16 +44,6 @@ public abstract class NBTKeys {
     public abstract String displayLore();
 
 
-    // Block
-    public abstract String tagCanPlaceOn();
-
-
-    public abstract String tagBlockEntityTag();
-
-
-    public abstract String tagBlockStateTag();
-
-
     // Enchantments
     public abstract String tagEnchantments();
 
@@ -93,12 +83,38 @@ public abstract class NBTKeys {
 
 
     public abstract String attributeUUIDLeast();
+    
+    // Potion Effecs
+    public abstract String tagCustomPotionEffects();
+    public abstract String tagPotion();
+    public abstract String tagCustomPotionColor();
+    
+    // Block
+    public abstract String tagCanPlaceOn();
+
+    public abstract String tagBlockEntityTag();
+
+    public abstract String tagBlockStateTag();
 
 
-    // Item Specific
+    // Specific Item/Blocks
+    
+    // Books
+    public abstract String tagResolved();
+    public abstract String tagGeneration();
+    public abstract String tagAuthor();
+    public abstract String tagTitle();
+    public abstract String tagPages();
+
+    
+    // Crossbows
+    public abstract String tagChargedProjectiles();
+    public abstract String tagCharged();
+    
+    // Heads
     public abstract String tagSkullOwner();
 
 
-    //Entity Tags
+    // Entity Tags
     public abstract String tagEntityTag();
 }

@@ -5,31 +5,31 @@ import java.util.ListIterator;
 
 import com.google.common.collect.Lists;
 
+import creativeeditor.data.Data;
 import creativeeditor.data.base.SingularData;
-import creativeeditor.data.tag.TagEnchantment;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.common.util.Constants.NBT;
 
-public class TagEnchantments extends SingularData<List<TagEnchantment>, ListNBT> implements Iterable<TagEnchantment> {
-    public TagEnchantments() {
+public class TagList<E extends Data<?, ?>> extends SingularData<List<E>, ListNBT> implements Iterable<E> {
+    public TagList() {
         this( Lists.newArrayList() );
     }
 
 
-    public TagEnchantments(ListNBT nbt) {
+    public TagList(ListNBT nbt) {
         this();
         nbt.forEach( this::add );
     }
 
 
-    public TagEnchantments(List<TagEnchantment> list) {
+    public TagList(List<E> list) {
         super( list );
     }
 
 
-    public void add( TagEnchantment value ) {
+    public void add( E value ) {
         data.add( value );
     }
 
@@ -63,7 +63,7 @@ public class TagEnchantments extends SingularData<List<TagEnchantment>, ListNBT>
 
 
     @Override
-    public ListIterator<TagEnchantment> iterator() {
+    public ListIterator<E> iterator() {
         return data.listIterator();
     }
 }

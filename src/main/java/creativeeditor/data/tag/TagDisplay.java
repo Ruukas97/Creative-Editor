@@ -20,10 +20,9 @@ public class TagDisplay implements Data<TagDisplay, CompoundNBT> {
     public TagDisplay(DataItem item, CompoundNBT nbt) {
         this.item = item;
         NBTKeys keys = NBTKeys.keys;
-        CompoundNBT display = nbt.getCompound( keys.tagDisplay() );
-        color = new DataColor( display );
-        name = new TagDisplayName( display.getString( keys.displayName() ), this.item );
-        lore = new DataListString( display.getList( keys.displayLore(), NBT.TAG_STRING ) );
+        color = new DataColor( nbt.getInt( keys.displayColor() ) );
+        name = new TagDisplayName( nbt.getString( keys.displayName() ), this.item );
+        lore = new DataListString( nbt.getList( keys.displayLore(), NBT.TAG_STRING ) );
     }
 
 

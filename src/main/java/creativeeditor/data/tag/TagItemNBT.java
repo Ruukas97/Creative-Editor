@@ -9,8 +9,12 @@ import com.mojang.authlib.GameProfile;
 
 import creativeeditor.data.Data;
 import creativeeditor.data.DataItem;
+import creativeeditor.data.NumberRangeInt;
 import creativeeditor.data.base.DataBoolean;
+import creativeeditor.data.base.DataColor;
+import creativeeditor.data.base.DataInteger;
 import creativeeditor.data.base.DataListString;
+import creativeeditor.data.base.DataString;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
@@ -18,25 +22,79 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
-    private final @Getter DataItem item;
+    @Getter
+    private final DataItem item;
     private final CompoundNBT unserializedNBT;
 
     // General
-    private final @Getter TagDamage damage;
-    private final @Getter DataBoolean unbreakable;
-    private final @Getter DataListString canDestroy;
+    @Getter
+    private final TagDamage damage;
+    @Getter
+    private final DataBoolean unbreakable;
+    @Getter
+    private final TagList<TagItemID> canDestroy;
 
-    // Block Tags
-    private final @Getter DataListString canPlaceOn;
 
     // Display
-    private final @Getter TagDisplay display;
+    @Getter
+    private final TagDisplay display;
 
-    private final @Getter TagEnchantments enchantments;
+    // Enchantments
+    @Getter
+    private final TagList<TagEnchantment> enchantments;
+    @Getter
+    private final TagList<TagEnchantment> storedEnchantments;
+    @Getter
+    private final DataInteger repairCost;
 
-    private @Getter TagGameProfile skullOwner;
+    // Attributes
+    @Getter
+    private final TagList<TagAttributeModifier> attributes;
+
+    // Effects
+    @Getter
+    private final TagEffects potionEffects;
+    @Getter
+    private final DataString potion;
+    @Getter
+    private final DataColor potionColor;
+
+    // Block Tags
+    @Getter
+    private final TagList<TagItemID> canPlaceOn;
+
+
+    // Specific Items
+
+    // Books
+    @Getter
+    private final DataBoolean resolved;
+    @Getter
+    private final NumberRangeInt generation;
+    @Getter
+    private final DataString author;
+    @Getter
+    private final DataString title;
+    @Getter
+    private final DataListString pages;
+
+    // Crossbows
+    @Getter
+    private final TagList<TagItemID> chargedProjectiles;
+    @Getter
+    private final DataBoolean charged;
     
-    private @Getter TagEntityArmorStand armorStandTag;
+    // Fireworks
+    //private final TagExplosion explosion;
+    
+
+    // Heads
+    @Getter
+    private final TagGameProfile skullOwner;
+
+    // Entities
+    @Getter
+    private final TagEntityArmorStand armorStandTag;
 
 
     public TagItemNBT(DataItem item, CompoundNBT nbt) {
@@ -45,21 +103,43 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
         this.item = item;
         NBTKeys keys = NBTKeys.keys;
         // General
-        damage = new TagDamage( this.item, nbt );
+        damage = new TagDamage( item, nbt );
         unbreakable = new DataBoolean( nbt.getBoolean( keys.tagUnbreakable() ) );
-        canDestroy = new DataListString( nbt.getList( keys.tagCanDestroy(), NBT.TAG_STRING ) );
+        canDestroy = new TagList<>( nbt.getList( keys.tagCanDestroy(), NBT.TAG_STRING ) );
 
         // Display
-        display = new TagDisplay( item, nbt );
+        display = new TagDisplay( item, nbt.getCompound( keys.tagDisplay() ) );
 
         // Enchantments
-        enchantments = new TagEnchantments( nbt.getList( keys.tagEnchantments(), NBT.TAG_COMPOUND ) );
+        enchantments = new TagList<>( nbt.getList( keys.tagEnchantments(), NBT.TAG_COMPOUND ) );
+        storedEnchantments = new TagList<>( nbt.getList( keys.tagStoredEnchantments(), NBT.TAG_COMPOUND ) );
+        repairCost = new DataInteger( nbt.getInt( keys.tagRepairCost() ) );
 
-        
+        // Attributes
+        attributes = new TagList<>( nbt.getList( keys.tagAttributes(), NBT.TAG_COMPOUND ) );
+
+        // Effecs
+        potionEffects = new TagEffects( nbt.getList( keys.tagCustomPotionEffects(), NBT.TAG_COMPOUND ) );
+        potion = new DataString( nbt.getString( keys.tagPotion() ) ); // TODO Potion tag
+        potionColor = new DataColor( nbt.getInt( keys.tagCustomPotionColor() ) );
+
         // Block tags
-        canPlaceOn = new DataListString( nbt.getList( keys.tagCanPlaceOn(), NBT.TAG_STRING ) );
+        canPlaceOn = new TagList<>( nbt.getList( keys.tagCanPlaceOn(), NBT.TAG_STRING ) );
 
-        // Item Specific
+        // Specific Items/Blocks
+
+        // Books
+        resolved = new DataBoolean( nbt.getBoolean( keys.tagResolved() ) );
+        generation = new NumberRangeInt( nbt.getInt( keys.tagGeneration() ), 0, 3 );
+        author = new DataString( nbt.getString( keys.tagAuthor() ) );
+        title = new DataString( nbt.getString( keys.tagTitle() ) );
+        pages = new DataListString( nbt.getList( keys.tagPages(), NBT.TAG_COMPOUND ) );
+
+
+        // Crossbows
+        chargedProjectiles = new TagList<>( nbt.getList( keys.tagChargedProjectiles(), NBT.TAG_STRING ) );
+        charged = new DataBoolean( nbt.getBoolean( keys.tagCharged() ) );
+
         // Heads
         if (nbt.contains( keys.tagSkullOwner(), NBT.TAG_COMPOUND )) {
             skullOwner = new TagGameProfile( nbt.getCompound( keys.tagSkullOwner() ) );
@@ -70,10 +150,9 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
         else {
             skullOwner = new TagGameProfile( (GameProfile) null );
         }
-        
-        // Entity Tags
-       armorStandTag = new TagEntityArmorStand( nbt.getCompound( keys.tagEntityTag() ) );
 
+        // Entity Tags
+        armorStandTag = new TagEntityArmorStand( nbt.getCompound( keys.tagEntityTag() ) );
 
 
         unserializedNBT = nbt.copy();
@@ -92,7 +171,16 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
         map.put( keys.tagUnbreakable(), unbreakable );
         map.put( keys.tagCanDestroy(), canDestroy );
         map.put( keys.tagDisplay(), display );
+        map.put( keys.tagEnchantments(), enchantments );
+        map.put( keys.tagStoredEnchantments(), storedEnchantments );
+        map.put( keys.tagRepairCost(), repairCost );
+        map.put( keys.tagAttributes(), attributes );
+        map.put( keys.tagCustomPotionEffects(), potionEffects );
+        map.put( keys.tagPotion(), potion );
+        map.put( keys.tagCustomPotionColor(), potionColor );
         map.put( keys.tagCanPlaceOn(), canPlaceOn );
+        map.put( keys.tagChargedProjectiles(), chargedProjectiles );
+        map.put( keys.tagCharged(), charged );
         map.put( keys.tagSkullOwner(), skullOwner );
         map.put( keys.tagEntityTag(), armorStandTag );
         return map;
