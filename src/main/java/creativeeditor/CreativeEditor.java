@@ -16,6 +16,7 @@ import creativeeditor.screen.ScreenPlayerInspector;
 import creativeeditor.screen.TextEditorScreen;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.tab.TabHead;
+import creativeeditor.tab.TabLoadedTileEntities;
 import creativeeditor.tab.TabNearbyBlocks;
 import creativeeditor.tab.TabUnavailable;
 import creativeeditor.util.ReflectionUtils;
@@ -78,6 +79,9 @@ public class CreativeEditor {
 
         if (Config.SPECTRUM_SHIELD_ENABLED.get())
             ReflectionUtils.setTeisr( Items.SHIELD, () -> ShieldRenderer::new );
+        
+        if (Config.SPECTRUM_SHIELD_ENABLED.get())
+            ReflectionUtils.setTeisr( Items.ARMOR_STAND, () -> ShieldRenderer::new );
     }
 
 

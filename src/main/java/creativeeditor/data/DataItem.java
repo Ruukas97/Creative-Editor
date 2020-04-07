@@ -10,13 +10,18 @@ import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SkullItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.tileentity.TileEntity;
 
 public class DataItem implements Data<ItemStack, CompoundNBT> {
-    private @Getter TagItemID item;
-    private @Getter NumberRangeInt count, slot;
-    private @Getter TagItemNBT tag;
+    private @Getter
+    TagItemID item;
+    private @Getter
+    NumberRangeInt count, slot;
+    private @Getter
+    TagItemNBT tag;
 
 
     public DataItem(TagItemID item, NumberRangeInt count, TagItemNBT tag, NumberRangeInt slot) {
@@ -52,6 +57,26 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
         this.count = new NumberRangeInt( count, 1, 64 );
         this.slot = new NumberRangeInt( slot, 0, 45 );
         this.tag = new TagItemNBT( this, tag );
+    }
+
+
+    public DataItem(Item item, int count, TileEntity te, int slot) {
+        this( item, count, getTETag( item, te ), slot );
+    }
+
+
+    private static CompoundNBT getTETag( Item item, TileEntity te ) {
+        CompoundNBT nbt = new CompoundNBT();
+        CompoundNBT teTag = te.write( new CompoundNBT() );
+
+        if (item.getItem().getItem() instanceof SkullItem && teTag.contains( "Owner" )) {
+            CompoundNBT compoundnbt2 = teTag.getCompound( "Owner" );
+            nbt.put( "SkullOwner", compoundnbt2 );
+        }
+        else {
+            nbt.put( "BlockEntityTag", teTag );
+        }
+        return nbt;
     }
 
 

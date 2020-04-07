@@ -12,6 +12,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 
 public class ParentItemScreen extends ParentScreen {
@@ -54,7 +55,7 @@ public class ParentItemScreen extends ParentScreen {
 
 
             addButton( new StyledButton( posX, posY - (hasLastscreen ? 1 : 11), bwidth, 20, I18n.format( "gui.main.reset" ), b -> {
-                DataItem dItem = new DataItem( item.getItem().getItem(), 1, null, item.getSlot().get() );
+                DataItem dItem = new DataItem( item.getItem().getItem(), 1, new CompoundNBT(), item.getSlot().get() );
                 item = dItem;
                 Screen last = lastScreen;
                 while (last instanceof ParentItemScreen) {
