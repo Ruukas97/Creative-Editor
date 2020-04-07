@@ -7,17 +7,17 @@ import lombok.Getter;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants.NBT;
 
-public class TagFireworks extends SingularData<TagList<TagExplosion>, CompoundNBT> {
+public class TagFirework extends SingularData<TagList<TagExplosion>, CompoundNBT> {
     @Getter
     private final DataByte flight;
 
 
-    public TagFireworks(CompoundNBT nbt) {
+    public TagFirework(CompoundNBT nbt) {
         this( new TagList<>( nbt.getList( NBTKeys.keys.fireworksExplosions(), NBT.TAG_COMPOUND ) ), nbt.getByte( NBTKeys.keys.fireworksFlight() ) );
     }
 
 
-    public TagFireworks(TagList<TagExplosion> list, byte flight) {
+    public TagFirework(TagList<TagExplosion> list, byte flight) {
         super( list );
         this.flight = new DataByte( flight );
     }

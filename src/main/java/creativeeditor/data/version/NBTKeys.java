@@ -36,6 +36,9 @@ public abstract class NBTKeys {
 
 
     public abstract String displayColor();
+    
+    
+    public abstract String displayMapColor();
 
 
     public abstract String displayName();
@@ -84,10 +87,11 @@ public abstract class NBTKeys {
 
     public abstract String attributeUUIDLeast();
     
-    // Potion Effecs
+    // Effecs
     public abstract String tagCustomPotionEffects();
     public abstract String tagPotion();
     public abstract String tagCustomPotionColor();
+    public abstract String tagEffects();
     
     // Block
     public abstract String tagCanPlaceOn();
@@ -124,6 +128,13 @@ public abstract class NBTKeys {
     
     // Heads
     public abstract String tagSkullOwner();
+
+    // Maps
+    public abstract String tagMapNumber();
+    public abstract String tagMapDecorations();
+    public abstract String decorationId();
+    public abstract String decorationType();
+    public abstract String decorationRotation();
 
 
     // Entity Tags

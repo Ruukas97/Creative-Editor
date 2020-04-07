@@ -24,6 +24,7 @@ import net.minecraftforge.common.util.Constants.NBT;
 public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
     @Getter
     private final DataItem item;
+    private final Map<String, Data<?, ?>> map = new HashMap<>();
     private final CompoundNBT unserializedNBT;
 
     // General
@@ -53,11 +54,13 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
 
     // Effects
     @Getter
-    private final TagEffects potionEffects;
+    private final TagList<TagEffect> potionEffects;
     @Getter
     private final DataString potion;
     @Getter
     private final DataColor potionColor;
+    @Getter
+    private final TagList<TagEffect> effects;
 
     // Block Tags
     @Getter
@@ -83,17 +86,23 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
     private final TagList<TagItemID> chargedProjectiles;
     @Getter
     private final DataBoolean charged;
-    
+
     // Fireworks
     @Getter
     private final TagExplosion explosion;
     @Getter
-    private final TagFireworks fireworks;
-    
+    private final TagFirework fireworks;
 
     // Heads
     @Getter
     private final TagGameProfile skullOwner;
+
+    // Maps
+    @Getter
+    private final DataInteger mapNumber;
+    // map_scale_direction?
+    @Getter
+    private final TagList<TagMapDecoration> mapDecorations;
 
     // Entities
     @Getter
@@ -106,46 +115,47 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
         this.item = item;
         NBTKeys keys = NBTKeys.keys;
         // General
-        damage = new TagDamage( item, nbt );
-        unbreakable = new DataBoolean( nbt.getBoolean( keys.tagUnbreakable() ) );
-        canDestroy = new TagList<>( nbt.getList( keys.tagCanDestroy(), NBT.TAG_STRING ) );
+        damage = add( keys.tagDamage(), new TagDamage( item, nbt.getInt( keys.tagDamage() ) ) );
+        unbreakable = add( keys.tagUnbreakable(), new DataBoolean( nbt.getBoolean( keys.tagUnbreakable() ) ) );
+        canDestroy = add( keys.tagCanDestroy(), new TagList<>( nbt.getList( keys.tagCanDestroy(), NBT.TAG_STRING ) ) );
 
         // Display
-        display = new TagDisplay( item, nbt.getCompound( keys.tagDisplay() ) );
+        display = add( keys.tagDisplay(), new TagDisplay( item, nbt.getCompound( keys.tagDisplay() ) ) );
 
         // Enchantments
-        enchantments = new TagList<>( nbt.getList( keys.tagEnchantments(), NBT.TAG_COMPOUND ) );
-        storedEnchantments = new TagList<>( nbt.getList( keys.tagStoredEnchantments(), NBT.TAG_COMPOUND ) );
-        repairCost = new DataInteger( nbt.getInt( keys.tagRepairCost() ) );
+        enchantments = add( keys.tagEnchantments(), new TagList<>( nbt.getList( keys.tagEnchantments(), NBT.TAG_COMPOUND ) ) );
+        storedEnchantments = add( keys.tagStoredEnchantments(), new TagList<>( nbt.getList( keys.tagStoredEnchantments(), NBT.TAG_COMPOUND ) ) );
+        repairCost = add( keys.tagRepairCost(), new DataInteger( nbt.getInt( keys.tagRepairCost() ) ) );
 
         // Attributes
-        attributes = new TagList<>( nbt.getList( keys.tagAttributes(), NBT.TAG_COMPOUND ) );
+        attributes = add( keys.tagAttributes(), new TagList<>( nbt.getList( keys.tagAttributes(), NBT.TAG_COMPOUND ) ) );
 
         // Effecs
-        potionEffects = new TagEffects( nbt.getList( keys.tagCustomPotionEffects(), NBT.TAG_COMPOUND ) );
-        potion = new DataString( nbt.getString( keys.tagPotion() ) ); // TODO Potion tag
-        potionColor = new DataColor( nbt.getInt( keys.tagCustomPotionColor() ) );
+        potionEffects = add( keys.tagCustomPotionEffects(), new TagList<>( nbt.getList( keys.tagCustomPotionEffects(), NBT.TAG_COMPOUND ) ) );
+        potion = add( keys.tagPotion(), new DataString( nbt.getString( keys.tagPotion() ) ) ); // TODO Potion tag
+        potionColor = add( keys.tagCustomPotionColor(), new DataColor( nbt.getInt( keys.tagCustomPotionColor() ) ) );
+        effects = add( keys.tagEffects(), new TagList<>( nbt.getList( keys.tagCustomPotionEffects(), NBT.TAG_COMPOUND ) ) );
 
         // Block tags
-        canPlaceOn = new TagList<>( nbt.getList( keys.tagCanPlaceOn(), NBT.TAG_STRING ) );
+        canPlaceOn = add( keys.tagCanPlaceOn(), new TagList<>( nbt.getList( keys.tagCanPlaceOn(), NBT.TAG_STRING ) ) );
 
         // Specific Items/Blocks
 
         // Books
-        resolved = new DataBoolean( nbt.getBoolean( keys.tagResolved() ) );
-        generation = new NumberRangeInt( nbt.getInt( keys.tagGeneration() ), 0, 3 );
-        author = new DataString( nbt.getString( keys.tagAuthor() ) );
-        title = new DataString( nbt.getString( keys.tagTitle() ) );
-        pages = new DataListString( nbt.getList( keys.tagPages(), NBT.TAG_COMPOUND ) );
+        resolved = add( keys.tagResolved(), new DataBoolean( nbt.getBoolean( keys.tagResolved() ) ) );
+        generation = add( keys.tagGeneration(), new NumberRangeInt( nbt.getInt( keys.tagGeneration() ), 0, 3 ) );
+        author = add( keys.tagAuthor(), new DataString( nbt.getString( keys.tagAuthor() ) ) );
+        title = add( keys.tagTitle(), new DataString( nbt.getString( keys.tagTitle() ) ) );
+        pages = add( keys.tagPages(), new DataListString( nbt.getList( keys.tagPages(), NBT.TAG_COMPOUND ) ) );
 
 
         // Crossbows
-        chargedProjectiles = new TagList<>( nbt.getList( keys.tagChargedProjectiles(), NBT.TAG_STRING ) );
-        charged = new DataBoolean( nbt.getBoolean( keys.tagCharged() ) );
-        
+        chargedProjectiles = add( keys.tagChargedProjectiles(), new TagList<>( nbt.getList( keys.tagChargedProjectiles(), NBT.TAG_STRING ) ) );
+        charged = add( keys.tagCharged(), new DataBoolean( nbt.getBoolean( keys.tagCharged() ) ) );
+
         // Fireworks
-        explosion = new TagExplosion( nbt.getCompound( keys.tagExplosion() ) );
-        fireworks = new TagFireworks( nbt.getCompound( keys.tagFireworks() ) );
+        explosion = add( keys.tagExplosion(), new TagExplosion( nbt.getCompound( keys.tagExplosion() ) ) );
+        fireworks = add( keys.tagFireworks(), new TagFirework( nbt.getCompound( keys.tagFireworks() ) ) );
 
         // Heads
         if (nbt.contains( keys.tagSkullOwner(), NBT.TAG_COMPOUND )) {
@@ -157,49 +167,34 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
         else {
             skullOwner = new TagGameProfile( (GameProfile) null );
         }
+        add( keys.tagSkullOwner(), skullOwner );
 
+        // Map
+        mapNumber = add( keys.tagMapNumber(), new DataInteger( nbt.getInt( keys.tagMapNumber() ) ) );
+        mapDecorations = add( keys.tagMapDecorations(), new TagList<>( nbt.getList( keys.tagMapDecorations(), NBT.TAG_COMPOUND ) ) );
         // Entity Tags
-        armorStandTag = new TagEntityArmorStand( nbt.getCompound( keys.tagEntityTag() ) );
+        armorStandTag = add( keys.tagEntityTag(), new TagEntityArmorStand( nbt.getCompound( keys.tagEntityTag() ) ) );
 
 
         unserializedNBT = nbt.copy();
 
-        Map<String, Data<?, ?>> dataMap = getKeyToDataMap();
-        for (String key : dataMap.keySet()) {
+        for (String key : map.keySet()) {
             unserializedNBT.remove( key );
         }
     }
 
 
-    private Map<String, Data<?, ?>> getKeyToDataMap() {
-        Map<String, Data<?, ?>> map = new HashMap<>();
-        NBTKeys keys = NBTKeys.keys;
-        map.put( keys.tagDamage(), damage );
-        map.put( keys.tagUnbreakable(), unbreakable );
-        map.put( keys.tagCanDestroy(), canDestroy );
-        map.put( keys.tagDisplay(), display );
-        map.put( keys.tagEnchantments(), enchantments );
-        map.put( keys.tagStoredEnchantments(), storedEnchantments );
-        map.put( keys.tagRepairCost(), repairCost );
-        map.put( keys.tagAttributes(), attributes );
-        map.put( keys.tagCustomPotionEffects(), potionEffects );
-        map.put( keys.tagPotion(), potion );
-        map.put( keys.tagCustomPotionColor(), potionColor );
-        map.put( keys.tagCanPlaceOn(), canPlaceOn );
-        map.put( keys.tagChargedProjectiles(), chargedProjectiles );
-        map.put( keys.tagCharged(), charged );
-        map.put( keys.tagSkullOwner(), skullOwner );
-        map.put( keys.tagEntityTag(), armorStandTag );
-        return map;
+    private <T extends Data<?, ?>> T add( String key, T data ) {
+        map.put( key, data );
+        return data;
     }
 
 
     @Override
     public CompoundNBT getNBT() {
         CompoundNBT nbt = unserializedNBT.copy();
-        Map<String, Data<?, ?>> dataMap = getKeyToDataMap();
-        for (String key : dataMap.keySet()) {
-            Data<?, ?> data = dataMap.get( key );
+        for (String key : map.keySet()) {
+            Data<?, ?> data = map.get( key );
             if (!data.isDefault())
                 nbt.put( key, data.getNBT() );
         }
@@ -212,9 +207,8 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
         if (!unserializedNBT.isEmpty())
             return false;
 
-        Map<String, Data<?, ?>> dataMap = getKeyToDataMap();
-        for (String key : dataMap.keySet()) {
-            Data<?, ?> data = dataMap.get( key );
+        for (String key : map.keySet()) {
+            Data<?, ?> data = map.get( key );
             if (!data.isDefault())
                 return false;
         }

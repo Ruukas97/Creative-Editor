@@ -168,7 +168,8 @@ public class NBTKeysLatest extends NBTKeys {
     public String attributeUUIDLeast() {
         return "UUIDLeast";
     }
-    
+
+
     @Override
     public String tagCustomPotionEffects() {
         return "CustomPotionEffects";
@@ -238,5 +239,101 @@ public class NBTKeysLatest extends NBTKeys {
     @Override
     public String tagCharged() {
         return "Charged";
+    }
+
+
+    @Override
+    public String displayMapColor() {
+        return "MapColor";
+    }
+
+
+    @Override
+    public String tagExplosion() {
+        return "Explosion";
+    }
+
+
+    @Override
+    public String explosionFlicker() {
+        return "Flicker";
+    }
+
+
+    @Override
+    public String explosionTrail() {
+        return "Trail";
+    }
+
+
+    @Override
+    public String explosionShape() {
+        return "Type";
+    }
+
+
+    @Override
+    public String explosionColors() {
+        return "Colors";
+    }
+
+
+    @Override
+    public String explosionFadeColor() {
+        return "FadeColors";
+    }
+
+
+    @Override
+    public String tagFireworks() {
+        return "Fireworks";
+    }
+
+
+    @Override
+    public String fireworksFlight() {
+        return "Flight";
+    }
+
+
+    @Override
+    public String fireworksExplosions() {
+        return "Explosions";
+    }
+
+
+    @Override
+    public String tagMapNumber() {
+        return "map";
+    }
+
+
+    @Override
+    public String tagMapDecorations() {
+        return "Decorations";
+    }
+
+
+    @Override
+    public String decorationId() {
+        return "id";
+    }
+
+
+    @Override
+    public String decorationType() {
+        return "type";
+    }
+
+
+    @Override
+    public String decorationRotation() {
+        return "rot";
+    }
+
+
+    @Override
+    public String tagEffects() {
+        return "Effects";
     }
 }
