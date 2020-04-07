@@ -6,13 +6,18 @@ import java.util.Map;
 
 import creativeeditor.config.Config;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
@@ -41,10 +46,47 @@ public class TabNearbyBlocks extends TabCreative {
 
                 for (int z = 0; z < diameter; z++) {
                     BlockPos pos = new BlockPos( original ).add( new Vec3i( x, y, z ) );
-                    Block block = world.getBlockState( pos ).getBlock();
+                    BlockState state = world.getBlockState( pos );
+                    Block block = state.getBlock();
                     Item item = block.asItem();
 
+                    if (block == Blocks.BEDROCK) {
+                        continue;
+                    }
+
+                    if (block instanceof FlowingFluidBlock) {
+                        FlowingFluidBlock fluidBlock = (FlowingFluidBlock) block;
+                        IFluidState fluidState = fluidBlock.getFluidState( state );
+                        if (fluidState.getLevel() != 8) {
+                            continue;
+                        }
+                        Fluid fluid = fluidBlock.getFluid();
+                        item = fluid.getFilledBucket();
+                    }
+
                     if (item == Items.AIR) {
+                        continue;
+                    }
+
+                    if (block.hasTileEntity( state )) {
+                        TileEntity te = world.getTileEntity( pos );
+                        ItemStack stack = new ItemStack( item );
+                        mc.storeTEInStack( stack, te );
+
+                        boolean found = false;
+                        for (ItemStack ex : items) {
+                            if (ex.equals( stack, false )) {
+                                found = true;
+                                if (ex.getCount() < 64) {
+                                    ex.setCount( ex.getCount() + 1 );
+                                }
+                                break;
+                            }
+                        }
+
+                        if (!found)
+                            items.add( stack );
+
                         continue;
                     }
 
