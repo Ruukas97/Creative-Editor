@@ -1,16 +1,15 @@
-package creativeeditor.creativetabs;
+package creativeeditor.tab;
 
 import java.util.ArrayList;
 
 import creativeeditor.json.MinecraftHeads;
 import creativeeditor.json.MinecraftHeadsCategory;
 import creativeeditor.util.RandomUtils;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.NonNullList;
 
-public class TabHead extends ItemGroup {
+public class TabHead extends TabCreative {
     public static ItemStack fallbackIcon = new ItemStack( Items.PLAYER_HEAD );
     public boolean iconLoaded = false;
     public MinecraftHeadsCategory category;
@@ -19,7 +18,6 @@ public class TabHead extends ItemGroup {
     public TabHead(MinecraftHeadsCategory category) {
         super( category.getName() );
         this.category = category;
-        setBackgroundImageName( "item_search.png" );
     }
 
 
@@ -53,13 +51,7 @@ public class TabHead extends ItemGroup {
 
 
     @Override
-    public boolean hasSearchBar() {
-        return true;
-    }
-
-    
-    @Override
     public String getTranslationKey() {
-       return category.getTranslationKey();
+        return category.getTranslationKey();
     }
 }

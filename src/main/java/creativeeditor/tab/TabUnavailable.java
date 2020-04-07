@@ -1,13 +1,12 @@
-package creativeeditor.creativetabs;
+package creativeeditor.tab;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.registries.GameData;
 
-public class TabUnavailable extends ItemGroup {
+public class TabUnavailable extends TabCreative {
 
     public TabUnavailable() {
         super( "unavailable" );
@@ -31,5 +30,4 @@ public class TabUnavailable extends ItemGroup {
             }
         } );
     }
-
 }

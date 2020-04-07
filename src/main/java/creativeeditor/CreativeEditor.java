@@ -5,8 +5,6 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.config.Config;
-import creativeeditor.creativetabs.TabHead;
-import creativeeditor.creativetabs.TabUnavailable;
 import creativeeditor.data.DataItem;
 import creativeeditor.eventhandlers.ScreenHandler;
 import creativeeditor.json.MinecraftHeadsCategory;
@@ -17,6 +15,9 @@ import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.ScreenPlayerInspector;
 import creativeeditor.screen.TextEditorScreen;
 import creativeeditor.styles.StyleManager;
+import creativeeditor.tab.TabHead;
+import creativeeditor.tab.TabNearbyBlocks;
+import creativeeditor.tab.TabUnavailable;
 import creativeeditor.util.ReflectionUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
@@ -56,12 +57,12 @@ public class CreativeEditor {
 
         LOGGER.info( "Registering config" );
         context.registerConfig( ModConfig.Type.CLIENT, Config.CLIENT );
-        Config.loadConfig(Config.CLIENT, FMLPaths.CONFIGDIR.get().resolve(MODID + ".toml"));
+        Config.loadConfig( Config.CLIENT, FMLPaths.CONFIGDIR.get().resolve( MODID + ".toml" ) );
         StyleManager.loadConfig();
 
         LOGGER.info( "Registering keybindings" );
         OPEN_EDITOR_KEY = registerKeybind( "editor", GLFW.GLFW_KEY_U );
-        PLAYER_INSPECT = registerKeybind( "inspector", GLFW.GLFW_KEY_G);
+        PLAYER_INSPECT = registerKeybind( "inspector", GLFW.GLFW_KEY_G );
         OFF_HAND_SWING = registerKeybind( "offhandswing", InputMappings.INPUT_INVALID.getKeyCode() );
         HEAD_COLLECTION = registerKeybind( "headcollection", GLFW.GLFW_KEY_V );
 
@@ -78,8 +79,9 @@ public class CreativeEditor {
         if (Config.SPECTRUM_SHIELD_ENABLED.get())
             ReflectionUtils.setTeisr( Items.SHIELD, () -> ShieldRenderer::new );
     }
-    
-    private KeyBinding registerKeybind(String name, int keyCode) {
+
+
+    private KeyBinding registerKeybind( String name, int keyCode ) {
         KeyBinding key = new KeyBinding( "key." + name, keyCode, NAME );
         ClientRegistry.registerKeyBinding( key );
         return key;
@@ -94,6 +96,9 @@ public class CreativeEditor {
     private void registerTabs() {
         LOGGER.info( "Adding Creative Tabs" );
         tabUnavailable = new TabUnavailable();
+
+        if (Config.NEARBYBLOCKS_TAB_ENABLED.get())
+            new TabNearbyBlocks();
 
         if (Config.HEAD_TABS_ENABLED.get()) {
             for (MinecraftHeadsCategory cat : MinecraftHeadsCategory.values()) {
