@@ -45,26 +45,33 @@ public class ParentItemScreen extends ParentScreen {
             int bwidth = 50;
             int posX = width / 2 - (bwidth / 2);
             int posY = height / 7 * 6;
-            String butCloseBack = lastScreen == null ? "gui.main.close" : "gui.main.back";
+            boolean hasLastscreen = lastScreen != null;
+            String butCloseBack = hasLastscreen ? "gui.main.back" : "gui.main.close";
 
             addButton( new StyledButton( posX - bwidth - 1, posY, bwidth, 20, I18n.format( butCloseBack ), b -> {
                 mc.displayGuiScreen( lastScreen );
             } ) );
-            addButton( new StyledButton( posX, posY - 11, bwidth, 20, I18n.format( "gui.main.reset" ), b -> {
+
+
+            addButton( new StyledButton( posX, posY - (hasLastscreen ? 1 : 11), bwidth, 20, I18n.format( "gui.main.reset" ), b -> {
                 DataItem dItem = new DataItem( item.getItem().getItem(), 1, null, item.getSlot().get() );
                 item = dItem;
                 Screen last = lastScreen;
-                while(last instanceof ParentItemScreen) {
+                while (last instanceof ParentItemScreen) {
                     ParentItemScreen lastItemScreen = (ParentItemScreen) last;
                     lastItemScreen.item = dItem;
                     last = lastItemScreen.lastScreen;
                 }
                 init();
             } ) );
-            addButton( new StyledButton( posX, posY + 10, bwidth, 20, I18n.format( "gui.main.save" ), b -> {
-                if (item.getItem().getItem() != Items.AIR)
-                    mc.playerController.sendSlotPacket( item.getItemStack(), 36 + mc.player.inventory.currentItem );
-            } ) );
+
+            if (!hasLastscreen) {
+                addButton( new StyledButton( posX, posY + 10, bwidth, 20, I18n.format( "gui.main.save" ), b -> {
+                    if (item.getItem().getItem() != Items.AIR)
+                        mc.playerController.sendSlotPacket( item.getItemStack(), 36 + mc.player.inventory.currentItem );
+                } ) );
+            }
+
             addButton( new StyledButton( posX + bwidth + 1, posY, bwidth, 20, I18n.format( "gui.main.drop" ), b -> {
                 if (item.getItem().getItem() != Items.AIR)
                     mc.playerController.sendPacketDropItem( item.getItemStack() );
