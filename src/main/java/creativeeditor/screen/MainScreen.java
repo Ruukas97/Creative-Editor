@@ -1,5 +1,6 @@
 package creativeeditor.screen;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import creativeeditor.widgets.StyledTextButton;
 import creativeeditor.widgets.StyledToggle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -21,6 +23,7 @@ import net.minecraftforge.fml.client.config.GuiUtils;
 
 public class MainScreen extends ParentItemScreen {
 
+    private ArrayList<Widget> toolsWidgets = new ArrayList<>(), loreWidgets = new ArrayList<>(), editWidgets = new ArrayList<>(), advancedWidgets = new ArrayList<>();
     private StyledTextButton nbtButton, tooltipButton, toolsButton, loreButton, editButton, advancedButton;
 
     // Tools
@@ -44,9 +47,6 @@ public class MainScreen extends ParentItemScreen {
     @Override
     protected void init() {
         super.init();
-
-        minecraft.keyboardListener.enableRepeatEvents( true );
-
         String nbtLocal = I18n.format( "gui.main.nbt" );
         String tooltipLocal = I18n.format( "gui.main.tooltip" );
         String toolsLocal = I18n.format( "gui.main.tools" );
@@ -69,55 +69,51 @@ public class MainScreen extends ParentItemScreen {
         int loreX = 2 * width / 3 + 17 + loreWidth / 2;
         int editX = ((loreX + loreWidth / 2) + (advancedX - advancedWidth / 2)) / 2;
 
+        minecraft.keyboardListener.enableRepeatEvents( true );
+
+        toolsWidgets.clear();
+        loreWidgets.clear();
+        editWidgets.clear();
+        advancedWidgets.clear();
+
         nbtButton = addButton( new StyledTextButton( nbtX, 35, nbtWidth, nbtLocal, b -> {
-            Config.MAIN_LEFT_TAB.set( 0 );
-            nbtButton.active = false;
-            tooltipButton.active = true;
-            toolsButton.active = true;
-            styleButton.visible = false;
+            setLeftTab( 0, true );
         } ) );
 
         tooltipButton = addButton( new StyledTextButton( tooltipX, 35, tooltipWidth, tooltipLocal, b -> {
-            Config.MAIN_LEFT_TAB.set( 1 );
-            nbtButton.active = true;
-            tooltipButton.active = false;
-            toolsButton.active = true;
-            styleButton.visible = false;
+            setLeftTab( 1, true );
         } ) );
 
         toolsButton = addButton( new StyledTextButton( toolsX, 35, toolsWidth, toolsLocal, b -> {
-            Config.MAIN_LEFT_TAB.set( 2 );
-            nbtButton.active = true;
-            tooltipButton.active = true;
-            toolsButton.active = false;
-            styleButton.visible = true;
+            setLeftTab( 2, true );
+
+            for (Widget tool : toolsWidgets) {
+                tool.visible = true;
+            }
         } ) );
 
         loreButton = addButton( new StyledTextButton( loreX, 35, loreWidth, loreLocal, b -> {
-            Config.MAIN_RIGHT_TAB.set( 0 );
-            loreButton.active = false;
-            editButton.active = true;
-            advancedButton.active = true;
-            nameField.visible = true;
-            clearButton.visible = true;
+            setRightTab( 0, true );
+
+            for (Widget lore : loreWidgets) {
+                lore.visible = true;
+            }
         } ) );
 
         editButton = addButton( new StyledTextButton( editX, 35, editWidth, editLocal, b -> {
-            Config.MAIN_RIGHT_TAB.set( 1 );
-            loreButton.active = true;
-            editButton.active = false;
-            advancedButton.active = true;
-            nameField.visible = false;
-            clearButton.visible = false;
+            setRightTab( 1, true );
+
+            for (Widget lore : loreWidgets) {
+                lore.visible = false;
+            }
         } ) );
 
         advancedButton = addButton( new StyledTextButton( advancedX, 35, advancedWidth, advancedLocal, b -> {
-            Config.MAIN_RIGHT_TAB.set( 2 );
-            loreButton.active = true;
-            editButton.active = true;
-            advancedButton.active = false;
-            nameField.visible = false;
-            clearButton.visible = false;
+            setRightTab( 2, true );
+
+            for (Widget lore : loreWidgets) {
+                lore.visible = false;
+            }
         } ) );
 
         if (item.getItem().getItem() == Items.ARMOR_STAND) {
@@ -129,6 +125,7 @@ public class MainScreen extends ParentItemScreen {
         // Tools
         String styleLocal = I18n.format( "gui.main.style" );
         styleButton = addButton( new StyledTextButton( (15 + width / 3) / 2, 55, font.getStringWidth( styleLocal ), styleLocal, b -> StyleManager.setNext() ) );
+        toolsWidgets.add( styleButton );
 
         // Lore
         String clearLocal = I18n.format( "gui.main.clear" );
@@ -136,12 +133,14 @@ public class MainScreen extends ParentItemScreen {
         int clearX = width - 22 - clearWidth / 2;
         int nameX = 2 * width / 3 + 16;
         nameField = new StyledDataTextField( font, nameX, 55, clearX - nameX - clearWidth / 2 - 7, 20, item.getDisplayNameTag() );
+        loreWidgets.add( nameField );
         children.add( nameField );
         clearButton = addButton( new StyledTextButton( clearX, 67, clearWidth, clearLocal, b -> {
             nameField.setText( item.getDisplayNameTag().getDefault().getFormattedText() );
             nameField.setCursorPos( 0 );
             nameField.setSelectionPos( 0 );
         } ) );
+        loreWidgets.add( clearButton );
 
         // General Item
         addButton( new SliderTag( width / 2 + 5, 61, 50, 16, item.getCount() ) );
@@ -150,35 +149,97 @@ public class MainScreen extends ParentItemScreen {
 
         addButton( new StyledToggle( width / 2 - 40, 101, 80, 16, "item.tag.unbreakable.true", "item.tag.unbreakable.false", item.getTag().getUnbreakable() ) );
 
-        switch (Config.MAIN_LEFT_TAB.get()) {
+        setLeftTab( Config.MAIN_LEFT_TAB.get(), false );
+        setRightTab( Config.MAIN_RIGHT_TAB.get(), false );
+    }
+
+
+    public void setLeftTab( int i, boolean updateConfig ) {
+        if (updateConfig && i >= 0 && i <= 3)
+            Config.MAIN_LEFT_TAB.set( i );
+
+        switch (i) {
         case 0:
             nbtButton.active = false;
-            styleButton.visible = false;
+            tooltipButton.active = true;
+            toolsButton.active = true;
+
+            for (Widget tool : toolsWidgets) {
+                tool.visible = false;
+            }
             break;
         case 1:
+            nbtButton.active = true;
             tooltipButton.active = false;
-            styleButton.visible = false;
+            toolsButton.active = true;
+
+            for (Widget tool : toolsWidgets) {
+                tool.visible = false;
+            }
             break;
         case 2:
+            nbtButton.active = true;
+            tooltipButton.active = true;
             toolsButton.active = false;
-            styleButton.visible = true;
+
+            for (Widget tool : toolsWidgets) {
+                tool.visible = true;
+            }
+            break;
         }
+    }
+
+
+    public void setRightTab( int i, boolean updateConfig ) {
+        if (updateConfig && i >= 0 && i <= 3)
+            Config.MAIN_RIGHT_TAB.set( i );
 
         switch (Config.MAIN_RIGHT_TAB.get()) {
         case 0:
             loreButton.active = false;
-            nameField.visible = true;
-            clearButton.visible = true;
+            editButton.active = true;
+            advancedButton.active = true;
+            
+            for (Widget lore : loreWidgets) {
+                lore.visible = true;
+            }
+            for (Widget edit : editWidgets) {
+                edit.visible = false;
+            }
+            for (Widget advanced : advancedWidgets) {
+                advanced.visible = false;
+            }
             break;
         case 1:
+            loreButton.active = true;
             editButton.active = false;
-            nameField.visible = false;
-            clearButton.visible = false;
+            advancedButton.active = true;
+            
+            for (Widget lore : loreWidgets) {
+                lore.visible = false;
+            }
+            for (Widget edit : editWidgets) {
+                edit.visible = true;
+            }
+            for (Widget advanced : advancedWidgets) {
+                advanced.visible = false;
+            }
             break;
         case 2:
+            loreButton.active = true;
+            editButton.active = true;
             advancedButton.active = false;
-            nameField.visible = false;
-            clearButton.visible = false;
+            
+            for (Widget lore : loreWidgets) {
+                lore.visible = false;
+            }
+            for (Widget edit : editWidgets) {
+                edit.visible = false;
+            }
+            for (Widget advanced : advancedWidgets) {
+                advanced.visible = true;
+            }
+            break;
         }
     }
 
