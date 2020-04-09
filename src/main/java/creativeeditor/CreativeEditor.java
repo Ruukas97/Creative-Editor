@@ -6,6 +6,7 @@ import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.config.Config;
 import creativeeditor.data.DataItem;
+import creativeeditor.eventhandlers.PlayerNameplateHandler;
 import creativeeditor.eventhandlers.ScreenHandler;
 import creativeeditor.json.MinecraftHeadsCategory;
 import creativeeditor.render.ArmorStandRendering;
@@ -73,6 +74,7 @@ public class CreativeEditor {
         // Register Events
         LOGGER.info( "Registering events" );
         registerEventHandler( new ScreenHandler() );
+        registerEventHandler( new PlayerNameplateHandler() );
         registerEventHandler( this );
 
 
