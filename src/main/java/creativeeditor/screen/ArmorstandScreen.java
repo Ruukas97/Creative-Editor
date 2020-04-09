@@ -9,8 +9,10 @@ import creativeeditor.data.base.DataRotation;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
 import creativeeditor.data.tag.entity.TagEntityArmorStand.Pose;
 import creativeeditor.util.ColorUtils.Color;
+import creativeeditor.util.GuiUtil;
 import creativeeditor.widgets.SliderTag;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.resources.I18n;
@@ -69,12 +71,15 @@ public class ArmorstandScreen extends ParentItemScreen {
 
 
     public void addSliders( int posX, int posY, DataRotation rot ) {
-        int i = 1;
-        addButton( new SliderTag( posX + ((buttonWidth + 5) * i), posY, buttonWidth, buttonHeight, rot.getX() ) );
-        addButton( new SliderTag( posX + ((buttonWidth + 5) * ++i), posY, buttonWidth, buttonHeight, rot.getY() ) );
-        addButton( new SliderTag( posX + ((buttonWidth + 5) * ++i), posY, buttonWidth, buttonHeight, rot.getZ() ) );
+        addButton( new SliderTag( posX + ((buttonWidth + 5) * 1), posY, buttonWidth, buttonHeight, rot.getX() ) );
+        addButton( new SliderTag( posX + ((buttonWidth + 5) * 2), posY, buttonWidth, buttonHeight, rot.getY() ) );
+        addButton( new SliderTag( posX + ((buttonWidth + 5) * 3), posY, buttonWidth, buttonHeight, rot.getZ() ) );
     }
-
+    
+    @Override
+    public void reset( Widget w ) {
+        getStandData().getPose().reset();
+    }
 
     @Override
     public void backRender( int mouseX, int mouseY, float p3, Color color ) {
@@ -104,6 +109,7 @@ public class ArmorstandScreen extends ParentItemScreen {
     @Override
     public void overlayRender( int mouseX, int mouseY, float p3, Color color ) {
         super.overlayRender( mouseX, mouseY, p3, color );
+        GuiUtil.addToolTip( this, resetButton, mouseX, mouseY, I18n.format( "gui.armorstandeditor.reset" ) );
     }
 
 

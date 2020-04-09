@@ -21,6 +21,7 @@ public class ParentItemScreen extends ParentScreen {
 
     // Back, reset, drop, save button (has essential buttons)
     protected boolean hasEssButtons = true;
+    protected StyledButton backButton, resetButton, saveButton, dropButton;
 
     // render item
     protected boolean renderItem = true;
@@ -50,15 +51,13 @@ public class ParentItemScreen extends ParentScreen {
             boolean hasLastscreen = lastScreen != null;
             String butCloseBack = hasLastscreen ? "gui.main.back" : "gui.main.close";
 
-            addButton( new StyledButton( posX - bwidth - 1, posY, bwidth, 20, I18n.format( butCloseBack ), this::back ) );
+            backButton = addButton( new StyledButton( posX - bwidth - 1, posY, bwidth, 20, I18n.format( butCloseBack ), this::back ) );
 
-            addButton( new StyledButton( posX, (hasLastscreen ? posY : posY - 11), bwidth, 20, I18n.format( "gui.main.reset" ), this::reset ) );
+            resetButton = addButton( new StyledButton( posX, (hasLastscreen ? posY : posY - 11), bwidth, 20, I18n.format( "gui.main.reset" ), this::reset ) );
 
-            if (!hasLastscreen) {
-                addButton( new StyledButton( posX, posY + 10, bwidth, 20, I18n.format( "gui.main.save" ), this::save ) );
-            }
+            saveButton = hasLastscreen ? null : addButton( new StyledButton( posX, posY + 10, bwidth, 20, I18n.format( "gui.main.save" ), this::save ) );
 
-            addButton( new StyledButton( posX + bwidth + 1, posY, bwidth, 20, I18n.format( "gui.main.drop" ), this::drop ) );
+            dropButton = addButton( new StyledButton( posX + bwidth + 1, posY, bwidth, 20, I18n.format( "gui.main.drop" ), this::drop ) );
         }
     }
 

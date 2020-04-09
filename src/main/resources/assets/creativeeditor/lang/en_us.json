@@ -30,6 +30,7 @@
 	"gui.main.player":"Player",
 	
 	"gui.armorstandeditor":"ArmorStand Editor",
+	"gui.armorstandeditor.reset":"Only resets the pose",
 	"gui.armorstandeditor.head":"Head",
 	"gui.armorstandeditor.body":"Body",
 	"gui.armorstandeditor.rightarm":"Right Arm",

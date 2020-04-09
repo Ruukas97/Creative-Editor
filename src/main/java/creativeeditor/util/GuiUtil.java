@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -86,6 +87,13 @@ public class GuiUtil extends GuiUtils {
 
     public static void addToolTip( Screen screen, int xPos, int yPos, int width, int height, int mouseX, int mouseY, String... str ) {
         if (isMouseInRegion( mouseX, mouseY, xPos, yPos, width, height )) {
+            addToolTip( screen, mouseX, mouseY, str );
+        }
+    }
+
+
+    public static void addToolTip( Screen screen, Widget w, int mouseX, int mouseY, String... str ) {
+        if (isMouseInRegion( mouseX, mouseY, w.x, w.y, w.getWidth(), w.getHeight() )) {
             addToolTip( screen, mouseX, mouseY, str );
         }
     }

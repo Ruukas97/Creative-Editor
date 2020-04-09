@@ -42,8 +42,8 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
 
     @Override
     public ArmorStandEntity getData() {
-        @SuppressWarnings( "resource" )
-        ArmorStandEntity stand = new ArmorStandEntity( Minecraft.getInstance().world, 0, 0, 0 );
+        Minecraft mc = Minecraft.getInstance();
+        ArmorStandEntity stand = new ArmorStandEntity( mc.world, 0, 0, 0 );
         pose.applyToArmorStand( stand );
         return stand;
     }
@@ -145,6 +145,16 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
                 nbt.put( "RightLeg", rightLeg.getNBT() );
             }
             return nbt;
+        }
+
+
+        public void reset() {
+            head = new DataRotation( DEFAULT_HEAD_ROTATION );
+            body = new DataRotation( DEFAULT_BODY_ROTATION );
+            rightArm = new DataRotation( DEFAULT_RIGHTARM_ROTATION );
+            leftArm = new DataRotation( DEFAULT_LEFTARM_ROTATION );
+            rightLeg = new DataRotation( DEFAULT_RIGHTLEG_ROTATION );
+            leftLeg = new DataRotation( DEFAULT_LEFTLEG_ROTATION );
         }
 
 
