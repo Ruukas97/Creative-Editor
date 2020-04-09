@@ -54,7 +54,7 @@ public class ParentItemScreen extends ParentScreen {
             } ) );
 
 
-            addButton( new StyledButton( posX, posY - (hasLastscreen ? 1 : 11), bwidth, 20, I18n.format( "gui.main.reset" ), b -> {
+            addButton( new StyledButton( posX, (hasLastscreen ? posY : posY - 11), bwidth, 20, I18n.format( "gui.main.reset" ), b -> {
                 DataItem dItem = new DataItem( item.getItem().getItem(), 1, new CompoundNBT(), item.getSlot().get() );
                 item = dItem;
                 Screen last = lastScreen;
