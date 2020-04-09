@@ -7,6 +7,7 @@ import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
 import creativeeditor.widgets.StyledButton;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
@@ -49,36 +50,47 @@ public class ParentItemScreen extends ParentScreen {
             boolean hasLastscreen = lastScreen != null;
             String butCloseBack = hasLastscreen ? "gui.main.back" : "gui.main.close";
 
-            addButton( new StyledButton( posX - bwidth - 1, posY, bwidth, 20, I18n.format( butCloseBack ), b -> {
-                mc.displayGuiScreen( lastScreen );
-            } ) );
+            addButton( new StyledButton( posX - bwidth - 1, posY, bwidth, 20, I18n.format( butCloseBack ), this::back ) );
 
-
-            addButton( new StyledButton( posX, (hasLastscreen ? posY : posY - 11), bwidth, 20, I18n.format( "gui.main.reset" ), b -> {
-                DataItem dItem = new DataItem( item.getItem().getItem(), 1, new CompoundNBT(), item.getSlot().get() );
-                item = dItem;
-                Screen last = lastScreen;
-                while (last instanceof ParentItemScreen) {
-                    ParentItemScreen lastItemScreen = (ParentItemScreen) last;
-                    lastItemScreen.item = dItem;
-                    last = lastItemScreen.lastScreen;
-                }
-                init();
-            } ) );
+            addButton( new StyledButton( posX, (hasLastscreen ? posY : posY - 11), bwidth, 20, I18n.format( "gui.main.reset" ), this::reset ) );
 
             if (!hasLastscreen) {
-                addButton( new StyledButton( posX, posY + 10, bwidth, 20, I18n.format( "gui.main.save" ), b -> {
-                    if (item.getItem().getItem() != Items.AIR)
-                        mc.playerController.sendSlotPacket( item.getItemStack(), 36 + mc.player.inventory.currentItem );
-                } ) );
+                addButton( new StyledButton( posX, posY + 10, bwidth, 20, I18n.format( "gui.main.save" ), this::save ) );
             }
 
-            addButton( new StyledButton( posX + bwidth + 1, posY, bwidth, 20, I18n.format( "gui.main.drop" ), b -> {
-                if (item.getItem().getItem() != Items.AIR)
-                    mc.playerController.sendPacketDropItem( item.getItemStack() );
-                // Shift for /give
-            } ) );
+            addButton( new StyledButton( posX + bwidth + 1, posY, bwidth, 20, I18n.format( "gui.main.drop" ), this::drop ) );
         }
+    }
+
+
+    public void back( Widget w ) {
+        mc.displayGuiScreen( lastScreen );
+    }
+
+
+    public void reset( Widget w ) {
+        DataItem dItem = new DataItem( item.getItem().getItem(), 1, new CompoundNBT(), item.getSlot().get() );
+        item = dItem;
+        Screen last = lastScreen;
+        while (last instanceof ParentItemScreen) {
+            ParentItemScreen lastItemScreen = (ParentItemScreen) last;
+            lastItemScreen.item = dItem;
+            last = lastItemScreen.lastScreen;
+        }
+        init();
+    }
+
+
+    public void save( Widget w ) {
+        if (item.getItem().getItem() != Items.AIR)
+            mc.playerController.sendSlotPacket( item.getItemStack(), 36 + mc.player.inventory.currentItem );
+    }
+
+
+    public void drop( Widget w ) {
+        if (item.getItem().getItem() != Items.AIR)
+            mc.playerController.sendPacketDropItem( item.getItemStack() );
+        // Shift for /give
     }
 
 
