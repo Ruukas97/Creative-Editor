@@ -1,7 +1,5 @@
 package creativeeditor.screen;
 
-import java.util.ArrayList;
-
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -28,7 +26,7 @@ public class ArmorstandScreen extends ParentItemScreen {
     private int divideX = 120;
     private int divideY = 7;
 
-    ArrayList<String> bodyTypes = new ArrayList<String>();
+    private final static String[] BODY_TYPES = new String[] {"head", "body", "rightarm", "leftarm", "rightleg", "leftleg"};
 
 
     public ArmorstandScreen(Screen lastScreen, DataItem item) {
@@ -54,27 +52,18 @@ public class ArmorstandScreen extends ParentItemScreen {
         y1 += (int) (buttonHeight * 1.5);
         addSliders( x1, y1, pose.getBody() );
         y1 += (int) (buttonHeight * 1.5);
-        addSliders( x1, y1, pose.getLeftArm() );
-        y1 += (int) (buttonHeight * 1.5);
         addSliders( x1, y1, pose.getRightArm() );
         y1 += (int) (buttonHeight * 1.5);
-        addSliders( x1, y1, pose.getLeftLeg() );
+        addSliders( x1, y1, pose.getLeftArm() );
         y1 += (int) (buttonHeight * 1.5);
         addSliders( x1, y1, pose.getRightLeg() );
+        y1 += (int) (buttonHeight * 1.5);
+        addSliders( x1, y1, pose.getLeftLeg() );
 
 
         if (armorStand == null) {
             ArmorStandEntity entity = getStandData().getData();
             armorStand = entity;
-        }
-
-        if (bodyTypes.isEmpty()) {
-            bodyTypes.add( "head" );
-            bodyTypes.add( "body" );
-            bodyTypes.add( "rightarm" );
-            bodyTypes.add( "leftarm" );
-            bodyTypes.add( "rightleg" );
-            bodyTypes.add( "leftleg" );
         }
     }
 
@@ -99,7 +88,7 @@ public class ArmorstandScreen extends ParentItemScreen {
         int x1 = width / divideX;
         int y1 = height / divideY;
 
-        for (String s : bodyTypes) {
+        for (String s : BODY_TYPES) {
             drawCenteredString( font, I18n.format( "gui.armorstandeditor." + s ), x1 + (buttonWidth / 3 * 2), y1 + (buttonHeight / 4), color.getInt() );
             y1 += (int) (buttonHeight * 1.5);
         }
