@@ -58,7 +58,20 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
     @Override
     public CompoundNBT getNBT() {
         CompoundNBT nbt = new CompoundNBT();
-        nbt.put( "Pose", pose.getNBT() );
+        if (!marker.isDefault())
+            nbt.put( "Marker", marker.getNBT() );
+        if (!invisible.isDefault())
+            nbt.put( "Invisible", invisible.getNBT() );
+        if (!noBasePlate.isDefault())
+            nbt.put( "NoBasePlate", noBasePlate.getNBT() );
+        if (!showArms.isDefault())
+            nbt.put( "ShowArms", showArms.getNBT() );
+        if (!small.isDefault())
+            nbt.put( "Small", small.getNBT() );
+        if (!pose.isDefault())
+            nbt.put( "Pose", pose.getNBT() );
+        if (!disabledSlots.isDefault())
+            nbt.put( "DisabledSlots", disabledSlots.getNBT() );
         return nbt;
     }
 
