@@ -104,6 +104,10 @@ public class CreativeEditor {
         if (Config.NEARBYBLOCKS_TAB_ENABLED.get())
             new TabNearbyBlocks();
 
+        if (Config.LOADEDTILEENTITIES_TAB_ENABLED.get()) {
+            new TabLoadedTileEntities();
+        }
+
         if (Config.HEAD_TABS_ENABLED.get()) {
             for (MinecraftHeadsCategory cat : MinecraftHeadsCategory.values()) {
                 new TabHead( cat );
