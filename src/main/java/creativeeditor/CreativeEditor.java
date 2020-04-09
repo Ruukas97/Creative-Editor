@@ -8,6 +8,7 @@ import creativeeditor.config.Config;
 import creativeeditor.data.DataItem;
 import creativeeditor.eventhandlers.ScreenHandler;
 import creativeeditor.json.MinecraftHeadsCategory;
+import creativeeditor.render.ArmorStandRendering;
 import creativeeditor.render.ShieldRenderer;
 import creativeeditor.screen.HeadCollectionScreen;
 import creativeeditor.screen.ItemInspectorScreen;
@@ -26,6 +27,7 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ArmorStandItem;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
@@ -79,9 +81,9 @@ public class CreativeEditor {
 
         if (Config.SPECTRUM_SHIELD_ENABLED.get())
             ReflectionUtils.setTeisr( Items.SHIELD, () -> ShieldRenderer::new );
-        
-        if (Config.SPECTRUM_SHIELD_ENABLED.get())
-            ReflectionUtils.setTeisr( Items.ARMOR_STAND, () -> ShieldRenderer::new );
+
+        if (Items.ARMOR_STAND instanceof ArmorStandItem)
+            ArmorStandRendering.addPropertyOverrides( (ArmorStandItem) Items.ARMOR_STAND );
     }
 
 

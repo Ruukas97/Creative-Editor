@@ -1,0 +1,29 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "item/armor_stand"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "nobaseplate": 1,
+                "showarms": 0
+            },
+            "model": "creativeeditor:item/armor_stand_nobaseplate"
+        },
+        {
+            "predicate": {
+                "nobaseplate": 0,
+                "showarms": 1
+            },
+            "model": "creativeeditor:item/armor_stand_arms"
+        },
+        {
+            "predicate": {
+                "nobaseplate": 1,
+                "showarms": 1
+            },
+            "model": "creativeeditor:item/armor_stand_armsnobaseplate"
+        }
+    ]
+}
