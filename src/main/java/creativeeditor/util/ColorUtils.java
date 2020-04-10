@@ -18,7 +18,7 @@ public class ColorUtils {
 
 
     public static Color hsvToRGB( float hue, float saturation, float value ) {
-        return new Color( MathHelper.hsvToRGB( hue, saturation, value ) );
+        return new Color( MathHelper.hsvToRGB( hue, saturation, value ) ).setAlpha( 255 );
     }
 
 
@@ -46,7 +46,7 @@ public class ColorUtils {
 
 
         public int getInt() {
-            return (alpha << 24) | (red << 16) | (green << 8) | blue;
+            return (alpha << 24) + (red << 16) + (green << 8) + blue;
         }
 
 
@@ -77,16 +77,14 @@ public class ColorUtils {
         public Color setSaturation( int sat ) {
             float[] hsb = java.awt.Color.RGBtoHSB( getRed(), getGreen(), getBlue(), null );
             int rgb = java.awt.Color.HSBtoRGB( 255 * hsb[0], ((float) sat) / 255f, 255 * hsb[2] );
-            int alpha = getAlpha();
-            setInt( rgb );
-            setAlpha( alpha );
+            setInt( (getAlpha() << 24) | rgb );
             return this;
         }
 
 
         public Color setBrightness( int bright ) {
             float[] hsb = java.awt.Color.RGBtoHSB( getRed(), getGreen(), getBlue(), null );
-            int rgb = java.awt.Color.HSBtoRGB( 255 * hsb[0], 255 * hsb[1], ((float) bright) / 255f );
+            int rgb = java.awt.Color.HSBtoRGB( hsb[0], hsb[1], ((float) bright) / 255f );
             int alpha = getAlpha();
             setInt( rgb );
             setAlpha( alpha );
