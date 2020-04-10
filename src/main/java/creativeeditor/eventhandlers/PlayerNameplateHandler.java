@@ -2,6 +2,7 @@ package creativeeditor.eventhandlers;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import creativeeditor.players.PlayerInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -35,10 +36,13 @@ public class PlayerNameplateHandler {
             GlStateManager.alphaFunc( 516, 0.1F );
             renderEntityName( renderer, player, e.getX(), e.getY(), e.getZ(), 0, s, squaredDistance, false );
         }
-        if(squaredDistance < 40) {
-            renderEntityName( renderer, player, e.getX(), e.getY(), e.getZ(), -10, "\\u00a7cCE Developer", squaredDistance, false );
+        if (squaredDistance < 40) {
+            PlayerInfo info = PlayerInfo.getByUUID( player.getUniqueID() );
+            if (info != null && info.getNamePlate() != null && !info.getNamePlate().isEmpty()) {
+                renderEntityName( renderer, player, e.getX(), e.getY(), e.getZ(), -10, info.getNamePlate(), squaredDistance, false );
+            }
         }
-        
+
         e.setCanceled( true );
     }
 

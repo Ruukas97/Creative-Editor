@@ -1,5 +1,6 @@
 package creativeeditor.util;
 
+import lombok.Getter;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -12,54 +13,64 @@ public class ColorUtils {
 
 
     public static Color hsvToRGBInt( int hue, int saturation, int value ) {
-        return new Color( 255, MathHelper.hsvToRGB( hue / 255f, saturation / 255f, value / 255f ) );
+        return new Color( MathHelper.hsvToRGB( hue / 255f, saturation / 255f, value / 255f ) ).setAlpha( 255 );
     }
 
 
     public static Color hsvToRGB( float hue, float saturation, float value ) {
-        return new Color( 255, MathHelper.hsvToRGB( hue, saturation, value ) );
+        return new Color( MathHelper.hsvToRGB( hue, saturation, value ) ).setAlpha( 255 );
     }
 
 
     public static class Color {
-        int color;
+        @Getter
+        int alpha, red, green, blue;
+
+
+        public Color() {
+            this(255, 0, 0, 0);
+        }
 
 
         public Color(int color) {
-            this.color = color;
+            alpha = (color & 0xFF000000) >> 24;
+            red = (color & 0x00FF0000) >> 16;
+            green = (color & 0x0000FF00) >> 8;
+            blue = (color & 0x000000FF);
         }
 
 
         public Color(int a, int r, int g, int b) {
-            this.color = (a << 24) + (r << 16) + (g << 8) + b;
-        }
-
-
-        public Color(int a, int rgb) {
-            this.color = (a << 24) + rgb;
+            setAlpha( a );
+            setRed( r );
+            setGreen( g );
+            setBlue( b );
         }
 
 
         public int getInt() {
-            return color;
+            return (alpha << 24) + (red << 16) + (green << 8) + blue;
         }
 
 
-        public float getRed() {
-            float red = (color & 16711680) >> 16;
-            return red / 255f;
+        public Color setAlpha( int alpha ) {
+            this.alpha = alpha & 0xFF;
+            return this;
         }
 
 
-        public float getGreen() {
-            float green = (color & '\uff00') >> 8;
-            return green / 255f;
+        public void setRed( int red ) {
+            this.red = red & 0xFF;
         }
 
 
-        public float getBlue() {
-            float blue = (color & 255);
-            return blue / 255f;
+        public void setGreen( int green ) {
+            this.green = green & 0xFF;
+        }
+
+
+        public void setBlue( int blue ) {
+            this.blue = blue & 0xFF;
         }
 
 

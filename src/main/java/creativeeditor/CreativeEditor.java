@@ -1,5 +1,8 @@
 package creativeeditor;
 
+import java.nio.file.Path;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
@@ -8,7 +11,10 @@ import creativeeditor.config.Config;
 import creativeeditor.data.DataItem;
 import creativeeditor.eventhandlers.PlayerNameplateHandler;
 import creativeeditor.eventhandlers.ScreenHandler;
+import creativeeditor.eventhandlers.TooltipHandler;
 import creativeeditor.json.MinecraftHeadsCategory;
+import creativeeditor.pack.CreativeResources;
+import creativeeditor.players.PlayerInfo;
 import creativeeditor.render.ArmorStandRendering;
 import creativeeditor.render.ShieldRenderer;
 import creativeeditor.screen.HeadCollectionScreen;
@@ -31,6 +37,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ArmorStandItem;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
+import net.minecraft.resources.IPackFinder;
+import net.minecraft.resources.ResourcePackInfo;
+import net.minecraft.resources.ResourcePackInfo.IFactory;
 import net.minecraft.util.Hand;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -52,6 +61,8 @@ public class CreativeEditor {
     private static KeyBinding OFF_HAND_SWING;
     public static KeyBinding HEAD_COLLECTION;
 
+    public static Path DATAPATH = FMLPaths.GAMEDIR.get().resolve( MODID.concat( "-data" ) );
+
     @SuppressWarnings( "unused" )
     private ItemGroup tabUnavailable;
 
@@ -61,7 +72,7 @@ public class CreativeEditor {
 
         LOGGER.info( "Registering config" );
         context.registerConfig( ModConfig.Type.CLIENT, Config.CLIENT );
-        Config.loadConfig( Config.CLIENT, FMLPaths.CONFIGDIR.get().resolve( MODID + ".toml" ) );
+        Config.loadConfig( Config.CLIENT, FMLPaths.CONFIGDIR.get().resolve( MODID.concat( ".toml" ) ) );
         StyleManager.loadConfig();
 
         LOGGER.info( "Registering keybindings" );
@@ -75,6 +86,7 @@ public class CreativeEditor {
         LOGGER.info( "Registering events" );
         registerEventHandler( new ScreenHandler() );
         registerEventHandler( new PlayerNameplateHandler() );
+        registerEventHandler( new TooltipHandler() );
         registerEventHandler( this );
 
 
@@ -86,6 +98,13 @@ public class CreativeEditor {
 
         if (Items.ARMOR_STAND instanceof ArmorStandItem)
             ArmorStandRendering.addPropertyOverrides( (ArmorStandItem) Items.ARMOR_STAND );
+
+        Minecraft.getInstance().getResourcePackList().addPackFinder( new IPackFinder() {
+            @Override
+            public <T extends ResourcePackInfo> void addPackInfosToMap( Map<String, T> map, IFactory<T> fac ) {
+                map.computeIfAbsent( "armor_stand_variants", key -> ResourcePackInfo.createResourcePack( key, true, () -> new CreativeResources(key), fac, ResourcePackInfo.Priority.TOP ) );
+            }
+        } );
     }
 
 
@@ -127,6 +146,9 @@ public class CreativeEditor {
             return;
 
         if (event.getKey() == OPEN_EDITOR_KEY.getKey().getKeyCode()) {
+            PlayerInfo info = PlayerInfo.getByUUID( mc.player.getUniqueID() );
+            if (info != null)
+                System.out.println( "NamePlate: " + info.getNamePlate() );
             mc.displayGuiScreen( new MainScreen( mc.currentScreen, new DataItem( mc.player.getHeldItemMainhand() ) ) );
         }
 
