@@ -38,6 +38,7 @@
 	"gui.armorstandeditor.leftarm":"Left Arm",
 	"gui.armorstandeditor.rightleg":"Right Leg",
 	"gui.armorstandeditor.leftleg":"Left Leg",
+	"gui.armorstandeditor.properties":"Armorstand Properties",
 	
 	"gui.soundoutput": "Change sound output",
 

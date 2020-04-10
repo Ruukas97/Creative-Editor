@@ -17,6 +17,7 @@ import creativeeditor.pack.CreativeResources;
 import creativeeditor.players.PlayerInfo;
 import creativeeditor.render.ArmorStandRendering;
 import creativeeditor.render.ShieldRenderer;
+import creativeeditor.screen.ArmorstandPropScreen;
 import creativeeditor.screen.HeadCollectionScreen;
 import creativeeditor.screen.ItemInspectorScreen;
 import creativeeditor.screen.MainScreen;
@@ -36,6 +37,7 @@ import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ArmorStandItem;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.resources.IPackFinder;
 import net.minecraft.resources.ResourcePackInfo;
@@ -166,7 +168,9 @@ public class CreativeEditor {
             mc.displayGuiScreen( new TextEditorScreen( mc.currentScreen ) );
         }
         else if (event.getKey() == HEAD_COLLECTION.getKey().getKeyCode()) {
-            mc.displayGuiScreen( new HeadCollectionScreen( mc.currentScreen ) );
+        	DataItem item = new DataItem(new ItemStack(Items.ARMOR_STAND));
+        	mc.displayGuiScreen(new ArmorstandPropScreen(mc.currentScreen, item));
+            //mc.displayGuiScreen( new HeadCollectionScreen( mc.currentScreen ) );
         }
     }
 }

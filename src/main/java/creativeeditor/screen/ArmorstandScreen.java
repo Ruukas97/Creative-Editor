@@ -11,6 +11,7 @@ import creativeeditor.data.tag.entity.TagEntityArmorStand.Pose;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
 import creativeeditor.widgets.SliderTag;
+import creativeeditor.widgets.StyledButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.renderer.RenderHelper;
@@ -61,6 +62,11 @@ public class ArmorstandScreen extends ParentItemScreen {
         addSliders( x1, y1, pose.getRightLeg() );
         y1 += (int) (buttonHeight * 1.5);
         addSliders( x1, y1, pose.getLeftLeg() );
+        y1 += (int) (buttonHeight * 2);
+        
+        addButton(new StyledButton(x1 + (buttonWidth / 3), y1, 130, 20, I18n.format("gui.armorstandeditor.properties"), t ->  {
+        	mc.displayGuiScreen(new ArmorstandPropScreen(lastScreen, item));
+        }));
 
 
         if (armorStand == null) {
