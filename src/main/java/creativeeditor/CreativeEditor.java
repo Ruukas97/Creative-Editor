@@ -18,7 +18,6 @@ import creativeeditor.players.PlayerInfo;
 import creativeeditor.render.ArmorStandRendering;
 import creativeeditor.render.ShieldRenderer;
 import creativeeditor.screen.ArmorstandPropScreen;
-import creativeeditor.screen.HeadCollectionScreen;
 import creativeeditor.screen.ItemInspectorScreen;
 import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.ScreenPlayerInspector;
@@ -36,7 +35,6 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ArmorStandItem;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.resources.IPackFinder;
@@ -65,8 +63,8 @@ public class CreativeEditor {
 
     public static Path DATAPATH = FMLPaths.GAMEDIR.get().resolve( MODID.concat( "-data" ) );
 
-    @SuppressWarnings( "unused" )
-    private ItemGroup tabUnavailable;
+    //@SuppressWarnings( "unused" )
+    //private ItemGroup tabUnavailable;
 
 
     public CreativeEditor() {
@@ -124,7 +122,7 @@ public class CreativeEditor {
 
     private void registerTabs() {
         LOGGER.info( "Adding Creative Tabs" );
-        tabUnavailable = new TabUnavailable();
+        /*tabUnavailable = */new TabUnavailable();
 
         if (Config.NEARBYBLOCKS_TAB_ENABLED.get())
             new TabNearbyBlocks();
