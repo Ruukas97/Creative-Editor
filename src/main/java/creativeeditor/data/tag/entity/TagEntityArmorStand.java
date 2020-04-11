@@ -20,6 +20,8 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
     private @Getter
     DataBoolean noBasePlate;
     private @Getter
+    DataBoolean noGravity;
+    private @Getter
     DataBoolean showArms;
     private @Getter
     DataBoolean small;
@@ -36,6 +38,7 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
         showArms = new DataBoolean( nbt.getBoolean( "ShowArms" ) );
         small = new DataBoolean( nbt.getBoolean( "Small" ) );
         pose = new Pose( nbt.getCompound( "Pose" ) );
+        noGravity = new DataBoolean(nbt.getBoolean("NoGravity"));
         disabledSlots = new DataBitField( 21, nbt.getInt( "DisabledSlots" ) );
     }
 
@@ -51,7 +54,7 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
 
     @Override
     public boolean isDefault() {
-        return marker.isDefault() && invisible.isDefault() && noBasePlate.isDefault() && showArms.isDefault() && small.isDefault() && pose.isDefault() && disabledSlots.isDefault();
+        return noGravity.isDefault() && marker.isDefault() && invisible.isDefault() && noBasePlate.isDefault() && showArms.isDefault() && small.isDefault() && pose.isDefault() && disabledSlots.isDefault();
     }
 
 
@@ -68,6 +71,8 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
             nbt.put( "ShowArms", showArms.getNBT() );
         if (!small.isDefault())
             nbt.put( "Small", small.getNBT() );
+        if (!noGravity.isDefault())
+            nbt.put( "NoGravity", noGravity.getNBT() );
         if (!pose.isDefault())
             nbt.put( "Pose", pose.getNBT() );
         if (!disabledSlots.isDefault())
