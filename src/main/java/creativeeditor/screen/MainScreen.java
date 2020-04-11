@@ -8,10 +8,13 @@ import creativeeditor.config.Config;
 import creativeeditor.data.DataItem;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
+import creativeeditor.widgets.ClassSpecificWidget;
+import creativeeditor.widgets.ItemWidgets;
 import creativeeditor.widgets.SliderTag;
 import creativeeditor.widgets.StyledDataTextField;
 import creativeeditor.widgets.StyledTextButton;
 import creativeeditor.widgets.StyledToggle;
+import creativeeditor.widgets.WidgetInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
@@ -122,9 +125,20 @@ public class MainScreen extends ParentItemScreen {
             } ) );
         }
 
+        int y = 55;
+        for (ClassSpecificWidget w : ItemWidgets.getInstance()) {
+            WidgetInfo info = new WidgetInfo( width - width / 6, y, advancedWidth, editX, w.text, null, this );
+            Widget widget = w.get( info, item );
+            if (widget != null) {
+                addButton( widget );
+                editWidgets.add( widget );
+                y += 20;
+            }
+        }
+
         // Tools
         String styleLocal = I18n.format( "gui.main.style" );
-        styleButton = addButton( new StyledTextButton( (15 + width / 3) / 2, 55, font.getStringWidth( styleLocal ), styleLocal, b -> StyleManager.setNext() ) );
+        styleButton = addButton( new StyledTextButton( width / 6, 55, font.getStringWidth( styleLocal ), styleLocal, b -> StyleManager.setNext() ) );
         toolsWidgets.add( styleButton );
 
         // Lore
@@ -199,7 +213,7 @@ public class MainScreen extends ParentItemScreen {
             loreButton.active = false;
             editButton.active = true;
             advancedButton.active = true;
-            
+
             for (Widget lore : loreWidgets) {
                 lore.visible = true;
             }
@@ -214,7 +228,7 @@ public class MainScreen extends ParentItemScreen {
             loreButton.active = true;
             editButton.active = false;
             advancedButton.active = true;
-            
+
             for (Widget lore : loreWidgets) {
                 lore.visible = false;
             }
@@ -229,7 +243,7 @@ public class MainScreen extends ParentItemScreen {
             loreButton.active = true;
             editButton.active = true;
             advancedButton.active = false;
-            
+
             for (Widget lore : loreWidgets) {
                 lore.visible = false;
             }
