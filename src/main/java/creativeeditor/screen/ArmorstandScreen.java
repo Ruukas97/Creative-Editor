@@ -122,6 +122,7 @@ public class ArmorstandScreen extends ParentItemScreen {
 		super.overlayRender(mouseX, mouseY, p3, color);
 		GuiUtil.addToolTip(this, resetButton, mouseX, mouseY, I18n.format("gui.armorstandeditor.reset"));
 	}
+	
 
 	
 

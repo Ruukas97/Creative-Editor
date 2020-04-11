@@ -8,6 +8,7 @@ import creativeeditor.util.ArmorStandDrawUtils;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.widgets.StyledTFToggle;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -31,12 +32,12 @@ public class ArmorstandPropScreen extends ParentItemScreen {
 		TagEntityArmorStand tagArmor = drawArmor.getStandData();
 		int x1 = 100;
 		int y1 = 40;
-		buttonList.add(new StyledTFToggle(x1, y1, 100, 20, "Show Arms", tagArmor.getShowArms()));
-		buttonList.add(new StyledTFToggle(x1, y1, 100, 20, "Small", tagArmor.getSmall()));
-		buttonList.add(new StyledTFToggle(x1, y1, 100, 20, "Marker", tagArmor.getMarker()));
-		buttonList.add(new StyledTFToggle(x1, y1, 100, 20, "Invisible", tagArmor.getInvisible()));
-		buttonList.add(new StyledTFToggle(x1, y1, 100, 20, "BasePlate", tagArmor.getNoBasePlate()));
-		buttonList.add(new StyledTFToggle(x1, y1, 100, 20, "NoGravity", tagArmor.getNoGravity()));
+		buttonList.add(new StyledTFToggle(x1, y1, 100, 20, I18n.format("gui.armorstandeditorproperties.showarms"), tagArmor.getShowArms()));
+		buttonList.add(new StyledTFToggle(x1, y1, 100, 20, I18n.format("gui.armorstandeditorproperties.small"), tagArmor.getSmall()));
+		buttonList.add(new StyledTFToggle(x1, y1, 100, 20, I18n.format("gui.armorstandeditorproperties.marker"), tagArmor.getMarker()));
+		buttonList.add(new StyledTFToggle(x1, y1, 100, 20, I18n.format("gui.armorstandeditorproperties.invisible"), tagArmor.getInvisible()));
+		buttonList.add(new StyledTFToggle(x1, y1, 100, 20, I18n.format("gui.armorstandeditorproperties.nobaseplate"), tagArmor.getNoBasePlate()));
+		buttonList.add(new StyledTFToggle(x1, y1, 100, 20, I18n.format("gui.armorstandeditorproperties.nogravity"), tagArmor.getNoGravity()));
 		int sideY = 0;
 		for (StyledTFToggle but : buttonList) {
 			int sideX = ((buttonList.indexOf(but) % 2) == 0) ? 120 : 0;

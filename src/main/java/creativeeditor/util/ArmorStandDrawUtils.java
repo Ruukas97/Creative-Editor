@@ -61,7 +61,7 @@ public class ArmorStandDrawUtils {
 		rendermanager.renderEntity(ent, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 		rendermanager.setRenderShadow(true);
 		GL11.glPopAttrib();
-		ent.renderYawOffset = f;
+		ent.renderYawOffset = f + 1;
 		ent.rotationYaw = f1;
 		ent.rotationPitch = f2;
 		ent.prevRotationYawHead = f3;

@@ -42,10 +42,14 @@
 	"gui.armorstandeditor.equipment":"Equipment",
 	
 	"gui.armorstandeditorproperties":"Armorstand Properties",
+	"gui.armorstandeditorproperties.showarms":"ShowArms",
+	"gui.armorstandeditorproperties.nobaseplate":"NoBasePlate",
+	"gui.armorstandeditorproperties.nogravity":"NoGravity",
+	"gui.armorstandeditorproperties.small":"Small",
+	"gui.armorstandeditorproperties.marker":"Marker",
+	"gui.armorstandeditorproperties.invisible":"Invisible",
 	
-	"gui.armorstandeditorproperties":"Armorstand Equipment",
-	
-	"gui.soundoutput": "Change sound output",
+	"gui.armorstandequipment":"Armorstand Equipment",
 
 	"gui.main": "Creative Editor",
 	"gui.main.id": "ID",
