@@ -137,11 +137,13 @@ public class ParentItemScreen extends ParentScreen {
             }
 
             // Item frame
-            GuiUtil.drawFrame( width / 2 - 20, height / 2 + 10, width / 2 + 20, height / 2 + 50, 1, color );
+            if (itemScale == 2f)
+                GuiUtil.drawFrame( width / 2 - 20, height / 2 + 10, width / 2 + 20, height / 2 + 50, 1, color );
 
-            if (GuiUtil.isMouseIn( mouseX, mouseY, width / 2 - 17, height / 2 + 13, 34, 34 )) {
+            
+            //TODO Item scale support
+            if (GuiUtil.isMouseIn( mouseX, mouseY, width / 2 - 17, height / 2 + 13, 34, 34 ))
                 renderTooltip( stack, mouseX, mouseY );
-            }
         }
     }
 }

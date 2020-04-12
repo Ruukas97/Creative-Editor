@@ -2,7 +2,6 @@ package creativeeditor.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import creativeeditor.util.ColorUtils;
 import creativeeditor.util.ColorUtils.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BannerTextures;
@@ -43,7 +42,7 @@ public class ShieldRenderer extends ItemStackTileEntityRenderer {
             String displayName = itemStackIn.getDisplayName().getUnformattedComponentText();
             if (mc.world != null && (displayName.contains( "Spectrum" ) || displayName.contains( "Creative" ) || displayName.contains( "Chroma" ))) {
                 float hue = ((float) (Util.milliTime() % 50000)) / 50000;
-                Color color = ColorUtils.hsvToRGB( hue, 1f, 1f );
+                Color color = Color.fromHSV( hue, 1f, 1f );
                 GlStateManager.color3f( color.getRed(), color.getGreen(), color.getBlue() );
             }
 

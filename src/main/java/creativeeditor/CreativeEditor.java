@@ -62,8 +62,8 @@ public class CreativeEditor {
 
     public static Path DATAPATH = FMLPaths.GAMEDIR.get().resolve( MODID.concat( "-data" ) );
 
-    //@SuppressWarnings( "unused" )
-    //private ItemGroup tabUnavailable;
+    // @SuppressWarnings( "unused" )
+    // private ItemGroup tabUnavailable;
 
 
     public CreativeEditor() {
@@ -101,7 +101,7 @@ public class CreativeEditor {
         Minecraft.getInstance().getResourcePackList().addPackFinder( new IPackFinder() {
             @Override
             public <T extends ResourcePackInfo> void addPackInfosToMap( Map<String, T> map, IFactory<T> fac ) {
-                map.computeIfAbsent( "armor_stand_variants", key -> ResourcePackInfo.createResourcePack( key, true, () -> new CreativeResources(key), fac, ResourcePackInfo.Priority.TOP ) );
+                map.computeIfAbsent( "armor_stand_variants", key -> ResourcePackInfo.createResourcePack( key, true, () -> new CreativeResources( key ), fac, ResourcePackInfo.Priority.TOP ) );
             }
         } );
     }
@@ -121,7 +121,7 @@ public class CreativeEditor {
 
     private void registerTabs() {
         LOGGER.info( "Adding Creative Tabs" );
-        /*tabUnavailable = */new TabUnavailable();
+        /* tabUnavailable = */new TabUnavailable();
 
         if (Config.NEARBYBLOCKS_TAB_ENABLED.get())
             new TabNearbyBlocks();

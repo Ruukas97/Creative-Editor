@@ -1,7 +1,6 @@
 package creativeeditor.styles;
 
 import creativeeditor.screen.ParentScreen;
-import creativeeditor.util.ColorUtils;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
 import net.minecraft.client.Minecraft;
@@ -12,23 +11,30 @@ import net.minecraft.util.math.MathHelper;
 
 public class StyleSpectrum implements Style {
     private int spectrumTick = 0;
+    private static Color color = new Color( 0xFFFF0000 );
+    private static Color inactive = new Color( 0xFFDD00DD );
+    private static Color hovered = new Color( 0xFFFF9900 );
 
 
     @Override
     public Color getMainColor() {
-        return ColorUtils.hsvToRGB( spectrumTick / 5000f, 1f, 1f );
+        return color.copy();
     }
 
 
     @Override
     public void update() {
-        spectrumTick = (spectrumTick + 1) % 5000;
+        if (spectrumTick++ % 10 == 0) {
+            color.hueShift();
+            inactive.hueShift();
+            hovered.hueShift();
+        }
     }
 
 
     @Override
     public void renderBackground( ParentScreen screen ) {
-        GuiUtil.fillGradient( screen, 0, 0, screen.width, screen.height, -1072689136, -804253680 );
+        GuiUtil.fillVerticalGradient( screen, 0, 0, screen.width, screen.height, -1072689136, -804253680 );
     }
 
 
@@ -68,9 +74,9 @@ public class StyleSpectrum implements Style {
     @Override
     public Color getFGColor( boolean active, boolean hovered ) {
         if (!active)
-            return ColorUtils.hsvToRGB( ((spectrumTick - 350) % 5000) / 5000f, 0.85f, 1f );
+            return inactive.copy();
         if (hovered)
-            return ColorUtils.hsvToRGB( ((spectrumTick + 500) % 5000) / 5000f, 1f, 1f );
+            return StyleSpectrum.hovered.copy();
         return getMainColor();
     }
 }

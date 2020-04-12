@@ -7,6 +7,12 @@
 	"itemGroup.tileentities": "Loaded TEs",
 
 	"gui.optionsound":"Change output",
+
+	"gui.color": "Color Editor",
+	"gui.color.rgb": "RGB: %s, %s, %s",
+	"gui.color.hsb": "HSB: %s, %s, %s",
+	"gui.color.alpha": "Alpha: %s",
+	"gui.color.hex": "Hex: %s",
 	
 	"gui.headcollection":"Head Collection",
 	"gui.headcollection.clickhead":"Click to add to your inventory",
