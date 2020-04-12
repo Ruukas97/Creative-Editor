@@ -61,12 +61,12 @@ public class ColorScreen extends ParentItemScreen {
         if (draggingSatBrightPicker && GuiUtil.isMouseInRegion( mouseX, mouseY, xPos, 60, width + 1, 100 )) {
             double sat = (mouseX - (double) xPos) / (double) width;
             double bri = 1d - (mouseY - 60d) / 100d;
-            //color.set( ColorUtils.hsvToRGB(0f, (float) sat, (float) bri ) );
+            // color.set( ColorUtils.hsvToRGB(0f, (float) sat, (float) bri ) );
             return true;
         }
         if (draggingHuePicker && GuiUtil.isMouseInRegion( mouseX, mouseY, xPos, 163, width, 3 )) {
             double hue = (mouseX - (double) xPos) / (double) width;
-            //color.get().setHue( (int) (hue * 255) );
+            // color.get().setHue( (int) (hue * 255) );
             return true;
         }
         return false;
@@ -129,16 +129,24 @@ public class ColorScreen extends ParentItemScreen {
 
         int leftText = (5 + width / 3) / 2;
         drawCenteredString( font, "Color Pickers", leftText, 30, guiColor.getInt() );
-        drawCenteredString( font, "HSB Picker", leftText, 45, guiColor.getInt() );
+        drawCenteredString( font, "HSV Picker", leftText, 45, guiColor.getInt() );
 
 
         int x = 25;
         int xEnd = width / 3 - 20;
-        GuiUtil.fillColorPicker( this, x, 60, xEnd, 160, color.get().getHue() / 255f );
-        GuiUtil.fillHueSlider( this, x, 163, xEnd, 166 );
-
         int width = xEnd - x;
-        int height = 100;
+        int y = 60;
+        int yEnd = y + width;
+        int height = yEnd - y;
+
+        GuiUtil.fillColorPicker( this, x, 60, xEnd, yEnd, color.get().getHue() / 255f );
+        
+        y = yEnd + 3;
+        yEnd = y+3;
+        height = 3;
+        GuiUtil.fillHueSlider( this, x, y, xEnd, yEnd );
+
+
         // double hue = (mouseX - (double) xPos) / (double) width;
 
         int colorX = (int) (x + (color.get().getSaturation() / 255f) * width);

@@ -42,7 +42,7 @@ public class ColorUtils {
 
 
         public Color(int r, int g, int b) {
-            argb = 0xFF000000 | (r & 256) << 16 | (g & 256) << 8 | b & 256;
+            argb = 0xFF000000 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF;
         }
 
 
@@ -62,61 +62,57 @@ public class ColorUtils {
 
 
         public Color setRGB( int r, int g, int b ) {
-            argb = argb & 0xFF000000 | (r & 256) << 16 | (g & 256) << 8 | b & 256;
+            argb = argb & 0xFF000000 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF;
             return this;
         }
 
 
         public Color setARGB( int a, int r, int g, int b ) {
-            argb = (a & 256) << 24 | (r & 256) << 16 | (g & 256) << 8 | b & 256;
+            argb = (a & 0xFF) << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF;
             return this;
         }
 
 
         public int getAlpha() {
-            return argb >> 24 & 256;
+            return argb >> 24 & 0xFF;
         }
 
 
         public Color setAlpha( int alpha ) {
-            argb = alpha & 256 | argb & 0x00FFFFFF;
+            argb = (alpha & 0xFF) << 24 | argb & 0x00FFFFFF;
             return this;
         }
 
 
         public int getRed() {
-            return argb >> 16 & 256;
+            return argb >> 16 & 0xFF;
         }
 
 
         public Color setRed( int red ) {
-            argb = red & 256 | argb & 0xFF00FFFF;
+            argb = (red & 0xFF) << 16 | argb & 0xFF00FFFF;
             return this;
         }
 
 
         public int getGreen() {
-            return argb >> 8 & 256;
+            return (argb >> 8) & 0xFF;
         }
 
 
         public Color setGreen( int green ) {
-            argb = green & 256 | argb & 0xFFFF00FF;
+            argb = (green & 0xFF) << 8 | (argb & 0xFFFF00FF);
             return this;
         }
 
 
         public int getBlue() {
-            return argb & 256;
+            return argb & 0xFF;
         }
 
 
         public Color setBlue( int blue ) {
-            //System.out.println( "Setting blue: " + blue );
-            //System.out.println( "Before: " + argb );
-
-            argb = blue & 256 | argb & 0xFFFFFF00;
-            //System.out.println( "After: " + argb );
+            argb = (blue & 0xFF) | (argb & 0xFFFFFF00);
             return this;
         }
 
@@ -141,7 +137,8 @@ public class ColorUtils {
             }
             int min = Math.min( r, Math.min( g, b ) );
             int max = Math.max( r, Math.max( g, b ) );
-            if (r == max) {
+
+            if (r == max && g != max) {
                 if (b == min) {
                     setGreen( g + 1 );
                 }
@@ -149,7 +146,7 @@ public class ColorUtils {
                     setBlue( b - 1 );
                 }
             }
-            else if (g == max) {
+            else if (g == max && b != max) {
                 if (r == min) {
                     setBlue( b + 1 );
                 }
@@ -157,7 +154,7 @@ public class ColorUtils {
                     setRed( r - 1 );
                 }
             }
-            else if (b == max) {
+            else if (b == max && r != max) {
                 if (g == min) {
                     setRed( r + 1 );
                 }
@@ -166,6 +163,15 @@ public class ColorUtils {
                 }
             }
             return this;
+        }
+
+        public int getPossibleHueShifts() {
+            int r = getRed();
+            int g = getGreen();
+            int b = getBlue();
+            int min = Math.min( r, Math.min( g, b ) );
+            int max = Math.max( r, Math.max( g, b ) );
+            return max - min;
         }
 
 
@@ -229,7 +235,12 @@ public class ColorUtils {
 
 
         public String getHexString() {
-            return String.format( "#%06X", (0xFFFFFF & getInt()) );
+            return String.format( "#%06X", (getInt() & 0xFFFFFF) );
+        }
+
+
+        public String getHexStringWithAlpha() {
+            return String.format( "#%08X", (getInt()) );
         }
 
 

@@ -12,8 +12,8 @@ import net.minecraft.util.math.MathHelper;
 public class StyleSpectrum implements Style {
     private int spectrumTick = 0;
     private static Color color = new Color( 0xFFFF0000 );
-    private static Color inactive = new Color( 0xFFCC00CC );
-    private static Color hovered = new Color( 0xFFFFFF00 );
+    private static Color inactive = new Color( 0xFFDD00DD );
+    private static Color hovered = new Color( 0xFFFF9900 );
 
 
     @Override
@@ -24,7 +24,7 @@ public class StyleSpectrum implements Style {
 
     @Override
     public void update() {
-        if (spectrumTick++ % 1 == 0) {
+        if (spectrumTick++ % 10 == 0) {
             color.hueShift();
             inactive.hueShift();
             hovered.hueShift();

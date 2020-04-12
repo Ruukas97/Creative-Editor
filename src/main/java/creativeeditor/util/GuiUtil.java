@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
 public class GuiUtil extends GuiUtils {
@@ -134,13 +133,11 @@ public class GuiUtil extends GuiUtils {
 
     public static void fillColorPicker( ParentScreen screen, int xStart, int yStart, int xEnd, int yEnd, float hue ) {
         float alpha = 1f;
-        int color1 = MathHelper.hsvToRGB( hue, 1f, 1f );
-        float red1 = (float) (color1 >> 16 & 255) / 255.0F;
-        float green1 = (float) (color1 >> 8 & 255) / 255.0F;
-        float blue1 = (float) (color1 & 255) / 255.0F;
-        // float red4 = (float)(color4 >> 16 & 255) / 255.0F;
-        // float green4 = (float)(color4 >> 8 & 255) / 255.0F;
-        // float blue4 = (float)(color4 & 255) / 255.0F;
+        Color sat = new Color( 0xFFFF0000 );
+        float satRed = (float) sat.getRed() / 255.0F;
+        float satGreen = (float) sat.getGreen() / 255.0F;
+        float satBlue = (float) sat.getBlue() / 255.0F;
+
         GlStateManager.disableTexture();
         GlStateManager.enableBlend();
         GlStateManager.disableAlphaTest();
@@ -149,11 +146,26 @@ public class GuiUtil extends GuiUtils {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin( 7, DefaultVertexFormats.POSITION_COLOR );
-        bufferbuilder.pos( (double) xEnd, (double) yStart, (double) screen.getBlitOffset() ).color( red1, green1, blue1, alpha ).endVertex();
-        bufferbuilder.pos( (double) xStart, (double) yStart, (double) screen.getBlitOffset() ).color( 1f, 1f, 1f, alpha ).endVertex();
-        bufferbuilder.pos( (double) xStart, (double) yEnd, (double) screen.getBlitOffset() ).color( 0f, 0f, 0f, alpha ).endVertex();
-        bufferbuilder.pos( (double) xEnd, (double) yEnd, (double) screen.getBlitOffset() ).color( 0f, 0f, 0f, alpha ).endVertex();
+        bufferbuilder.pos( (double) xEnd, (double) yStart, (double) screen.getBlitOffset() ).color( 1f, 1f, 1f, 1f ).endVertex();
+        bufferbuilder.pos( (double) xStart, (double) yStart, (double) screen.getBlitOffset() ).color( 1f, 1f, 1f, 1f ).endVertex();
+        bufferbuilder.pos( (double) xStart, (double) yEnd, (double) screen.getBlitOffset() ).color( 1f, 1f, 1f, 1f ).endVertex();
+        bufferbuilder.pos( (double) xEnd, (double) yEnd, (double) screen.getBlitOffset() ).color( 1f, 1f, 1f, 1f ).endVertex();
         tessellator.draw();
+        
+        bufferbuilder.begin( 7, DefaultVertexFormats.POSITION_COLOR );
+        bufferbuilder.pos( (double) xEnd, (double) yStart, (double) screen.getBlitOffset() ).color( satRed, satGreen, satBlue, 1f ).endVertex();
+        bufferbuilder.pos( (double) xStart, (double) yStart, (double) screen.getBlitOffset() ).color( satRed, satGreen, satBlue, 0f ).endVertex();
+        bufferbuilder.pos( (double) xStart, (double) yEnd, (double) screen.getBlitOffset() ).color( satRed, satGreen, satBlue, 0f ).endVertex();
+        bufferbuilder.pos( (double) xEnd, (double) yEnd, (double) screen.getBlitOffset() ).color( satRed, satGreen, satBlue, 1f ).endVertex();
+        tessellator.draw();
+        
+        bufferbuilder.begin( 7, DefaultVertexFormats.POSITION_COLOR );
+        bufferbuilder.pos( (double) xEnd, (double) yStart, (double) screen.getBlitOffset() ).color( 0f, 0f, 0f, 0f ).endVertex();
+        bufferbuilder.pos( (double) xStart, (double) yStart, (double) screen.getBlitOffset() ).color( 0f, 0f, 0f, 0f ).endVertex();
+        bufferbuilder.pos( (double) xStart, (double) yEnd, (double) screen.getBlitOffset() ).color( 0f, 0f, 0f, 1f ).endVertex();
+        bufferbuilder.pos( (double) xEnd, (double) yEnd, (double) screen.getBlitOffset() ).color( 0f, 0f, 0f, 1f ).endVertex();
+        tessellator.draw();
+        
         GlStateManager.shadeModel( 7424 );
         GlStateManager.disableBlend();
         GlStateManager.enableAlphaTest();

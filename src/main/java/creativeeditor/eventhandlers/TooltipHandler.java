@@ -16,13 +16,13 @@ public class TooltipHandler {
 
 
         Color color1 = new Color( StyleManager.getCurrentStyle().getMainColor().getInt() );
-        color1.setValue( .5f ).setAlpha( 230 );
+        color1.setValue( .7f ).setAlpha( 230 );
         e.setBorderStart( color1.getInt() );
 
         Color color2 = StyleManager.getCurrentStyle().getFGColor( false, false );
         e.setBorderEnd( color2.getInt() );
 
-        color1.setValue( .125f ).setAlpha( 200 );
+        color1.setValue( .125f ).setAlpha( 210 );
         e.setBackground( color1.getInt() );
     }
 }
