@@ -4,6 +4,7 @@ import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataColor;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
+import creativeeditor.widgets.HexField;
 import creativeeditor.widgets.StyledSlider;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class ColorScreen extends ParentItemScreen {
     private boolean useAlpha;
 
     private StyledSlider red, green, blue, hue, saturation, brightness, alpha;
+    private HexField hex;
 
     private boolean draggingSatBrightPicker = false;
     private boolean draggingHuePicker = false;
@@ -45,12 +47,20 @@ public class ColorScreen extends ParentItemScreen {
     @Override
     protected void init() {
         super.init();
+        hex = addButton( new HexField( font, width / 3 + 11, 100, 16, color ) );
     }
 
 
     @Override
     public void reset( Widget w ) {
         color.setInt( color.getDefColor() );
+    }
+
+
+    @Override
+    public void tick() {
+        super.tick();
+        hex.updateCursorCounter();
     }
 
 
@@ -72,7 +82,7 @@ public class ColorScreen extends ParentItemScreen {
             mouseX = MathHelper.clamp( mouseX, x, xEnd );
             mouseY = MathHelper.clamp( mouseY, yEnd + 3, yEnd + 6 );
             float hue = (float) ((mouseX - (double) x) / (double) width);
-            //hue %= 1;
+            // hue %= 1;
             color.setHSB( hue, color.getSaturation(), color.getBrightness() );
             return true;
         }
@@ -146,14 +156,14 @@ public class ColorScreen extends ParentItemScreen {
         int pickerWidth = xEnd - x;
         int y = 60;
         int yEnd = y + pickerWidth;
-        //int pickerHeight = yEnd - y;
+        // int pickerHeight = yEnd - y;
         float hue = color.getHue();
 
         GuiUtil.fillColorPicker( this, x, 60, xEnd, yEnd, hue );
 
         y = yEnd + 3;
         yEnd = y + 3;
-        //pickerHeight = 3;
+        // pickerHeight = 3;
         GuiUtil.fillHueSlider( this, x, y, xEnd, yEnd );
 
 
