@@ -1,36 +1,67 @@
 package creativeeditor.data.base;
 
+import creativeeditor.data.Data;
 import creativeeditor.util.ColorUtils.Color;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.nbt.IntNBT;
 
-public class DataColor extends SingularData<Color, IntNBT> {
+@SuppressWarnings( "serial" )
+public class DataColor extends Color implements Data<Color, IntNBT> {
     @Getter
     @Setter
     private int defColor = 0;
-    
-    public DataColor(Color color) {
+    @Getter
+    private float hue = 0;
+    @Getter
+    private float saturation = 0;
+    @Getter
+    private float brightness = 0;
+
+
+    public DataColor(int color) {
         super( color );
     }
 
 
-    public DataColor(int color) {
-        this( new Color( color ) );
-    }
-
     @Override
     public boolean isDefault() {
-        return data.getInt() == defColor;
+        return argb == defColor;
+    }
+
+
+    @Override
+    public Color getData() {
+        return this;
     }
 
 
     @Override
     public IntNBT getNBT() {
-        return new IntNBT( data.getInt() );
+        return new IntNBT( argb );
     }
-    
-    public int getInt() {
-        return data.getInt();
+
+
+    private void updateHSB() {
+        float[] hsb = getHSB();
+        hue = hsb[0];
+        saturation = hsb[1];
+        brightness = hsb[2];
+    }
+
+
+    public Color setHSB( float h, float s, float b ) {
+        hue = h;
+        saturation = s;
+        brightness = b;
+        return super.setInt( java.awt.Color.HSBtoRGB( h, s, b ) );
+    }
+
+
+    @Override
+    public Color setInt( int color ) {
+        super.setInt( color );
+        updateHSB();
+        return this;
     }
 }

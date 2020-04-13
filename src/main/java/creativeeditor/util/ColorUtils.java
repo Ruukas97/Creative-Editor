@@ -33,16 +33,16 @@ public class ColorUtils {
 
     @SuppressWarnings( "serial" )
     public static class Color extends Number implements Comparable<Integer> {
-        int argb;
+        protected int argb;
 
 
         public Color(int color) {
-            argb = color;
+            setInt( color );
         }
 
 
         public Color(int r, int g, int b) {
-            argb = 0xFF000000 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF;
+            setInt(0xFF000000 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF);
         }
 
 
@@ -62,14 +62,12 @@ public class ColorUtils {
 
 
         public Color setRGB( int r, int g, int b ) {
-            argb = argb & 0xFF000000 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF;
-            return this;
+            return setInt(argb & 0xFF000000 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF);
         }
 
 
         public Color setARGB( int a, int r, int g, int b ) {
-            argb = (a & 0xFF) << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF;
-            return this;
+            return setInt( (a & 0xFF) << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF );
         }
 
 
@@ -79,8 +77,7 @@ public class ColorUtils {
 
 
         public Color setAlpha( int alpha ) {
-            argb = (alpha & 0xFF) << 24 | argb & 0x00FFFFFF;
-            return this;
+            return setInt((alpha & 0xFF) << 24 | argb & 0x00FFFFFF);
         }
 
 
@@ -90,8 +87,7 @@ public class ColorUtils {
 
 
         public Color setRed( int red ) {
-            argb = (red & 0xFF) << 16 | argb & 0xFF00FFFF;
-            return this;
+            return setInt((red & 0xFF) << 16 | argb & 0xFF00FFFF);
         }
 
 
@@ -101,8 +97,7 @@ public class ColorUtils {
 
 
         public Color setGreen( int green ) {
-            argb = (green & 0xFF) << 8 | (argb & 0xFFFF00FF);
-            return this;
+            return setInt((green & 0xFF) << 8 | (argb & 0xFFFF00FF));
         }
 
 
@@ -112,8 +107,7 @@ public class ColorUtils {
 
 
         public Color setBlue( int blue ) {
-            argb = (blue & 0xFF) | (argb & 0xFFFFFF00);
-            return this;
+            return setInt((blue & 0xFF) | (argb & 0xFFFFFF00));
         }
 
 
@@ -165,6 +159,7 @@ public class ColorUtils {
             return this;
         }
 
+
         public int getPossibleHueShifts() {
             int r = getRed();
             int g = getGreen();
@@ -181,16 +176,32 @@ public class ColorUtils {
             float b = getBlue();
             float min = Math.min( r, Math.min( g, b ) );
             float max = Math.max( r, Math.max( g, b ) );
+            if (min == max) {
+                return 0f;
+            }
+            float res;
             if (r == max)
-                return (g - b) / (r - min);
+                res = (g - b) / (r - min);
             else if (g == max)
-                return 2f + (b - r) / (g - min);
+                res = 2f + (b - r) / (g - min);
             else
-                return 4f + (r - g) / (b - min);
+                res = 4f + (r - g) / (b - min);
+            res = res / 6;
+            return res < 0 ? 1 + res : res;
         }
 
 
-        public float getSaturation() {
+        public float[] getHSB() {
+            return java.awt.Color.RGBtoHSB( getRed(), getGreen(), getBlue(), null );
+        }
+
+
+        public float getHSBSaturation() {
+            return getHSB()[1];
+        }
+
+
+        public float getHSVSaturation() {
             float r = getRed() / 255f;
             float g = getGreen() / 255f;
             float b = getBlue() / 255f;

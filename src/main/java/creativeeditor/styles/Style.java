@@ -23,5 +23,5 @@ public interface Style {
     public void renderButton( IStyledWidget button, int mouseX, int mouseY, float alpha );
 
 
-    public void renderSlider( IStyledSlider slider, int mouseX, int mouseY );
+    public void renderSlider( IStyledSlider<?> slider, int mouseX, int mouseY );
 }

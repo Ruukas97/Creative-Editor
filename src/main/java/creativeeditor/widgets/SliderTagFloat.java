@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn( Dist.CLIENT )
-public class SliderTagFloat extends Widget implements IStyledSlider {
+public class SliderTagFloat extends Widget implements IStyledSlider<Float> {
     private NumberRangeFloat range;
 
     public String display;
@@ -104,7 +104,7 @@ public class SliderTagFloat extends Widget implements IStyledSlider {
 
 
     public void setValue( float value ) {
-        int old = getValue();
+        float old = getValue();
         range.set( value );
         if (getValue() != old) {
             updateSlider();
@@ -160,19 +160,19 @@ public class SliderTagFloat extends Widget implements IStyledSlider {
 
 
     @Override
-    public int getValue() {
-        return Math.round( range.get() );
+    public Float getValue() {
+        return range.get();
     }
 
 
     @Override
-    public int getMin() {
-        return (int) Math.floor( range.getMin() );
+    public Float getMin() {
+        return range.getMin();
     }
 
 
     @Override
-    public int getMax() {
-        return (int) Math.ceil( range.getMax() );
+    public Float getMax() {
+        return range.getMax();
     }
 }

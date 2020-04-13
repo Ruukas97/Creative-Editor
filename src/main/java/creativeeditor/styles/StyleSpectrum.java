@@ -59,8 +59,8 @@ public class StyleSpectrum implements Style {
 
 
     @Override
-    public void renderSlider( IStyledSlider slider, int mouseX, int mouseY ) {
-        int x = slider.getWidget().x + 1 + (int) ((slider.getWidget().getWidth() - 3) * (slider.getValue() - slider.getMin()) / (float) (slider.getMax() - slider.getMin()));
+    public void renderSlider( IStyledSlider<?> slider, int mouseX, int mouseY ) {
+        int x = slider.getWidget().x + 1 + (int) ((slider.getWidget().getWidth() - 3) * (slider.getValue().floatValue() - slider.getMin().floatValue()) / (float) (slider.getMax().floatValue() - slider.getMin().floatValue()));
         AbstractGui.fill( x, slider.getWidget().y + 3, x + 1, slider.getWidget().y + slider.getWidget().getHeight() - 3, getMainColor().getInt() );
     }
 

@@ -11,6 +11,7 @@
 	"gui.color": "Color Editor",
 	"gui.color.rgb": "RGB: %s, %s, %s",
 	"gui.color.hsb": "HSB: %s, %s, %s",
+	"gui.color.hsv": "HSV: %s, %s, %s",
 	"gui.color.alpha": "Alpha: %s",
 	"gui.color.hex": "Hex: %s",
 	

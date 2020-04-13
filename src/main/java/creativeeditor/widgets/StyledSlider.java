@@ -16,7 +16,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn( Dist.CLIENT )
-public class StyledSlider extends Widget implements IStyledSlider {
+public class StyledSlider extends Widget implements IStyledSlider<Integer> {
     public int value;
 
     public String display;
@@ -166,19 +166,19 @@ public class StyledSlider extends Widget implements IStyledSlider {
 
 
     @Override
-    public int getValue() {
+    public Integer getValue() {
         return value;
     }
 
 
     @Override
-    public int getMin() {
+    public Integer getMin() {
         return min;
     }
 
 
     @Override
-    public int getMax() {
+    public Integer getMax() {
         return max;
     }
 

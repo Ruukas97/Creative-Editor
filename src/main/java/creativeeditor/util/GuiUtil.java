@@ -132,8 +132,7 @@ public class GuiUtil extends GuiUtils {
 
 
     public static void fillColorPicker( ParentScreen screen, int xStart, int yStart, int xEnd, int yEnd, float hue ) {
-        float alpha = 1f;
-        Color sat = new Color( 0xFFFF0000 );
+        Color sat = Color.fromHSB( hue, 1f, 1f );
         float satRed = (float) sat.getRed() / 255.0F;
         float satGreen = (float) sat.getGreen() / 255.0F;
         float satBlue = (float) sat.getBlue() / 255.0F;
