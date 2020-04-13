@@ -64,13 +64,13 @@ public class HeadCollectionScreen extends ParentScreen {
         maxInRow = (width - 250) / 14;
         amountInPage = maxInRow * 10;
 
-        mc.keyboardListener.enableRepeatEvents( true );
+        minecraft.keyboardListener.enableRepeatEvents( true );
     }
 
 
     @Override
     public void removed() {
-        mc.keyboardListener.enableRepeatEvents( false );
+        minecraft.keyboardListener.enableRepeatEvents( false );
     }
 
 
@@ -129,17 +129,17 @@ public class HeadCollectionScreen extends ParentScreen {
                 if (mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16) {
                     ItemStack is = filteredHeads.get( i );
                     if (hasShiftDown()) {
-                        mc.playerController.sendPacketDropItem( is );
+                        minecraft.playerController.sendPacketDropItem( is );
                     }
                     else {
-                        int slot = InventoryUtils.getEmptySlots( mc.player.inventory );
+                        int slot = InventoryUtils.getEmptySlots( minecraft.player.inventory );
                         if (slot <= 0) {
-                            mc.playerController.sendPacketDropItem( is );
+                            minecraft.playerController.sendPacketDropItem( is );
                         }
                         else {
-                            int emptySlot = InventoryUtils.getEmptySlot( mc.player.inventory );
-                            mc.playerController.sendSlotPacket( is, emptySlot );
-                            mc.player.playSound( SoundEvents.ENTITY_ITEM_PICKUP, 0.1F, 1.01F );
+                            int emptySlot = InventoryUtils.getEmptySlot( minecraft.player.inventory );
+                            minecraft.playerController.sendSlotPacket( is, emptySlot );
+                            minecraft.player.playSound( SoundEvents.ENTITY_ITEM_PICKUP, 0.1F, 1.01F );
                         }
 
                     }
@@ -153,7 +153,7 @@ public class HeadCollectionScreen extends ParentScreen {
 
 
     private void playClickSound() {
-        mc.player.playSound( SoundEvents.UI_BUTTON_CLICK, 0.2F, 1.01F );
+        minecraft.player.playSound( SoundEvents.UI_BUTTON_CLICK, 0.2F, 1.01F );
     }
 
 
@@ -256,9 +256,9 @@ public class HeadCollectionScreen extends ParentScreen {
         drawString( font, I18n.format( "gui.headcollection.credit" ), space + 7, heightOffset + topbar + 168, blandColor );
 
         // Has to be before tooltip cause of skull hover
-        drawCenteredString( font, I18n.format( "gui.headcollection.freeslots" ) + ": " + InventoryUtils.getEmptySlots( mc.player.inventory ), width / 2, height - 45, blandColor );
+        drawCenteredString( font, I18n.format( "gui.headcollection.freeslots" ) + ": " + InventoryUtils.getEmptySlots( minecraft.player.inventory ), width / 2, height - 45, blandColor );
 
-        drawCenteredString( font, I18n.format( "gui.headcollection.headsininventory" ) + ": " + InventoryUtils.countItem( mc.player.inventory, Items.PLAYER_HEAD ), width / 2, height - 35, blandColor );
+        drawCenteredString( font, I18n.format( "gui.headcollection.headsininventory" ) + ": " + InventoryUtils.countItem( minecraft.player.inventory, Items.PLAYER_HEAD ), width / 2, height - 35, blandColor );
 
         GlStateManager.pushMatrix();
         RenderHelper.enableGUIStandardItemLighting();

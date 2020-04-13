@@ -54,8 +54,8 @@ public class SliderTag extends Widget implements IStyledSlider<Integer> {
 
 
     @Override
-    public void renderButton( int mouseX, int mouseY, float p3 ) {
-        // super.renderButton(mouseX, mouseY, p3);
+    public void renderButton( int mouseX, int mouseY, float p3 ) {        
+        updateSlider();
         StyleManager.getCurrentStyle().renderButton( this, mouseX, mouseY, p3 );
     }
 

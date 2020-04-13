@@ -34,7 +34,7 @@ public class ScreenPlayerInspector extends ParentScreen {
         // Render player model
         InventoryScreen.drawEntityOnScreen( width / 2, height / 2, 50, width / 2 - mouseX, height / 3 - mouseY, target );
         // Render player UUID
-        drawCenteredString( mc.fontRenderer, playerUUID, width / 2, height / 2 + 8, 0xFFFFFF );
+        drawCenteredString( minecraft.fontRenderer, playerUUID, width / 2, height / 2 + 8, 0xFFFFFF );
 
         // Render equipped items
         ItemStack[] stacks = new ItemStack[6];

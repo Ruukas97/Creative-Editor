@@ -7,10 +7,9 @@ import java.util.List;
 import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.data.base.DataString;
-import creativeeditor.util.GuiUtil;
 import creativeeditor.util.ColorUtils.Color;
+import creativeeditor.util.GuiUtil;
 import creativeeditor.widgets.StyledButton;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.SharedConstants;
@@ -39,7 +38,6 @@ public class TextEditorScreen extends ParentScreen {
     }
 
 
-    @SuppressWarnings( "resource" )
     @Override
     protected void init() {
         super.init();
@@ -48,14 +46,13 @@ public class TextEditorScreen extends ParentScreen {
             preview = (preview + 1) % 3;
         } ) );
 
-        Minecraft.getInstance().keyboardListener.enableRepeatEvents( true );
+        minecraft.keyboardListener.enableRepeatEvents( true );
     }
 
 
-    @SuppressWarnings( "resource" )
     @Override
     public void removed() {
-        Minecraft.getInstance().keyboardListener.enableRepeatEvents( false );
+        minecraft.keyboardListener.enableRepeatEvents( false );
     }
 
 

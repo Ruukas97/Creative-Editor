@@ -41,7 +41,7 @@ public class ArmorstandScreen extends ParentItemScreen {
 		int x1 = width / divideX;
 		int y1 = height / divideY;
 		if (armorStand == null) {
-			ArmorStandEntity entity = new ArmorStandEntity(mc.world, 0, 0, 0);
+			ArmorStandEntity entity = new ArmorStandEntity(minecraft.world, 0, 0, 0);
 			armorStand = entity;
 			drawArmor = new ArmorStandDrawUtils(armorStand, item);
 		}
@@ -66,11 +66,11 @@ public class ArmorstandScreen extends ParentItemScreen {
 		int butWidth = 130;
 		addButton(new StyledButton(x1 + (buttonWidth / 3), y1, butWidth, 18,
 				I18n.format("gui.armorstandeditor.properties"), t -> {
-					mc.displayGuiScreen(new ArmorstandPropScreen(this, item, armorStand));
+					minecraft.displayGuiScreen(new ArmorstandPropScreen(this, item, armorStand));
 				}));
 		addButton(new StyledButton(x1 + (buttonWidth / 3) + butWidth + 5, y1, butWidth, 18,
 				I18n.format("gui.armorstandeditor.equipment"), t -> {
-					mc.displayGuiScreen(new ArmorStandEquipScreen(this, item, armorStand));
+					minecraft.displayGuiScreen(new ArmorStandEquipScreen(this, item, armorStand));
 				}));
 
 		

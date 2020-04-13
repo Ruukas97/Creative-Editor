@@ -63,7 +63,7 @@ public class ParentItemScreen extends ParentScreen {
 
 
     public void back( Widget w ) {
-        mc.displayGuiScreen( lastScreen );
+        minecraft.displayGuiScreen( lastScreen );
     }
 
 
@@ -82,13 +82,13 @@ public class ParentItemScreen extends ParentScreen {
 
     public void save( Widget w ) {
         if (item.getItem().getItem() != Items.AIR)
-            mc.playerController.sendSlotPacket( item.getItemStack(), 36 + mc.player.inventory.currentItem );
+            minecraft.playerController.sendSlotPacket( item.getItemStack(), 36 + minecraft.player.inventory.currentItem );
     }
 
 
     public void drop( Widget w ) {
         if (item.getItem().getItem() != Items.AIR)
-            mc.playerController.sendPacketDropItem( item.getItemStack() );
+            minecraft.playerController.sendPacketDropItem( item.getItemStack() );
         // Shift for /give
     }
 

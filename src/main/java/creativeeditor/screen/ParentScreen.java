@@ -16,14 +16,12 @@ import net.minecraft.util.text.ITextComponent;
 
 public abstract class ParentScreen extends Screen {
     protected final Screen lastScreen;
-    protected Minecraft mc;
     protected List<Widget> renderWidgets = Lists.newArrayList();
 
 
     public ParentScreen(ITextComponent title, Screen lastScreen) {
         super( title );
         this.lastScreen = lastScreen;
-        this.mc = Minecraft.getInstance();
     }
 
 
@@ -41,7 +39,7 @@ public abstract class ParentScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.displayGuiScreen( lastScreen );
+        minecraft.displayGuiScreen( lastScreen );
     }
 
 

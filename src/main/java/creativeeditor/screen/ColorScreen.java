@@ -21,7 +21,6 @@ public class ColorScreen extends ParentItemScreen {
     private boolean useAlpha;
 
     private StyledSlider red, green, blue, hue, saturation, brightness, alpha;
-    // private int[][] pixels = new int[256][256];
 
     private boolean draggingSatBrightPicker = false;
     private boolean draggingHuePicker = false;
@@ -147,14 +146,14 @@ public class ColorScreen extends ParentItemScreen {
         int pickerWidth = xEnd - x;
         int y = 60;
         int yEnd = y + pickerWidth;
-        int pickerHeight = yEnd - y;
+        //int pickerHeight = yEnd - y;
         float hue = color.getHue();
 
         GuiUtil.fillColorPicker( this, x, 60, xEnd, yEnd, hue );
 
         y = yEnd + 3;
         yEnd = y + 3;
-        pickerHeight = 3;
+        //pickerHeight = 3;
         GuiUtil.fillHueSlider( this, x, y, xEnd, yEnd );
 
 

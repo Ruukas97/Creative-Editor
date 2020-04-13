@@ -10,6 +10,7 @@ import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.widgets.ClassSpecificWidget;
 import creativeeditor.widgets.ItemWidgets;
+import creativeeditor.widgets.NumberField;
 import creativeeditor.widgets.SliderTag;
 import creativeeditor.widgets.StyledDataTextField;
 import creativeeditor.widgets.StyledTextButton;
@@ -28,7 +29,7 @@ public class MainScreen extends ParentItemScreen {
 
     private ArrayList<Widget> toolsWidgets = new ArrayList<>(), loreWidgets = new ArrayList<>(), editWidgets = new ArrayList<>(), advancedWidgets = new ArrayList<>();
     private StyledTextButton nbtButton, tooltipButton, toolsButton, loreButton, editButton, advancedButton;
-
+    private NumberField count, damage;
     // Tools
     private StyledTextButton styleButton;
 
@@ -43,13 +44,19 @@ public class MainScreen extends ParentItemScreen {
 
 
     public void tick() {
-        nameField.tick();
+        if (nameField != null)
+            nameField.tick();
+        if (count != null)
+            count.updateCursorCounter();
+        if (damage != null)
+            damage.updateCursorCounter();
     }
 
 
     @Override
     protected void init() {
         super.init();
+        minecraft.keyboardListener.enableRepeatEvents( true );
         String nbtLocal = I18n.format( "gui.main.nbt" );
         String tooltipLocal = I18n.format( "gui.main.tooltip" );
         String toolsLocal = I18n.format( "gui.main.tools" );
@@ -121,7 +128,7 @@ public class MainScreen extends ParentItemScreen {
 
         if (item.getItem().getItem() == Items.ARMOR_STAND) {
             addButton( new StyledTextButton( width / 2, height / 2, font.getStringWidth( "Armor Stand Editor" ), "Armor Stand Editor", b -> {
-                mc.displayGuiScreen( new ArmorstandScreen( this, item ) );
+                minecraft.displayGuiScreen( new ArmorstandScreen( this, item ) );
             } ) );
         }
 
@@ -156,15 +163,39 @@ public class MainScreen extends ParentItemScreen {
         } ) );
         loreWidgets.add( clearButton );
 
-        // General Item
-        addButton( new SliderTag( width / 2 + 5, 61, 50, 16, item.getCount() ) );
 
-        addButton( new SliderTag( width / 2 + 5, 81, 50, 16, item.getTag().getDamage() ) );
+        // String id = I18n.format( "gui.main.id" );
+        // int idWidth = font.getStringWidth( id );
+
+        // General Item
+        String count = I18n.format( "gui.main.count" );
+        int countWidth = font.getStringWidth( count );
+        String damage = I18n.format( "gui.main.damage" );
+        int damageWidth = font.getStringWidth( damage );
+
+        int x = width / 3 + 16 + Math.max( countWidth, damageWidth );
+        int countX = x;
+        this.count = addButton( new NumberField( font, countX, 61, 16, item.getCount() ) );
+        countX += this.count.getWidth() + 8;
+        addButton( new SliderTag( countX, 61, (width - width / 3 - 8) - countX, 16, item.getCount() ) );
+
+        int dmgX = x;
+        this.damage = addButton( new NumberField( font, dmgX, 81, 16, item.getTag().getDamage() ) );
+        dmgX += this.damage.getWidth() + 8;
+        addButton( new SliderTag( dmgX, 81, (width - width / 3 - 8) - dmgX, 16, item.getTag().getDamage() ) );
+
 
         addButton( new StyledToggle( width / 2 - 40, 101, 80, 16, "item.tag.unbreakable.true", "item.tag.unbreakable.false", item.getTag().getUnbreakable() ) );
 
         setLeftTab( Config.MAIN_LEFT_TAB.get(), false );
         setRightTab( Config.MAIN_RIGHT_TAB.get(), false );
+    }
+
+
+    @Override
+    public void onClose() {
+        super.onClose();
+        minecraft.keyboardListener.enableRepeatEvents( true );
     }
 
 
@@ -303,18 +334,23 @@ public class MainScreen extends ParentItemScreen {
         String overviewTrimmed = font.trimStringToWidth( itemOverview, width / 3 - 15 );
         drawCenteredString( font, overviewTrimmed.equals( itemOverview ) ? overviewTrimmed : overviewTrimmed + "...", width / 2, 27, color.getInt() );
 
-        String id = I18n.format( "gui.main.id" );
-        int idWidth = font.getStringWidth( id );
-        drawString( font, id, width / 2 - idWidth, 45, color.getInt() );
-        drawString( font, item.getItem().get(), width / 2 + 5, 45, color.getInt() );
 
         String count = I18n.format( "gui.main.count" );
         int countWidth = font.getStringWidth( count );
-        drawString( font, count, width / 2 - countWidth, 65, color.getInt() );
-
         String damage = I18n.format( "gui.main.damage" );
         int damageWidth = font.getStringWidth( damage );
-        drawString( font, damage, width / 2 - damageWidth, 85, color.getInt() );
+
+        int x = width / 3 + 10;
+        String id = I18n.format( "gui.main.id" );
+        //int idWidth = font.getStringWidth( id );
+        drawString( font, id, x, 45, color.getInt() );
+        drawString( font, item.getItem().get(), x + 6 + Math.max( countWidth, damageWidth ), 45, color.getInt() );
+
+
+        drawString( font, count, x, 65, color.getInt() );
+
+        // int damageWidth = font.getStringWidth( damage );
+        drawString( font, damage, x, 85, color.getInt() );
     }
 
 

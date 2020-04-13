@@ -17,16 +17,16 @@ public class PlayerScreen extends ParentScreen {
     @Override
     public void init( Minecraft p_init_1_, int p_init_2_, int p_init_3_ ) {
         super.init( p_init_1_, p_init_2_, p_init_3_ );
-        PlayerAbilities playerAb = mc.player.abilities;
+        PlayerAbilities playerAb = minecraft.player.abilities;
         addButton( new StyledButton( 10, 10, 10, 10, I18n.format( "gui.player.flight" ), t -> {
-            if (playerAb.isCreativeMode || mc.isSingleplayer()) {
+            if (playerAb.isCreativeMode || minecraft.isSingleplayer()) {
                 if (playerAb.isFlying) {
                     playerAb.allowFlying = false;
                     playerAb.isFlying = false;
                 }
                 else {
                     playerAb.allowFlying = true;
-                    playerAb.isFlying = !mc.player.onGround;
+                    playerAb.isFlying = !minecraft.player.onGround;
                 }
             }
         } ) );
