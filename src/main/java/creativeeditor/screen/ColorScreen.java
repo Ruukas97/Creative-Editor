@@ -200,6 +200,7 @@ public class ColorScreen extends ParentItemScreen {
             drawCenteredString( font, I18n.format( "gui.color.alpha", color.getAlpha() ), halfWidth, 35 + (20 * i++), color.getInt() );
         }
         drawCenteredString( font, I18n.format( "gui.color.hex", color.getHexString() ), halfWidth, 35 + (20 * i++), color.getInt() );
+        drawCenteredString( font, I18n.format( "gui.color.dec", (color.getInt() & 0xFFFFFF) ), halfWidth, 35 + (20 * i++), color.getInt() );
     }
 
 

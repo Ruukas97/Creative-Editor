@@ -31,6 +31,9 @@ public class HexField extends Widget {
      */
     private boolean canLoseFocus = true;
 
+    @Getter
+    private boolean enabled = true;
+
     private int cursorPosition;
 
 
@@ -113,7 +116,7 @@ public class HexField extends Widget {
         value = 0xFFFFFF & value;
         String s = String.format( "%06X", value );
 
-        for (int i = 0; i < s.length() - 1; i++) {
+        for (int i = 0; i < s.length(); i++) {
             this.digits[i] = s.charAt( i );
         }
     }
@@ -124,8 +127,7 @@ public class HexField extends Widget {
      */
     private int getDigitsValue() {
         try {
-            return Integer.decode( "0x" + new String( digits ) );
-
+            return Integer.decode( "#" + new String( digits ) );
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -181,6 +183,27 @@ public class HexField extends Widget {
 
     @Override
     public boolean keyPressed( int keyCode, int scanCode, int modifier ) {
+        Minecraft mc = Minecraft.getInstance();
+        if (Screen.isCopy( keyCode )) {
+            mc.keyboardListener.setClipboardString( String.valueOf( digits ) );
+            return true;
+        }
+        if (Screen.isPaste( keyCode )) {
+            try {
+                int p = Integer.decode( mc.keyboardListener.getClipboardString() );
+                dataColor.setInt( p );
+                return true;
+            }
+            catch (NumberFormatException e) {
+            }
+
+        }
+        if (Screen.isCut( keyCode )) {
+            mc.keyboardListener.setClipboardString( String.valueOf( digits ) );
+            return true;
+        }
+
+        // TODO support more keys
         switch (keyCode) {
         case GLFW.GLFW_KEY_LEFT:
             moveCursor( false );
@@ -191,84 +214,45 @@ public class HexField extends Widget {
         default:
             return super.keyPressed( keyCode, scanCode, modifier );
         }
-
     }
 
 
     @Override
     public boolean charTyped( char typedChar, int keyCode ) {
-        Minecraft mc = Minecraft.getInstance();
-        if (!this.isFocused()) {
+        if (!this.isActive()) {
             return false;
         }
-        else if (Screen.isCopy( keyCode )) {
-            mc.keyboardListener.setClipboardString( String.valueOf( digits ) );
-            return true;
-        }
-        else if (Screen.isPaste( keyCode )) {
-            if (this.active) {
-                // TODO pasting
+        else if (isAllowed( typedChar )) {
+            if (this.isEnabled()) {
+                setDigit( Character.toUpperCase( typedChar ) );
+                moveCursor( true );
             }
-
-            return true;
-        }
-        else if (Screen.isCut( keyCode )) {
-            mc.keyboardListener.setClipboardString( String.valueOf( digits ) );
-
-            /*
-             * if (this.active) { resetDigits(); }
-             */
 
             return true;
         }
         else {
-            switch (keyCode) {
-            case 14:
-
-                if (this.active) {
-                    setDigit( '0' );
-                }
-
-                return true;
-            case 199:
-
-                setCursorPositionZero();
-
-                return true;
-            case 203:
-
-                this.moveCursor( false );
-
-                return true;
-            case 205:
-
-                this.moveCursor( true );
-
-                return true;
-            case 207:
-
-                this.setCursorPositionEnd();
-
-                return true;
-            case 211:
-
-                if (this.active) {
-                    setDigit( '0' );
-                }
-
-                return true;
-            default:
-                if (active) {
-                    if (isAllowed( typedChar )) {
-                        setDigit( Character.toUpperCase( typedChar ) );
-                        moveCursor( true );
-                    }
-
-                    return true;
-                }
-                return false;
-            }
+            return false;
         }
+    }
+
+
+    public boolean isActive() {
+        return this.visible && this.isFocused() && this.isEnabled();
+    }
+
+
+    @Override
+    public boolean changeFocus( boolean p_changeFocus_1_ ) {
+        return this.visible && this.isEnabled() ? super.changeFocus( p_changeFocus_1_ ) : false;
+    }
+
+
+    @Override
+    protected void onFocusedChanged( boolean p_onFocusedChanged_1_ ) {
+        if (p_onFocusedChanged_1_) {
+            this.cursorCounter = 0;
+        }
+
     }
 
 
@@ -286,7 +270,7 @@ public class HexField extends Widget {
             if (this.enableBackgroundDrawing) {
                 i -= 4;
             }
-
+            //TODO clicking selects wrong digit
             String s = this.fontRenderer.trimStringToWidth( this.getHexString(), this.getWidth() );
             this.setCursorPosition( this.fontRenderer.trimStringToWidth( s, i ).length() );
             return true;

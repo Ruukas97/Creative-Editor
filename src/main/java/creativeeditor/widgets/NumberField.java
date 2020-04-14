@@ -254,7 +254,11 @@ public class NumberField extends Widget {
         }
         else if (Screen.isPaste( keyCode )) {
             if (this.active) {
-                // TODO pasting
+                try {
+                    setValue( Integer.decode( mc.keyboardListener.getClipboardString() ) );
+                }
+                catch (NumberFormatException e) {
+                }
             }
 
             return true;
@@ -354,8 +358,8 @@ public class NumberField extends Widget {
     public void renderButton( int p_renderButton_1_, int p_renderButton_2_, float p_renderButton_3_ ) {
         Style style = StyleManager.getCurrentStyle();
         Color color = style.getFGColor( this );
-        
-        if(getDigitsValue() != data.get()) {
+
+        if (getDigitsValue() != data.get()) {
             setValue( data.get() );
         }
 
