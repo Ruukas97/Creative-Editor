@@ -24,7 +24,9 @@ public class StyleSpectrum implements Style {
 
     @Override
     public void update() {
-        if (spectrumTick++ % 10 == 0) {
+        spectrumTick++;
+        spectrumTick %= 2;
+        if (spectrumTick == 0) {
             color.hueShift();
             inactive.hueShift();
             hovered.hueShift();

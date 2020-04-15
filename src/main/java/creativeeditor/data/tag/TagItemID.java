@@ -5,10 +5,22 @@ import javax.annotation.Nonnull;
 import creativeeditor.data.base.DataString;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.GameData;
 
 public class TagItemID extends DataString {
+    public TagItemID(INBT value) {
+        super( value instanceof StringNBT ? value.getString() : "minecraft:air" );
+    }
+
+
+    public TagItemID(StringNBT value) {
+        super( value );
+    }
+
+
     public TagItemID(String value) {
         super( value );
     }

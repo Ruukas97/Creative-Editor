@@ -35,10 +35,13 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ArmorStandItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.resources.IPackFinder;
 import net.minecraft.resources.ResourcePackInfo;
 import net.minecraft.resources.ResourcePackInfo.IFactory;
+import net.minecraft.tileentity.BannerPattern;
 import net.minecraft.util.Hand;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -59,6 +62,8 @@ public class CreativeEditor {
     private static KeyBinding PLAYER_INSPECT;
     private static KeyBinding OFF_HAND_SWING;
     public static KeyBinding HEAD_COLLECTION;
+    private static boolean isTesting = true;
+    private static KeyBinding TESTING;
 
     public static Path DATAPATH = FMLPaths.GAMEDIR.get().resolve( MODID.concat( "-data" ) );
 
@@ -79,6 +84,8 @@ public class CreativeEditor {
         PLAYER_INSPECT = registerKeybind( "inspector", GLFW.GLFW_KEY_G );
         OFF_HAND_SWING = registerKeybind( "offhandswing", InputMappings.INPUT_INVALID.getKeyCode() );
         HEAD_COLLECTION = registerKeybind( "headcollection", GLFW.GLFW_KEY_V );
+        if (isTesting)
+            TESTING = registerKeybind( "testing", GLFW.GLFW_KEY_H );
 
 
         // Register Events
@@ -150,7 +157,6 @@ public class CreativeEditor {
                 System.out.println( "NamePlate: " + info.getNamePlate() );
             mc.displayGuiScreen( new MainScreen( mc.currentScreen, new DataItem( mc.player.getHeldItemMainhand() ) ) );
         }
-
         else if (event.getKey() == PLAYER_INSPECT.getKey().getKeyCode()) {
             Entity entity = mc.pointedEntity;
             if (entity != null) {
@@ -166,6 +172,14 @@ public class CreativeEditor {
         }
         else if (event.getKey() == HEAD_COLLECTION.getKey().getKeyCode()) {
             mc.displayGuiScreen( new HeadCollectionScreen( mc.currentScreen ) );
+        }
+        else if (isTesting && event.getKey() == TESTING.getKey().getKeyCode()) {
+            DataItem item = new DataItem( new ItemStack( Items.WHITE_BANNER ) );
+            CompoundNBT pattern = new CompoundNBT();
+            pattern.putInt( "Color", 3 );
+            pattern.putString( "Pattern", BannerPattern.CREEPER.getHashname() );
+            item.getTag().getBanner().getPatterns().add( pattern );
+            mc.playerController.sendSlotPacket( item.getItemStack(), 36 + mc.player.inventory.currentItem );
         }
     }
 }

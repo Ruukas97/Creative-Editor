@@ -103,6 +103,12 @@ public abstract class NBTKeys {
 
     // Specific Item/Blocks
     
+    // Banners
+    public abstract String tagPatterns();
+    public abstract String patternPattern();
+    public abstract String patternColor();
+
+    
     // Books
     public abstract String tagResolved();
     public abstract String tagGeneration();

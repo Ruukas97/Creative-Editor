@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.nbt.ByteNBT;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
 import net.minecraft.world.storage.MapDecoration;
 
 public class TagMapDecoration implements Data<TagMapDecoration, CompoundNBT> {
@@ -24,6 +25,9 @@ public class TagMapDecoration implements Data<TagMapDecoration, CompoundNBT> {
     @Getter
     private final DataDouble rotation;
 
+    public TagMapDecoration(INBT nbt) {
+        this( nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT() );
+    }
 
     public TagMapDecoration(CompoundNBT nbt) {
         NBTKeys keys = NBTKeys.keys;

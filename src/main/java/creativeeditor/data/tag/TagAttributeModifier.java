@@ -11,6 +11,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
 import net.minecraft.world.storage.loot.functions.SetAttributes;
 
 public class TagAttributeModifier extends SingularData<AttributeModifier, CompoundNBT> {
@@ -32,6 +33,10 @@ public class TagAttributeModifier extends SingularData<AttributeModifier, Compou
 
     public TagAttributeModifier(String name, AttributeModifier mod, EquipmentSlotType slot) {
         super( mod );
+    }
+    
+    public TagAttributeModifier(INBT nbt) {
+        this( nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT() );
     }
 
 

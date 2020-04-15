@@ -2,24 +2,27 @@ package creativeeditor.data.tag;
 
 import java.util.List;
 import java.util.ListIterator;
+import java.util.function.Function;
 
 import com.google.common.collect.Lists;
 
 import creativeeditor.data.Data;
 import creativeeditor.data.base.SingularData;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraftforge.common.util.Constants.NBT;
 
-public class TagList<E extends Data<?, ?>> extends SingularData<List<E>, ListNBT> implements Iterable<E> {
-    public TagList() {
+public class TagList<E extends Data<?, ?>>extends SingularData<List<E>, ListNBT> implements Iterable<E> {
+    protected Function<INBT, E> addFunction;
+
+
+    public TagList(Function<INBT, E> addFunction) {
         this( Lists.newArrayList() );
+        this.addFunction = addFunction;
     }
 
 
-    public TagList(ListNBT nbt) {
-        this();
+    public TagList(ListNBT nbt, Function<INBT, E> addFunction) {
+        this( addFunction );
         nbt.forEach( this::add );
     }
 
@@ -30,13 +33,15 @@ public class TagList<E extends Data<?, ?>> extends SingularData<List<E>, ListNBT
 
 
     public void add( E value ) {
-        data.add( value );
+        if (value != null)
+            data.add( value );
+        System.out.println( "asdas " + data.toString() );
     }
 
 
     public void add( INBT nbt ) {
-        if (nbt.getId() == NBT.TAG_COMPOUND)
-            add( (CompoundNBT) nbt );
+        add( addFunction.apply( nbt ) );
+        System.out.println( "2asdas " + data.toString() );
     }
 
 
@@ -55,8 +60,9 @@ public class TagList<E extends Data<?, ?>> extends SingularData<List<E>, ListNBT
     public ListNBT getNBT() {
         ListNBT nbt = new ListNBT();
         data.forEach( dat -> {
-            if (!dat.isDefault())
+            if (!dat.isDefault()) {
                 nbt.add( dat.getNBT() );
+            }
         } );
         return nbt;
     }

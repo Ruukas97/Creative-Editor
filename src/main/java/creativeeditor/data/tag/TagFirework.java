@@ -13,7 +13,7 @@ public class TagFirework extends SingularData<TagList<TagExplosion>, CompoundNBT
 
 
     public TagFirework(CompoundNBT nbt) {
-        this( new TagList<>( nbt.getList( NBTKeys.keys.fireworksExplosions(), NBT.TAG_COMPOUND ) ), nbt.getByte( NBTKeys.keys.fireworksFlight() ) );
+        this( new TagList<>( nbt.getList( NBTKeys.keys.fireworksExplosions(), NBT.TAG_COMPOUND ), TagExplosion::new ), nbt.getByte( NBTKeys.keys.fireworksFlight() ) );
     }
 
 

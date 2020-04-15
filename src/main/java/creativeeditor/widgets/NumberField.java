@@ -177,7 +177,7 @@ public class NumberField extends Widget {
      * Returns the contents of the textbox
      */
     private int getDigitsValue() {
-        return Integer.valueOf( getValueAsString() );
+        return Integer.decode( getValueAsString() );
     }
 
 
@@ -358,8 +358,9 @@ public class NumberField extends Widget {
     public void renderButton( int p_renderButton_1_, int p_renderButton_2_, float p_renderButton_3_ ) {
         Style style = StyleManager.getCurrentStyle();
         Color color = style.getFGColor( this );
+        String s = getValueAsString();
 
-        if (getDigitsValue() != data.get()) {
+        if (digits.length != 0 && s.length() == digits.length && s.length() != 0 && getDigitsValue() != data.get()) {
             setValue( data.get() );
         }
 
@@ -368,7 +369,7 @@ public class NumberField extends Widget {
         }
 
         int cursorPos = this.cursorPosition;
-        String string = this.fontRenderer.trimStringToWidth( this.getValueAsString(), this.getWidth() );
+        String string = this.fontRenderer.trimStringToWidth( s, this.getWidth() );
         boolean cursorFine = cursorPos >= 0 && cursorPos <= string.length();
         boolean displayCursor = isFocused() && this.cursorCounter / 6 % 2 == 0 && cursorFine;
         int textX = this.enableBackgroundDrawing ? this.x + 4 : this.x;

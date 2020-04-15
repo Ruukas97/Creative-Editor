@@ -4,6 +4,7 @@ import creativeeditor.data.Data;
 import creativeeditor.util.ColorUtils.Color;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.IntNBT;
 
 @SuppressWarnings( "serial" )
@@ -17,6 +18,16 @@ public class DataColor extends Color implements Data<Color, IntNBT> {
     private float saturation = 0;
     @Getter
     private float brightness = 0;
+
+
+    public DataColor(INBT nbt) {
+        this( nbt instanceof IntNBT ? (IntNBT) nbt : new IntNBT( 0 ) );
+    }
+
+
+    public DataColor(IntNBT nbt) {
+        this( nbt.getInt() );
+    }
 
 
     public DataColor(int color) {

@@ -15,6 +15,7 @@ import creativeeditor.data.base.DataColor;
 import creativeeditor.data.base.DataInteger;
 import creativeeditor.data.base.DataListString;
 import creativeeditor.data.base.DataString;
+import creativeeditor.data.tag.block.TagBanner;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
@@ -69,6 +70,12 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
 
     // Specific Items
 
+    // Banner
+    @Getter
+    private final TagList<TagBannerPattern> patterns;
+    @Getter
+    private final TagBanner banner;
+
     // Books
     @Getter
     private final DataBoolean resolved;
@@ -117,29 +124,33 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
         // General
         damage = add( keys.tagDamage(), new TagDamage( item, nbt.getInt( keys.tagDamage() ) ) );
         unbreakable = add( keys.tagUnbreakable(), new DataBoolean( nbt.getBoolean( keys.tagUnbreakable() ) ) );
-        canDestroy = add( keys.tagCanDestroy(), new TagList<>( nbt.getList( keys.tagCanDestroy(), NBT.TAG_STRING ) ) );
+        canDestroy = add( keys.tagCanDestroy(), new TagList<TagItemID>( nbt.getList( keys.tagCanDestroy(), NBT.TAG_STRING ), TagItemID::new ) );
 
         // Display
         display = add( keys.tagDisplay(), new TagDisplay( item, nbt.getCompound( keys.tagDisplay() ) ) );
 
         // Enchantments
-        enchantments = add( keys.tagEnchantments(), new TagList<>( nbt.getList( keys.tagEnchantments(), NBT.TAG_COMPOUND ) ) );
-        storedEnchantments = add( keys.tagStoredEnchantments(), new TagList<>( nbt.getList( keys.tagStoredEnchantments(), NBT.TAG_COMPOUND ) ) );
+        enchantments = add( keys.tagEnchantments(), new TagList<>( nbt.getList( keys.tagEnchantments(), NBT.TAG_COMPOUND ), TagEnchantment::new ) );
+        storedEnchantments = add( keys.tagStoredEnchantments(), new TagList<>( nbt.getList( keys.tagStoredEnchantments(), NBT.TAG_COMPOUND ), TagEnchantment::new ) );
         repairCost = add( keys.tagRepairCost(), new DataInteger( nbt.getInt( keys.tagRepairCost() ) ) );
 
         // Attributes
-        attributes = add( keys.tagAttributes(), new TagList<>( nbt.getList( keys.tagAttributes(), NBT.TAG_COMPOUND ) ) );
+        attributes = add( keys.tagAttributes(), new TagList<>( nbt.getList( keys.tagAttributes(), NBT.TAG_COMPOUND ), TagAttributeModifier::new ) );
 
         // Effecs
-        potionEffects = add( keys.tagCustomPotionEffects(), new TagList<>( nbt.getList( keys.tagCustomPotionEffects(), NBT.TAG_COMPOUND ) ) );
+        potionEffects = add( keys.tagCustomPotionEffects(), new TagList<>( nbt.getList( keys.tagCustomPotionEffects(), NBT.TAG_COMPOUND ), TagEffect::new ) );
         potion = add( keys.tagPotion(), new DataString( nbt.getString( keys.tagPotion() ) ) ); // TODO Potion tag
         potionColor = add( keys.tagCustomPotionColor(), new DataColor( nbt.getInt( keys.tagCustomPotionColor() ) ) );
-        effects = add( keys.tagEffects(), new TagList<>( nbt.getList( keys.tagCustomPotionEffects(), NBT.TAG_COMPOUND ) ) );
+        effects = add( keys.tagEffects(), new TagList<>( nbt.getList( keys.tagCustomPotionEffects(), NBT.TAG_COMPOUND ), TagEffect::new ) );
 
         // Block tags
-        canPlaceOn = add( keys.tagCanPlaceOn(), new TagList<>( nbt.getList( keys.tagCanPlaceOn(), NBT.TAG_STRING ) ) );
+        canPlaceOn = add( keys.tagCanPlaceOn(), new TagList<>( nbt.getList( keys.tagCanPlaceOn(), NBT.TAG_STRING ), TagItemID::new ) );
 
         // Specific Items/Blocks
+
+        // Banners
+        patterns = add( keys.tagPatterns(), new TagList<>( nbt.getList( keys.tagPatterns(), NBT.TAG_COMPOUND ), TagBannerPattern::new ) );
+        banner = add( keys.tagBlockEntityTag(), new TagBanner( nbt.getCompound( keys.tagBlockEntityTag() ) ) );
 
         // Books
         resolved = add( keys.tagResolved(), new DataBoolean( nbt.getBoolean( keys.tagResolved() ) ) );
@@ -150,7 +161,7 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
 
 
         // Crossbows
-        chargedProjectiles = add( keys.tagChargedProjectiles(), new TagList<>( nbt.getList( keys.tagChargedProjectiles(), NBT.TAG_STRING ) ) );
+        chargedProjectiles = add( keys.tagChargedProjectiles(), new TagList<>( nbt.getList( keys.tagChargedProjectiles(), NBT.TAG_STRING ), TagItemID::new ) );
         charged = add( keys.tagCharged(), new DataBoolean( nbt.getBoolean( keys.tagCharged() ) ) );
 
         // Fireworks
@@ -171,7 +182,7 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
 
         // Map
         mapNumber = add( keys.tagMapNumber(), new DataInteger( nbt.getInt( keys.tagMapNumber() ) ) );
-        mapDecorations = add( keys.tagMapDecorations(), new TagList<>( nbt.getList( keys.tagMapDecorations(), NBT.TAG_COMPOUND ) ) );
+        mapDecorations = add( keys.tagMapDecorations(), new TagList<>( nbt.getList( keys.tagMapDecorations(), NBT.TAG_COMPOUND ), TagMapDecoration::new ) );
         // Entity Tags
         armorStandTag = add( keys.tagEntityTag(), new TagEntityArmorStand( nbt.getCompound( keys.tagEntityTag() ) ) );
 
