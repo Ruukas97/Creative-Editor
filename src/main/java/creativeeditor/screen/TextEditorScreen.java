@@ -16,10 +16,10 @@ import net.minecraft.util.SharedConstants;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class TextEditorScreen extends ParentScreen {
-    private boolean plainText;
-    private boolean multiLine;
+    //private boolean plainText;
+    //private boolean multiLine;
     private int cursor = 0;
-    private int selectionEnd = cursor;
+    //private int selectionEnd = cursor;
     private DataString text;
     private int cursorTicks = 0;
     private int preview = 0;
@@ -32,8 +32,8 @@ public class TextEditorScreen extends ParentScreen {
 
     public TextEditorScreen(Screen lastScreen, DataString text, boolean plainText, boolean multiLine) {
         super( new TranslationTextComponent( "gui.texteditor" ), lastScreen );
-        this.plainText = plainText;
-        this.multiLine = multiLine;
+        //this.plainText = plainText;
+        //this.multiLine = multiLine;
         this.text = text;
     }
 

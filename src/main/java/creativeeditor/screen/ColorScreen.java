@@ -5,7 +5,6 @@ import creativeeditor.data.base.DataColor;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
 import creativeeditor.widgets.HexField;
-import creativeeditor.widgets.StyledSlider;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.screen.Screen;
@@ -21,7 +20,7 @@ public class ColorScreen extends ParentItemScreen {
     @Setter
     private boolean useAlpha;
 
-    private StyledSlider red, green, blue, hue, saturation, brightness, alpha;
+    // private StyledSlider red, green, blue, hue, saturation, brightness, alpha;
     private HexField hex;
 
     private boolean draggingSatBrightPicker = false;

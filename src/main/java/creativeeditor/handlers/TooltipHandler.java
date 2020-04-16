@@ -1,4 +1,4 @@
-package creativeeditor.eventhandlers;
+package creativeeditor.handlers;
 
 import creativeeditor.screen.ParentScreen;
 import creativeeditor.styles.StyleManager;

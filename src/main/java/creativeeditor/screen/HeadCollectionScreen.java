@@ -132,7 +132,7 @@ public class HeadCollectionScreen extends ParentScreen {
                         minecraft.playerController.sendPacketDropItem( is );
                     }
                     else {
-                        int slot = InventoryUtils.getEmptySlots( minecraft.player.inventory );
+                        int slot = InventoryUtils.getEmptySlotsCount( minecraft.player.inventory );
                         if (slot <= 0) {
                             minecraft.playerController.sendPacketDropItem( is );
                         }
@@ -256,7 +256,7 @@ public class HeadCollectionScreen extends ParentScreen {
         drawString( font, I18n.format( "gui.headcollection.credit" ), space + 7, heightOffset + topbar + 168, blandColor );
 
         // Has to be before tooltip cause of skull hover
-        drawCenteredString( font, I18n.format( "gui.headcollection.freeslots" ) + ": " + InventoryUtils.getEmptySlots( minecraft.player.inventory ), width / 2, height - 45, blandColor );
+        drawCenteredString( font, I18n.format( "gui.headcollection.freeslots" ) + ": " + InventoryUtils.getEmptySlotsCount( minecraft.player.inventory ), width / 2, height - 45, blandColor );
 
         drawCenteredString( font, I18n.format( "gui.headcollection.headsininventory" ) + ": " + InventoryUtils.countItem( minecraft.player.inventory, Items.PLAYER_HEAD ), width / 2, height - 35, blandColor );
 

@@ -1,4 +1,4 @@
-package creativeeditor.eventhandlers;
+package creativeeditor.handlers;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 

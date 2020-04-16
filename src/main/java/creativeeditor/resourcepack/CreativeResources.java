@@ -1,4 +1,4 @@
-package creativeeditor.pack;
+package creativeeditor.resourcepack;
 
 import java.io.File;
 import java.io.IOException;

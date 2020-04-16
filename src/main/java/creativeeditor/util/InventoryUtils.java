@@ -16,7 +16,7 @@ public class InventoryUtils {
     }
 
 
-    public static int getEmptySlots( PlayerInventory inventory ) {
+    public static int getEmptySlotsCount( PlayerInventory inventory ) {
         int count = 0;
         for (ItemStack stack : inventory.mainInventory) {
             if (stack.isEmpty())
@@ -44,9 +44,5 @@ public class InventoryUtils {
             count = 45;
         }
         return count;
-    }
-    
-    public static void addItemStack(PlayerInventory inventory, ItemStack stack) {
-        
     }
 }
