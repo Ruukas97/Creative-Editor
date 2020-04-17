@@ -1,7 +1,6 @@
 package creativeeditor;
 
 import java.nio.file.Path;
-import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,24 +10,14 @@ import creativeeditor.handlers.KeyInputHandler;
 import creativeeditor.handlers.PlayerNameplateHandler;
 import creativeeditor.handlers.ScreenHandler;
 import creativeeditor.handlers.TooltipHandler;
-import creativeeditor.json.MinecraftHeadsCategory;
 import creativeeditor.render.ArmorStandRendering;
 import creativeeditor.render.ShieldRenderer;
-import creativeeditor.resourcepack.CreativeResources;
 import creativeeditor.resourcepack.ResourcePacks;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.tab.CreativeTabs;
-import creativeeditor.tab.TabHead;
-import creativeeditor.tab.TabLoadedTileEntities;
-import creativeeditor.tab.TabNearbyBlocks;
-import creativeeditor.tab.TabUnavailable;
 import creativeeditor.util.ReflectionUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ArmorStandItem;
 import net.minecraft.item.Items;
-import net.minecraft.resources.IPackFinder;
-import net.minecraft.resources.ResourcePackInfo;
-import net.minecraft.resources.ResourcePackInfo.IFactory;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;

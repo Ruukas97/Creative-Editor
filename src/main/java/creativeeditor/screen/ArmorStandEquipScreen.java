@@ -13,11 +13,13 @@ public class ArmorStandEquipScreen extends ParentItemScreen{
 	public ArmorStandEquipScreen(Screen lastScreen, DataItem editing, ArmorStandEntity arm) {
 		super(new TranslationTextComponent("gui.armorstandequipment"), lastScreen, editing);
 		this.armorstand = arm;
+		this.renderItem = false;
 	}
 	
 	@Override
 	protected void init() {
 		super.init();
+		
 	}
 	
 	@Override

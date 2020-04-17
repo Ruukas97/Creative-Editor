@@ -16,6 +16,8 @@ public class ArmorStandDrawUtils {
 	private ArmorStandEntity armorstand;
 	private DataItem item;
 	
+	public int addRotation = 0;
+	public boolean isDragging = false;
 	
 	public ArmorStandDrawUtils(ArmorStandEntity arm, DataItem item) {
 		this.armorstand = arm;
@@ -61,14 +63,22 @@ public class ArmorStandDrawUtils {
 		rendermanager.renderEntity(ent, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 		rendermanager.setRenderShadow(true);
 		GL11.glPopAttrib();
-		ent.renderYawOffset = f + 1;
+		int add = 0;
+		if(isDragging) {		    
+		    add = 2 * (addRotation * -1);
+		} else {
+		    add = 1;
+		}
+		ent.renderYawOffset = f + add;	
 		ent.rotationYaw = f1;
 		ent.rotationPitch = f2;
 		ent.prevRotationYawHead = f3;
 		ent.rotationYawHead = f4;
+		addRotation = 0;
 		RenderHelper.disableStandardItemLighting();
 		GlStateManager.disableRescaleNormal();
 		GlStateManager.disableTexture();
 		GlStateManager.popMatrix();
+		
 	}
 }
