@@ -177,7 +177,7 @@ public class NumberField extends Widget {
      * Returns the contents of the textbox
      */
     private int getDigitsValue() {
-        return Integer.decode( getValueAsString() );
+        return Integer.parseInt( getValueAsString() );
     }
 
 
