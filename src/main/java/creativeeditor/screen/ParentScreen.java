@@ -10,6 +10,7 @@ import creativeeditor.util.GuiUtil;
 import creativeeditor.widgets.StyledTextField;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.text.ITextComponent;
@@ -57,6 +58,14 @@ public abstract class ParentScreen extends Screen {
 
     public int getBlitOffset() {
         return blitOffset;
+    }
+    
+    public Minecraft getMinecraftInstance() {
+        return minecraft;
+    }
+    
+    public FontRenderer getFontRenderer() {
+        return font;
     }
 
 

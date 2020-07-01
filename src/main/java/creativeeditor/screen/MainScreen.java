@@ -29,7 +29,9 @@ public class MainScreen extends ParentItemScreen {
 
     private ArrayList<Widget> toolsWidgets = new ArrayList<>(), loreWidgets = new ArrayList<>(), editWidgets = new ArrayList<>(), advancedWidgets = new ArrayList<>();
     private StyledTextButton nbtButton, tooltipButton, toolsButton, loreButton, editButton, advancedButton;
-    private NumberField count, damage;
+    private NumberField countField, damageField;
+    private SliderTag countSlider, damageSlider;
+    private StyledToggle unbreakable;
     // Tools
     private StyledTextButton styleButton;
 
@@ -46,10 +48,10 @@ public class MainScreen extends ParentItemScreen {
     public void tick() {
         if (nameField != null)
             nameField.tick();
-        if (count != null)
-            count.updateCursorCounter();
-        if (damage != null)
-            damage.updateCursorCounter();
+        if (countField != null)
+            countField.updateCursorCounter();
+        if (damageField != null)
+            damageField.updateCursorCounter();
     }
 
 
@@ -175,17 +177,16 @@ public class MainScreen extends ParentItemScreen {
 
         int x = width / 3 + 16 + Math.max( countWidth, damageWidth );
         int countX = x;
-        this.count = addButton( new NumberField( font, countX, 61, 16, item.getCount() ) );
-        countX += this.count.getWidth() + 8;
-        addButton( new SliderTag( countX, 61, (width - width / 3 - 8) - countX, 16, item.getCount() ) );
+        this.countField = addButton( new NumberField( font, countX, 61, 16, item.getCount() ) );
+        countX += this.countField.getWidth() + 8;
+        this.countSlider = addButton( new SliderTag( countX, 61, (width - width / 3 - 8) - countX, 16, item.getCount() ) );
 
         int dmgX = x;
-        this.damage = addButton( new NumberField( font, dmgX, 81, 16, item.getTag().getDamage() ) );
-        dmgX += this.damage.getWidth() + 8;
-        addButton( new SliderTag( dmgX, 81, (width - width / 3 - 8) - dmgX, 16, item.getTag().getDamage() ) );
+        this.damageField = addButton( new NumberField( font, dmgX, 81, 16, item.getTag().getDamage() ) );
+        dmgX += this.damageField.getWidth() + 8;
+        this.damageSlider = addButton( new SliderTag( dmgX, 81, (width - width / 3 - 8) - dmgX, 16, item.getTag().getDamage() ) );
 
-
-        addButton( new StyledToggle( width / 2 - 40, 101, 80, 16, "item.tag.unbreakable.true", "item.tag.unbreakable.false", item.getTag().getUnbreakable() ) );
+        this.unbreakable = addButton( new StyledToggle( width / 2 - 40, 101, 80, 16, "item.tag.unbreakable.true", "item.tag.unbreakable.false", item.getTag().getUnbreakable() ) );
 
         setLeftTab( Config.MAIN_LEFT_TAB.get(), false );
         setRightTab( Config.MAIN_RIGHT_TAB.get(), false );
@@ -335,22 +336,33 @@ public class MainScreen extends ParentItemScreen {
         drawCenteredString( font, overviewTrimmed.equals( itemOverview ) ? overviewTrimmed : overviewTrimmed + "...", width / 2, 27, color.getInt() );
 
 
+        int x = width / 3 + 10;
+        boolean dmgEnabled = getItem().getTag().getDamage().getMax() > 0;
         String count = I18n.format( "gui.main.count" );
         int countWidth = font.getStringWidth( count );
-        String damage = I18n.format( "gui.main.damage" );
-        int damageWidth = font.getStringWidth( damage );
+        int idoffset = countWidth;
 
-        int x = width / 3 + 10;
+        if (dmgEnabled) {
+            String dmgString = I18n.format( "gui.main.damage" );
+            int damageWidth = font.getStringWidth( dmgString );
+            idoffset = Math.max( countWidth, damageWidth );
+            damageField.visible = true;
+            damageSlider.visible = true;
+            drawString( font, dmgString, x, 85, color.getInt() );
+            unbreakable.y = 101;
+        }
+        else {
+            damageField.visible = false;
+            damageSlider.visible = false;
+            unbreakable.y = 81;
+        }
+
         String id = I18n.format( "gui.main.id" );
-        //int idWidth = font.getStringWidth( id );
+        // int idWidth = font.getStringWidth( id );
         drawString( font, id, x, 45, color.getInt() );
-        drawString( font, item.getItem().get(), x + 6 + Math.max( countWidth, damageWidth ), 45, color.getInt() );
-
+        drawString( font, item.getItem().get(), x + 6 + idoffset, 45, color.getInt() );
 
         drawString( font, count, x, 65, color.getInt() );
-
-        // int damageWidth = font.getStringWidth( damage );
-        drawString( font, damage, x, 85, color.getInt() );
     }
 
 

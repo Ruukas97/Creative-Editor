@@ -4,7 +4,6 @@ import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.CreativeEditor;
 import creativeeditor.data.DataItem;
-import creativeeditor.network.CChatMessagePacket;
 import creativeeditor.screen.HeadCollectionScreen;
 import creativeeditor.screen.ItemInspectorScreen;
 import creativeeditor.screen.MainScreen;
@@ -76,13 +75,6 @@ public class KeyInputHandler {
             CreativeEditor.BARRIER_VISIBLE = !CreativeEditor.BARRIER_VISIBLE;
         }
         else if (CreativeEditor.DEBUG && event.getKey() == DEBUG_KEY.getKey().getKeyCode()) {
-            String s = "";
-            for (int i = 0; i < 500; i++) {
-                s = s.concat( Integer.toString( i % 10 ) );
-            }
-            // mc.getConnection().sendPacket( new CChatMessagePacket( s ) );
-            mc.getConnection().sendPacket( new CChatMessagePacket( s ) );
-
             DataItem item = new DataItem( new ItemStack( Items.WHITE_BANNER ) );
             CompoundNBT pattern = new CompoundNBT();
             pattern.putInt( "Color", 3 );

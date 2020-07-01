@@ -29,11 +29,12 @@ public class CreativeEditor {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MODID = "creativeeditor";
     public static final String NAME = "Creative Editor";
-    
+
     public static boolean BARRIER_VISIBLE = true;
     public static final boolean DEBUG = true;
 
     public static Path DATAPATH = FMLPaths.GAMEDIR.get().resolve( MODID.concat( "-data" ) );
+
 
     public CreativeEditor() {
         final ModLoadingContext context = ModLoadingContext.get();
@@ -53,8 +54,6 @@ public class CreativeEditor {
         MinecraftForge.EVENT_BUS.register( new PlayerNameplateHandler() );
         MinecraftForge.EVENT_BUS.register( new TooltipHandler() );
         MinecraftForge.EVENT_BUS.register( new KeyInputHandler() );
-
-
 
         if (Config.SPECTRUM_SHIELD_ENABLED.get())
             ReflectionUtils.setTeisr( Items.SHIELD, () -> ShieldRenderer::new );
