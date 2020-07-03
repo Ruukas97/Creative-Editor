@@ -33,7 +33,7 @@ public class TagDisplayName extends DataTextComponent {
             return true;
         }
 
-        return data.getFormattedText().equals( getDefault().getFormattedText() );
+        return data.getFormattedText().equals( getDefault().getFormattedText() ) || data instanceof TranslationTextComponent;
     }
 
 

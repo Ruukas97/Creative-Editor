@@ -4,6 +4,7 @@ import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.CreativeEditor;
 import creativeeditor.data.DataItem;
+import creativeeditor.screen.EnchantmentsScreen;
 import creativeeditor.screen.HeadCollectionScreen;
 import creativeeditor.screen.ItemInspectorScreen;
 import creativeeditor.screen.MainScreen;
@@ -14,11 +15,8 @@ import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.BannerPattern;
 import net.minecraft.util.Hand;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -75,13 +73,9 @@ public class KeyInputHandler {
             CreativeEditor.BARRIER_VISIBLE = !CreativeEditor.BARRIER_VISIBLE;
         }
         else if (CreativeEditor.DEBUG && event.getKey() == DEBUG_KEY.getKey().getKeyCode()) {
-            DataItem item = new DataItem( new ItemStack( Items.WHITE_BANNER ) );
-            CompoundNBT pattern = new CompoundNBT();
-            pattern.putInt( "Color", 3 );
-            pattern.putString( "Pattern", BannerPattern.CREEPER.getHashname() );
-            item.getTag().getBanner().getPatterns().add( pattern );
-            // mc.playerController.sendSlotPacket( item.getItemStack(), 36 +
-            // mc.player.inventory.currentItem );
+            mc.displayGuiScreen( new EnchantmentsScreen( mc.currentScreen, new DataItem( mc.player.getHeldItemMainhand() ) ) );
+            // mc.displayGuiScreen( new ItemSpawnerScreen( mc.currentScreen ) );
+            // mc.displayGuiScreen( new CreativeScreen( mc.player ) );
         }
     }
 

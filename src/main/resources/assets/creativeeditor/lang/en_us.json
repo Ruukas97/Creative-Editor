@@ -5,6 +5,8 @@
 	"itemGroup.unavailable": "Unavailable",
 	"itemGroup.nearbyblocks": "Nearby Blocks",
 	"itemGroup.tileentities": "Loaded TEs",
+	"itemGroup.aquatic": "Update Aquatic",
+	"itemGroup.villageandpillage": "Village & Pillage",
 
 	"gui.optionsound":"Change output",
 
@@ -35,8 +37,8 @@
 	"gui.headcollection.credit":"Special thanks to minecraft-heads.com",
 	"gui.headcollection.currentpage":"Page %s/%s",
 	"gui.headcollection.typesearch":"Type to search",
-	"gui.main.head":"Heads",
-	"gui.main.player":"Player",
+
+	"gui.itemspawner": "Item Spawner",
 	
 	"gui.armorstandeditor":"ArmorStand Editor",
 	"gui.armorstandeditor.reset":"Only resets the pose",

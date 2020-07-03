@@ -8,6 +8,8 @@ import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
 import creativeeditor.widgets.StyledTextField;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
@@ -18,6 +20,10 @@ import net.minecraft.util.text.ITextComponent;
 public abstract class ParentScreen extends Screen {
     protected final Screen lastScreen;
     protected List<Widget> renderWidgets = Lists.newArrayList();
+
+    @Getter
+    @Setter
+    private int topLineWidth = -1;
 
 
     public ParentScreen(ITextComponent title, Screen lastScreen) {
@@ -59,11 +65,13 @@ public abstract class ParentScreen extends Screen {
     public int getBlitOffset() {
         return blitOffset;
     }
-    
+
+
     public Minecraft getMinecraftInstance() {
         return minecraft;
     }
-    
+
+
     public FontRenderer getFontRenderer() {
         return font;
     }
@@ -114,10 +122,18 @@ public abstract class ParentScreen extends Screen {
 
         // GUI Title
         drawCenteredString( font, getTitle().getFormattedText(), width / 2, 9, color.getInt() );
-        int sWidthHalf = font.getStringWidth( getTitle().getFormattedText() ) / 2 + 3;
 
         // Title underline
-        AbstractGui.fill( width / 2 - sWidthHalf, 20, width / 2 + sWidthHalf, 21, color.getInt() );
+        int midX = width / 2;
+        if (getTopLineWidth() != -1) {
+            int sWidthHalf = font.getStringWidth( getTitle().getFormattedText() ) / 2 + 3;
+            AbstractGui.fill( midX - sWidthHalf, 20, midX + sWidthHalf, 21, color.getInt() );
+
+        }
+        else {
+            int halfLineW = topLineWidth / 2;
+            AbstractGui.fill( midX - halfLineW, 20, midX + halfLineW, 21, color.getInt() );
+        }
     }
 
 

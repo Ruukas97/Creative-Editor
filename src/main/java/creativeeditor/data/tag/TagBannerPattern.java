@@ -51,7 +51,6 @@ public class TagBannerPattern implements Data<Pair<BannerPattern, DyeColor>, Com
         NBTKeys keys = NBTKeys.keys;
         CompoundNBT nbt = new CompoundNBT();
         nbt.putInt( keys.patternColor(), color.getId() );
-        nbt.putInt( keys.patternColor(), -1 );
         nbt.putString( keys.patternPattern(), pattern.getHashname() );
         return nbt;
     }

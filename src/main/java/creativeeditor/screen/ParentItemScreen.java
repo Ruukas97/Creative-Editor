@@ -47,7 +47,7 @@ public class ParentItemScreen extends ParentScreen {
         if (hasEssButtons) {
             int bwidth = 50;
             int posX = width / 2 - (bwidth / 2);
-            int posY = height / 7 * 6;
+            int posY = height - 42;
             boolean hasLastscreen = lastScreen != null;
             String butCloseBack = hasLastscreen ? "gui.main.back" : "gui.main.close";
 
@@ -140,8 +140,8 @@ public class ParentItemScreen extends ParentScreen {
             if (itemScale == 2f)
                 GuiUtil.drawFrame( width / 2 - 20, height / 2 + 10, width / 2 + 20, height / 2 + 50, 1, color );
 
-            
-            //TODO Item scale support
+
+            // TODO Item scale support
             if (GuiUtil.isMouseIn( mouseX, mouseY, width / 2 - 17, height / 2 + 13, 34, 34 ))
                 renderTooltip( stack, mouseX, mouseY );
         }
