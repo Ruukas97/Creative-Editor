@@ -8,7 +8,7 @@ import creativeeditor.screen.EnchantmentsScreen;
 import creativeeditor.screen.HeadCollectionScreen;
 import creativeeditor.screen.ItemInspectorScreen;
 import creativeeditor.screen.MainScreen;
-import creativeeditor.screen.ScreenPlayerInspector;
+import creativeeditor.screen.PlayerInspectorScreen;
 import creativeeditor.screen.TextEditorScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
@@ -56,10 +56,10 @@ public class KeyInputHandler {
         else if (event.getKey() == PLAYER_INSPECT.getKey().getKeyCode()) {
             Entity entity = mc.pointedEntity;
             if (entity != null && entity instanceof PlayerEntity) {
-                mc.displayGuiScreen( new ScreenPlayerInspector( mc.currentScreen, (PlayerEntity) mc.pointedEntity ) );
+                mc.displayGuiScreen( new PlayerInspectorScreen( mc.currentScreen, (PlayerEntity) mc.pointedEntity ) );
             }
             else {
-                mc.displayGuiScreen( new ScreenPlayerInspector( mc.currentScreen, mc.player ) );
+                mc.displayGuiScreen( new PlayerInspectorScreen( mc.currentScreen, mc.player ) );
                 // mc.displayGuiScreen( new ItemInspectorScreen( mc.currentScreen, new DataItem(
                 // mc.player.getHeldItemMainhand() ) ) );
             }
