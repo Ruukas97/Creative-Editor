@@ -14,6 +14,7 @@ import net.minecraft.item.SkullItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IItemProvider;
 
 public class DataItem implements Data<ItemStack, CompoundNBT> {
     private @Getter
@@ -34,6 +35,11 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
 
     public DataItem() {
         this( ItemStack.EMPTY, 0 );
+    }
+
+
+    public DataItem(IItemProvider item) {
+        this( new ItemStack( item ) );
     }
 
 

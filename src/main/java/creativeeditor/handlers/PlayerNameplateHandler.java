@@ -6,6 +6,7 @@ import creativeeditor.players.PlayerInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
@@ -20,7 +21,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class PlayerNameplateHandler {
     @SubscribeEvent
     public void onPreRenderPlayerSpecial( RenderLivingEvent.Specials.Pre<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> e ) {
-        if (!(e.getRenderer() instanceof PlayerRenderer && e.getEntity() instanceof AbstractClientPlayerEntity))
+        Minecraft mc = Minecraft.getInstance();
+        if (!(e.getRenderer() instanceof PlayerRenderer && e.getEntity() instanceof AbstractClientPlayerEntity) || mc.currentScreen != null && mc.currentScreen instanceof ContainerScreen<?>)
             return;
 
         PlayerRenderer renderer = (PlayerRenderer) e.getRenderer();
