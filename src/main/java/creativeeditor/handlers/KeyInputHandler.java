@@ -16,6 +16,7 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -54,11 +55,13 @@ public class KeyInputHandler {
         }
         else if (event.getKey() == PLAYER_INSPECT.getKey().getKeyCode()) {
             Entity entity = mc.pointedEntity;
-            if (entity != null) {
-                mc.displayGuiScreen( new ScreenPlayerInspector( mc.currentScreen, mc.player ) );
+            if (entity != null && entity instanceof PlayerEntity) {
+                mc.displayGuiScreen( new ScreenPlayerInspector( mc.currentScreen, (PlayerEntity) mc.pointedEntity ) );
             }
             else {
-                mc.displayGuiScreen( new ItemInspectorScreen( mc.currentScreen, new DataItem( mc.player.getHeldItemMainhand() ) ) );
+                mc.displayGuiScreen( new ScreenPlayerInspector( mc.currentScreen, mc.player ) );
+                // mc.displayGuiScreen( new ItemInspectorScreen( mc.currentScreen, new DataItem(
+                // mc.player.getHeldItemMainhand() ) ) );
             }
         }
         else if (event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {

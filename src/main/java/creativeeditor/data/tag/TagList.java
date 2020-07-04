@@ -35,13 +35,11 @@ public class TagList<E extends Data<?, ?>>extends SingularData<List<E>, ListNBT>
     public void add( E value ) {
         if (value != null)
             data.add( value );
-        System.out.println( "asdas " + data.toString() );
     }
 
 
     public void add( INBT nbt ) {
         add( addFunction.apply( nbt ) );
-        System.out.println( "2asdas " + data.toString() );
     }
 
 
