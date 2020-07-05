@@ -65,7 +65,7 @@ public class KeyInputHandler {
         }
         else if (event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {
             mc.player.swingArm( Hand.OFF_HAND );
-            mc.displayGuiScreen( new TextEditorScreen( mc.currentScreen ) );
+            //mc.displayGuiScreen( new TextEditorScreen( mc.currentScreen ) );
         }
         else if (event.getKey() == HEAD_COLLECTION.getKey().getKeyCode()) {
             mc.displayGuiScreen( new HeadCollectionScreen( mc.currentScreen ) );

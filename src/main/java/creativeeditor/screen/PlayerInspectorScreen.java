@@ -1,12 +1,11 @@
 package creativeeditor.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-
-import creativeeditor.util.GuiUtil;
 import creativeeditor.util.ColorUtils.Color;
+import creativeeditor.util.GuiUtil;
+import creativeeditor.util.InventoryUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -27,6 +26,24 @@ public class PlayerInspectorScreen extends ParentScreen {
         super.init();
         playerUUID = PlayerEntity.getUUID( target.getGameProfile() ).toString();
     }
+    
+    @Override
+    public boolean mouseClicked( double mouseX, double mouseY, int mouseButton ) {
+        int y = height / 2 - 45;
+        int x = width / 2 + 100;
+        for (ItemStack stack : target.getEquipmentAndArmor()) {
+            if (GuiUtil.isMouseInRegion( mouseX, mouseY, x, y, 16, 16 )) {
+                Minecraft mc = getMinecraft();
+                mc.playerController.sendSlotPacket( stack, InventoryUtils.getEmptySlot( mc.player.inventory ) );
+                return true;
+            }
+            
+            y -= 15;
+        }
+        
+        
+        return super.mouseClicked( mouseX, mouseY, mouseButton );
+    }
 
 
     @Override
@@ -34,8 +51,8 @@ public class PlayerInspectorScreen extends ParentScreen {
         super.mainRender( mouseX, mouseY, p3, color );
 
         // Render player model
-        // GlStateManager.color3f( 1f, 1f, 1f );
         InventoryScreen.drawEntityOnScreen( width / 2, height / 2, 50, width / 2 - mouseX, height / 3 - mouseY, target );
+        
         // Render player UUID
         drawCenteredString( minecraft.fontRenderer, playerUUID, width / 2, height / 2 + 8, 0xFFFFFF );
 
@@ -51,7 +68,5 @@ public class PlayerInspectorScreen extends ParentScreen {
             
             y -= 15;
         }
-
     }
-
 }
