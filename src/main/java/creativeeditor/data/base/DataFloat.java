@@ -22,6 +22,6 @@ public class DataFloat extends SingularData<Float, FloatNBT> {
 
     @Override
     public FloatNBT getNBT() {
-        return new FloatNBT( data );
+        return FloatNBT.valueOf( data );
     }
 }

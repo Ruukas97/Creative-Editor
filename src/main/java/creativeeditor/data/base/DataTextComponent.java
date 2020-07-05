@@ -38,6 +38,6 @@ public class DataTextComponent extends SingularData<ITextComponent, StringNBT> {
 
     @Override
     public StringNBT getNBT() {
-        return new StringNBT( ITextComponent.Serializer.toJson( data ) );
+        return StringNBT.valueOf( ITextComponent.Serializer.toJson( data ) );
     }
 }

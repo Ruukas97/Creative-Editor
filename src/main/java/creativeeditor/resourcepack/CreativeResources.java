@@ -57,7 +57,7 @@ public class CreativeResources extends DelegatableResourcePack {
 
 
     @Override
-    public Collection<ResourceLocation> getAllResourceLocations( ResourcePackType type, String pathIn, int maxDepth, Predicate<String> filter ) {
+    public Collection<ResourceLocation> getAllResourceLocations( ResourcePackType type, String resourceNamespace, String pathIn, int maxDepth, Predicate<String> filter ) {
         try {
             Path root = modFile.getLocator().findPath( modFile, id, type.getDirectoryName() ).toAbsolutePath();
             Path inputPath = root.getFileSystem().getPath( pathIn );

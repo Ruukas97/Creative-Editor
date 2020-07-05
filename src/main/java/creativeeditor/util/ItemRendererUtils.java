@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.item.ItemStack;
 
@@ -18,7 +16,8 @@ public class ItemRendererUtils {
 
 
     public void renderItemIntoGUI( ItemStack stack, int x, int y, float xRot, float yRot ) {
-        this.renderItemModelIntoGUI( stack, x, y, xRot, yRot, itemRenderer.getModelWithOverrides( stack ) );
+        //this.renderItemModelIntoGUI( stack, x, y, xRot, yRot, itemRenderer.getModelWithOverrides( stack ) );
+        //TODO fix
     }
 
 
@@ -29,7 +28,7 @@ public class ItemRendererUtils {
 
 
     protected void renderItemModelIntoGUI( ItemStack stack, int x, int y, float xRot, float yRot, IBakedModel bakedmodel ) {
-        GlStateManager.pushMatrix();
+        /*GlStateManager.pushMatrix();
         getTextureManager().bindTexture( AtlasTexture.LOCATION_BLOCKS_TEXTURE );
         getTextureManager().getTexture( AtlasTexture.LOCATION_BLOCKS_TEXTURE ).setBlurMipmap( false, false );
         GlStateManager.enableRescaleNormal();
@@ -46,7 +45,8 @@ public class ItemRendererUtils {
         GlStateManager.disableLighting();
         GlStateManager.popMatrix();
         getTextureManager().bindTexture( AtlasTexture.LOCATION_BLOCKS_TEXTURE );
-        getTextureManager().getTexture( AtlasTexture.LOCATION_BLOCKS_TEXTURE ).restoreLastBlurMipmap();
+        getTextureManager().getTexture( AtlasTexture.LOCATION_BLOCKS_TEXTURE ).restoreLastBlurMipmap();*/
+        //TODO redo
     }
 
 
@@ -64,6 +64,5 @@ public class ItemRendererUtils {
         else {
             GlStateManager.disableLighting();
         }
-
     }
 }

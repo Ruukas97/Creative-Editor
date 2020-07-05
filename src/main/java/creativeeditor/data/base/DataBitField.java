@@ -66,6 +66,6 @@ public class DataBitField extends SingularData<boolean[], IntNBT> {
 
     @Override
     public IntNBT getNBT() {
-        return new IntNBT( getInt() );
+        return IntNBT.valueOf( getInt() );
     }
 }

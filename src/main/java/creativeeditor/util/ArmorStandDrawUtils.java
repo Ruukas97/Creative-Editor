@@ -1,84 +1,86 @@
 package creativeeditor.util;
 
-import org.lwjgl.opengl.GL11;
-
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import creativeeditor.data.DataItem;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.item.ArmorStandEntity;
 
 public class ArmorStandDrawUtils {
 
-	private ArmorStandEntity armorstand;
-	private DataItem item;
-	
-	public int addRotation = 0;
-	public boolean isDragging = false;
-	
-	public ArmorStandDrawUtils(ArmorStandEntity arm, DataItem item) {
-		this.armorstand = arm;
-		this.item = item;
-	}
-	
-	
-	public void updateArmorStand() {
-		if (armorstand != null) {
-			armorstand.readAdditional(getStandData().getNBT());
-		}
-	}
-	
-	public  TagEntityArmorStand getStandData() {
-		return item.getTag().getArmorStandTag();
-	}
-	
-	public void drawArmorStand(ArmorStandEntity ent, int posX, int posY, int scale) {
+    private ArmorStandEntity armorstand;
+    private DataItem item;
 
-		GlStateManager.pushMatrix();
-		GlStateManager.color3f(1f, 1f, 1f);
-		GlStateManager.enableColorMaterial();
-		GlStateManager.translatef((float) posX, (float) posY, 50.0F);
-		GlStateManager.scalef((float) (-scale), (float) scale, (float) scale);
-		GlStateManager.rotatef(180.0F, 0.0F, 0.0F, 1.0F);
+    public int addRotation = 0;
+    public boolean isDragging = false;
 
-		float f = ent.renderYawOffset;
-		float f1 = ent.rotationYaw;
-		float f2 = ent.rotationPitch;
-		float f3 = ent.prevRotationYawHead;
-		float f4 = ent.rotationYawHead;
-		GlStateManager.rotatef(40.0F, 0.0F, 1.0F, 0.0F);
-		RenderHelper.enableStandardItemLighting();
-		GlStateManager.rotatef(-50.0F, 0.0F, 1.0F, 0.0F);
-		GlStateManager.rotatef(10F, 1.0F, 0.0F, 0.0F);
-		ent.rotationYawHead = ent.rotationYaw;
-		ent.prevRotationYawHead = ent.rotationYaw;
-		GlStateManager.translatef(0.0F, 0.0F, 0.0F);
-		EntityRendererManager rendermanager = Minecraft.getInstance().getRenderManager();
-		GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-		rendermanager.setPlayerViewY(180.0F);
-		rendermanager.setRenderShadow(false);
-		rendermanager.renderEntity(ent, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
-		rendermanager.setRenderShadow(true);
-		GL11.glPopAttrib();
-		int add = 0;
-		if(isDragging) {		    
-		    add = 2 * (addRotation * -1);
-		} else {
-		    add = 1;
-		}
-		ent.renderYawOffset = f + add;	
-		ent.rotationYaw = f1;
-		ent.rotationPitch = f2;
-		ent.prevRotationYawHead = f3;
-		ent.rotationYawHead = f4;
-		addRotation = 0;
-		RenderHelper.disableStandardItemLighting();
-		GlStateManager.disableRescaleNormal();
-		GlStateManager.disableTexture();
-		GlStateManager.popMatrix();
-		
-	}
+
+    public ArmorStandDrawUtils(ArmorStandEntity arm, DataItem item) {
+        this.armorstand = arm;
+        this.item = item;
+    }
+
+
+    public void updateArmorStand() {
+        if (armorstand != null) {
+            armorstand.readAdditional( getStandData().getNBT() );
+        }
+    }
+
+
+    public TagEntityArmorStand getStandData() {
+        return item.getTag().getArmorStandTag();
+    }
+
+
+    public void drawArmorStand( ArmorStandEntity armorStand, int posX, int posY, int scale ) {
+        //float f = (float) Math.atan( (double) (mouseX / 40.0F) );
+        //float f1 = (float) Math.atan( (double) (mouseY / 40.0F) );
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef( (float) posX, (float) posY, 1050.0F );
+        RenderSystem.scalef( 1.0F, 1.0F, -1.0F );
+        MatrixStack matrixstack = new MatrixStack();
+        matrixstack.translate( 0.0D, 0.0D, 1000.0D );
+        matrixstack.scale( (float) scale, (float) scale, (float) scale );
+        Quaternion quaternion = Vector3f.ZP.rotationDegrees( 180.0F );
+        //Quaternion quaternion1 = Vector3f.XP.rotationDegrees( f1 * 20.0F );
+        //quaternion.multiply( quaternion1 );
+        matrixstack.rotate( quaternion );
+        float f2 = armorStand.renderYawOffset;
+        float f3 = armorStand.rotationYaw;
+        float f4 = armorStand.rotationPitch;
+        float f5 = armorStand.prevRotationYawHead;
+        float f6 = armorStand.rotationYawHead;
+        int add = 0;
+        if (isDragging) {
+            add = 2 * (addRotation * -1);
+        }
+        else {
+            add = 1;
+        }
+        armorStand.renderYawOffset = 180.0F + add;
+        armorStand.rotationYaw = 180.0F;
+        armorStand.rotationYawHead = armorStand.rotationYaw;
+        armorStand.prevRotationYawHead = armorStand.rotationYaw;
+        EntityRendererManager entityrenderermanager = Minecraft.getInstance().getRenderManager();
+        //quaternion1.conjugate();
+        //entityrenderermanager.setCameraOrientation( quaternion1 );
+        entityrenderermanager.setRenderShadow( false );
+        IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+        entityrenderermanager.renderEntityStatic( armorStand, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, irendertypebuffer$impl, 15728880 );
+        irendertypebuffer$impl.finish();
+        entityrenderermanager.setRenderShadow( true );
+        armorStand.renderYawOffset = f2;
+        armorStand.rotationYaw = f3;
+        armorStand.rotationPitch = f4;
+        armorStand.prevRotationYawHead = f5;
+        armorStand.rotationYawHead = f6;
+        RenderSystem.popMatrix();
+    }
 }

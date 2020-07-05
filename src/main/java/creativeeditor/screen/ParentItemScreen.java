@@ -1,6 +1,6 @@
 package creativeeditor.screen;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import creativeeditor.data.DataItem;
 import creativeeditor.util.ColorUtils.Color;
@@ -125,15 +125,15 @@ public class ParentItemScreen extends ParentScreen {
                 drawCenteredString( font, ite.getDisplayName( stack ).getFormattedText(), x, y, color.getInt() );
             }
             else {
-                GlStateManager.scalef( itemScale, itemScale, 1f );
-                RenderHelper.enableGUIStandardItemLighting();
+                RenderSystem.scalef( itemScale, itemScale, 1f );
+                RenderHelper.enableStandardItemLighting();
                 int x = (int) (width / (2 * itemScale) - 8);
                 int y = (int) (30 / itemScale + height / (2 * itemScale) - 8);
                 itemRenderer.renderItemIntoGUI( stack, x, y );
                 itemRenderer.renderItemOverlayIntoGUI( font, item.getItemStack(), x, y, null );
                 RenderHelper.disableStandardItemLighting();
 
-                GlStateManager.scalef( 1f / itemScale, 1f / itemScale, 1f );
+                RenderSystem.scalef( 1f / itemScale, 1f / itemScale, 1f );
             }
 
             // Item frame

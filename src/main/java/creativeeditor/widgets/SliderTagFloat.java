@@ -140,13 +140,6 @@ public class SliderTagFloat extends Widget implements IStyledSlider<Float> {
         return StyleManager.getCurrentStyle().getFGColor( this ).getInt();
     }
 
-
-    @Override
-    public int getBlitOffset() {
-        return blitOffset;
-    }
-
-
     @Override
     public Widget getWidget() {
         return this;

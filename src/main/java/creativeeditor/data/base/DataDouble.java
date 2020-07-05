@@ -21,6 +21,6 @@ public class DataDouble extends SingularData<Double, DoubleNBT> {
 
     @Override
     public DoubleNBT getNBT() {
-        return new DoubleNBT( data );
+        return DoubleNBT.valueOf( data );
     }
 }

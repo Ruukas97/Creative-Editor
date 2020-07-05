@@ -56,7 +56,7 @@ public class TagMapDecoration implements Data<TagMapDecoration, CompoundNBT> {
         CompoundNBT nbt = new CompoundNBT();
         NBTKeys keys = NBTKeys.keys;
         nbt.put( keys.decorationId(), id.getNBT() );
-        nbt.put( keys.decorationType(), new ByteNBT( type.getIcon() ) );
+        nbt.put( keys.decorationType(), ByteNBT.valueOf( type.getIcon() ) );
         nbt.put( "x", x.getNBT() );
         nbt.put( "y", y.getNBT() );
         nbt.put( keys.decorationRotation(), rotation.getNBT() );

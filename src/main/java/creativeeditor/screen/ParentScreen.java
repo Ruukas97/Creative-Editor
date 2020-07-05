@@ -3,6 +3,7 @@ package creativeeditor.screen;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
@@ -15,6 +16,7 @@ import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 
 public abstract class ParentScreen extends Screen {
@@ -62,11 +64,6 @@ public abstract class ParentScreen extends Screen {
     }
 
 
-    public int getBlitOffset() {
-        return blitOffset;
-    }
-
-
     public Minecraft getMinecraftInstance() {
         return minecraft;
     }
@@ -74,6 +71,29 @@ public abstract class ParentScreen extends Screen {
 
     public FontRenderer getFontRenderer() {
         return font;
+    }
+
+
+    /**
+     * Modified version of
+     * {@link net.minecraft.client.gui.screen.inventory.ContainerScreen#drawItemStack}
+     * 
+     * Draws an ItemStack.
+     * 
+     * The z index is increased by 32 (and not decreased afterwards), and the item
+     * is then rendered at z=200.
+     */
+    public void drawItemStack( ItemStack stack, int x, int y, String altText ) {
+        RenderSystem.translatef( 0.0F, 0.0F, 32.0F );
+        this.setBlitOffset( 200 );
+        this.itemRenderer.zLevel = 200.0F;
+        net.minecraft.client.gui.FontRenderer font = stack.getItem().getFontRenderer( stack );
+        if (font == null)
+            font = this.font;
+        this.itemRenderer.renderItemAndEffectIntoGUI( stack, x, y );
+        this.itemRenderer.renderItemOverlayIntoGUI( font, stack, x, y, altText );
+        this.setBlitOffset( 0 );
+        this.itemRenderer.zLevel = 0.0F;
     }
 
 

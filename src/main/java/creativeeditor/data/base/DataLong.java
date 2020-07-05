@@ -27,6 +27,6 @@ public class DataLong extends SingularData<Long, LongNBT> {
 
     @Override
     public LongNBT getNBT() {
-        return new LongNBT( data );
+        return LongNBT.valueOf( data );
     }
 }

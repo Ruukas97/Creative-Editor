@@ -2,11 +2,8 @@ package creativeeditor.widgets;
 
 import java.util.ArrayList;
 
-import creativeeditor.screen.CreditsScreen;
 import net.minecraft.client.gui.IGuiEventListener;
-import net.minecraft.client.gui.advancements.AdvancementsScreen;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.gui.widget.list.ExtendedList;
 
 public class ScrollableList extends Widget {
     private ArrayList<ListElement> list;

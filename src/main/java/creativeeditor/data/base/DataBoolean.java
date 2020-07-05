@@ -36,7 +36,7 @@ public class DataBoolean extends SingularData<Boolean, ByteNBT> implements IPres
 
     @Override
     public ByteNBT getNBT() {
-        return new ByteNBT( (byte) (data ? 1 : 0) );
+        return ByteNBT.valueOf( data );
     }
 
 

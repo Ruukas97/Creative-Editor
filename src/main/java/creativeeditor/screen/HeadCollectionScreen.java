@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.lwjgl.glfw.GLFW;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-
 import creativeeditor.data.DataItem;
 import creativeeditor.json.MinecraftHeads;
 import creativeeditor.json.MinecraftHeadsCategory;
@@ -16,7 +14,6 @@ import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
 import creativeeditor.util.InventoryUtils;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -260,29 +257,20 @@ public class HeadCollectionScreen extends ParentScreen {
 
         drawCenteredString( font, I18n.format( "gui.headcollection.headsininventory" ) + ": " + InventoryUtils.countItem( minecraft.player.inventory, Items.PLAYER_HEAD ), width / 2, height - 35, blandColor );
 
-        GlStateManager.pushMatrix();
-        RenderHelper.enableGUIStandardItemLighting();
-        GlStateManager.disableLighting();
-        GlStateManager.enableRescaleNormal();
-        GlStateManager.enableColorMaterial();
-        GlStateManager.enableLighting();
-        itemRenderer.zLevel = 100.0F;
+
         ItemStack hovered = null;
         if (filteredHeads.size() > 0) {
             for (int i = (int) Math.min( filteredHeads.size() - 1, currentPage * amountInPage ); i < (int) Math.min( filteredHeads.size(), (currentPage + 1) * amountInPage ); i++) {
                 int x = space + letterSpace + (16 * (i % maxInRow));
                 int y = heightOffset + topbar + (16 * ((i % amountInPage) / maxInRow));
                 ItemStack stack = filteredHeads.get( i );
-                itemRenderer.renderItemAndEffectIntoGUI( stack, x, y );
+                drawItemStack( stack, x, y, null );
                 if (hovered == null && mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16) {
                     fill( x, y, x + 16, y + 16, GuiUtil.getColorFromRGB( 150, 150, 150, 150 ) );
                     hovered = stack;
                 }
             }
         }
-
-        GlStateManager.enableLighting();
-        GlStateManager.popMatrix();
 
         int searchW = font.getStringWidth( searchString );
 

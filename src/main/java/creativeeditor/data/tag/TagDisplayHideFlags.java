@@ -95,7 +95,7 @@ public class TagDisplayHideFlags extends SingularData<TagDisplayHideFlags.HideFl
 
     @Override
     public IntNBT getNBT() {
-        return new IntNBT( getInt() );
+        return IntNBT.valueOf( getInt() );
     }
 
 

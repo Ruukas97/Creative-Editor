@@ -8,6 +8,7 @@ import creativeeditor.config.Config;
 import creativeeditor.data.DataItem;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
+import creativeeditor.util.GuiUtil;
 import creativeeditor.widgets.ClassSpecificWidget;
 import creativeeditor.widgets.ItemWidgets;
 import creativeeditor.widgets.NumberField;
@@ -23,7 +24,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.client.config.GuiUtils;
 
 public class MainScreen extends ParentItemScreen {
 
@@ -374,14 +374,14 @@ public class MainScreen extends ParentItemScreen {
             // NBT
             List<String> nbtLines = Arrays.asList( (minecraft.gameSettings.advancedItemTooltips ? item.getNBT() : item.getTag().getNBT()).toFormattedComponent( " ", 0 ).getFormattedText().split( "\n" ) );
 
-            GuiUtils.drawHoveringText( item.getItemStack(), nbtLines, 0, 60, width / 3 - 1, height, -1, font );
+            GuiUtil.drawHoveringText( item.getItemStack(), nbtLines, 0, 60, width / 3 - 1, height, -1, font );
         }
 
         else if (Config.MAIN_LEFT_TAB.get() == 1) {
             // renderTooltip(item.getItemStackClean(), 0, 60);
             ItemStack stack = item.getItemStack();
 
-            GuiUtils.drawHoveringText( item.getItemStack(), getTooltipFromItem( stack ), 0, 60, width / 3 - 1, height, -1, font );
+            GuiUtil.drawHoveringText( item.getItemStack(), getTooltipFromItem( stack ), 0, 60, width / 3 - 1, height, -1, font );
         }
     }
 }

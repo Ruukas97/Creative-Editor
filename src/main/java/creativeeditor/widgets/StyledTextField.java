@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Predicates;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import creativeeditor.styles.StyleManager;
 import creativeeditor.styles.StyleVanilla;
@@ -571,18 +572,19 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
 
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
-        GlStateManager.color4f( 0.0F, 0.0F, 255.0F, 255.0F );
-        GlStateManager.disableTexture();
-        GlStateManager.enableColorLogicOp();
-        GlStateManager.logicOp( GlStateManager.LogicOp.OR_REVERSE );
+        RenderSystem.color4f( 0.0F, 0.0F, 255.0F, 255.0F );
+        RenderSystem.disableTexture();
+        RenderSystem.enableColorLogicOp();
+        RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
         bufferbuilder.begin( 7, DefaultVertexFormats.POSITION );
         bufferbuilder.pos( (double) startX, (double) endY, 0.0D ).endVertex();
         bufferbuilder.pos( (double) endX, (double) endY, 0.0D ).endVertex();
         bufferbuilder.pos( (double) endX, (double) startY, 0.0D ).endVertex();
         bufferbuilder.pos( (double) startX, (double) startY, 0.0D ).endVertex();
         tessellator.draw();
-        GlStateManager.disableColorLogicOp();
-        GlStateManager.enableTexture();
+        BlockBarrier
+        RenderSystem.disableColorLogicOp();
+        RenderSystem.enableTexture();
     }
 
 

@@ -26,6 +26,6 @@ public class DataInteger extends SingularData<Integer, IntNBT> {
 
     @Override
     public IntNBT getNBT() {
-        return new IntNBT( data );
+        return IntNBT.valueOf( data );
     }
 }

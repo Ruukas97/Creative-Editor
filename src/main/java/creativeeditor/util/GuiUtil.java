@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import creativeeditor.screen.ParentScreen;
 import creativeeditor.util.ColorUtils.Color;
@@ -19,7 +19,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.client.config.GuiUtils;
+import net.minecraftforge.fml.client.gui.GuiUtils;
 
 public class GuiUtil extends GuiUtils {
     @SuppressWarnings( "resource" )
@@ -53,11 +53,11 @@ public class GuiUtil extends GuiUtils {
         float f5 = (float) (toColor >> 16 & 255) / 255.0F;
         float f6 = (float) (toColor >> 8 & 255) / 255.0F;
         float f7 = (float) (toColor & 255) / 255.0F;
-        GlStateManager.disableTexture();
-        GlStateManager.enableBlend();
-        GlStateManager.disableAlphaTest();
-        GlStateManager.blendFuncSeparate( GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO );
-        GlStateManager.shadeModel( 7425 );
+        RenderSystem.disableTexture();
+        RenderSystem.enableBlend();
+        RenderSystem.disableAlphaTest();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.shadeModel( 7425 );
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin( 7, DefaultVertexFormats.POSITION_COLOR );
@@ -66,10 +66,10 @@ public class GuiUtil extends GuiUtils {
         bufferbuilder.pos( (double) xStart, (double) yEnd, (double) screen.getBlitOffset() ).color( f5, f6, f7, f4 ).endVertex();
         bufferbuilder.pos( (double) xEnd, (double) yEnd, (double) screen.getBlitOffset() ).color( f5, f6, f7, f4 ).endVertex();
         tessellator.draw();
-        GlStateManager.shadeModel( 7424 );
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlphaTest();
-        GlStateManager.enableTexture();
+        RenderSystem.shadeModel( 7424 );
+        RenderSystem.disableBlend();
+        RenderSystem.enableAlphaTest();
+        RenderSystem.enableTexture();
     }
 
 
@@ -82,11 +82,11 @@ public class GuiUtil extends GuiUtils {
         float f5 = (float) (bottomColor >> 16 & 255) / 255.0F;
         float f6 = (float) (bottomColor >> 8 & 255) / 255.0F;
         float f7 = (float) (bottomColor & 255) / 255.0F;
-        GlStateManager.disableTexture();
-        GlStateManager.enableBlend();
-        GlStateManager.disableAlphaTest();
-        GlStateManager.blendFuncSeparate( GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO );
-        GlStateManager.shadeModel( 7425 );
+        RenderSystem.disableTexture();
+        RenderSystem.enableBlend();
+        RenderSystem.disableAlphaTest();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.shadeModel( 7425 );
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin( 7, DefaultVertexFormats.POSITION_COLOR );
@@ -95,10 +95,10 @@ public class GuiUtil extends GuiUtils {
         bufferbuilder.pos( (double) xStart, (double) yEnd, (double) screen.getBlitOffset() ).color( f5, f6, f7, f4 ).endVertex();
         bufferbuilder.pos( (double) xEnd, (double) yEnd, (double) screen.getBlitOffset() ).color( f5, f6, f7, f4 ).endVertex();
         tessellator.draw();
-        GlStateManager.shadeModel( 7424 );
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlphaTest();
-        GlStateManager.enableTexture();
+        RenderSystem.shadeModel( 7424 );
+        RenderSystem.disableBlend();
+        RenderSystem.enableAlphaTest();
+        RenderSystem.enableTexture();
     }
 
 
@@ -111,11 +111,11 @@ public class GuiUtil extends GuiUtils {
         float rightRed = (float) (rightColor >> 16 & 255) / 255.0F;
         float rightGreen = (float) (rightColor >> 8 & 255) / 255.0F;
         float rightBlue = (float) (rightColor & 255) / 255.0F;
-        GlStateManager.disableTexture();
-        GlStateManager.enableBlend();
-        GlStateManager.disableAlphaTest();
-        GlStateManager.blendFuncSeparate( GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO );
-        GlStateManager.shadeModel( 7425 );
+        RenderSystem.disableTexture();
+        RenderSystem.enableBlend();
+        RenderSystem.disableAlphaTest();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.shadeModel( 7425 );
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin( 7, DefaultVertexFormats.POSITION_COLOR );
@@ -124,10 +124,10 @@ public class GuiUtil extends GuiUtils {
         bufferbuilder.pos( (double) xStart, (double) yEnd, (double) screen.getBlitOffset() ).color( leftRed, leftGreen, leftBlue, leftAlpha ).endVertex();
         bufferbuilder.pos( (double) xEnd, (double) yEnd, (double) screen.getBlitOffset() ).color( rightRed, rightGreen, rightBlue, rightAlpha ).endVertex();
         tessellator.draw();
-        GlStateManager.shadeModel( 7424 );
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlphaTest();
-        GlStateManager.enableTexture();
+        RenderSystem.shadeModel( 7424 );
+        RenderSystem.disableBlend();
+        RenderSystem.enableAlphaTest();
+        RenderSystem.enableTexture();
     }
 
 
@@ -137,11 +137,11 @@ public class GuiUtil extends GuiUtils {
         float satGreen = (float) sat.getGreen() / 255.0F;
         float satBlue = (float) sat.getBlue() / 255.0F;
 
-        GlStateManager.disableTexture();
-        GlStateManager.enableBlend();
-        GlStateManager.disableAlphaTest();
-        GlStateManager.blendFuncSeparate( GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO );
-        GlStateManager.shadeModel( 7425 );
+        RenderSystem.disableTexture();
+        RenderSystem.enableBlend();
+        RenderSystem.disableAlphaTest();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.shadeModel( 7425 );
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin( 7, DefaultVertexFormats.POSITION_COLOR );
@@ -150,25 +150,25 @@ public class GuiUtil extends GuiUtils {
         bufferbuilder.pos( (double) xStart, (double) yEnd, (double) screen.getBlitOffset() ).color( 1f, 1f, 1f, 1f ).endVertex();
         bufferbuilder.pos( (double) xEnd, (double) yEnd, (double) screen.getBlitOffset() ).color( 1f, 1f, 1f, 1f ).endVertex();
         tessellator.draw();
-        
+
         bufferbuilder.begin( 7, DefaultVertexFormats.POSITION_COLOR );
         bufferbuilder.pos( (double) xEnd, (double) yStart, (double) screen.getBlitOffset() ).color( satRed, satGreen, satBlue, 1f ).endVertex();
         bufferbuilder.pos( (double) xStart, (double) yStart, (double) screen.getBlitOffset() ).color( satRed, satGreen, satBlue, 0f ).endVertex();
         bufferbuilder.pos( (double) xStart, (double) yEnd, (double) screen.getBlitOffset() ).color( satRed, satGreen, satBlue, 0f ).endVertex();
         bufferbuilder.pos( (double) xEnd, (double) yEnd, (double) screen.getBlitOffset() ).color( satRed, satGreen, satBlue, 1f ).endVertex();
         tessellator.draw();
-        
+
         bufferbuilder.begin( 7, DefaultVertexFormats.POSITION_COLOR );
         bufferbuilder.pos( (double) xEnd, (double) yStart, (double) screen.getBlitOffset() ).color( 0f, 0f, 0f, 0f ).endVertex();
         bufferbuilder.pos( (double) xStart, (double) yStart, (double) screen.getBlitOffset() ).color( 0f, 0f, 0f, 0f ).endVertex();
         bufferbuilder.pos( (double) xStart, (double) yEnd, (double) screen.getBlitOffset() ).color( 0f, 0f, 0f, 1f ).endVertex();
         bufferbuilder.pos( (double) xEnd, (double) yEnd, (double) screen.getBlitOffset() ).color( 0f, 0f, 0f, 1f ).endVertex();
         tessellator.draw();
-        
-        GlStateManager.shadeModel( 7424 );
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlphaTest();
-        GlStateManager.enableTexture();
+
+        RenderSystem.shadeModel( 7424 );
+        RenderSystem.disableBlend();
+        RenderSystem.enableAlphaTest();
+        RenderSystem.enableTexture();
     }
 
 

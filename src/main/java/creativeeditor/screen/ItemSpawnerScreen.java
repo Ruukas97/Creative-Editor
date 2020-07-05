@@ -2,7 +2,7 @@ package creativeeditor.screen;
 
 import java.util.Date;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import creativeeditor.collections.ItemCollection;
 import creativeeditor.collections.ItemCollections;
@@ -11,7 +11,6 @@ import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -107,18 +106,16 @@ public class ItemSpawnerScreen extends ParentScreen {
                     lastTime = now;
                 }
                 itemYOffset = -Math.sin( animation ) / 1.8;
-                GlStateManager.translated( 0d, itemYOffset, 0d );
+                RenderSystem.translated( 0d, itemYOffset, 0d );
             }
 
             ItemStack stack = collection.getIcon();
-            RenderHelper.enableGUIStandardItemLighting();
-            itemRenderer.renderItemIntoGUI( stack, x, y );
-            itemRenderer.renderItemOverlayIntoGUI( font, stack, x, y, null );
-            RenderHelper.disableStandardItemLighting();
+            drawItemStack( stack, x, y, null );
+
 
             drawString( font, name, x + 20, y + 5, in || selected ? StyleManager.getCurrentStyle().getFGColor( true, true ).getInt() : color.getInt() );
             if (selected) {
-                GlStateManager.translated( 0d, -itemYOffset, 0d );
+                RenderSystem.translated( 0d, -itemYOffset, 0d );
             }
 
             if (widest < width) {
@@ -166,10 +163,7 @@ public class ItemSpawnerScreen extends ParentScreen {
                 break;
             x = 30 + widest + 20 * column;
             y = 25 + 20 * row;
-            RenderHelper.enableGUIStandardItemLighting();
-            itemRenderer.renderItemIntoGUI( stack, x, y );
-            itemRenderer.renderItemOverlayIntoGUI( font, stack, x, y, null );
-            RenderHelper.disableStandardItemLighting();
+            drawItemStack( stack, x, y, null );
             i++;
         }
     }

@@ -10,14 +10,9 @@ import creativeeditor.handlers.KeyInputHandler;
 import creativeeditor.handlers.PlayerNameplateHandler;
 import creativeeditor.handlers.ScreenHandler;
 import creativeeditor.handlers.TooltipHandler;
-import creativeeditor.render.ArmorStandRendering;
-import creativeeditor.render.ShieldRenderer;
 import creativeeditor.resourcepack.ResourcePacks;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.tab.CreativeTabs;
-import creativeeditor.util.ReflectionUtils;
-import net.minecraft.item.ArmorStandItem;
-import net.minecraft.item.Items;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -55,10 +50,12 @@ public class CreativeEditor {
         MinecraftForge.EVENT_BUS.register( new TooltipHandler() );
         MinecraftForge.EVENT_BUS.register( new KeyInputHandler() );
 
-        if (Config.SPECTRUM_SHIELD_ENABLED.get())
+        /*if (Config.SPECTRUM_SHIELD_ENABLED.get())
             ReflectionUtils.setTeisr( Items.SHIELD, () -> ShieldRenderer::new );
 
         if (Items.ARMOR_STAND instanceof ArmorStandItem)
             ArmorStandRendering.addPropertyOverrides( (ArmorStandItem) Items.ARMOR_STAND );
+            */
+        //TODO redo
     }
 }

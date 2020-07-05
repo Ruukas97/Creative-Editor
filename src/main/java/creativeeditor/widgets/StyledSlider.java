@@ -154,12 +154,6 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
 
 
     @Override
-    public int getBlitOffset() {
-        return blitOffset;
-    }
-
-
-    @Override
     public Widget getWidget() {
         return this;
     }

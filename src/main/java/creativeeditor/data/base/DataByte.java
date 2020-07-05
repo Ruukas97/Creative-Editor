@@ -21,6 +21,6 @@ public class DataByte extends SingularData<Byte, ByteNBT> {
 
     @Override
     public ByteNBT getNBT() {
-        return new ByteNBT( data );
+        return ByteNBT.valueOf( data );
     }
 }

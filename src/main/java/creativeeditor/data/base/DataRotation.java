@@ -8,9 +8,12 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.math.Rotations;
 
 public class DataRotation implements Data<Rotations, ListNBT> {
-    private @Getter NumberRangeInt x;
-    private @Getter NumberRangeInt y;
-    private @Getter NumberRangeInt z;
+    private @Getter
+    NumberRangeInt x;
+    private @Getter
+    NumberRangeInt y;
+    private @Getter
+    NumberRangeInt z;
 
 
     public DataRotation(ListNBT nbt) {
@@ -36,9 +39,9 @@ public class DataRotation implements Data<Rotations, ListNBT> {
     @Override
     public ListNBT getNBT() {
         ListNBT nbt = new ListNBT();
-        nbt.add( new FloatNBT( x.get() ) );
-        nbt.add( new FloatNBT( y.get() ) );
-        nbt.add( new FloatNBT( z.get() ) );
+        nbt.add( FloatNBT.valueOf( x.get() ) );
+        nbt.add( FloatNBT.valueOf( y.get() ) );
+        nbt.add( FloatNBT.valueOf( z.get() ) );
         return nbt;
     }
 

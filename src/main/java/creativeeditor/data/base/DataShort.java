@@ -26,6 +26,6 @@ public class DataShort extends SingularData<Short, ShortNBT> {
 
     @Override
     public ShortNBT getNBT() {
-        return new ShortNBT( data );
+        return ShortNBT.valueOf( data );
     }
 }

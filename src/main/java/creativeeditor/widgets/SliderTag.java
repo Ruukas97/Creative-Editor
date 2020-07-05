@@ -54,7 +54,7 @@ public class SliderTag extends Widget implements IStyledSlider<Integer> {
 
 
     @Override
-    public void renderButton( int mouseX, int mouseY, float p3 ) {        
+    public void renderButton( int mouseX, int mouseY, float p3 ) {
         updateSlider();
         StyleManager.getCurrentStyle().renderButton( this, mouseX, mouseY, p3 );
     }
@@ -138,12 +138,6 @@ public class SliderTag extends Widget implements IStyledSlider<Integer> {
     @Override
     public int getFGColor() {
         return StyleManager.getCurrentStyle().getFGColor( this ).getInt();
-    }
-
-
-    @Override
-    public int getBlitOffset() {
-        return blitOffset;
     }
 
 

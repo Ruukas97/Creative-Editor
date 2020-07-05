@@ -2,9 +2,9 @@ package creativeeditor.styles;
 
 import creativeeditor.screen.ParentScreen;
 import creativeeditor.util.ColorUtils.Color;
+import creativeeditor.util.GuiUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraftforge.fml.client.config.GuiUtils;
 
 public class StyleVanilla extends StyleBase {
     public StyleVanilla() {
@@ -36,7 +36,7 @@ public class StyleVanilla extends StyleBase {
         Minecraft mc = Minecraft.getInstance();
         button.setHovered( mouseX >= widget.x && mouseY >= widget.y && mouseX < widget.x + widget.getWidth() && mouseY < widget.y + widget.getHeight() );
         int k = button.getYImage( widget.isHovered() );
-        GuiUtils.drawContinuousTexturedBox( Widget.WIDGETS_LOCATION, widget.x, widget.y, 0, 46 + k * 20, widget.getWidth(), widget.getHeight(), 200, 20, 2, 3, 2, 2, button.getBlitOffset() );
+        GuiUtil.drawContinuousTexturedBox( Widget.WIDGETS_LOCATION, widget.x, widget.y, 0, 46 + k * 20, widget.getWidth(), widget.getHeight(), 200, 20, 2, 3, 2, 2, button.getBlitOffset() );
         button.renderBg( mc, mouseX, mouseY );
 
         int color = getFGColor( widget ).getInt();
@@ -54,6 +54,6 @@ public class StyleVanilla extends StyleBase {
 
     @Override
     public void renderSlider( IStyledSlider<?> slider, int mouseX, int mouseY ) {
-        GuiUtils.drawContinuousTexturedBox( Widget.WIDGETS_LOCATION, (int) (slider.getWidget().x + (slider.getWidget().getWidth() - 8) * ((float) (slider.getValue().floatValue() - slider.getMin().floatValue()) / (float) Math.max( 1, (slider.getMax().floatValue() - slider.getMin().floatValue()) ))), slider.getWidget().y, 0, 66, 8, slider.getWidget().getHeight(), 200, 20, 2, 3, 2, 2, slider.getBlitOffset() );
+        GuiUtil.drawContinuousTexturedBox( Widget.WIDGETS_LOCATION, (int) (slider.getWidget().x + (slider.getWidget().getWidth() - 8) * ((float) (slider.getValue().floatValue() - slider.getMin().floatValue()) / (float) Math.max( 1, (slider.getMax().floatValue() - slider.getMin().floatValue()) ))), slider.getWidget().y, 0, 66, 8, slider.getWidget().getHeight(), 200, 20, 2, 3, 2, 2, slider.getBlitOffset() );
     }
 }

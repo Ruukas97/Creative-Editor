@@ -1,6 +1,6 @@
 package creativeeditor.screen;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import creativeeditor.data.DataItem;
 import creativeeditor.util.ColorUtils.Color;
@@ -49,8 +49,8 @@ public class ItemInspectorScreen extends ParentScreen {
         ItemStack stack = item.getItemStack();
         // GlStateManager.rotated( rotX * 3, 0.0f, 0.0f, -1.0f );
         // GlStateManager.rotatef( rotX, 0.0f, 1.0f, 0f );
-        GlStateManager.scalef( itemScale, itemScale, 1f );
-        RenderHelper.enableGUIStandardItemLighting();
+        RenderSystem.scalef( itemScale, itemScale, 1f );
+        RenderHelper.enableStandardItemLighting();
         int x = (int) (width / (2 * itemScale) - 8);
         int y = (int) (30 / itemScale + height / (2 * itemScale) - 8);
         itemRenderUtils.renderItemIntoGUI( stack, x, y, rotX, rotY );
@@ -59,7 +59,7 @@ public class ItemInspectorScreen extends ParentScreen {
         // );
         RenderHelper.disableStandardItemLighting();
 
-        GlStateManager.scalef( 1f / itemScale, 1f / itemScale, 1f );
+        RenderSystem.scalef( 1f / itemScale, 1f / itemScale, 1f );
         // GlStateManager.rotatef( 0.1f, -rotX, -rotY, -rotZ );
 
         // Item frame

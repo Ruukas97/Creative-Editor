@@ -1,6 +1,6 @@
 package creativeeditor.screen;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import creativeeditor.util.ColorUtils.Color;
 import net.minecraft.client.gui.screen.Screen;
@@ -33,7 +33,7 @@ public class PlayerInspectorScreen extends ParentScreen {
         super.mainRender( mouseX, mouseY, p3, color );
 
         // Render player model
-        GlStateManager.color3f( 1f, 1f, 1f );
+        // GlStateManager.color3f( 1f, 1f, 1f );
         InventoryScreen.drawEntityOnScreen( width / 2, height / 2, 50, width / 2 - mouseX, height / 3 - mouseY, target );
         // Render player UUID
         drawCenteredString( minecraft.fontRenderer, playerUUID, width / 2, height / 2 + 8, 0xFFFFFF );
@@ -46,13 +46,13 @@ public class PlayerInspectorScreen extends ParentScreen {
         for (ItemStack stack : target.getEquipmentAndArmor()) {
             stacks[i++] = stack;
             y -= 15;
-            GlStateManager.scalef( 1.25f, 1.25f, 1f );
-            RenderHelper.enableGUIStandardItemLighting();
+            RenderSystem.scalef( 1.25f, 1.25f, 1f );
+            RenderHelper.enableStandardItemLighting();
             itemRenderer.renderItemIntoGUI( stack, x, y );
             itemRenderer.renderItemOverlayIntoGUI( font, stack.getStack(), x, y, null );
             RenderHelper.disableStandardItemLighting();
 
-            GlStateManager.scalef( .8f, .8f, 1f );
+            RenderSystem.scalef( .8f, .8f, 1f );
             if (mouseX >= x * 1.25 - 8 && mouseX <= x * 1.25 + 8 && mouseY <= y * 1.25 + 8 && mouseY >= y * 1.25 - 8) {
                 renderTooltip( stack, mouseX, mouseY );
             }

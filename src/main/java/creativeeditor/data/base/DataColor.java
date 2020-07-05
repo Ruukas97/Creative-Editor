@@ -21,7 +21,7 @@ public class DataColor extends Color implements Data<Color, IntNBT> {
 
 
     public DataColor(INBT nbt) {
-        this( nbt instanceof IntNBT ? (IntNBT) nbt : new IntNBT( 0 ) );
+        this( nbt instanceof IntNBT ? (IntNBT) nbt : IntNBT.valueOf( 0 ) );
     }
 
 
@@ -49,7 +49,7 @@ public class DataColor extends Color implements Data<Color, IntNBT> {
 
     @Override
     public IntNBT getNBT() {
-        return new IntNBT( argb );
+        return IntNBT.valueOf( argb );
     }
 
 

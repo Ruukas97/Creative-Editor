@@ -32,6 +32,6 @@ public class DataString extends SingularData<String, StringNBT> {
 
     @Override
     public StringNBT getNBT() {
-        return new StringNBT( data );
+        return StringNBT.valueOf( data );
     }
 }

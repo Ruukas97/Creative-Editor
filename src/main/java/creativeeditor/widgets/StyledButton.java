@@ -43,12 +43,6 @@ public class StyledButton extends Button implements IStyledButton {
 
 
     @Override
-    public int getBlitOffset() {
-        return blitOffset;
-    }
-
-
-    @Override
     public void setHovered( boolean b ) {
         isHovered = b;
     }

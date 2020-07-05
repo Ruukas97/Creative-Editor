@@ -6,10 +6,10 @@ import creativeeditor.CreativeEditor;
 import creativeeditor.data.DataItem;
 import creativeeditor.screen.EnchantmentsScreen;
 import creativeeditor.screen.HeadCollectionScreen;
-import creativeeditor.screen.ItemInspectorScreen;
 import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.PlayerInspectorScreen;
 import creativeeditor.screen.TextEditorScreen;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -73,6 +73,7 @@ public class KeyInputHandler {
         }
         else if (event.getKey() == BARRIER_TOGGLE.getKey().getKeyCode()) {
             CreativeEditor.BARRIER_VISIBLE = !CreativeEditor.BARRIER_VISIBLE;
+            Blocks.BARRIER
         }
         else if (CreativeEditor.DEBUG && event.getKey() == DEBUG_KEY.getKey().getKeyCode()) {
             mc.displayGuiScreen( new EnchantmentsScreen( mc.currentScreen, new DataItem( mc.player.getHeldItemMainhand() ) ) );
