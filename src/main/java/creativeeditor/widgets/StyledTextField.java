@@ -582,7 +582,6 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
         bufferbuilder.pos( (double) endX, (double) startY, 0.0D ).endVertex();
         bufferbuilder.pos( (double) startX, (double) startY, 0.0D ).endVertex();
         tessellator.draw();
-        BlockBarrier
         RenderSystem.disableColorLogicOp();
         RenderSystem.enableTexture();
     }
