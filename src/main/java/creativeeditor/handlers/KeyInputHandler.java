@@ -9,7 +9,6 @@ import creativeeditor.screen.HeadCollectionScreen;
 import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.PlayerInspectorScreen;
 import creativeeditor.screen.TextEditorScreen;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;

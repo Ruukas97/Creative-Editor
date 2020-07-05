@@ -2,6 +2,7 @@ package creativeeditor.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import creativeeditor.util.GuiUtil;
 import creativeeditor.util.ColorUtils.Color;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
@@ -39,23 +40,16 @@ public class PlayerInspectorScreen extends ParentScreen {
         drawCenteredString( minecraft.fontRenderer, playerUUID, width / 2, height / 2 + 8, 0xFFFFFF );
 
         // Render equipped items
-        ItemStack[] stacks = new ItemStack[6];
-        int i = 0;
-        int y = height / 2 - 30;
+        int y = height / 2 - 45;
         int x = width / 2 + 100;
         for (ItemStack stack : target.getEquipmentAndArmor()) {
-            stacks[i++] = stack;
-            y -= 15;
-            RenderSystem.scalef( 1.25f, 1.25f, 1f );
-            RenderHelper.enableStandardItemLighting();
-            itemRenderer.renderItemIntoGUI( stack, x, y );
-            itemRenderer.renderItemOverlayIntoGUI( font, stack.getStack(), x, y, null );
-            RenderHelper.disableStandardItemLighting();
+            drawItemStack( stack, x, y, null );
 
-            RenderSystem.scalef( .8f, .8f, 1f );
-            if (mouseX >= x * 1.25 - 8 && mouseX <= x * 1.25 + 8 && mouseY <= y * 1.25 + 8 && mouseY >= y * 1.25 - 8) {
+            if (GuiUtil.isMouseInRegion( mouseX, mouseY, x, y, 16, 16 )) {
                 renderTooltip( stack, mouseX, mouseY );
             }
+            
+            y -= 15;
         }
 
     }
