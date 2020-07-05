@@ -73,7 +73,6 @@ public class KeyInputHandler {
         }
         else if (event.getKey() == BARRIER_TOGGLE.getKey().getKeyCode()) {
             CreativeEditor.BARRIER_VISIBLE = !CreativeEditor.BARRIER_VISIBLE;
-            Blocks.BARRIER
         }
         else if (CreativeEditor.DEBUG && event.getKey() == DEBUG_KEY.getKey().getKeyCode()) {
             mc.displayGuiScreen( new EnchantmentsScreen( mc.currentScreen, new DataItem( mc.player.getHeldItemMainhand() ) ) );
