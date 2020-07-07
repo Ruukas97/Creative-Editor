@@ -84,6 +84,7 @@ public class PlayerInspectorScreen extends ParentScreen {
 
             if (GuiUtil.isMouseInRegion( mouseX, mouseY, x, y, 16, 16 )) {
                 renderTooltip( stack, mouseX, mouseY );
+                
             }
 
             y -= 15;

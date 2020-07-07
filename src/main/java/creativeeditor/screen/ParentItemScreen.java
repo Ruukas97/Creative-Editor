@@ -119,26 +119,20 @@ public class ParentItemScreen extends ParentScreen {
             ItemStack stack = item.getItemStack();
 
             Item ite = item.getItem().getItem();
+            int x = width / 2;
+            int y = 60;
             if (ite == Items.AIR) {
-                int x = (int) (width / 2);
-                int y = (int) (30 + height / (2) - 5);
-                drawCenteredString( font, ite.getDisplayName( stack ).getFormattedText(), x, y, color.getInt() );
+                drawCenteredString( font, ite.getDisplayName( stack ).getFormattedText(), x, y-3, color.getInt() );
             }
             else {
                 RenderSystem.scalef( itemScale, itemScale, 1f );
-                RenderHelper.enableStandardItemLighting();
-                int x = (int) (width / (2 * itemScale) - 8);
-                int y = (int) (30 / itemScale + height / (2 * itemScale) - 8);
-                itemRenderer.renderItemIntoGUI( stack, x, y );
-                itemRenderer.renderItemOverlayIntoGUI( font, item.getItemStack(), x, y, null );
-                RenderHelper.disableStandardItemLighting();
-
+                drawItemStack( item.getData(), ((int) (x / itemScale)) - 8, ((int) (y / itemScale)) - 8, null );
                 RenderSystem.scalef( 1f / itemScale, 1f / itemScale, 1f );
             }
 
             // Item frame
             if (itemScale == 2f)
-                GuiUtil.drawFrame( width / 2 - 20, height / 2 + 10, width / 2 + 20, height / 2 + 50, 1, color );
+                GuiUtil.drawFrame( width / 2 - 19, 41, width / 2 + 19, 79, 1, color );
 
 
             // TODO Item scale support

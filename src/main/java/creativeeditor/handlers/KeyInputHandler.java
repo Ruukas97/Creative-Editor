@@ -8,7 +8,6 @@ import creativeeditor.screen.EnchantmentsScreen;
 import creativeeditor.screen.HeadCollectionScreen;
 import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.PlayerInspectorScreen;
-import creativeeditor.screen.TextEditorScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -65,6 +64,12 @@ public class KeyInputHandler {
         }
         else if (event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {
             mc.player.swingArm( Hand.OFF_HAND );
+            try {
+                mc.player.sendMessage( mc.player.inventory.getCurrentItem().getTag().toFormattedComponent() );
+            }
+            catch(NullPointerException e) {
+                System.out.println( "Nuller" );
+            }
             //mc.displayGuiScreen( new TextEditorScreen( mc.currentScreen ) );
         }
         else if (event.getKey() == HEAD_COLLECTION.getKey().getKeyCode()) {

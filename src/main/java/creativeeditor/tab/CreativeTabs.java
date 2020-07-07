@@ -172,7 +172,7 @@ public class CreativeTabs {
         
         
         DataItem globe_banner = new DataItem( new ItemStack( Items.BLUE_BANNER ) );
-        globe_banner.getTag().getBanner().getPatterns().add( new TagBannerPattern( BannerPattern.GLOBE, DyeColor.LIME ) );
+        //globe_banner.getTag().getBanner().getPatterns().add( new TagBannerPattern( BannerPattern.GLOBE, DyeColor.LIME ) );
 
         // @formatter:off
         ItemStack[] villageItems = {

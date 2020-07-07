@@ -26,7 +26,7 @@ public class DataString extends SingularData<String, StringNBT> {
 
     @Override
     public boolean isDefault() {
-        return false;
+        return data == null || data.length() < 1;
     }
 
 

@@ -75,7 +75,7 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
         CompoundNBT nbt = new CompoundNBT();
         CompoundNBT teTag = te.write( new CompoundNBT() );
 
-        if (item.getItem().getItem() instanceof SkullItem && teTag.contains( "Owner" )) {
+        if (item instanceof SkullItem && teTag.contains( "Owner" )) {
             CompoundNBT compoundnbt2 = teTag.getCompound( "Owner" );
             nbt.put( "SkullOwner", compoundnbt2 );
         }

@@ -2,6 +2,7 @@ package creativeeditor.tab;
 
 import creativeeditor.data.DataItem;
 import creativeeditor.data.version.NBTKeys;
+import creativeeditor.util.InventoryUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
@@ -26,22 +27,21 @@ public class TabLoadedTileEntities extends TabCreative {
         Minecraft mc = Minecraft.getInstance();
         ClientWorld world = mc.world;
         for (TileEntity te : world.loadedTileEntityList) {
-            BlockState state = te.getBlockState();
-            Item item = state.getBlock().asItem();
-            DataItem dItem = new DataItem( item, 1, te, 0 );
-            ItemStack stack = dItem.getData();
-            boolean found = false;;
-            for (ItemStack ex : items) {
-                if (ex.equals( stack, false )) {
-                    found = true;
-                    if (ex.getCount() < 64)
-                        ex.setCount( ex.getCount() + 1 );
-                    break;
+            if(InventoryUtils.getEmptySlotsCount( mc.player.inventory ) == 0) {
+                break;
+            }
+
+            /*mc.player.connection.getNBTQueryManager().queryTileEntity(te.getPos(), (nbt) -> {
+                if(InventoryUtils.getEmptySlotsCount( mc.player.inventory ) > 0) {
+                    te.getTileData().merge( nbt );
+                    BlockState state = te.getBlockState();
+                    Item item = state.getBlock().asItem();
+                    DataItem dItem = new DataItem( item, 1, te, 0 );
+                    ItemStack stack = dItem.getItemStack();
+                    items.add(stack );
+                    mc.playerController.sendSlotPacket( stack, InventoryUtils.getEmptySlot( mc.player.inventory ) );
                 }
-            }
-            if (!found) {
-                items.add( stack );
-            }
+             });*/
         }
 
         NonNullList<ItemStack> stands = NonNullList.create();

@@ -177,16 +177,16 @@ public class MainScreen extends ParentItemScreen {
 
         int x = width / 3 + 16 + Math.max( countWidth, damageWidth );
         int countX = x;
-        this.countField = addButton( new NumberField( font, countX, 61, 16, item.getCount() ) );
+        this.countField = addButton( new NumberField( font, countX, 101, 16, item.getCount() ) );
         countX += this.countField.getWidth() + 8;
-        this.countSlider = addButton( new SliderTag( countX, 61, (width - width / 3 - 8) - countX, 16, item.getCount() ) );
+        this.countSlider = addButton( new SliderTag( countX, 101, (width - width / 3 - 8) - countX, 16, item.getCount() ) );
 
         int dmgX = x;
-        this.damageField = addButton( new NumberField( font, dmgX, 81, 16, item.getTag().getDamage() ) );
+        this.damageField = addButton( new NumberField( font, dmgX, 121, 16, item.getTag().getDamage() ) );
         dmgX += this.damageField.getWidth() + 8;
-        this.damageSlider = addButton( new SliderTag( dmgX, 81, (width - width / 3 - 8) - dmgX, 16, item.getTag().getDamage() ) );
+        this.damageSlider = addButton( new SliderTag( dmgX, 121, (width - width / 3 - 8) - dmgX, 16, item.getTag().getDamage() ) );
 
-        this.unbreakable = addButton( new StyledToggle( width / 2 - 40, 101, 80, 16, "item.tag.unbreakable.true", "item.tag.unbreakable.false", item.getTag().getUnbreakable() ) );
+        this.unbreakable = addButton( new StyledToggle( width / 2 - 40, 141, 80, 16, "item.tag.unbreakable.true", "item.tag.unbreakable.false", item.getTag().getUnbreakable() ) );
 
         setLeftTab( Config.MAIN_LEFT_TAB.get(), false );
         setRightTab( Config.MAIN_RIGHT_TAB.get(), false );
@@ -348,8 +348,8 @@ public class MainScreen extends ParentItemScreen {
             idoffset = Math.max( countWidth, damageWidth );
             damageField.visible = true;
             damageSlider.visible = true;
-            drawString( font, dmgString, x, 85, color.getInt() );
-            unbreakable.y = 101;
+            drawString( font, dmgString, x, 125, color.getInt() );
+            unbreakable.y = 141;
         }
         else {
             damageField.visible = false;
@@ -359,10 +359,10 @@ public class MainScreen extends ParentItemScreen {
 
         String id = I18n.format( "gui.main.id" );
         // int idWidth = font.getStringWidth( id );
-        drawString( font, id, x, 45, color.getInt() );
-        drawString( font, item.getItem().get(), x + 6 + idoffset, 45, color.getInt() );
+        drawString( font, id, x, 85, color.getInt() );
+        drawString( font, item.getItem().get(), x + 6 + idoffset, 85, color.getInt() );
 
-        drawString( font, count, x, 65, color.getInt() );
+        drawString( font, count, x, 105, color.getInt() );
     }
 
 

@@ -49,7 +49,7 @@ public class TagExplosion implements Data<TagExplosion, CompoundNBT> {
 
     @Override
     public boolean isDefault() {
-        return false;
+        return flicker.isDefault() && trail.isDefault() && (shape == null || shape.ordinal() == 0) && colors.isDefault() && fadeColors.isDefault();
     }
 
 

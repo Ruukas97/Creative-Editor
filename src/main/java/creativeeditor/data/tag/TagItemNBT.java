@@ -15,7 +15,6 @@ import creativeeditor.data.base.DataColor;
 import creativeeditor.data.base.DataInteger;
 import creativeeditor.data.base.DataListString;
 import creativeeditor.data.base.DataString;
-import creativeeditor.data.tag.block.TagBanner;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
@@ -73,8 +72,8 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
     // Banner
     @Getter
     private final TagList<TagBannerPattern> patterns;
-    @Getter
-    private final TagBanner banner;
+    //@Getter
+   //private final TagBanner banner;
 
     // Books
     @Getter
@@ -118,6 +117,7 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
 
     public TagItemNBT(DataItem item, CompoundNBT nbt) {
         super();
+
         nbt = nbt != null ? nbt.copy() : new CompoundNBT();
         this.item = item;
         NBTKeys keys = NBTKeys.keys;
@@ -150,7 +150,7 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
 
         // Banners
         patterns = add( keys.tagPatterns(), new TagList<>( nbt.getList( keys.tagPatterns(), NBT.TAG_COMPOUND ), TagBannerPattern::new ) );
-        banner = add( keys.tagBlockEntityTag(), new TagBanner( nbt.getCompound( keys.tagBlockEntityTag() ) ) );
+        //banner = add( keys.tagBlockEntityTag(), new TagBanner( nbt.getCompound( keys.tagBlockEntityTag() ) ) );
 
         // Books
         resolved = add( keys.tagResolved(), new DataBoolean( nbt.getBoolean( keys.tagResolved() ) ) );
@@ -188,10 +188,15 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
 
 
         unserializedNBT = nbt.copy();
+        
+        //Minecraft mc = Minecraft.getInstance();
+        //mc.player.sendMessage( new StringTextComponent( "Before: " + item.getItem().get() ).appendSibling( unserializedNBT.toFormattedComponent() ) );
+
 
         for (String key : map.keySet()) {
             unserializedNBT.remove( key );
         }
+        //mc.player.sendMessage( new StringTextComponent( "After: " + item.getItem().get() ).appendSibling( unserializedNBT.toFormattedComponent() ) );
     }
 
 
