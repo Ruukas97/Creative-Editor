@@ -1,4 +1,4 @@
-package creativeeditor.widgets;
+package creativeeditor.screen.widgets;
 
 import creativeeditor.styles.StyleManager;
 import net.minecraft.client.Minecraft;
