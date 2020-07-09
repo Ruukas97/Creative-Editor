@@ -1,4 +1,4 @@
-package creativeeditor.widgets;
+package creativeeditor.screen.widgets;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

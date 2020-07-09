@@ -1,4 +1,4 @@
-package creativeeditor.widgets;
+package creativeeditor.screen.widgets;
 
 import net.minecraft.client.gui.widget.Widget;
 

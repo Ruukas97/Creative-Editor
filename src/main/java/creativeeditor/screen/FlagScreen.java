@@ -2,8 +2,8 @@ package creativeeditor.screen;
 
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.data.DataItem;
+import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.util.HideFlagUtils;
-import creativeeditor.widgets.StyledButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;

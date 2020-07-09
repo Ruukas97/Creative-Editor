@@ -1,4 +1,4 @@
-package creativeeditor.widgets;
+package creativeeditor.screen.widgets;
 
 import creativeeditor.data.base.DataBoolean;
 import net.minecraft.client.resources.I18n;

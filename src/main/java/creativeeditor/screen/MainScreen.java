@@ -4,19 +4,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import creativeeditor.config.Config;
 import creativeeditor.data.DataItem;
+import creativeeditor.screen.widgets.ClassSpecificWidget;
+import creativeeditor.screen.widgets.ItemWidgets;
+import creativeeditor.screen.widgets.NumberField;
+import creativeeditor.screen.widgets.SliderTag;
+import creativeeditor.screen.widgets.StyledDataTextField;
+import creativeeditor.screen.widgets.StyledTextButton;
+import creativeeditor.screen.widgets.StyledToggle;
+import creativeeditor.screen.widgets.WidgetInfo;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
-import creativeeditor.widgets.ClassSpecificWidget;
-import creativeeditor.widgets.ItemWidgets;
-import creativeeditor.widgets.NumberField;
-import creativeeditor.widgets.SliderTag;
-import creativeeditor.widgets.StyledDataTextField;
-import creativeeditor.widgets.StyledTextButton;
-import creativeeditor.widgets.StyledToggle;
-import creativeeditor.widgets.WidgetInfo;
+import creativeeditor.util.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
@@ -58,6 +61,12 @@ public class MainScreen extends ParentItemScreen {
     @Override
     protected void init() {
         super.init();
+        if (item.getItem().getItem() == Items.AIR)
+            item.getItem().setItem( Items.STICK );
+        if(item.getCount().get() < 1) {
+            item.getCount().set( 1 );
+        }
+
         minecraft.keyboardListener.enableRepeatEvents( true );
         String nbtLocal = I18n.format( "gui.main.nbt" );
         String tooltipLocal = I18n.format( "gui.main.tooltip" );
@@ -340,12 +349,11 @@ public class MainScreen extends ParentItemScreen {
         boolean dmgEnabled = getItem().getTag().getDamage().getMax() > 0;
         String count = I18n.format( "gui.main.count" );
         int countWidth = font.getStringWidth( count );
-        int idoffset = countWidth;
+        String dmgString = I18n.format( "gui.main.damage" );
+        int damageWidth = font.getStringWidth( dmgString );
+        int idoffset = Math.max( countWidth, damageWidth );
 
         if (dmgEnabled) {
-            String dmgString = I18n.format( "gui.main.damage" );
-            int damageWidth = font.getStringWidth( dmgString );
-            idoffset = Math.max( countWidth, damageWidth );
             damageField.visible = true;
             damageSlider.visible = true;
             drawString( font, dmgString, x, 125, color.getInt() );
@@ -354,7 +362,7 @@ public class MainScreen extends ParentItemScreen {
         else {
             damageField.visible = false;
             damageSlider.visible = false;
-            unbreakable.y = 81;
+            unbreakable.y = 121;
         }
 
         String id = I18n.format( "gui.main.id" );
@@ -370,6 +378,8 @@ public class MainScreen extends ParentItemScreen {
     public void overlayRender( int mouseX, int mouseY, float partialTicks, Color color ) {
         super.overlayRender( mouseX, mouseY, partialTicks, color );
 
+        RenderUtil.glScissorBox( 6, 41, width/3, height-6 );
+        GL11.glEnable( GL11.GL_SCISSOR_TEST );
         if (Config.MAIN_LEFT_TAB.get() == 0) {
             // NBT
             List<String> nbtLines = Arrays.asList( (minecraft.gameSettings.advancedItemTooltips ? item.getNBT() : item.getTag().getNBT()).toFormattedComponent( " ", 0 ).getFormattedText().split( "\n" ) );
@@ -383,5 +393,6 @@ public class MainScreen extends ParentItemScreen {
 
             GuiUtil.drawHoveringText( item.getItemStack(), getTooltipFromItem( stack ), 0, 60, width / 3 - 1, height, -1, font );
         }
+        GL11.glDisable( GL11.GL_SCISSOR_TEST );
     }
 }

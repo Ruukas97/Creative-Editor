@@ -1,4 +1,4 @@
-package creativeeditor.widgets;
+package creativeeditor.screen.widgets;
 
 import org.lwjgl.glfw.GLFW;
 

@@ -17,6 +17,9 @@
 	"gui.color.alpha": "Alpha: %s",
 	"gui.color.hex": "Hex: %s",
 	"gui.color.dec": "Decimal: %s",
+
+	"gui.enchantment": "Enchantment Editor",
+	"gui.enchantment.enchantments": "Enchantments",
 	
 	"gui.headcollection": "Head Collection",
 	"gui.headcollection.clickhead": "Click to add to your inventory",

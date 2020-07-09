@@ -1,9 +1,8 @@
-package creativeeditor.widgets;
-
-import javax.annotation.Nullable;
+package creativeeditor.screen.widgets;
 
 import org.lwjgl.glfw.GLFW;
 
+import creativeeditor.data.NumberRangeFloat;
 import creativeeditor.styles.IStyledSlider;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.styles.StyleSpectrum;
@@ -11,49 +10,39 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn( Dist.CLIENT )
-public class StyledSlider extends Widget implements IStyledSlider<Integer> {
-    public int value;
+public class SliderTagFloat extends Widget implements IStyledSlider<Float> {
+    private NumberRangeFloat range;
 
     public String display;
     public boolean drawString;
 
-    public int min;
-    public int max;
 
-    @Nullable
-    public SliderHandler handler = null;
-
-
-    protected StyledSlider(int x, int y, int width, int height, String display, int value, int min, int max) {
-        this( x, y, width, height, display, true, value, min, max, null );
+    public SliderTagFloat(int x, int y, int width, int height, String display, NumberRangeFloat range) {
+        this( x, y, width, height, display, true, range );
     }
 
 
-    protected StyledSlider(int x, int y, int width, int height, int value, int min, int max) {
-        this( x, y, width, height, "", false, value, min, max, null );
+    public SliderTagFloat(int x, int y, int width, int height, NumberRangeFloat range) {
+        this( x, y, width, height, "", true, range );
     }
 
 
-    protected StyledSlider(int x, int y, int width, int height, String display, boolean drawString, int value, int min, int max, SliderHandler handler) {
+    public SliderTagFloat(int x, int y, int width, int height, String display, boolean drawString, NumberRangeFloat range) {
         super( x, y, width, height, display );
-        this.value = value;
         this.display = display;
         this.drawString = drawString;
-        this.min = min;
-        this.max = max;
-        this.handler = handler;
+        this.range = range;
 
-        setMessage( drawString ? display + value : "" );
+        setMessage( drawString ? display + range.get() : "" );
     }
 
 
     @Override
-    public int getYImage( boolean par1 ) {
+    public int getYImage( boolean b ) {
         return 0;
     }
 
@@ -80,12 +69,13 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
 
 
     private void setValueFromMouse( double mouseX ) {
-        double updateValue;
+        float updateValue;
         if (StyleManager.getCurrentStyle() instanceof StyleSpectrum)
-            updateValue = ((double) mouseX - (x + 1d)) / (double) (width - 2.5d);
+            updateValue = (((float) mouseX - (x + 1f)) / (float) (width - 2.5f));
         else
-            updateValue = ((double) mouseX - (x + 4)) / (double) (width - 8);
-        setValue( (int) Math.round( updateValue * (max - min) + min ) );
+            updateValue = ((float) mouseX - (x + 4)) / (float) (width - 8);
+        float round = updateValue * (range.getMax() - range.getMin()) + range.getMin();
+        setValue( round );
     }
 
 
@@ -97,14 +87,14 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
 
     @Override
     public boolean keyPressed( int key1, int key2, int key3 ) {
-        if (key1 == GLFW.GLFW_KEY_LEFT && value > min) {
-            value--;
+        if (key1 == GLFW.GLFW_KEY_LEFT && getValue() > getMin()) {
+            range.set( range.get() - 1 );
             updateSlider();
             return true;
         }
 
-        if (key1 == GLFW.GLFW_KEY_RIGHT && value < max) {
-            value++;
+        if (key1 == GLFW.GLFW_KEY_RIGHT && getValue() < getMax()) {
+            range.set( range.get() + 1 );
             updateSlider();
             return true;
         }
@@ -113,19 +103,17 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
     }
 
 
-    public void setValue( int value ) {
-        int clamped = MathHelper.clamp( value, min, max );
-        if (this.value != clamped) {
-            this.value = clamped;
+    public void setValue( float value ) {
+        float old = getValue();
+        range.set( value );
+        if (getValue() != old) {
             updateSlider();
         }
     }
 
 
     public void updateSlider() {
-        setMessage( drawString ? display + value : "" );
-        if (handler != null)
-            handler.onSlideValue( this );
+        setMessage( drawString ? display + getValue() : "" );
     }
 
 
@@ -152,7 +140,6 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
         return StyleManager.getCurrentStyle().getFGColor( this ).getInt();
     }
 
-
     @Override
     public Widget getWidget() {
         return this;
@@ -160,30 +147,25 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
 
 
     @Override
-    public Integer getValue() {
-        return value;
-    }
-
-
-    @Override
-    public Integer getMin() {
-        return min;
-    }
-
-
-    @Override
-    public Integer getMax() {
-        return max;
-    }
-
-
-    public static interface SliderHandler {
-        void onSlideValue( StyledSlider slider );
-    }
-
-
-    @Override
     public void setHovered( boolean b ) {
         isHovered = b;
+    }
+
+
+    @Override
+    public Float getValue() {
+        return range.get();
+    }
+
+
+    @Override
+    public Float getMin() {
+        return range.getMin();
+    }
+
+
+    @Override
+    public Float getMax() {
+        return range.getMax();
     }
 }

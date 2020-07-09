@@ -4,7 +4,7 @@ import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.CreativeEditor;
 import creativeeditor.data.DataItem;
-import creativeeditor.screen.EnchantmentsScreen;
+import creativeeditor.screen.EnchantmentScreen;
 import creativeeditor.screen.HeadCollectionScreen;
 import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.PlayerInspectorScreen;
@@ -79,7 +79,7 @@ public class KeyInputHandler {
             CreativeEditor.BARRIER_VISIBLE = !CreativeEditor.BARRIER_VISIBLE;
         }
         else if (CreativeEditor.DEBUG && event.getKey() == DEBUG_KEY.getKey().getKeyCode()) {
-            mc.displayGuiScreen( new EnchantmentsScreen( mc.currentScreen, new DataItem( mc.player.getHeldItemMainhand() ) ) );
+            mc.displayGuiScreen( new EnchantmentScreen( mc.currentScreen, new DataItem( mc.player.getHeldItemMainhand() ) ) );
             // mc.displayGuiScreen( new ItemSpawnerScreen( mc.currentScreen ) );
             // mc.displayGuiScreen( new CreativeScreen( mc.player ) );
         }

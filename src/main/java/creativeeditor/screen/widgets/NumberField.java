@@ -1,8 +1,8 @@
-package creativeeditor.widgets;
+package creativeeditor.screen.widgets;
 
 import org.lwjgl.glfw.GLFW;
 
-import creativeeditor.data.base.DataColor;
+import creativeeditor.data.NumberRangeInt;
 import creativeeditor.styles.Style;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
@@ -14,14 +14,15 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.math.MathHelper;
 
-public class HexField extends Widget {
+public class NumberField extends Widget {
     private final FontRenderer fontRenderer;
 
     @Getter
-    DataColor dataColor;
+    NumberRangeInt data;
     public char[] digits;
 
-    private char[] allowed = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f' };
+    private char[] allowed = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+    private boolean isNegative;
 
     private int cursorCounter;
 
@@ -31,34 +32,54 @@ public class HexField extends Widget {
      */
     private boolean canLoseFocus = true;
 
-    @Getter
-    private boolean enabled = true;
-
     private int cursorPosition;
 
 
-    public HexField(FontRenderer font, int x, int y, int height, DataColor color) {
-        super( x, y, font.getStringWidth( "#FFFFFF" ) + 8, height, "" );
-        this.dataColor = color;
+    public NumberField(FontRenderer font, int x, int y, int width, int height, NumberRangeInt data) {
+        super( x, y, width, height, "" );
+        this.data = data;
         this.fontRenderer = font;
 
-        this.digits = new char[] { '0', '0', '0', '0', '0', '0' };
-        setValue( dataColor.getInt() );
+        String min = Integer.toString( data.getMin() );
+        String max = Integer.toString( data.getMin() );
+        int d;
+        if (max.length() >= min.length()) {
+            d = max.length();
+            this.width = font.getStringWidth( max );
+        }
+        else {
+            d = min.length();
+            this.width = font.getStringWidth( min );
+        }
+
+        this.digits = new char[d];
+        setValue( data.get() );
     }
 
 
-    public static int getMax() {
-        return 0xFFFFFF;
+    public NumberField(FontRenderer font, int x, int y, int height, NumberRangeInt data) {
+        super( x, y, 1000, height, "" );
+        this.data = data;
+        this.fontRenderer = font;
+
+        int d = 0;
+        int m = data.getMax();
+        while (m > 0) {
+            m = m / 10;
+            d++;
+        }
+
+        // TODO signed vs unsigned has different lengths
+
+        this.width = font.getStringWidth( "0" ) * d + 8;
+
+        this.digits = new char[d];
+        setValue( data.get() );
     }
 
 
-    public static int getMin() {
-        return 0;
-    }
-
-
-    public String getHexString() {
-        return '#' + new String( digits );
+    public String getValueAsString() {
+        return (isNegative ? '-' : "") + new String( digits );
     }
 
 
@@ -78,29 +99,43 @@ public class HexField extends Widget {
             digits[i] = c;
         }
 
-        /*
-         * if (getDigitsValue() > getMax()) { String maxStr = (getMax() + ""); int diff
-         * = digits.length - maxStr.length(); char mC = maxStr.charAt(
-         * this.cursorPosition - diff );
-         * 
-         * if (c == mC) { this.setValue( getMax() ); } else { this.setDigit( mC ); } }
-         * 
-         * else if (getDigitsValue() < getMin()) { String minStr = (getMin() + "");
-         * 
-         * String zeroes = "";
-         * 
-         * int neededZeroes = digits.length - minStr.length();
-         * 
-         * for (int z = 0; z < neededZeroes; z++) { zeroes += "0"; }
-         * 
-         * minStr = zeroes + minStr;
-         * 
-         * int diff = digits.length - minStr.length(); char mC = minStr.charAt(
-         * this.cursorPosition - diff );
-         * 
-         * if (c == mC) { this.setValue( getMin() ); } else { this.setDigit( mC ); } }
-         */
-        dataColor.setInt( getDigitsValue() );
+        if (getDigitsValue() > data.getMax()) {
+            String maxStr = (data.getMax() + "");
+            int diff = digits.length - maxStr.length();
+            char mC = maxStr.charAt( this.cursorPosition - diff );
+
+            if (c == mC) {
+                this.setValue( data.getMax() );
+            }
+            else {
+                this.setDigit( mC );
+            }
+        }
+
+        else if (getDigitsValue() < data.getMin()) {
+            String minStr = (data.getMin() + "");
+
+            String zeroes = "";
+
+            int neededZeroes = digits.length - minStr.length();
+
+            for (int z = 0; z < neededZeroes; z++) {
+                zeroes += "0";
+            }
+
+            minStr = zeroes + minStr;
+
+            int diff = digits.length - minStr.length();
+            char mC = minStr.charAt( this.cursorPosition - diff );
+
+            if (c == mC) {
+                this.setValue( data.getMin() );
+            }
+            else {
+                this.setDigit( mC );
+            }
+        }
+        data.set( getDigitsValue() );
     }
 
 
@@ -113,11 +148,27 @@ public class HexField extends Widget {
 
 
     private void setValue( int value ) {
-        value = 0xFFFFFF & value;
-        String s = String.format( "%06X", value );
+        String s = Integer.toString( value );
+        if (value < 0)
+            s = s.substring( 1 );
+
+        int diff = this.getValueAsString().length() - s.length();
+
+        if (diff < 0) {
+            return;
+        }
+
+        resetDigits();
 
         for (int i = 0; i < s.length(); i++) {
-            this.digits[i] = s.charAt( i );
+            this.digits[diff + i] = s.charAt( i );
+        }
+    }
+
+
+    private void resetDigits() {
+        for (int i = 0; i < digits.length; i++) {
+            this.digits[i] = '0';
         }
     }
 
@@ -126,13 +177,7 @@ public class HexField extends Widget {
      * Returns the contents of the textbox
      */
     private int getDigitsValue() {
-        try {
-            return Integer.decode( "#" + new String( digits ) );
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
+        return Integer.parseInt( getValueAsString() );
     }
 
 
@@ -183,27 +228,6 @@ public class HexField extends Widget {
 
     @Override
     public boolean keyPressed( int keyCode, int scanCode, int modifier ) {
-        Minecraft mc = Minecraft.getInstance();
-        if (Screen.isCopy( keyCode )) {
-            mc.keyboardListener.setClipboardString( String.valueOf( digits ) );
-            return true;
-        }
-        if (Screen.isPaste( keyCode )) {
-            try {
-                int p = Integer.decode( mc.keyboardListener.getClipboardString() );
-                dataColor.setInt( p );
-                return true;
-            }
-            catch (NumberFormatException e) {
-            }
-
-        }
-        if (Screen.isCut( keyCode )) {
-            mc.keyboardListener.setClipboardString( String.valueOf( digits ) );
-            return true;
-        }
-
-        // TODO support more keys
         switch (keyCode) {
         case GLFW.GLFW_KEY_LEFT:
             moveCursor( false );
@@ -214,45 +238,94 @@ public class HexField extends Widget {
         default:
             return super.keyPressed( keyCode, scanCode, modifier );
         }
+
     }
 
 
     @Override
     public boolean charTyped( char typedChar, int keyCode ) {
-        if (!this.isActive()) {
+        Minecraft mc = Minecraft.getInstance();
+        if (!this.isFocused()) {
             return false;
         }
-        else if (isAllowed( typedChar )) {
-            if (this.isEnabled()) {
-                setDigit( Character.toUpperCase( typedChar ) );
-                moveCursor( true );
+        else if (Screen.isCopy( keyCode )) {
+            mc.keyboardListener.setClipboardString( String.valueOf( digits ) );
+            return true;
+        }
+        else if (Screen.isPaste( keyCode )) {
+            if (this.active) {
+                try {
+                    setValue( Integer.decode( mc.keyboardListener.getClipboardString() ) );
+                }
+                catch (NumberFormatException e) {
+                }
+            }
+
+            return true;
+        }
+        else if (Screen.isCut( keyCode )) {
+            mc.keyboardListener.setClipboardString( String.valueOf( digits ) );
+
+            if (this.active) {
+                resetDigits();
             }
 
             return true;
         }
         else {
-            return false;
+            switch (keyCode) {
+            case 14:
+
+                if (this.active) {
+                    setDigit( '0' );
+                }
+
+                return true;
+            case 199:
+
+                setCursorPositionZero();
+
+                return true;
+            case 203:
+
+                this.moveCursor( false );
+
+                return true;
+            case 205:
+
+                this.moveCursor( true );
+
+                return true;
+            case 207:
+
+                this.setCursorPositionEnd();
+
+                return true;
+            case 211:
+
+                if (this.active) {
+                    setDigit( '0' );
+                }
+
+                return true;
+            default:
+                if (active) {
+                    if (typedChar == '-' && data.getMin() < 0) {
+                        isNegative = true;
+                    }
+                    else if (typedChar == '+' && data.getMax() > -1) {
+                        isNegative = false;
+                    }
+                    else if (isAllowed( typedChar )) {
+                        setDigit( typedChar );
+                        moveCursor( true );
+                    }
+
+                    return true;
+                }
+                return false;
+            }
         }
-    }
-
-
-    public boolean isActive() {
-        return this.visible && this.isFocused() && this.isEnabled();
-    }
-
-
-    @Override
-    public boolean changeFocus( boolean p_changeFocus_1_ ) {
-        return this.visible && this.isEnabled() ? super.changeFocus( p_changeFocus_1_ ) : false;
-    }
-
-
-    @Override
-    protected void onFocusedChanged( boolean p_onFocusedChanged_1_ ) {
-        if (p_onFocusedChanged_1_) {
-            this.cursorCounter = 0;
-        }
-
     }
 
 
@@ -270,8 +343,8 @@ public class HexField extends Widget {
             if (this.enableBackgroundDrawing) {
                 i -= 4;
             }
-            //TODO clicking selects wrong digit
-            String s = this.fontRenderer.trimStringToWidth( this.getHexString(), this.getWidth() );
+
+            String s = this.fontRenderer.trimStringToWidth( this.getValueAsString(), this.getWidth() );
             this.setCursorPosition( this.fontRenderer.trimStringToWidth( s, i ).length() );
             return true;
         }
@@ -285,9 +358,10 @@ public class HexField extends Widget {
     public void renderButton( int p_renderButton_1_, int p_renderButton_2_, float p_renderButton_3_ ) {
         Style style = StyleManager.getCurrentStyle();
         Color color = style.getFGColor( this );
+        String s = getValueAsString();
 
-        if (getDigitsValue() != dataColor.getInt()) {
-            setValue( dataColor.getInt() );
+        if (digits.length != 0 && s.length() == digits.length && s.length() != 0 && getDigitsValue() != data.get()) {
+            setValue( data.get() );
         }
 
         if (this.getEnableBackgroundDrawing()) {
@@ -295,7 +369,7 @@ public class HexField extends Widget {
         }
 
         int cursorPos = this.cursorPosition;
-        String string = this.fontRenderer.trimStringToWidth( this.getHexString(), this.getWidth() );
+        String string = this.fontRenderer.trimStringToWidth( s, this.getWidth() );
         boolean cursorFine = cursorPos >= 0 && cursorPos <= string.length();
         boolean displayCursor = isFocused() && this.cursorCounter / 6 % 2 == 0 && cursorFine;
         int textX = this.enableBackgroundDrawing ? this.x + 4 : this.x;
@@ -304,17 +378,17 @@ public class HexField extends Widget {
 
         if (!string.isEmpty()) {
             String halfString = cursorFine ? string.substring( 0, cursorPos ) : string;
-            halfX = this.fontRenderer.drawStringWithShadow( halfString, (float) textX, (float) textY, dataColor.getInt() ) - 1;
+            halfX = this.fontRenderer.drawStringWithShadow( halfString, (float) textX, (float) textY, color.getInt() ) - 1;
         }
 
-        int cursorX = halfX + (int) Math.ceil( fontRenderer.getCharWidth( '#' ) );
+        int cursorX = halfX;
 
         if (!cursorFine) {
             cursorX = cursorPos > 0 ? textX + this.width : textX;
         }
 
         if (!string.isEmpty() && cursorFine && cursorPos < string.length()) {
-            halfX = this.fontRenderer.drawStringWithShadow( string.substring( cursorPos ), (float) halfX, (float) textY, dataColor.getInt() );
+            halfX = this.fontRenderer.drawStringWithShadow( string.substring( cursorPos ), (float) halfX, (float) textY, color.getInt() );
         }
 
         if (displayCursor) {

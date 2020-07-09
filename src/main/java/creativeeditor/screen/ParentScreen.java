@@ -5,10 +5,10 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import creativeeditor.screen.widgets.StyledTextField;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
-import creativeeditor.widgets.StyledTextField;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -125,11 +125,11 @@ public abstract class ParentScreen extends Screen {
 
     @Override
     @Deprecated
-    public void render( int mouseX, int mouseY, float p3 ) {
+    public void render( int mouseX, int mouseY, float partialTicks ) {
         Color color = StyleManager.getCurrentStyle().getMainColor();
-        backRender( mouseX, mouseY, p3, color );
-        mainRender( mouseX, mouseY, p3, color );
-        overlayRender( mouseX, mouseY, p3, color );
+        backRender( mouseX, mouseY, partialTicks, color );
+        mainRender( mouseX, mouseY, partialTicks, color );
+        overlayRender( mouseX, mouseY, partialTicks, color );
         StyleManager.getCurrentStyle().update();
     }
 

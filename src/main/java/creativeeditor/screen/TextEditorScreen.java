@@ -7,9 +7,9 @@ import java.util.List;
 import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.data.base.DataString;
+import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
-import creativeeditor.widgets.StyledButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.SharedConstants;

@@ -1,6 +1,6 @@
 package creativeeditor.screen;
 
-import creativeeditor.widgets.StyledButton;
+import creativeeditor.screen.widgets.StyledButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;

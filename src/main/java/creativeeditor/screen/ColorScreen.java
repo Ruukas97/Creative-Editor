@@ -2,9 +2,9 @@ package creativeeditor.screen;
 
 import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataColor;
+import creativeeditor.screen.widgets.HexField;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
-import creativeeditor.widgets.HexField;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.screen.Screen;

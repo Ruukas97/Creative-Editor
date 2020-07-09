@@ -3,12 +3,11 @@ package creativeeditor.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import creativeeditor.data.DataItem;
+import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
-import creativeeditor.widgets.StyledButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -136,7 +135,7 @@ public class ParentItemScreen extends ParentScreen {
 
 
             // TODO Item scale support
-            if (GuiUtil.isMouseIn( mouseX, mouseY, width / 2 - 17, height / 2 + 13, 34, 34 ))
+            if (GuiUtil.isMouseIn( mouseX, mouseY, width / 2 - 17, 43, 36, 36 ))
                 renderTooltip( stack, mouseX, mouseY );
         }
     }

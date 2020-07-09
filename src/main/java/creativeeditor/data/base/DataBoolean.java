@@ -1,7 +1,7 @@
 package creativeeditor.data.base;
 
-import creativeeditor.widgets.StyledTFToggle;
-import creativeeditor.widgets.StyledToggle;
+import creativeeditor.screen.widgets.StyledTFToggle;
+import creativeeditor.screen.widgets.StyledToggle;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.Button.IPressable;
 import net.minecraft.nbt.ByteNBT;

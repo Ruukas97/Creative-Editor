@@ -48,7 +48,7 @@ public class TagItemID extends DataString {
 
 
     public static String getIDFromItem( Item item ) {
-        return item != null ? item.getRegistryName().getPath() : "minecraft:air";
+        return item != null ? item.getRegistryName().toString() : "minecraft:air";
     }
 
 

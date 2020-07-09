@@ -34,10 +34,11 @@ public class GuiUtil extends GuiUtils {
 
 
     public static void drawFrame( int xStart, int yStart, int xEnd, int yEnd, int border, Color color ) {
-        AbstractGui.fill( xStart, yStart, xEnd, yStart + border, color.getInt() );
-        AbstractGui.fill( xStart, yStart + border, xStart + border, yEnd - border, color.getInt() );
-        AbstractGui.fill( xEnd - border, yStart + border, xEnd, yEnd - border, color.getInt() );
-        AbstractGui.fill( xStart, yEnd - border, xEnd, yEnd, color.getInt() );
+        int c = color.getInt();
+        AbstractGui.fill( xStart, yStart, xEnd, yStart + border, c );
+        AbstractGui.fill( xStart, yStart + border, xStart + border, yEnd - border, c );
+        AbstractGui.fill( xEnd - border, yStart + border, xEnd, yEnd - border, c );
+        AbstractGui.fill( xStart, yEnd - border, xEnd, yEnd, c );
     }
 
 

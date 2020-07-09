@@ -1,4 +1,4 @@
-package creativeeditor.widgets;
+package creativeeditor.screen.widgets;
 
 import java.util.ArrayList;
 import java.util.Iterator;

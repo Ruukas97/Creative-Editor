@@ -1,4 +1,4 @@
-package creativeeditor.widgets;
+package creativeeditor.screen.widgets;
 
 import creativeeditor.screen.ParentScreen;
 import net.minecraft.client.gui.widget.list.ExtendedList;

@@ -1,4 +1,4 @@
-package creativeeditor.widgets;
+package creativeeditor.screen.widgets;
 
 import creativeeditor.data.Data;
 import creativeeditor.data.base.DataString;
