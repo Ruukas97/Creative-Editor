@@ -145,12 +145,12 @@ public abstract class ParentScreen extends Screen {
 
         // Title underline
         int midX = width / 2;
-        if (getTopLineWidth() != -1) {
+        if (getTopLineWidth() == -1) {
             int sWidthHalf = font.getStringWidth( getTitle().getFormattedText() ) / 2 + 3;
             AbstractGui.fill( midX - sWidthHalf, 20, midX + sWidthHalf, 21, color.getInt() );
 
         }
-        else {
+        else if(getTopLineWidth() > 1){
             int halfLineW = topLineWidth / 2;
             AbstractGui.fill( midX - halfLineW, 20, midX + halfLineW, 21, color.getInt() );
         }

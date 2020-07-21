@@ -3,14 +3,11 @@ package creativeeditor.tab;
 import creativeeditor.CreativeEditor;
 import creativeeditor.config.Config;
 import creativeeditor.data.DataItem;
-import creativeeditor.data.tag.TagBannerPattern;
 import creativeeditor.data.tag.TagEnchantment;
 import creativeeditor.json.MinecraftHeadsCategory;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.tileentity.BannerPattern;
 
 public class CreativeTabs {
     public static void init() {

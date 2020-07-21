@@ -1,4 +1,4 @@
-package creativeeditor.handlers;
+package creativeeditor.events;
 
 import java.util.ArrayList;
 import java.util.List;

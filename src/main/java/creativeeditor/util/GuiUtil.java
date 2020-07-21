@@ -6,8 +6,10 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import creativeeditor.data.DataItem;
 import creativeeditor.screen.ParentScreen;
 import creativeeditor.util.ColorUtils.Color;
 import net.minecraft.client.Minecraft;
@@ -18,7 +20,9 @@ import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.client.gui.GuiUtils;
 
 public class GuiUtil extends GuiUtils {
@@ -217,11 +221,30 @@ public class GuiUtil extends GuiUtils {
     }
 
 
-    @SuppressWarnings( "resource" )
+    public static void addToolTip( Screen screen, int xPos, int yPos, DataItem item ) {
+        ItemStack stack = item.getData();
+        drawHoveringText( stack, getTooltipFromItem( stack ), xPos, yPos, screen.width, screen.height, -1, getFontRenderer() );
+    }
+
+
+    public static List<String> getTooltipFromItem( ItemStack stack ) {
+        Minecraft mc = Minecraft.getInstance();
+        List<ITextComponent> list = stack.getTooltip( mc.player, mc.gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED : ITooltipFlag.TooltipFlags.NORMAL );
+        List<String> list1 = Lists.newArrayList();
+
+        for (ITextComponent itextcomponent : list) {
+            list1.add( itextcomponent.getFormattedText() );
+        }
+
+        return list1;
+    }
+
+
     public static void dropStack( ItemStack stack ) {
         if (!stack.isEmpty()) {
-            Minecraft.getInstance().player.inventory.player.dropItem( stack, true );
-            Minecraft.getInstance().playerController.sendPacketDropItem( stack );
+            Minecraft mc = Minecraft.getInstance();
+            mc.player.inventory.player.dropItem( stack, true );
+            mc.playerController.sendPacketDropItem( stack );
         }
     }
 

@@ -1,4 +1,4 @@
-package creativeeditor.handlers;
+package creativeeditor.events;
 
 import net.minecraftforge.client.event.RenderNameplateEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

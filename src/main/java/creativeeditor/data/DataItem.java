@@ -92,6 +92,11 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
     }
 
 
+    public ItemStack getItemStack() {
+        return ItemStack.read( getNBT() );
+    }
+
+
     /**
      * This reads the map into an ItemStack including all keys. So no default checks
      * are made. This should be used mainly when the itemstack is needed in an
@@ -99,11 +104,6 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
      * 
      * @return An itemstack including all data, with no cleanup.
      */
-    public ItemStack getItemStack() {
-        return ItemStack.read( getNBT() );
-    }
-
-
     public ItemStack getItemStackFull() {
         return ItemStack.read( getNBT() );
     }

@@ -1,12 +1,12 @@
-package creativeeditor.handlers;
+package creativeeditor.events;
 
 import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.CreativeEditor;
 import creativeeditor.data.DataItem;
-import creativeeditor.screen.EnchantmentScreen;
 import creativeeditor.screen.HeadCollectionScreen;
 import creativeeditor.screen.MainScreen;
+import creativeeditor.screen.NBTExplorerScreen;
 import creativeeditor.screen.PlayerInspectorScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
@@ -64,13 +64,7 @@ public class KeyInputHandler {
         }
         else if (event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {
             mc.player.swingArm( Hand.OFF_HAND );
-            try {
-                mc.player.sendMessage( mc.player.inventory.getCurrentItem().getTag().toFormattedComponent() );
-            }
-            catch(NullPointerException e) {
-                System.out.println( "Nuller" );
-            }
-            //mc.displayGuiScreen( new TextEditorScreen( mc.currentScreen ) );
+            // mc.displayGuiScreen( new TextEditorScreen( mc.currentScreen ) );
         }
         else if (event.getKey() == HEAD_COLLECTION.getKey().getKeyCode()) {
             mc.displayGuiScreen( new HeadCollectionScreen( mc.currentScreen ) );
@@ -79,7 +73,9 @@ public class KeyInputHandler {
             CreativeEditor.BARRIER_VISIBLE = !CreativeEditor.BARRIER_VISIBLE;
         }
         else if (CreativeEditor.DEBUG && event.getKey() == DEBUG_KEY.getKey().getKeyCode()) {
-            mc.displayGuiScreen( new EnchantmentScreen( mc.currentScreen, new DataItem( mc.player.getHeldItemMainhand() ) ) );
+            mc.displayGuiScreen( new NBTExplorerScreen( mc.currentScreen, new DataItem( mc.player.getHeldItemMainhand() ) ) );
+            // mc.displayGuiScreen( new EnchantmentScreen( mc.currentScreen, new DataItem(
+            // mc.player.getHeldItemMainhand() ) ) );
             // mc.displayGuiScreen( new ItemSpawnerScreen( mc.currentScreen ) );
             // mc.displayGuiScreen( new CreativeScreen( mc.player ) );
         }

@@ -95,6 +95,18 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
         else {
             isScrolling = false;
         }
+        
+        for(IGuiEventListener iguieventlistener : this.children()) {
+            if (iguieventlistener.mouseClicked(mouseX, mouseY, mouseButton)) {
+               this.setFocused(iguieventlistener);
+               if (mouseButton == 0) {
+                  this.setDragging(true);
+               }
+
+               return true;
+            }
+         }
+        
         return super.mouseClicked( mouseX, mouseY, mouseButton );
     }
 
@@ -138,31 +150,36 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
         int scrollTop = 2 + y + scrolledPixels;
         boolean hovered = GuiUtil.isMouseInRegion( mouseX, mouseY, x + width - scrollBarWidth, y, scrollBarWidth, height );
         fill( 2 + x + width - scrollBarWidth, scrollTop, x + width - 2, scrollTop + scrollBarHeight, StyleManager.getCurrentStyle().getFGColor( true, hovered ).getInt() );
-        int x = this.x + padding;
-        int y = this.y + padding - scrollOffset;
-        int maxY = this.x + this.height;
 
-        RenderUtil.glScissorBox( this.x + 1, this.y + 1, this.x + this.width - scrollBarWidth - 1, this.y + this.height - 1 );
-        GL11.glEnable( GL11.GL_SCISSOR_TEST );
 
-        for (Widget w : widgets) {
-            w.x = x;
-            w.y = y;
-            w.setWidth( width - padding - padding - scrollBarWidth );
 
-            if (this.y <= w.y + w.getHeight() && w.y < maxY) {
-                w.active = true;
-                w.visible = true;
-                w.render( mouseX, mouseY, partialTicks );
+        if (widgets.size() != 0) {
+            RenderUtil.glScissorBox( this.x + 1, this.y + 1, this.x + this.width - scrollBarWidth - 1, this.y + this.height - 1 );
+            GL11.glEnable( GL11.GL_SCISSOR_TEST );
+
+            int x = this.x + padding;
+            int y = this.y + padding - scrollOffset;
+            int maxY = this.y + this.height;
+            
+            for (Widget w : widgets) {
+                w.x = x;
+                w.y = y;
+                w.setWidth( width - padding - padding - scrollBarWidth );
+
+                if (this.y <= w.y + w.getHeight() && w.y < maxY) {
+                    w.active = true;
+                    w.visible = true;
+                    w.render( mouseX, mouseY, partialTicks );
+                }
+                else {
+                    w.active = false;
+                    w.visible = false;
+                }
+                y = w.y + w.getHeight() + padding;
             }
-            else {
-                w.active = false;
-                w.visible = false;
-            }
-            y = w.y + w.getHeight() + padding;
+
+            GL11.glDisable( GL11.GL_SCISSOR_TEST );
         }
-
-        GL11.glDisable( GL11.GL_SCISSOR_TEST );
     }
 
 }

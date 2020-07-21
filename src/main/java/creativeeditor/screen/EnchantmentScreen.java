@@ -11,15 +11,21 @@ import creativeeditor.screen.widgets.NumberField;
 import creativeeditor.screen.widgets.ScrollableScissorWindow;
 import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.util.ColorUtils.Color;
+import creativeeditor.util.GuiUtil;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class EnchantmentScreen extends ParentItemScreen {
+public class EnchantmentScreen extends ParentScreen {
 
     // TODO choice button widget
+    /*
+     * Needed: Override existing/Allow stacking effects Level input/ List of
+     * existing enchants with modify level, remove
+     */
+    protected DataItem item;
     private ScrollableScissorWindow list;
     private ScrollableScissorWindow added;
     private NumberField level;
@@ -27,7 +33,8 @@ public class EnchantmentScreen extends ParentItemScreen {
 
 
     public EnchantmentScreen(Screen lastScreen, DataItem editing) {
-        super( new TranslationTextComponent( "gui.enchantment" ), lastScreen, editing );
+        super( new TranslationTextComponent( "gui.enchantment" ), lastScreen );
+        this.item = editing;
     }
 
 
@@ -46,11 +53,13 @@ public class EnchantmentScreen extends ParentItemScreen {
         List<Enchantment> sortedEnchants = Lists.newArrayList( ForgeRegistries.ENCHANTMENTS );
         sortedEnchants.sort( new EnchantComparator() );
 
-        list = addButton( new ScrollableScissorWindow( 100, 100, width / 5, height / 2, I18n.format( "gui.enchantment.enchantments" ) ) );
+        int yStart = 120;
+        int yEnd = height - yStart - 15;
+        list = addButton( new ScrollableScissorWindow( width / 2 - 75, yStart, 150, yEnd, I18n.format( "gui.enchantment.enchantments" ) ) );
         for (Enchantment ench : sortedEnchants) {
             list.getWidgets().add( new StyledButton( 0, 0, 50, 20, I18n.format( ench.getName() ) + ' ' + getLevel( ench ), button -> {
                 item.getTag().getEnchantments().add( new TagEnchantment( ench, getLevel( ench ) ) );
-                System.out.println( "hey" );
+                System.out.println( "HEy    " );
             } ) );
         }
     }
@@ -77,9 +86,9 @@ public class EnchantmentScreen extends ParentItemScreen {
     public void mainRender( int mouseX, int mouseY, float partialTicks, Color color ) {
         super.mainRender( mouseX, mouseY, partialTicks, color );
 
-        int number = 5;
-        int offset = width / number;
-        int i = 1;
+        // int number = 5;
+        // int offset = width / number;
+        // int i = 1;
 
         drawString( font, I18n.format( "gui.enchantment.enchantments" ), list.x, list.y - 10, color.getInt() );
     }
@@ -88,5 +97,7 @@ public class EnchantmentScreen extends ParentItemScreen {
     @Override
     public void overlayRender( int mouseX, int mouseY, float partialTicks, Color color ) {
         super.overlayRender( mouseX, mouseY, partialTicks, color );
+
+        GuiUtil.addToolTip( this, 0, 0, item );
     }
 }

@@ -50,16 +50,16 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
     };
 
 
-    public StyledTextField(FontRenderer fontIn, int p_i51137_2_, int p_i51137_3_, int p_i51137_4_, int p_i51137_5_, String msg) {
-        this( fontIn, p_i51137_2_, p_i51137_3_, p_i51137_4_, p_i51137_5_, (StyledTextField) null, msg );
+    public StyledTextField(FontRenderer font, int x, int y, int width, int height, String msg) {
+        this( font, x, y, width, height, (StyledTextField) null, msg );
     }
 
 
-    public StyledTextField(FontRenderer fontIn, int xIn, int yIn, int widthIn, int heightIn, @Nullable StyledTextField p_i51138_6_, String msg) {
-        super( xIn, yIn, widthIn, heightIn, msg );
+    public StyledTextField(FontRenderer fontIn, int x, int y, int width, int height, @Nullable StyledTextField old, String msg) {
+        super( x, y, width, height, msg );
         this.fontRenderer = fontIn;
-        if (p_i51138_6_ != null) {
-            this.setText( p_i51138_6_.getText() );
+        if (old != null) {
+            this.setText( old.getText() );
         }
 
     }
