@@ -1,9 +1,5 @@
 package creativeeditor.screen;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
 import creativeeditor.util.InventoryUtils;

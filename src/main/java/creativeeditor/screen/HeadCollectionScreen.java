@@ -2,12 +2,18 @@ package creativeeditor.screen;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.lwjgl.glfw.GLFW;
 
-import creativeeditor.data.DataItem;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
+import com.mojang.blaze3d.systems.RenderSystem;
+
+import creativeeditor.json.CachedHead;
 import creativeeditor.json.MinecraftHeads;
 import creativeeditor.json.MinecraftHeadsCategory;
+import creativeeditor.render.HeadRenderer;
 import creativeeditor.styles.Style;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
@@ -21,7 +27,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class HeadCollectionScreen extends ParentScreen {
-    private List<ItemStack> filteredHeads = new LinkedList<>();
+    private List<CachedHead> filteredHeads = new LinkedList<>();
 
     private static MinecraftHeadsCategory selCat = MinecraftHeadsCategory.alphabet;
     private static int currentElement = 0;
@@ -40,6 +46,8 @@ public class HeadCollectionScreen extends ParentScreen {
 
     @Override
     public void init() {
+        long startTime = System.nanoTime();
+
         super.init();
 
         filteredString = null;
@@ -47,10 +55,9 @@ public class HeadCollectionScreen extends ParentScreen {
         if (!searchString.equals( filteredString )) {
             filteredHeads.clear();
 
-            for (ItemStack stack : MinecraftHeads.getHeads( selCat )) {
-                DataItem dItem = new DataItem( stack );
-                if (dItem.getTag().getSkullOwner().get().getName().toLowerCase().contains( searchString.toLowerCase() )) {
-                    filteredHeads.add( stack );
+            for (CachedHead head : MinecraftHeads.getHeads( selCat )) {
+                if (head.getData().getName().contains( searchString )) {
+                    filteredHeads.add( head );
                 }
             }
 
@@ -58,10 +65,11 @@ public class HeadCollectionScreen extends ParentScreen {
             filteredString = searchString;
         }
 
-        maxInRow = (width - 250) / 14;
-        amountInPage = maxInRow * 10;
-
         minecraft.keyboardListener.enableRepeatEvents( true );
+
+        long endTime = System.nanoTime();
+        long duration = (endTime - startTime) / 1000000;
+        System.out.println( "Took " + duration + "ms to init head collection." );
     }
 
 
@@ -119,12 +127,17 @@ public class HeadCollectionScreen extends ParentScreen {
         }
 
         if (filteredHeads.size() > 0) {
+            long startTime = System.nanoTime();
+
             for (int i = (int) Math.min( filteredHeads.size() - 1, currentPage * amountInPage ); i < (int) Math.min( filteredHeads.size(), (currentPage + 1) * amountInPage ); i++) {
                 int x = space + letterSpace + (16 * (i % maxInRow));
                 int y = heightOffset + topbar + (16 * ((i % amountInPage) / maxInRow));
-
+                Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().loadSkinFromCache( filteredHeads.get( i ).getData().getGameProfile() );
+                if (map != null && map.containsKey( Type.SKIN )) {
+                    HeadRenderer.loadSkin( map.get( Type.SKIN ), null, false );
+                }
                 if (mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16) {
-                    ItemStack is = filteredHeads.get( i );
+                    ItemStack is = filteredHeads.get( i ).getItemStack();
                     if (hasShiftDown()) {
                         minecraft.playerController.sendPacketDropItem( is );
                     }
@@ -143,6 +156,10 @@ public class HeadCollectionScreen extends ParentScreen {
                     return true;
                 }
             }
+
+            long endTime = System.nanoTime();
+            long duration = (endTime - startTime) / 1000000;
+            System.out.println( "Took " + duration + "ms to load head skins" );
         }
 
         return super.mouseClicked( mouseX, mouseY, mouseButton );
@@ -190,6 +207,10 @@ public class HeadCollectionScreen extends ParentScreen {
     @Override
     public void backRender( int mouseX, int mouseY, float p3, Color color ) {
         // super.backRender( mouseX, mouseY, p3, color );
+
+        maxInRow = (width - 250) / 14;
+        amountInPage = maxInRow * 10;
+
         int topbar = 20;
         int heightOffset = height / divideHeight;
         int letterSpace = 85;
@@ -259,11 +280,14 @@ public class HeadCollectionScreen extends ParentScreen {
 
 
         ItemStack hovered = null;
+
         if (filteredHeads.size() > 0) {
             for (int i = (int) Math.min( filteredHeads.size() - 1, currentPage * amountInPage ); i < (int) Math.min( filteredHeads.size(), (currentPage + 1) * amountInPage ); i++) {
                 int x = space + letterSpace + (16 * (i % maxInRow));
                 int y = heightOffset + topbar + (16 * ((i % amountInPage) / maxInRow));
-                ItemStack stack = filteredHeads.get( i );
+                CachedHead cached = filteredHeads.get( i );
+                // cached.loadTexture();
+                ItemStack stack = cached.getItemStack();
                 drawItemStack( stack, x, y, null );
                 if (hovered == null && mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16) {
                     fill( x, y, x + 16, y + 16, GuiUtil.getColorFromRGB( 150, 150, 150, 150 ) );
@@ -271,6 +295,10 @@ public class HeadCollectionScreen extends ParentScreen {
                 }
             }
         }
+
+
+        RenderSystem.translatef( 0.0F, 0.0F, 100.0F );
+        // this.setBlitOffset( 200 );
 
         int searchW = font.getStringWidth( searchString );
 
@@ -284,5 +312,6 @@ public class HeadCollectionScreen extends ParentScreen {
             GuiUtil.addToolTip( this, space + 2, heightOffset + topbar, letterSpace - 4, 161, mouseX, mouseY, I18n.format( "gui.headcollection.changecategory" ) );
         }
 
+        RenderSystem.translatef( 0.0F, 0.0F, -100.0F );
     }
 }

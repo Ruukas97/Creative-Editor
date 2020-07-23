@@ -94,6 +94,7 @@ public abstract class ParentScreen extends Screen {
         this.itemRenderer.renderItemOverlayIntoGUI( font, stack, x, y, altText );
         this.setBlitOffset( 0 );
         this.itemRenderer.zLevel = 0.0F;
+        RenderSystem.translatef( 0.0F, 0.0F, -32.0F );
     }
 
 
@@ -150,7 +151,7 @@ public abstract class ParentScreen extends Screen {
             AbstractGui.fill( midX - sWidthHalf, 20, midX + sWidthHalf, 21, color.getInt() );
 
         }
-        else if(getTopLineWidth() > 1){
+        else if (getTopLineWidth() > 1) {
             int halfLineW = topLineWidth / 2;
             AbstractGui.fill( midX - halfLineW, 20, midX + halfLineW, 21, color.getInt() );
         }

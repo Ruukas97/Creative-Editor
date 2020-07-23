@@ -10,10 +10,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class TooltipHandler {
     @SubscribeEvent
     public void onTooltip( RenderTooltipEvent.Color e ) {
+        //TODO custom nbt tooltip color
+        
         Minecraft mc = Minecraft.getInstance();
         if (!(mc.currentScreen instanceof ParentScreen))
             StyleManager.getCurrentStyle().update();
-
 
         Color color1 = new Color( StyleManager.getCurrentStyle().getMainColor().getInt() );
         color1.setValue( .7f ).setAlpha( 230 );

@@ -159,8 +159,10 @@ public class ItemSpawnerScreen extends ParentScreen {
         for (ItemStack stack : itemList) {
             int column = i % columns;
             int row = i / columns;
-            if (row >= rows)
+            if (row >= rows) {
                 break;
+            }
+
             x = 30 + widest + 20 * column;
             y = 25 + 20 * row;
             drawItemStack( stack, x, y, null );

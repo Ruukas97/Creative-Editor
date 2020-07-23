@@ -10,8 +10,10 @@ import lombok.Getter;
 
 public class MinecraftHeadsResponse {
     private String uuid;
-    private @Getter String name;
-    private @Getter String value;
+    private @Getter
+    String name;
+    private @Getter
+    String value;
 
 
     public UUID getUUID() {

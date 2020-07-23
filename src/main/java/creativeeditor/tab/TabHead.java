@@ -2,6 +2,7 @@ package creativeeditor.tab;
 
 import java.util.ArrayList;
 
+import creativeeditor.json.CachedHead;
 import creativeeditor.json.MinecraftHeads;
 import creativeeditor.json.MinecraftHeadsCategory;
 import creativeeditor.util.RandomUtils;
@@ -23,8 +24,10 @@ public class TabHead extends TabCreative {
 
     @Override
     public ItemStack createIcon() {
-        ArrayList<ItemStack> heads = MinecraftHeads.getHeads( category );
-        ItemStack head = RandomUtils.getRandomElement( heads );
+        ArrayList<CachedHead> heads = MinecraftHeads.getHeads( category );
+        CachedHead cached = RandomUtils.getRandomElement( heads );
+        cached.loadTexture();
+        ItemStack head = cached.getItemStack();
         return head != null ? head.copy() : fallbackIcon;
     }
 
@@ -46,7 +49,7 @@ public class TabHead extends TabCreative {
 
     @Override
     public void fill( NonNullList<ItemStack> items ) {
-        items.addAll( MinecraftHeads.getHeads( category ) );
+        items.addAll( MinecraftHeads.createItemStacks( category ) );
     }
 
 

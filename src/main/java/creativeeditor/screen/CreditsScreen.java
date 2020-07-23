@@ -7,7 +7,5 @@ public class CreditsScreen extends ParentScreen {
 
     public CreditsScreen(ITextComponent title, Screen lastScreen) {
         super( title, lastScreen );
-        // TODO Auto-generated constructor stub
-    }
-    
+    }    
 }
