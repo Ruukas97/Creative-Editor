@@ -120,18 +120,23 @@ public class ParentItemScreen extends ParentScreen {
             Item ite = item.getItem().getItem();
             int x = width / 2;
             int y = 60;
+            int xFrameStart = x - 19;
+            int xFrameEnd = x + 19;
+            int yFrameStart = 41;
             if (ite == Items.AIR) {
                 drawCenteredString( font, ite.getDisplayName( stack ).getFormattedText(), x, y-3, color.getInt() );
             }
             else {
-                RenderSystem.scalef( itemScale, itemScale, 1f );
-                drawItemStack( item.getData(), ((int) (x / itemScale)) - 8, ((int) (y / itemScale)) - 8, null );
-                RenderSystem.scalef( 1f / itemScale, 1f / itemScale, 1f );
+                RenderSystem.pushMatrix();
+                RenderSystem.translatef( itemScale, itemScale, 1f );
+                RenderSystem.scalef( itemScale, itemScale, 1f );         
+                drawItemStack( item.getData(), (int) (xFrameStart / itemScale + 1), (int) (yFrameStart / itemScale + 1), null );         
+                RenderSystem.popMatrix();
             }
 
             // Item frame
             if (itemScale == 2f)
-                GuiUtil.drawFrame( width / 2 - 19, 41, width / 2 + 19, 79, 1, color );
+                GuiUtil.drawFrame( xFrameStart, yFrameStart, xFrameEnd, 79, 1, color );
 
 
             // TODO Item scale support
