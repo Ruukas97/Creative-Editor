@@ -86,7 +86,7 @@ public abstract class ParentScreen extends Screen {
     public void drawItemStack( ItemStack stack, int x, int y, String altText ) {
         RenderSystem.translatef( 0.0F, 0.0F, 32.0F );
         this.setBlitOffset( 200 );
-        this.itemRenderer.zLevel = 200.0F;
+        this.itemRenderer.zLevel = 10.0F;
         net.minecraft.client.gui.FontRenderer font = stack.getItem().getFontRenderer( stack );
         if (font == null)
             font = this.font;
