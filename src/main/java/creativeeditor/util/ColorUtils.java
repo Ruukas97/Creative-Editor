@@ -42,7 +42,7 @@ public class ColorUtils {
 
 
         public Color(int r, int g, int b) {
-            setInt(0xFF000000 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF);
+            setInt( 0xFF000000 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF );
         }
 
 
@@ -62,7 +62,7 @@ public class ColorUtils {
 
 
         public Color setRGB( int r, int g, int b ) {
-            return setInt(argb & 0xFF000000 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF);
+            return setInt( argb & 0xFF000000 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF );
         }
 
 
@@ -77,7 +77,7 @@ public class ColorUtils {
 
 
         public Color setAlpha( int alpha ) {
-            return setInt((alpha & 0xFF) << 24 | argb & 0x00FFFFFF);
+            return setInt( (alpha & 0xFF) << 24 | argb & 0x00FFFFFF );
         }
 
 
@@ -87,7 +87,7 @@ public class ColorUtils {
 
 
         public Color setRed( int red ) {
-            return setInt((red & 0xFF) << 16 | argb & 0xFF00FFFF);
+            return setInt( (red & 0xFF) << 16 | argb & 0xFF00FFFF );
         }
 
 
@@ -97,7 +97,7 @@ public class ColorUtils {
 
 
         public Color setGreen( int green ) {
-            return setInt((green & 0xFF) << 8 | (argb & 0xFFFF00FF));
+            return setInt( (green & 0xFF) << 8 | (argb & 0xFFFF00FF) );
         }
 
 
@@ -107,7 +107,7 @@ public class ColorUtils {
 
 
         public Color setBlue( int blue ) {
-            return setInt((blue & 0xFF) | (argb & 0xFFFFFF00));
+            return setInt( (blue & 0xFF) | (argb & 0xFFFFFF00) );
         }
 
 
@@ -287,6 +287,12 @@ public class ColorUtils {
         @Override
         public double doubleValue() {
             return (double) getInt();
+        }
+
+
+        @Override
+        public String toString() {
+            return "Color[A:" + getAlpha() + ",R:" + getRed() + ",G:" + getGreen() + ",B:" + getBlue() + "]";
         }
     }
 }

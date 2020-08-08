@@ -5,9 +5,9 @@ import org.lwjgl.glfw.GLFW;
 import creativeeditor.CreativeEditor;
 import creativeeditor.data.DataItem;
 import creativeeditor.screen.HeadCollectionScreen;
-import creativeeditor.screen.ItemSpawnerScreen;
 import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.PlayerInspectorScreen;
+import creativeeditor.screen.WindowManagerScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -16,6 +16,7 @@ import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -71,14 +72,16 @@ public class KeyInputHandler {
         }
         else if (event.getKey() == BARRIER_TOGGLE.getKey().getKeyCode()) {
             CreativeEditor.BARRIER_VISIBLE = !CreativeEditor.BARRIER_VISIBLE;
+            System.out.println( "Set barrier visibility: " + CreativeEditor.BARRIER_VISIBLE );
         }
         else if (CreativeEditor.DEBUG && event.getKey() == DEBUG_KEY.getKey().getKeyCode()) {
             // mc.displayGuiScreen( new NBTExplorerScreen( mc.currentScreen, new DataItem(
             // mc.player.getHeldItemMainhand() ) ) );
             // mc.displayGuiScreen( new EnchantmentScreen( mc.currentScreen, new DataItem(
             // mc.player.getHeldItemMainhand() ) ) );
-            mc.displayGuiScreen( new ItemSpawnerScreen( mc.currentScreen ) );
+            // mc.displayGuiScreen( new ItemSpawnerScreen( mc.currentScreen ) );
             // mc.displayGuiScreen( new CreativeScreen( mc.player ) );
+            mc.displayGuiScreen( new WindowManagerScreen( new StringTextComponent( CreativeEditor.NAME ) ) );
         }
     }
 

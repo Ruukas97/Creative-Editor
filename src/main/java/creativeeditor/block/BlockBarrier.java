@@ -1,5 +1,6 @@
 package creativeeditor.block;
 
+import creativeeditor.CreativeEditor;
 import net.minecraft.block.BarrierBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -15,8 +16,9 @@ public class BlockBarrier extends BarrierBlock {
     }
 
 
+    @SuppressWarnings( "deprecation" )
     @Override
     public BlockRenderType getRenderType( BlockState state ) {
-        return BlockRenderType.MODEL;
+        return CreativeEditor.BARRIER_VISIBLE ? BlockRenderType.MODEL : super.getRenderType( state );
     }
 }

@@ -64,11 +64,6 @@ public abstract class ParentScreen extends Screen {
     }
 
 
-    public Minecraft getMinecraftInstance() {
-        return minecraft;
-    }
-
-
     public FontRenderer getFontRenderer() {
         return font;
     }

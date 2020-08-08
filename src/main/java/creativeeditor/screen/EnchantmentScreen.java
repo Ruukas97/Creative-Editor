@@ -59,7 +59,6 @@ public class EnchantmentScreen extends ParentScreen {
         for (Enchantment ench : sortedEnchants) {
             list.getWidgets().add( new StyledButton( 0, 0, 50, 20, I18n.format( ench.getName() ) + ' ' + getLevel( ench ), button -> {
                 item.getTag().getEnchantments().add( new TagEnchantment( ench, getLevel( ench ) ) );
-                System.out.println( "HEy    " );
             } ) );
         }
     }
@@ -98,6 +97,6 @@ public class EnchantmentScreen extends ParentScreen {
     public void overlayRender( int mouseX, int mouseY, float partialTicks, Color color ) {
         super.overlayRender( mouseX, mouseY, partialTicks, color );
 
-        GuiUtil.addToolTip( this, 0, 0, item );
+        GuiUtil.addToolTip( this, 0, 25, item );
     }
 }

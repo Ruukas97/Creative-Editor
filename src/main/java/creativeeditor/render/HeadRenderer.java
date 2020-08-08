@@ -110,7 +110,7 @@ public class HeadRenderer extends ItemStackTileEntityRenderer {
 
         matrixStackIn.scale( -1.0F, -1.0F, 1.0F );
         IVertexBuilder ivertexbuilder = buffer.getBuffer( getRenderType( profile ) );
-        headModel.func_225603_a_( animationProgress, (Util.milliTime()/30%360), 0.0F );
+        headModel.func_225603_a_( animationProgress, (Util.milliTime() / 30 % 360), 0.0F );
         headModel.render( matrixStackIn, ivertexbuilder, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F );
         matrixStackIn.pop();
     }

@@ -54,7 +54,7 @@ public class ItemSpawnerScreen extends ParentScreen {
                 int y = 30 + 20 * i;
 
                 if (GuiUtil.isMouseInRegion( mouseX, mouseY, x, y, width + 20, 16 )) {
-                    this.collection = collection;
+                    ItemSpawnerScreen.collection = collection;
                     animation = 0f;
                     return true;
                 }

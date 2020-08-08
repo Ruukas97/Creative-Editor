@@ -1,10 +1,7 @@
 package creativeeditor.util;
 
-import java.lang.reflect.Field;
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
-
-import javax.annotation.Nonnull;
 
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.Item;
@@ -16,6 +13,7 @@ public class ReflectionUtils {
     public static void setTeisr( Item item, Supplier<Callable<ItemStackTileEntityRenderer>> teisr ) {
         if (teisr == null)
             return;
+        @SuppressWarnings( "deprecation" )
         ItemStackTileEntityRenderer tmp = DistExecutor.callWhenOn( Dist.CLIENT, teisr );
         if (tmp == null)
             return;
