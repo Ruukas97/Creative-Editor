@@ -36,6 +36,7 @@ public class ItemInspectorScreen extends ParentScreen {
         else {
             rotX += p_mouseDragged_6_;
             rotY += p_mouseDragged_8_;
+            System.out.println(p_mouseDragged_6_);
         }
         return true;
     }
@@ -47,29 +48,11 @@ public class ItemInspectorScreen extends ParentScreen {
         ItemRendererUtils itemRenderUtils = new ItemRendererUtils( this.itemRenderer );
 
         ItemStack stack = item.getItemStack();
-        // GlStateManager.rotated( rotX * 3, 0.0f, 0.0f, -1.0f );
-        // GlStateManager.rotatef( rotX, 0.0f, 1.0f, 0f );
+        RenderSystem.pushMatrix();
         RenderSystem.scalef( itemScale, itemScale, 1f );
-        RenderHelper.enableStandardItemLighting();
         int x = (int) (width / (2 * itemScale) - 8);
         int y = (int) (30 / itemScale + height / (2 * itemScale) - 8);
         itemRenderUtils.renderItemIntoGUI( stack, x, y, rotX, rotY );
-        // itemRenderer.renderItemIntoGUI( stack, x, y );
-        // itemRenderer.renderItemOverlayIntoGUI( font, item.getItemStack(), x, y, null
-        // );
-        RenderHelper.disableStandardItemLighting();
-
-        RenderSystem.scalef( 1f / itemScale, 1f / itemScale, 1f );
-        // GlStateManager.rotatef( 0.1f, -rotX, -rotY, -rotZ );
-
-        // Item frame
-        // GuiUtil.drawFrame( width / 2 - 20, height / 2 + 10, width / 2 + 20, height /
-        // 2 + 50, 1, color );
-
-        // if (GuiUtil.isMouseIn( mouseX, mouseY, width / 2 - 17, height / 2 + 13, 34,
-        // 34 )) {
-        // renderTooltip( stack, mouseX, mouseY );
-        // }
+        RenderSystem.popMatrix();
     }
-
 }
