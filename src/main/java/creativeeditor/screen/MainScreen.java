@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import creativeeditor.config.Config;
@@ -61,12 +62,13 @@ public class MainScreen extends ParentItemScreen {
     @Override
     protected void init() {
         super.init();
-        if (item.getItem().getItem() == Items.AIR)
-            item.getItem().setItem( Items.STICK );
+        //if (item.getItem().getItem() == Items.AIR)
+        //    item.getItem().setItem( Items.STICK );
         if(item.getCount().get() < 1) {
             item.getCount().set( 1 );
         }
 
+        assert minecraft != null;
         minecraft.keyboardListener.enableRepeatEvents( true );
         String nbtLocal = I18n.format( "gui.main.nbt" );
         String tooltipLocal = I18n.format( "gui.main.tooltip" );
@@ -137,15 +139,9 @@ public class MainScreen extends ParentItemScreen {
             }
         } ) );
 
-        if (item.getItem().getItem() == Items.ARMOR_STAND) {
-            addButton( new StyledTextButton( width / 2, height / 2, font.getStringWidth( "Armor Stand Editor" ), "Armor Stand Editor", b -> {
-                minecraft.displayGuiScreen( new ArmorstandScreen( this, item ) );
-            } ) );
-        }
-
         int y = 55;
         for (ClassSpecificWidget w : ItemWidgets.getInstance()) {
-            WidgetInfo info = new WidgetInfo( width - width / 6, y, advancedWidth, editX, w.text, null, this );
+            WidgetInfo info = new WidgetInfo( width - width / 6, y, font.getStringWidth(w.text), 10, w.text, null, this );
             Widget widget = w.get( info, item );
             if (widget != null) {
                 addButton( widget );
@@ -307,6 +303,7 @@ public class MainScreen extends ParentItemScreen {
 
     @Override
     public void removed() {
+        assert this.minecraft != null;
         this.minecraft.keyboardListener.enableRepeatEvents( false );
     }
 
@@ -368,7 +365,8 @@ public class MainScreen extends ParentItemScreen {
         String id = I18n.format( "gui.main.id" );
         // int idWidth = font.getStringWidth( id );
         drawString( font, id, x, 85, color.getInt() );
-        drawString( font, item.getItem().get(), x + 6 + idoffset, 85, color.getInt() );
+
+        drawString( font, item.getItem().getIDExcludingMC(), x + 6 + idoffset, 85, color.getInt() );
 
         drawString( font, count, x, 105, color.getInt() );
     }
@@ -382,6 +380,7 @@ public class MainScreen extends ParentItemScreen {
         GL11.glEnable( GL11.GL_SCISSOR_TEST );
         if (Config.MAIN_LEFT_TAB.get() == 0) {
             // NBT
+            assert minecraft != null;
             List<String> nbtLines = Arrays.asList( (minecraft.gameSettings.advancedItemTooltips ? item.getNBT() : item.getTag().getNBT()).toFormattedComponent( " ", 0 ).getFormattedText().split( "\n" ) );
 
             GuiUtil.drawHoveringText( item.getItemStack(), nbtLines, 0, 60, width / 3 - 1, height, -1, font );

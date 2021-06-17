@@ -65,7 +65,7 @@
 	"gui.armorstandequipment": "Armorstand Equipment",
 
 	"gui.main": "Creative Editor",
-	"gui.main.id": "ID",
+	"gui.main.id": "Item ID",
 	"gui.main.count": "Count",
 	"gui.main.damage": "Damage",
 	"gui.main.nbt": "NBT",

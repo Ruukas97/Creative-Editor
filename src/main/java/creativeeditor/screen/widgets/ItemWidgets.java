@@ -23,18 +23,14 @@ public class ItemWidgets implements Iterable<ClassSpecificWidget> {
 
     private ItemWidgets() {
         list = new ArrayList<>();
-        // WidgetInfoSupport<StyledTextButton> winfo =
-        // StyledTextButton.getWidgetSupport();
         Minecraft mc = Minecraft.getInstance();
-        add( new ClassSpecificWidget( I18n.format( "gui.armorstandeditor" ), instanceofFunction( ArmorStandItem.class ), ( item, info ) -> {
-            return new StyledTextButton( info.withTrigger( button -> mc.displayGuiScreen( new ArmorstandScreen( info.getParent(), item ) ) ) );
-        } ) );
+        add( I18n.format( "gui.armorstandeditor" ), ArmorStandItem.class, ( item, info ) ->
+            new StyledTextButton( info.withTrigger( button -> mc.displayGuiScreen( new ArmorstandScreen( info.getParent(), item ) ) ) )
+        );
 
-        add( new ClassSpecificWidget( I18n.format( "gui.color" ), dItem -> {
-            return dItem.getItem().getItem() instanceof IDyeableArmorItem;
-        }, ( item, info ) -> {
-            return new StyledTextButton( info.withTrigger( button -> mc.displayGuiScreen( new ColorScreen( info.getParent(), item, item.getTag().getDisplay().getColor(), 10511680, false) ) ) );
-        } ) );
+        add( new ClassSpecificWidget( I18n.format( "gui.color" ), dItem -> dItem.getItem().getItem() instanceof IDyeableArmorItem, (item, info ) ->
+            new StyledTextButton( info.withTrigger( button -> mc.displayGuiScreen( new ColorScreen( info.getParent(), item, item.getTag().getDisplay().getColor(), 10511680, false) ) ) )
+        ));
     }
 
 
@@ -62,14 +58,8 @@ public class ItemWidgets implements Iterable<ClassSpecificWidget> {
 
 
     public void add( String text, Class<? extends Item> itemClass, BiFunction<DataItem, WidgetInfo, Widget> widgetCreator ) {
-        add( new ClassSpecificWidget( text, instanceofFunction( itemClass ), widgetCreator ) );
+        add( new ClassSpecificWidget( text, itemClass::isInstance, widgetCreator ) );
     }
-
-
-    public static Function<DataItem, Boolean> instanceofFunction( Class<? extends Item> itemClass ) {
-        return i -> itemClass.isInstance( i );
-    }
-
 
     public WidgetInfoSupport<?> modifiedTriggerSupport( WidgetInfoSupport<?> sup, IPressable trigger ) {
         return inf -> sup.fromWidgetInfo( inf.withTrigger( trigger ) );

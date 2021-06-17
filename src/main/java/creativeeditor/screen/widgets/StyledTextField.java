@@ -1,15 +1,7 @@
 package creativeeditor.screen.widgets;
 
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
-import javax.annotation.Nullable;
-
-import com.google.common.base.Predicates;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import creativeeditor.styles.StyleManager;
 import creativeeditor.styles.StyleVanilla;
 import creativeeditor.util.GuiUtil;
@@ -30,6 +22,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
 @OnlyIn( Dist.CLIENT )
 public class StyledTextField extends Widget implements IRenderable, IGuiEventListener {
     private final FontRenderer fontRenderer;
@@ -44,7 +41,7 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
     protected int selectionEnd;
     private String suggestion;
     private Consumer<String> guiResponder;
-    protected Predicate<String> validator = Predicates.alwaysTrue();
+    protected Predicate<String> validator = s -> true;
     private BiFunction<String, Integer, String> textFormatter = ( p_195610_0_, p_195610_1_ ) -> {
         return p_195610_0_;
     };

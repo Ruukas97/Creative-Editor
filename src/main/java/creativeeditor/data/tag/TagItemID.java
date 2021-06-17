@@ -41,6 +41,12 @@ public class TagItemID extends DataString {
         return GameData.getWrapperDefaulted( Item.class ).getOrDefault( new ResourceLocation( get() ) );
     }
 
+    public String getIDExcludingMC() {
+        if(data.startsWith("minecraft:")){
+            return data.substring(10);
+        }
+        return data;
+    }
 
     public void setItem( Item item ) {
         set( getIDFromItem( item ) );

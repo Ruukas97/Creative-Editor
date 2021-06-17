@@ -1,7 +1,9 @@
 package creativeeditor.events;
 
 import creativeeditor.screen.ParentScreen;
+import creativeeditor.styles.Style;
 import creativeeditor.styles.StyleManager;
+import creativeeditor.styles.StyleVanilla;
 import creativeeditor.util.ColorUtils.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderTooltipEvent;
@@ -11,6 +13,10 @@ public class TooltipHandler {
     @SubscribeEvent
     public void onTooltip( RenderTooltipEvent.Color e ) {
         //TODO custom nbt tooltip color
+
+        if(StyleManager.getCurrentStyle() instanceof StyleVanilla){
+            return;
+        }
         
         Minecraft mc = Minecraft.getInstance();
         if (!(mc.currentScreen instanceof ParentScreen))

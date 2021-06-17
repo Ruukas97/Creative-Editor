@@ -1,11 +1,12 @@
 package creativeeditor.events;
 
+import creativeeditor.data.DataItem;
+import creativeeditor.screen.MainScreen;
+import net.minecraft.client.gui.screen.inventory.CreativeScreen;
 import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.CreativeEditor;
-import creativeeditor.data.DataItem;
 import creativeeditor.screen.HeadCollectionScreen;
-import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.PlayerInspectorScreen;
 import creativeeditor.screen.WindowManagerScreen;
 import net.minecraft.client.Minecraft;
@@ -46,15 +47,24 @@ public class KeyInputHandler {
     @SubscribeEvent
     public void onKeyInput( final KeyInputEvent event ) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.world == null || event.getAction() != GLFW.GLFW_PRESS || mc.currentScreen instanceof ChatScreen || (mc.currentScreen != null && !(mc.currentScreen instanceof ContainerScreen<?>)))
+        if (mc.world == null || event.getAction() != GLFW.GLFW_PRESS || (mc.currentScreen != null && !(mc.currentScreen instanceof ContainerScreen<?>)))
             return;
 
         if (event.getKey() == OPEN_EDITOR_KEY.getKey().getKeyCode()) {
+            /*long window = mc.getMainWindow().getHandle();
+            long handle = GLFW.glfwCreateStandardCursor(GLFW.GLFW_IBEAM_CURSOR);
+            GLFW.glfwSetCursor( window, handle );
+            GLFW.glfwSetCursorEnterCallback( window, (windowHandle, entered) -> {
+               if(!entered) {
+                   GLFW.glfwSetCursor( window, 0 );
+               }
+            });*/
+            assert mc.player != null;
             mc.displayGuiScreen( new MainScreen( mc.currentScreen, new DataItem( mc.player.getHeldItemMainhand() ) ) );
         }
         else if (event.getKey() == PLAYER_INSPECT.getKey().getKeyCode()) {
             Entity entity = mc.pointedEntity;
-            if (entity != null && entity instanceof PlayerEntity) {
+            if (entity instanceof PlayerEntity) {
                 mc.displayGuiScreen( new PlayerInspectorScreen( mc.currentScreen, (PlayerEntity) mc.pointedEntity ) );
             }
             else {
@@ -64,6 +74,7 @@ public class KeyInputHandler {
             }
         }
         else if (event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {
+            assert mc.player != null;
             mc.player.swingArm( Hand.OFF_HAND );
             // mc.displayGuiScreen( new TextEditorScreen( mc.currentScreen ) );
         }
@@ -80,8 +91,8 @@ public class KeyInputHandler {
             // mc.displayGuiScreen( new EnchantmentScreen( mc.currentScreen, new DataItem(
             // mc.player.getHeldItemMainhand() ) ) );
             // mc.displayGuiScreen( new ItemSpawnerScreen( mc.currentScreen ) );
-            // mc.displayGuiScreen( new CreativeScreen( mc.player ) );
-            mc.displayGuiScreen( new WindowManagerScreen( new StringTextComponent( CreativeEditor.NAME ) ) );
+            mc.displayGuiScreen( new CreativeScreen( mc.player ) );
+            //mc.displayGuiScreen( new WindowManagerScreen( new StringTextComponent( CreativeEditor.NAME ) ) );
         }
     }
 

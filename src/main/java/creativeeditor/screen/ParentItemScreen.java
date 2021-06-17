@@ -4,8 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import creativeeditor.data.DataItem;
 import creativeeditor.screen.widgets.StyledButton;
+import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
+import creativeeditor.util.ItemRendererUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
@@ -25,6 +27,7 @@ public class ParentItemScreen extends ParentScreen {
     // render item
     protected boolean renderItem = true;
     protected float itemScale = 2.0f;
+    protected float itemRotX = 0.0f;
 
     // render tooltip top left
     protected boolean renderToolTip = false;
@@ -103,6 +106,17 @@ public class ParentItemScreen extends ParentScreen {
             this.itemScale = scale;
     }
 
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+        if (super.mouseClicked(mouseX, mouseY, mouseButton)){
+            return true;
+        }
+        if (GuiUtil.isMouseIn( (int) mouseX, (int) mouseY, width / 2 - 17, 43, 36, 36 )) {
+            minecraft.displayGuiScreen(new ItemInspectorScreen(this, item));
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public void mainRender( int mouseX, int mouseY, float p3, Color color ) {
@@ -129,19 +143,26 @@ public class ParentItemScreen extends ParentScreen {
             else {
                 RenderSystem.pushMatrix();
                 RenderSystem.translatef( itemScale, itemScale, 1f );
-                RenderSystem.scalef( itemScale, itemScale, 1f );         
-                drawItemStack( item.getData(), (int) (xFrameStart / itemScale + 1), (int) (yFrameStart / itemScale + 1), null );         
+                RenderSystem.scalef( itemScale, itemScale, 1f );
+                //drawItemStack( item.getItemStack(), (int) (xFrameStart / itemScale + 1), (int) (yFrameStart / itemScale + 1), null );
+                new ItemRendererUtils(itemRenderer).renderItemIntoGUI(item.getItemStack(), (int) (xFrameStart / itemScale + 1), (int) (yFrameStart / itemScale + 1), itemRotX, 0);
                 RenderSystem.popMatrix();
             }
 
-            // Item frame
-            if (itemScale == 2f)
-                GuiUtil.drawFrame( xFrameStart, yFrameStart, xFrameEnd, 79, 1, color );
-
 
             // TODO Item scale support
-            if (GuiUtil.isMouseIn( mouseX, mouseY, width / 2 - 17, 43, 36, 36 ))
+            if (GuiUtil.isMouseIn( mouseX, mouseY, width / 2 - 17, 43, 36, 36 )){
+                itemRotX += 0.25;
+                if (itemScale == 2f)
+                    GuiUtil.drawFrame( xFrameStart, yFrameStart, xFrameEnd, 79, 1, StyleManager.getCurrentStyle().getFGColor(true, true) );
+
                 renderTooltip( stack, mouseX, mouseY );
+            }
+            else{
+                itemRotX = 0f;
+                if (itemScale == 2f)
+                    GuiUtil.drawFrame( xFrameStart, yFrameStart, xFrameEnd, 79, 1, color);
+            }
         }
     }
 }
