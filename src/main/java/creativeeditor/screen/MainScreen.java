@@ -34,6 +34,7 @@ public class MainScreen extends ParentItemScreen {
     private ArrayList<Widget> toolsWidgets = new ArrayList<>(), loreWidgets = new ArrayList<>(), editWidgets = new ArrayList<>(), advancedWidgets = new ArrayList<>();
     private StyledTextButton nbtButton, tooltipButton, toolsButton, loreButton, editButton, advancedButton;
     private NumberField countField, damageField;
+    private StyledDataTextField idField;
     private SliderTag countSlider, damageSlider;
     private StyledToggle unbreakable;
     // Tools
@@ -170,17 +171,18 @@ public class MainScreen extends ParentItemScreen {
         } ) );
         loreWidgets.add( clearButton );
 
-
-        // String id = I18n.format( "gui.main.id" );
-        // int idWidth = font.getStringWidth( id );
-
         // General Item
+        String id = I18n.format( "gui.main.id" );
+        int idWidth = font.getStringWidth( id );
         String count = I18n.format( "gui.main.count" );
         int countWidth = font.getStringWidth( count );
         String damage = I18n.format( "gui.main.damage" );
         int damageWidth = font.getStringWidth( damage );
 
-        int x = width / 3 + 16 + Math.max( countWidth, damageWidth );
+        int x = width / 3 + 16 + Math.max(idWidth, Math.max( countWidth, damageWidth ));
+
+        idField = addButton(new StyledDataTextField( font, x, 81, (width - width / 3 - 8) - x, 16, item.getItem() ));
+
         int countX = x;
         this.countField = addButton( new NumberField( font, countX, 101, 16, item.getCount() ) );
         countX += this.countField.getWidth() + 8;
@@ -366,7 +368,7 @@ public class MainScreen extends ParentItemScreen {
         // int idWidth = font.getStringWidth( id );
         drawString( font, id, x, 85, color.getInt() );
 
-        drawString( font, item.getItem().getIDExcludingMC(), x + 6 + idoffset, 85, color.getInt() );
+        //drawString( font, item.getItem().getIDExcludingMC(), x + 6 + idoffset, 85, color.getInt() );
 
         drawString( font, count, x, 105, color.getInt() );
     }
