@@ -228,7 +228,7 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
             if (!data.isDefault())
                 return false;
         }
-        return false;
+        return true;
     }
 
 
