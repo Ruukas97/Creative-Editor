@@ -42,6 +42,14 @@ public class TagList<E extends Data<?, ?>>extends SingularData<List<E>, ListNBT>
         add( addFunction.apply( nbt ) );
     }
 
+    public void remove( E value ){
+        data.remove(value);
+    }
+
+    public void remove( int index ){
+        data.remove(index);
+    }
+
 
     public void clear() {
         data.clear();

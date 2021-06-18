@@ -1,12 +1,10 @@
 package creativeeditor.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import creativeeditor.data.DataItem;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.ItemRendererUtils;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TranslationTextComponent;
 

@@ -63,7 +63,7 @@ public class PlayerInspectorScreen extends ParentScreen {
         super.mainRender( mouseX, mouseY, p3, color );
 
         // Render player model
-        InventoryScreen.drawEntityOnScreen( width / 2, height / 2, 50, width / 2 - mouseX, height / 3 - mouseY, target );
+        InventoryScreen.drawEntityOnScreen( width / 2, height / 2, 50, width / 2f - mouseX, height / 3f - mouseY, target );
 
         // Render player UUID
         int y = height - 16;
@@ -76,7 +76,7 @@ public class PlayerInspectorScreen extends ParentScreen {
         y = height / 2 - 45;
         x = width / 2 + 100;
         for (ItemStack stack : target.getEquipmentAndArmor()) {
-            drawItemStack( stack, x, y, null );
+            drawItemStack( stack, x, y, 0, 0, null );
 
             if (GuiUtil.isMouseInRegion( mouseX, mouseY, x, y, 16, 16 )) {
                 renderTooltip( stack, mouseX, mouseY );

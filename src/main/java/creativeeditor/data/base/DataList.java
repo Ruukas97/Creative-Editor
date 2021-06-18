@@ -33,6 +33,13 @@ public abstract class DataList<E extends Data<?, ?>>extends SingularData<List<E>
 
     public abstract <T extends INBT> void add( T nbt );
 
+    public void remove( E value ){
+        data.remove(value);
+    }
+
+    public void remove( int index ){
+        data.remove(index);
+    }
 
     public void clear() {
         data.clear();

@@ -28,6 +28,7 @@ public class TagItemID extends DataString {
 
     public TagItemID(Item item) {
         this( getIDFromItem( item ) );
+        data = getIDExcludingMC();
     }
 
 

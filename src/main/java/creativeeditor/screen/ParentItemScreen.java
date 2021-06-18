@@ -144,8 +144,7 @@ public class ParentItemScreen extends ParentScreen {
                 RenderSystem.pushMatrix();
                 RenderSystem.translatef( itemScale, itemScale, 1f );
                 RenderSystem.scalef( itemScale, itemScale, 1f );
-                //drawItemStack( item.getItemStack(), (int) (xFrameStart / itemScale + 1), (int) (yFrameStart / itemScale + 1), null );
-                new ItemRendererUtils(itemRenderer).renderItemIntoGUI(item.getItemStack(), (int) (xFrameStart / itemScale + 1), (int) (yFrameStart / itemScale + 1), itemRotX, 0);
+                drawItemStack( item.getItemStack(), (int) (xFrameStart / itemScale + 1), (int) (yFrameStart / itemScale + 1), itemRotX, 0, null );
                 RenderSystem.popMatrix();
             }
 

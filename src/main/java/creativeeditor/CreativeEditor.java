@@ -31,7 +31,7 @@ public class CreativeEditor {
     public static final String MODID = "creativeeditor";
     public static final String NAME = "Creative Editor";
 
-    public static boolean BARRIER_VISIBLE = true;
+    public static boolean BARRIER_VISIBLE = false;
     public static final boolean DEBUG = true;
 
     public static Path DATAPATH = FMLPaths.GAMEDIR.get().resolve( MODID.concat( "-data" ) );

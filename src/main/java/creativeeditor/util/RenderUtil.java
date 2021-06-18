@@ -28,7 +28,7 @@ public class RenderUtil {
         if (mc.currentScreen == null)
             return;
 
-        int bottomY = mc.currentScreen.height - (x + height);
+        int bottomY = mc.currentScreen.height - (y + height);
         double factor = mc.getMainWindow().getGuiScaleFactor();
 
         int scissorX = (int) (x * factor);

@@ -8,25 +8,31 @@ import java.util.function.Function;
 import creativeeditor.data.DataItem;
 import creativeeditor.screen.ArmorstandScreen;
 import creativeeditor.screen.ColorScreen;
+import creativeeditor.screen.EnchantmentScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button.IPressable;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.item.ArmorStandItem;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.Item;
 
 public class ItemWidgets implements Iterable<ClassSpecificWidget> {
     private static ItemWidgets instance;
-    private ArrayList<ClassSpecificWidget> list;
-
+    private final ArrayList<ClassSpecificWidget> list;
 
     private ItemWidgets() {
         list = new ArrayList<>();
         Minecraft mc = Minecraft.getInstance();
-        add( I18n.format( "gui.armorstandeditor" ), ArmorStandItem.class, ( item, info ) ->
-            new StyledTextButton( info.withTrigger( button -> mc.displayGuiScreen( new ArmorstandScreen( info.getParent(), item ) ) ) )
-        );
+
+        add( new ClassSpecificWidget( I18n.format( "gui.enchanting" ), dItem -> EnchantmentType.ALL.canEnchantItem(dItem.getItem().getItem()), (item, info ) ->
+                new StyledTextButton( info.withTrigger( button -> mc.displayGuiScreen( new EnchantmentScreen( info.getParent(), item.getTag().getEnchantments() )) ) )
+        ));
+
+        add( new ClassSpecificWidget( I18n.format( "gui.armorstandeditor" ), dItem -> dItem.getItem().getItem() instanceof ArmorStandItem, (item, info ) ->
+                new StyledTextButton( info.withTrigger( button -> mc.displayGuiScreen( new ArmorstandScreen( info.getParent(), item ) ) ) )
+        ));
 
         add( new ClassSpecificWidget( I18n.format( "gui.color" ), dItem -> dItem.getItem().getItem() instanceof IDyeableArmorItem, (item, info ) ->
             new StyledTextButton( info.withTrigger( button -> mc.displayGuiScreen( new ColorScreen( info.getParent(), item, item.getTag().getDisplay().getColor(), 10511680, false) ) ) )

@@ -42,9 +42,7 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
     private String suggestion;
     private Consumer<String> guiResponder;
     protected Predicate<String> validator = s -> true;
-    private BiFunction<String, Integer, String> textFormatter = ( p_195610_0_, p_195610_1_ ) -> {
-        return p_195610_0_;
-    };
+    private BiFunction<String, Integer, String> textFormatter = ( p_195610_0_, p_195610_1_ ) -> p_195610_0_;
 
 
     public StyledTextField(FontRenderer font, int x, int y, int width, int height, String msg) {
@@ -117,8 +115,8 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
      * returns the text between the cursor and selectionEnd
      */
     public String getSelectedText() {
-        int i = this.cursorPosition < this.selectionEnd ? this.cursorPosition : this.selectionEnd;
-        int j = this.cursorPosition < this.selectionEnd ? this.selectionEnd : this.cursorPosition;
+        int i = Math.min(this.cursorPosition, this.selectionEnd);
+        int j = Math.max(this.cursorPosition, this.selectionEnd);
         return this.text.substring( i, j );
     }
 

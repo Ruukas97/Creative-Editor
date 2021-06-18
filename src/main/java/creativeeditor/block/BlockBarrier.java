@@ -7,6 +7,8 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 
 public class BlockBarrier extends BarrierBlock {
 
@@ -19,6 +21,6 @@ public class BlockBarrier extends BarrierBlock {
     @SuppressWarnings( "deprecation" )
     @Override
     public BlockRenderType getRenderType( BlockState state ) {
-        return CreativeEditor.BARRIER_VISIBLE ? BlockRenderType.MODEL : super.getRenderType( state );
+        return CreativeEditor.BARRIER_VISIBLE ? BlockRenderType.MODEL : BlockRenderType.INVISIBLE;
     }
 }

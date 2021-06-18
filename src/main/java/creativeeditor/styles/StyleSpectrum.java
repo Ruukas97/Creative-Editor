@@ -47,7 +47,6 @@ public class StyleSpectrum implements Style {
         int j = getFGColor( button.getWidget() ).getInt();
         GuiUtil.drawFrame( button.getWidget().x, button.getWidget().y, button.getWidget().x + button.getWidget().getWidth(), button.getWidget().y + button.getWidget().getHeight(), 1, new Color( j ) );
         button.renderBg( mc, mouseX, mouseY );
-        button.getWidget().drawCenteredString( font, button.getWidget().getMessage(), button.getWidget().x + button.getWidget().getWidth() / 2, button.getWidget().y + (button.getWidget().getHeight() - 8) / 2, j | MathHelper.ceil( alpha * 255.0F ) << 24 );
 
         String buttonText = button.getWidget().getMessage();
         int strWidth = mc.fontRenderer.getStringWidth( buttonText );
@@ -56,7 +55,8 @@ public class StyleSpectrum implements Style {
         if (strWidth > button.getWidget().getWidth() - 6 && strWidth > ellipsisWidth)
             buttonText = mc.fontRenderer.trimStringToWidth( buttonText, button.getWidget().getWidth() - 6 - ellipsisWidth ).trim() + "...";
 
-        button.getWidget().drawCenteredString( mc.fontRenderer, buttonText, button.getWidget().x + button.getWidget().getWidth() / 2, button.getWidget().y + (button.getWidget().getHeight() - 8) / 2, getMainColor().getInt() );
+        button.getWidget().drawCenteredString( font, buttonText, button.getWidget().x + button.getWidget().getWidth() / 2, button.getWidget().y + (button.getWidget().getHeight() - 8) / 2, j | MathHelper.ceil( alpha * 255.0F ) << 24 );
+        button.getWidget().drawCenteredString( font, buttonText, button.getWidget().x + button.getWidget().getWidth() / 2, button.getWidget().y + (button.getWidget().getHeight() - 8) / 2, getMainColor().getInt() );
     }
 
 

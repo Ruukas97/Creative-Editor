@@ -9,6 +9,7 @@ import creativeeditor.screen.widgets.StyledTextField;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
+import creativeeditor.util.ItemRendererUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -78,14 +79,14 @@ public abstract class ParentScreen extends Screen {
      * The z index is increased by 32 (and not decreased afterwards), and the item
      * is then rendered at z=200.
      */
-    public void drawItemStack( ItemStack stack, int x, int y, String altText ) {
+    public void drawItemStack( ItemStack stack, int x, int y, float rotX, float rotY, String altText ) {
         RenderSystem.translatef( 0.0F, 0.0F, 32.0F );
         this.setBlitOffset( 200 );
         this.itemRenderer.zLevel = 10.0F;
         net.minecraft.client.gui.FontRenderer font = stack.getItem().getFontRenderer( stack );
         if (font == null)
             font = this.font;
-        this.itemRenderer.renderItemAndEffectIntoGUI( stack, x, y );
+        new ItemRendererUtils(itemRenderer).renderItemIntoGUI(stack, x, y, rotX, rotY);
         this.itemRenderer.renderItemOverlayIntoGUI( font, stack, x, y, altText );
         this.setBlitOffset( 0 );
         this.itemRenderer.zLevel = 0.0F;

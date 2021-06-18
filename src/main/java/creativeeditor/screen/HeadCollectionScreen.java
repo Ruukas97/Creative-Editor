@@ -33,7 +33,7 @@ public class HeadCollectionScreen extends ParentScreen {
     private static int currentElement = 0;
     private static String filteredString = null;
     private static String searchString = "";
-    private int divideHeight = 20;
+    private final int divideHeight = 20;
 
     private int maxInRow;
     private int amountInPage;
@@ -65,6 +65,7 @@ public class HeadCollectionScreen extends ParentScreen {
             filteredString = searchString;
         }
 
+        assert minecraft != null;
         minecraft.keyboardListener.enableRepeatEvents( true );
 
         long endTime = System.nanoTime();
@@ -288,7 +289,7 @@ public class HeadCollectionScreen extends ParentScreen {
                 CachedHead cached = filteredHeads.get( i );
                 // cached.loadTexture();
                 ItemStack stack = cached.getItemStack();
-                drawItemStack( stack, x, y, null );
+                drawItemStack( stack, x, y, 0, 0, null );
                 if (hovered == null && mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16) {
                     fill( x, y, x + 16, y + 16, GuiUtil.getColorFromRGB( 150, 150, 150, 150 ) );
                     hovered = stack;

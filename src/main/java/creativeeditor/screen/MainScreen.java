@@ -156,15 +156,23 @@ public class MainScreen extends ParentItemScreen {
         styleButton = addButton( new StyledTextButton( width / 6, 55, font.getStringWidth( styleLocal ), styleLocal, b -> StyleManager.setNext() ) );
         toolsWidgets.add( styleButton );
 
+        String headsLocal = I18n.format( "gui.headcollection" );
+        StyledTextButton headsButton = addButton( new StyledTextButton( width / 6, 75, font.getStringWidth( headsLocal ), headsLocal, b -> minecraft.displayGuiScreen( new HeadCollectionScreen(this)) ) );
+        toolsWidgets.add( headsButton );
+
+        String spawnerLocal = I18n.format( "gui.itemspawner" );
+        StyledTextButton spawnerButton = addButton( new StyledTextButton( width / 6, 95, font.getStringWidth( spawnerLocal ), spawnerLocal, b -> minecraft.displayGuiScreen( new ItemSpawnerScreen(this)) ) );
+        toolsWidgets.add( spawnerButton );
+
         // Lore
-        String clearLocal = I18n.format( "gui.main.clear" );
-        int clearWidth = font.getStringWidth( clearLocal );
-        int clearX = width - 22 - clearWidth / 2;
+        String resetLore = I18n.format( "gui.main.resetlore" );
+        int resetWidth = font.getStringWidth( resetLore );
+        int resetX = width - 22 - resetWidth / 2;
         int nameX = 2 * width / 3 + 16;
-        nameField = new StyledDataTextField( font, nameX, 55, clearX - nameX - clearWidth / 2 - 7, 20, item.getDisplayNameTag() );
+        nameField = new StyledDataTextField( font, nameX, 55, resetX - nameX - resetWidth / 2 - 7, 20, item.getDisplayNameTag() );
         loreWidgets.add( nameField );
         children.add( nameField );
-        clearButton = addButton( new StyledTextButton( clearX, 67, clearWidth, clearLocal, b -> {
+        clearButton = addButton( new StyledTextButton( resetX, 67, resetWidth, resetLore, b -> {
             nameField.setText( item.getDisplayNameTag().getDefault().getFormattedText() );
             nameField.setCursorPos( 0 );
             nameField.setSelectionPos( 0 );

@@ -2,11 +2,16 @@ package creativeeditor.screen.widgets;
 
 import creativeeditor.styles.IStyledButton;
 import creativeeditor.styles.StyleManager;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 
 public class StyledButton extends Button implements IStyledButton {
+    @Getter @Setter
+    private String tooltip;
+
     public StyledButton(int x, int y, int width, int height, String text, IPressable onPress) {
         super( x, y, width, height, text, onPress );
     }

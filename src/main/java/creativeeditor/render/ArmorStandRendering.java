@@ -9,12 +9,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class ArmorStandRendering {
     public static <E extends ArmorStandItem> void addPropertyOverrides( E stand ) {
-        stand.addPropertyOverride( new ResourceLocation( "nobaseplate" ), propertyGetter( ( at ) -> {
-            return at.getNoBasePlate();
-        } ) );
-        stand.addPropertyOverride( new ResourceLocation( "showarms" ), propertyGetter( ( at ) -> {
-            return at.getShowArms();
-        } ) );
+        stand.addPropertyOverride( new ResourceLocation( "nobaseplate" ), propertyGetter(TagEntityArmorStand::getNoBasePlate) );
+        stand.addPropertyOverride( new ResourceLocation( "showarms" ), propertyGetter(TagEntityArmorStand::getShowArms) );
     }
 
 
@@ -27,7 +23,7 @@ public class ArmorStandRendering {
     }
 
 
-    private static interface BooleanTag {
-        public DataBoolean get( TagEntityArmorStand tag );
+    private interface BooleanTag {
+        DataBoolean get(TagEntityArmorStand tag);
     }
 }

@@ -5,17 +5,21 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import creativeeditor.data.DataItem;
 import creativeeditor.data.tag.TagEnchantment;
+import creativeeditor.data.tag.TagList;
 import creativeeditor.screen.widgets.NumberField;
 import creativeeditor.screen.widgets.ScrollableScissorWindow;
 import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class EnchantmentScreen extends ParentScreen {
@@ -25,23 +29,29 @@ public class EnchantmentScreen extends ParentScreen {
      * Needed: Override existing/Allow stacking effects Level input/ List of
      * existing enchants with modify level, remove
      */
-    protected DataItem item;
+    protected TagList<TagEnchantment> enchantmentsTag;
     private ScrollableScissorWindow list;
     private ScrollableScissorWindow added;
     private NumberField level;
     private TagEnchantment selected = null;
+    private Button selectedButton = null;
+    protected List<Widget> selectedWidgets = Lists.newArrayList();
+
+    private enum LevelLimit {
+        SURVIVAL
+    }
 
 
-    public EnchantmentScreen(Screen lastScreen, DataItem editing) {
-        super( new TranslationTextComponent( "gui.enchantment" ), lastScreen );
-        this.item = editing;
+    public EnchantmentScreen(Screen lastScreen, TagList<TagEnchantment> enchantmentsTag) {
+        super(new TranslationTextComponent("gui.enchantment"), lastScreen);
+        this.enchantmentsTag = enchantmentsTag;
     }
 
 
     public static class EnchantComparator implements Comparator<Enchantment> {
         @Override
-        public int compare( Enchantment o1, Enchantment o2 ) {
-            return I18n.format( o1.getName() ).compareTo( I18n.format( o2.getName() ) );
+        public int compare(Enchantment o1, Enchantment o2) {
+            return I18n.format(o1.getName()).compareTo(I18n.format(o2.getName()));
         }
     }
 
@@ -50,53 +60,147 @@ public class EnchantmentScreen extends ParentScreen {
     protected void init() {
         super.init();
 
-        List<Enchantment> sortedEnchants = Lists.newArrayList( ForgeRegistries.ENCHANTMENTS );
-        sortedEnchants.sort( new EnchantComparator() );
+        List<Enchantment> sortedEnchants = Lists.newArrayList(ForgeRegistries.ENCHANTMENTS);
+        sortedEnchants.sort(new EnchantComparator());
 
-        int yStart = 120;
+        int yStart = 45;
         int yEnd = height - yStart - 15;
-        list = addButton( new ScrollableScissorWindow( width / 2 - 75, yStart, 150, yEnd, I18n.format( "gui.enchantment.enchantments" ) ) );
-        for (Enchantment ench : sortedEnchants) {
-            list.getWidgets().add( new StyledButton( 0, 0, 50, 20, I18n.format( ench.getName() ) + ' ' + getLevel( ench ), button -> {
-                item.getTag().getEnchantments().add( new TagEnchantment( ench, getLevel( ench ) ) );
-            } ) );
+        int containerWidth = width / 3 - 10;
+
+        added = addButton(new ScrollableScissorWindow(10, yStart, containerWidth, yEnd, I18n.format("gui.enchantment.applied")));
+        for (TagEnchantment tag : enchantmentsTag) {
+            addEnchantment(tag);
         }
+
+        list = addButton(new ScrollableScissorWindow(width / 3 + 5, yStart, containerWidth, yEnd, I18n.format("gui.enchantment.all")));
+        for (Enchantment ench : sortedEnchants) {
+            StyledButton button = new StyledButton(0, 0, 50, 20, ench.getDisplayName(getLevel(ench)).getFormattedText(), b -> {
+                TagEnchantment tag = new TagEnchantment(ench, getLevel(ench));
+                enchantmentsTag.add(tag);
+                addEnchantment(tag);
+            });
+            if (ench.getRegistryName() != null)
+                button.setTooltip(ench.getRegistryName().toString());
+            list.getWidgets().add(button);
+        }
+
+        initSelectedWidgets();
     }
 
+    public void setSelected(TagEnchantment selected, Button selectedButton) {
+        this.selected = selected;
+        this.selectedButton = selectedButton;
+        initSelectedWidgets();
+    }
 
-    public int getLevel( Enchantment ench ) {
+    public void initSelectedWidgets() {
+        selectedWidgets.clear();
+        if (selected == null) {
+            return;
+        }
+
+        int xStart = width - width / 3 + 20;
+        int yStart = 45;
+
+        selectedWidgets.add(addButton(new StyledButton(xStart, yStart, 60, 20, I18n.format("gui.enchantment.duplicate"), b -> duplicateSelected())));
+        selectedWidgets.add(addButton(new StyledButton(xStart, yStart + 20, 60, 20, I18n.format("gui.enchantment.remove"), b -> removeSelected())));
+        //Widget levelNumberField = addButton(new NumberField(xStart, yStart, 20, selected.getLevel()));
+        //selectedWidgets.add(levelNumberField);
+    }
+
+    public void removeSelected() {
+        if (selectedButton != null)
+            added.getWidgets().remove(selectedButton);
+        if (selected != null)
+            enchantmentsTag.remove(selected);
+    }
+
+    public void duplicateSelected() {
+        TagEnchantment tag = new TagEnchantment(selected.getEnchantment(), selected.getLevel());
+        enchantmentsTag.add(tag);
+        addEnchantment(tag);
+    }
+
+    public void addEnchantment(TagEnchantment tag) {
+        StyledButton button = new StyledButton(0, 0, 50, 20, tag.getEnchantment().getDisplayName(tag.getLevel()).getFormattedText(), b -> {
+            setSelected(tag, b);
+        });
+        if (tag.getEnchantment().getRegistryName() != null)
+            button.setTooltip(tag.getEnchantment().getRegistryName().toString());
+        added.getWidgets().add(button);
+    }
+
+    public int getLevel(Enchantment ench) {
         return ench.getMaxLevel();
     }
 
-
     @Override
-    public boolean mouseClicked( double mouseX, double mouseY, int mouseButton ) {
-        return super.mouseClicked( mouseX, mouseY, mouseButton );
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+        return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
 
     @Override
-    public void backRender( int mouseX, int mouseY, float partialTicks, Color color ) {
-        super.backRender( mouseX, mouseY, partialTicks, color );
+    public void backRender(int mouseX, int mouseY, float partialTicks, Color color) {
+        super.backRender(mouseX, mouseY, partialTicks, color);
     }
 
 
     @Override
-    public void mainRender( int mouseX, int mouseY, float partialTicks, Color color ) {
-        super.mainRender( mouseX, mouseY, partialTicks, color );
+    public void mainRender(int mouseX, int mouseY, float partialTicks, Color color) {
+        super.mainRender(mouseX, mouseY, partialTicks, color);
 
         // int number = 5;
         // int offset = width / number;
         // int i = 1;
 
-        drawString( font, I18n.format( "gui.enchantment.enchantments" ), list.x, list.y - 10, color.getInt() );
+        drawString(font, added.getMessage(), added.x, added.y - 10, color.getInt());
+        drawString(font, list.getMessage(), list.x, list.y - 10, color.getInt());
     }
 
 
     @Override
-    public void overlayRender( int mouseX, int mouseY, float partialTicks, Color color ) {
-        super.overlayRender( mouseX, mouseY, partialTicks, color );
+    public void overlayRender(int mouseX, int mouseY, float partialTicks, Color color) {
+        super.overlayRender(mouseX, mouseY, partialTicks, color);
 
-        GuiUtil.addToolTip( this, 0, 25, item );
+        if (!added.isScrolling() && GuiUtil.isMouseIn(mouseX, mouseY, added.x, added.y, added.getWidth(), added.getHeight())) {
+            for (Widget w : added.getWidgets()) {
+                if (w instanceof StyledButton) {
+                    StyledButton b = (StyledButton) w;
+                    String enchantment = b.getTooltip();
+                    if (enchantment != null) {
+                        GuiUtil.addToolTip(this, b, mouseX, mouseY, I18n.format(enchantment));
+                    }
+                }
+            }
+        }
+
+        if (!list.isScrolling() && GuiUtil.isMouseIn(mouseX, mouseY, list.x, list.y, list.getWidth(), list.getHeight())) {
+            for (Widget w : list.getWidgets()) {
+                if (!(w instanceof StyledButton))
+                    continue;
+                StyledButton b = (StyledButton) w;
+                String tooltip = b.getTooltip();
+                if (tooltip == null)
+                    continue;
+                ResourceLocation loc = new ResourceLocation(tooltip);
+                Enchantment ench = GameRegistry.findRegistry(Enchantment.class).getValue(loc);
+                if (ench == null)
+                    continue;
+                String name = I18n.format(ench.getName());
+                String rarity = I18n.format("gui.enchantment.rarity." + ench.getRarity().toString().toLowerCase());
+                String rarityLine = I18n.format("gui.enchantment.tooltip.rarity", rarity);
+                String minLevel = I18n.format("gui.enchantment.tooltip.minlevel", ench.getMinLevel());
+                String maxLevel = I18n.format("gui.enchantment.tooltip.maxlevel", ench.getMaxLevel());
+                String typeLine = I18n.format("gui.enchantment.tooltip.type", ench.type != null ? ench.type.toString().toLowerCase() : "N/A");
+                String descKey = ench.getName() + ".desc";
+                if(false && !I18n.hasKey(descKey))
+                    GuiUtil.addToolTip(this, b, mouseX, mouseY, name, rarityLine, minLevel, maxLevel, typeLine);
+                else{
+                    String descLine = I18n.format(descKey);
+                    GuiUtil.addToolTip(this, b, mouseX, mouseY, name, rarityLine, minLevel, maxLevel, typeLine, descLine);
+                }
+            }
+        }
     }
 }

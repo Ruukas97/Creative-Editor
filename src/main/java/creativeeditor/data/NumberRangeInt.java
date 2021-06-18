@@ -2,10 +2,12 @@ package creativeeditor.data;
 
 import creativeeditor.data.base.DataInteger;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.util.math.MathHelper;
 
 public class NumberRangeInt extends DataInteger {
-    protected @Getter int min, max;
+    protected @Getter @Setter
+    int min, max;
 
 
     public NumberRangeInt(int number, int min, int max) {
