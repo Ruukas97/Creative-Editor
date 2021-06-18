@@ -142,7 +142,7 @@ public class PlayerInspectorScreen extends ParentScreen {
 
         // Render previous usernames
         y = 9;
-        drawString( usedFont, "§lPrevious usernames:", x, y, 0xFFFFFF);
+        drawString( usedFont, "Previous usernames:", x, y, 0xFFFFFF);
         y += usedFont.FONT_HEIGHT + 3;
         for (MinecraftNameDated n : prevNames) {
             drawString( usedFont, n.name + " since " + n.date, x, y, 0xFFFFFF );
