@@ -83,6 +83,7 @@ public class KeyInputHandler {
         }
         else if (event.getKey() == BARRIER_TOGGLE.getKey().getKeyCode()) {
             CreativeEditor.BARRIER_VISIBLE = !CreativeEditor.BARRIER_VISIBLE;
+            mc.worldRenderer.loadRenderers(); // reload chunks
             System.out.println( "Set barrier visibility: " + CreativeEditor.BARRIER_VISIBLE );
         }
         else if (CreativeEditor.DEBUG && event.getKey() == DEBUG_KEY.getKey().getKeyCode()) {
