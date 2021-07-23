@@ -14,49 +14,49 @@ import net.minecraftforge.registries.GameData;
 
 public class TagItemID extends DataString {
     public TagItemID(INBT value) {
-        super( value instanceof StringNBT ? value.getAsString() : "minecraft:air" );
+        super(value instanceof StringNBT ? value.getAsString() : "minecraft:air");
     }
 
 
     public TagItemID(StringNBT value) {
-        super( value );
+        super(value);
     }
 
 
     public TagItemID(String value) {
-        super( value );
+        super(value);
     }
 
 
     public TagItemID(Item item) {
-        this( getIDFromItem( item ) );
+        this(getIDFromItem(item));
         data = getIDExcludingMC();
     }
 
 
     public TagItemID() {
-        this( Items.AIR );
+        this(Items.AIR);
     }
 
 
     @Nonnull
     public Item getItem() {
-        return GameData.getWrapper( Registry.ITEM_REGISTRY, Lifecycle.stable() ).get( new ResourceLocation( get() ) ); // TODO: add lifecycle
+        return GameData.getWrapper(Registry.ITEM_REGISTRY, Lifecycle.stable()).get(new ResourceLocation(get())); // TODO: add lifecycle
     }
 
     public String getIDExcludingMC() {
-        if(data.startsWith("minecraft:")){
+        if (data.startsWith("minecraft:")) {
             return data.substring(10);
         }
         return data;
     }
 
-    public void setItem( Item item ) {
-        set( getIDFromItem( item ) );
+    public void setItem(Item item) {
+        set(getIDFromItem(item));
     }
 
 
-    public static String getIDFromItem( Item item ) {
+    public static String getIDFromItem(Item item) {
         return item != null ? item.getRegistryName().toString() : "minecraft:air";
     }
 

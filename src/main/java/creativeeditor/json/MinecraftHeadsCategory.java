@@ -8,16 +8,16 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public enum MinecraftHeadsCategory {
     // @formatter:off
-    alphabet( "alphabet" ),
-    animals( "animals" ),
-    blocks( "blocks" ),
-    decoration( "decoration" ),
-    fooddrink( "food-drinks" ),
-    humans( "humans" ),
-    humanoid( "humanoid" ),
-    miscellaneous( "miscellaneous" ),
-    monsters( "monsters" ),
-    plants( "plants" );
+    alphabet("alphabet"),
+    animals("animals"),
+    blocks("blocks"),
+    decoration("decoration"),
+    fooddrink("food-drinks"),
+    humans("humans"),
+    humanoid("humanoid"),
+    miscellaneous("miscellaneous"),
+    monsters("monsters"),
+    plants("plants");
     // @formatter:on
 
 
@@ -36,6 +36,6 @@ public enum MinecraftHeadsCategory {
 
 
     public URL getURL() throws MalformedURLException {
-        return new URL( MinecraftHeads.API_URL + name );
+        return new URL(MinecraftHeads.API_URL + name);
     }
 }

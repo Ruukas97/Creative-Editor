@@ -14,18 +14,17 @@ public class StyledDataTextField extends StyledTextField implements DataControll
 
 
     public StyledDataTextField(FontRenderer fontIn, int x, int y, int width, int height, Data<?, StringNBT> data) {
-        super( fontIn, x, y, width, height, data.getNBT().getString() );
+        super(fontIn, x, y, width, height, data.getNBT().getAsString());
         this.data = data;
         if (data instanceof DataTextComponent) {
             DataTextComponent dataT = (DataTextComponent) data;
             this.text = dataT.getFormatted();
 
-        }
-        else if (data instanceof DataString) {
+        } else if (data instanceof DataString) {
             DataString dataS = (DataString) data;
             this.text = dataS.get();
         }
-        setMaxStringLength( 1000 );
+        setMaxStringLength(1000);
     }
 
 
@@ -33,11 +32,11 @@ public class StyledDataTextField extends StyledTextField implements DataControll
      * Sets the maximum length for the text in this text box. If the current text is
      * longer than this length, the current text will be trimmed.
      */
-    public void setMaxStringLength( int length ) {
+    public void setMaxStringLength(int length) {
         this.maxStringLength = length;
         if (this.text.length() > length) {
-            setTag( this.text.substring( 0, length ) );
-            this.triggerResponder( this.text );
+            setTag(this.text.substring(0, length));
+            this.triggerResponder(this.text);
         }
     }
 
@@ -46,35 +45,34 @@ public class StyledDataTextField extends StyledTextField implements DataControll
      * Adds the given text after the cursor, or replaces the currently selected text
      * if there is a selection.
      */
-    public void writeText( String textToWrite ) {
+    public void writeText(String textToWrite) {
         String s = "";
-        String s1 = SharedConstants.filterAllowedCharacters( textToWrite );
+        String s1 = SharedConstants.filterText(textToWrite);
         int i = this.cursorPosition < this.selectionEnd ? this.cursorPosition : this.selectionEnd;
         int j = this.cursorPosition < this.selectionEnd ? this.selectionEnd : this.cursorPosition;
         int k = this.maxStringLength - this.text.length() - (i - j);
         if (!this.text.isEmpty()) {
-            s = s + this.text.substring( 0, i );
+            s = s + this.text.substring(0, i);
         }
 
         int l;
         if (k < s1.length()) {
-            s = s + s1.substring( 0, k );
+            s = s + s1.substring(0, k);
             l = k;
-        }
-        else {
+        } else {
             s = s + s1;
             l = s1.length();
         }
 
         if (!this.text.isEmpty() && j < this.text.length()) {
-            s = s + this.text.substring( j );
+            s = s + this.text.substring(j);
         }
 
-        if (this.validator.test( s )) {
-            setTag( s );
-            this.setCursorPos( i + l );
-            this.setSelectionPos( this.cursorPosition );
-            this.triggerResponder( this.text );
+        if (this.validator.test(s)) {
+            setTag(s);
+            this.setCursorPos(i + l);
+            this.setSelectionPos(this.cursorPosition);
+            this.triggerResponder(this.text);
         }
     }
 
@@ -84,33 +82,32 @@ public class StyledDataTextField extends StyledTextField implements DataControll
      * unless there is currently a selection, in which case the selection is deleted
      * instead.
      */
-    public void deleteFromCursor( int num ) {
+    public void deleteFromCursor(int num) {
         if (this.text.isEmpty())
             return;
 
         if (this.selectionEnd != this.cursorPosition) {
-            this.writeText( "" );
-        }
-        else {
+            this.writeText("");
+        } else {
             boolean flag = num < 0;
             int i = flag ? this.cursorPosition + num : this.cursorPosition;
             int j = flag ? this.cursorPosition : this.cursorPosition + num;
             String s = "";
             if (i >= 0) {
-                s = this.text.substring( 0, i );
+                s = this.text.substring(0, i);
             }
 
             if (j < this.text.length()) {
-                s = s + this.text.substring( j );
+                s = s + this.text.substring(j);
             }
 
-            if (this.validator.test( s )) {
-                setTag( s );
+            if (this.validator.test(s)) {
+                setTag(s);
                 if (flag) {
-                    this.moveCursorBy( num );
+                    this.moveCursorBy(num);
                 }
 
-                this.triggerResponder( this.text );
+                this.triggerResponder(this.text);
             }
         }
     }
@@ -119,26 +116,25 @@ public class StyledDataTextField extends StyledTextField implements DataControll
     /**
      * Sets the text of the textbox, and moves the cursor to the end.
      */
-    public void setText( String textIn ) {
-        if (this.validator.test( textIn )) {
-            setTag( textIn.length() > this.maxStringLength ? textIn.substring( 0, this.maxStringLength ) : textIn );
+    public void setText(String textIn) {
+        if (this.validator.test(textIn)) {
+            setTag(textIn.length() > this.maxStringLength ? textIn.substring(0, this.maxStringLength) : textIn);
             this.setCursorPositionEnd();
-            this.setSelectionPos( this.cursorPosition );
-            this.triggerResponder( textIn );
+            this.setSelectionPos(this.cursorPosition);
+            this.triggerResponder(textIn);
         }
     }
 
 
-    private void setTag( String text ) {
+    private void setTag(String text) {
         if (data instanceof DataTextComponent) {
             DataTextComponent dataT = (DataTextComponent) data;
-            dataT.set( new StringTextComponent( text ) );
+            dataT.set(new StringTextComponent(text));
             this.text = dataT.getFormatted();
 
-        }
-        else if (data instanceof DataString) {
+        } else if (data instanceof DataString) {
             DataString dataS = (DataString) data;
-            dataS.set( text );
+            dataS.set(text);
             this.text = dataS.get();
         }
     }

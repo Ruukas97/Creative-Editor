@@ -195,11 +195,11 @@ public class EnchantmentScreen extends ParentScreen {
                 String maxLevel = I18n.get("gui.enchantment.tooltip.maxlevel", ench.getMaxLevel());
                 String typeLine = I18n.get("gui.enchantment.tooltip.type", ench.category != null ? ench.category.toString().toLowerCase() : "N/A");
                 String descKey = ench.getDescriptionId() + ".desc";
-                if(false && !I18n.exists(descKey))
+                if (false && !I18n.exists(descKey))
                     GuiUtil.addToolTip(matrix, this, b, mouseX, mouseY, name, rarityLine, minLevel, maxLevel, typeLine);
-                else{
+                else {
                     String descLine = I18n.get(descKey);
-                    GuiUtil.addToolTip(matrix,this, b, mouseX, mouseY, name, rarityLine, minLevel, maxLevel, typeLine, descLine);
+                    GuiUtil.addToolTip(matrix, this, b, mouseX, mouseY, name, rarityLine, minLevel, maxLevel, typeLine, descLine);
                 }
             }
         }

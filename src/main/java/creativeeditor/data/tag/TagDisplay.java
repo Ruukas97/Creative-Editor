@@ -25,10 +25,10 @@ public class TagDisplay implements Data<TagDisplay, CompoundNBT> {
     public TagDisplay(DataItem item, CompoundNBT nbt) {
         this.item = item;
         NBTKeys keys = NBTKeys.keys;
-        color = new DataColor( nbt.getInt( keys.displayColor() ) );
-        mapColor = new DataColor( nbt.getInt( keys.displayMapColor() ) );
-        name = new TagDisplayName( nbt.getString( keys.displayName() ), this.item );
-        lore = new DataListString( nbt.getList( keys.displayLore(), NBT.TAG_STRING ) );
+        color = new DataColor(nbt.getInt(keys.displayColor()));
+        mapColor = new DataColor(nbt.getInt(keys.displayMapColor()));
+        name = new TagDisplayName(nbt.getString(keys.displayName()), this.item);
+        lore = new DataListString(nbt.getList(keys.displayLore(), NBT.TAG_STRING));
     }
 
 
@@ -43,13 +43,13 @@ public class TagDisplay implements Data<TagDisplay, CompoundNBT> {
         NBTKeys keys = NBTKeys.keys;
         CompoundNBT nbt = new CompoundNBT();
         if (!color.isDefault())
-            nbt.put( keys.displayColor(), color.getNBT() );
+            nbt.put(keys.displayColor(), color.getNBT());
         if (!mapColor.isDefault())
-            nbt.put( keys.displayMapColor(), mapColor.getNBT() );
+            nbt.put(keys.displayMapColor(), mapColor.getNBT());
         if (!name.isDefault())
-            nbt.put( keys.displayName(), name.getNBT() );
+            nbt.put(keys.displayName(), name.getNBT());
         if (!lore.isDefault())
-            nbt.put( keys.displayLore(), lore.getNBT() );
+            nbt.put(keys.displayLore(), lore.getNBT());
         return nbt;
     }
 

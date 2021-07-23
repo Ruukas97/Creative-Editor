@@ -9,22 +9,22 @@ import net.minecraft.nbt.ByteNBT;
 public class DataBoolean extends SingularData<Boolean, ByteNBT> implements IPressable {
 
     public DataBoolean() {
-        this( false );
+        this(false);
     }
 
 
     public DataBoolean(ByteNBT nbt) {
-        this( nbt.getAsByte() != 0 );
+        this(nbt.getAsByte() != 0);
     }
 
 
     public DataBoolean(boolean value) {
-        super( value );
+        super(value);
     }
 
 
     public void toggle() {
-        set( !data );
+        set(!data);
     }
 
 
@@ -36,17 +36,17 @@ public class DataBoolean extends SingularData<Boolean, ByteNBT> implements IPres
 
     @Override
     public ByteNBT getNBT() {
-        return ByteNBT.valueOf( data );
+        return ByteNBT.valueOf(data);
     }
 
 
     @Override
-    public void onPress( Button button ) {
+    public void onPress(Button button) {
         toggle();
         if (button instanceof StyledToggle) {
-            ((StyledToggle) button).updateMessage( data );
-        } else if(button instanceof StyledTFToggle) {
-        	 ((StyledTFToggle) button).updateMessage( data );
+            ((StyledToggle) button).updateMessage(data);
+        } else if (button instanceof StyledTFToggle) {
+            ((StyledTFToggle) button).updateMessage(data);
         }
     }
 }

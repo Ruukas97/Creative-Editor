@@ -5,17 +5,17 @@ import net.minecraft.nbt.LongNBT;
 public class DataLong extends SingularData<Long, LongNBT> {
 
     public DataLong() {
-        this( 0 );
+        this(0);
     }
 
 
     public DataLong(long value) {
-        super( value );
+        super(value);
     }
 
 
     public DataLong(LongNBT nbt) {
-        this( nbt.getAsLong() );
+        this(nbt.getAsLong());
     }
 
 
@@ -27,6 +27,6 @@ public class DataLong extends SingularData<Long, LongNBT> {
 
     @Override
     public LongNBT getNBT() {
-        return LongNBT.valueOf( data );
+        return LongNBT.valueOf(data);
     }
 }

@@ -5,12 +5,12 @@ import net.minecraft.nbt.FloatNBT;
 public class DataFloat extends SingularData<Float, FloatNBT> {
 
     public DataFloat(float value) {
-        super( value );
+        super(value);
     }
 
 
     public DataFloat(FloatNBT nbt) {
-        this( nbt.getAsLong() );
+        this(nbt.getAsLong());
     }
 
 
@@ -22,6 +22,6 @@ public class DataFloat extends SingularData<Float, FloatNBT> {
 
     @Override
     public FloatNBT getNBT() {
-        return FloatNBT.valueOf( data );
+        return FloatNBT.valueOf(data);
     }
 }

@@ -5,21 +5,21 @@ import net.minecraft.nbt.StringNBT;
 public class DataString extends SingularData<String, StringNBT> {
 
     public DataString() {
-        this( "" );
+        this("");
     }
 
 
     public DataString(String value) {
-        super( value );
+        super(value);
     }
 
 
     public DataString(StringNBT nbt) {
-        this( nbt.getAsString() );
+        this(nbt.getAsString());
     }
 
 
-    public void set( String value ) {
+    public void set(String value) {
         data = (value != null ? value : "");
     }
 
@@ -32,6 +32,6 @@ public class DataString extends SingularData<String, StringNBT> {
 
     @Override
     public StringNBT getNBT() {
-        return StringNBT.valueOf( data );
+        return StringNBT.valueOf(data);
     }
 }

@@ -20,20 +20,19 @@ public class TagEnchantment implements Data<TagEnchantment, CompoundNBT> {
 
 
     public TagEnchantment(INBT nbt) {
-        this( nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT() );
+        this(nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT());
     }
 
 
     public TagEnchantment(CompoundNBT nbt) {
         try {
-            ResourceLocation rl = new ResourceLocation( nbt.getString( "id" ) );
-            enchantment = GameRegistry.findRegistry( Enchantment.class ).getValue( rl );
-        }
-        catch (ResourceLocationException e) {
-            enchantment = Enchantment.byId( 0 );
+            ResourceLocation rl = new ResourceLocation(nbt.getString("id"));
+            enchantment = GameRegistry.findRegistry(Enchantment.class).getValue(rl);
+        } catch (ResourceLocationException e) {
+            enchantment = Enchantment.byId(0);
         }
 
-        level = nbt.getInt( "lvl" );
+        level = nbt.getInt("lvl");
     }
 
 
@@ -46,8 +45,8 @@ public class TagEnchantment implements Data<TagEnchantment, CompoundNBT> {
     @Override
     public CompoundNBT getNBT() {
         CompoundNBT nbt = new CompoundNBT();
-        nbt.putString( "id", enchantment.delegate.name().toString() );
-        nbt.putInt( "lvl", level );
+        nbt.putString("id", enchantment.delegate.name().toString());
+        nbt.putInt("lvl", level);
         return nbt;
     }
 

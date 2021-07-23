@@ -10,15 +10,15 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class ReflectionUtils {
-    public static void setTeisr( Item item, Supplier<Callable<ItemStackTileEntityRenderer>> teisr ) {
+    public static void setTeisr(Item item, Supplier<Callable<ItemStackTileEntityRenderer>> teisr) {
         if (teisr == null)
             return;
-        @SuppressWarnings( "deprecation" )
-        ItemStackTileEntityRenderer tmp = DistExecutor.callWhenOn( Dist.CLIENT, teisr );
+        @SuppressWarnings("deprecation")
+        ItemStackTileEntityRenderer tmp = DistExecutor.callWhenOn(Dist.CLIENT, teisr);
         if (tmp == null)
             return;
         Supplier<ItemStackTileEntityRenderer> ister = () -> tmp;
         if (ister != null)
-            ObfuscationReflectionHelper.setPrivateValue( Item.class, item, ister, "ister" );
+            ObfuscationReflectionHelper.setPrivateValue(Item.class, item, ister, "ister");
     }
 }

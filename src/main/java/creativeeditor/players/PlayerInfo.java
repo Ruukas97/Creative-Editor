@@ -17,7 +17,7 @@ import creativeeditor.CreativeEditor;
 import lombok.Getter;
 
 public class PlayerInfo {
-    private static final Path PATH = CreativeEditor.DATAPATH.resolve( "players" );
+    private static final Path PATH = CreativeEditor.DATAPATH.resolve("players");
     private static final HashMap<UUID, PlayerInfo> CACHE = new HashMap<>();
 
     @Getter
@@ -25,34 +25,33 @@ public class PlayerInfo {
 
 
     private PlayerInfo(UUID uuid) throws JsonParseException, IOException {
-        CACHE.put( uuid, this );
-        PlayerInfoResponse resp = readPlayerInfo( uuid );
+        CACHE.put(uuid, this);
+        PlayerInfoResponse resp = readPlayerInfo(uuid);
         namePlate = resp != null ? resp.getNameplate() : null;
     }
 
 
-    public static PlayerInfo getByUUID( UUID uuid ) {
+    public static PlayerInfo getByUUID(UUID uuid) {
         try {
-            return CACHE.getOrDefault( uuid, new PlayerInfo( uuid ) );
-        }
-        catch (JsonParseException | IOException e) {
+            return CACHE.getOrDefault(uuid, new PlayerInfo(uuid));
+        } catch (JsonParseException | IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
     @Nullable
-    private static PlayerInfoResponse readPlayerInfo( UUID uuid ) throws IOException, JsonParseException {
-        File file = PATH.resolve(uuid.toString() + ".json" ).toFile();
-        if(!file.getParentFile().exists()) {
+    private static PlayerInfoResponse readPlayerInfo(UUID uuid) throws IOException, JsonParseException {
+        File file = PATH.resolve(uuid.toString() + ".json").toFile();
+        if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
-        if(!file.exists()) {
+        if (!file.exists()) {
             file.createNewFile();
         }
-        Reader reader = new FileReader( file );
+        Reader reader = new FileReader(file);
         Gson gson = new Gson();
-        PlayerInfoResponse response = gson.fromJson( reader, PlayerInfoResponse.class );
+        PlayerInfoResponse response = gson.fromJson(reader, PlayerInfoResponse.class);
         reader.close();
 
         return response;

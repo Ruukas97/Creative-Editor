@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import com.google.common.collect.Lists;
@@ -33,7 +35,7 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
 
     //TODO scrollwheel
     public ScrollableScissorWindow(int x, int y, int width, int height, String msg) {
-        super( x, y, width, height, msg );
+        super(x, y, width, height, new StringTextComponent(msg));
     }
 
 
@@ -47,7 +49,7 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
 
     @Override
     public boolean mouseScrolled(double p_mouseScrolled_1_, double p_mouseScrolled_3_, double p_mouseScrolled_5_) {
-        if(isHovered){
+        if (isHovered) {
             scrollOffset = (int) MathHelper.clamp(scrollOffset - p_mouseScrolled_5_ * 10, 0, getListHeight() - height);
             return true;
         }
@@ -67,7 +69,7 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
 
 
     @Override
-    public final void setDragging( boolean isDragging ) {
+    public final void setDragging(boolean isDragging) {
         this.isDragging = isDragging;
     }
 
@@ -80,33 +82,32 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
 
 
     @Override
-    public void setFocused( IGuiEventListener focused ) {
+    public void setFocused(IGuiEventListener focused) {
         this.focused = focused;
     }
 
 
     @Override
-    public boolean mouseClicked( double mouseX, double mouseY, int mouseButton ) {
-        if (mouseButton == 0 && GuiUtil.isMouseInRegion( mouseX, mouseY, x + width - scrollBarWidth, y, scrollBarWidth, height )) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+        if (mouseButton == 0 && GuiUtil.isMouseInRegion(mouseX, mouseY, x + width - scrollBarWidth, y, scrollBarWidth, height)) {
             isScrolling = true;
 
             int listHeight = getListHeight();
             int max = listHeight - this.height;
             int insideHeight = (this.height - 4);
-            double covered = MathHelper.clamp( insideHeight / (float) listHeight, 0d, 1d );
+            double covered = MathHelper.clamp(insideHeight / (float) listHeight, 0d, 1d);
             int scrollBarHeight = (int) (insideHeight * covered);
             int scrollSpace = insideHeight - scrollBarHeight;
-            double mousePos = MathHelper.clamp( mouseY - (this.y + 2 + (scrollBarHeight / 2d)), 0, scrollSpace );
+            double mousePos = MathHelper.clamp(mouseY - (this.y + 2 + (scrollBarHeight / 2d)), 0, scrollSpace);
             double scrollPerc = mousePos / scrollSpace;
             scrollOffset = (int) (scrollPerc * max);
             return true;
-        }
-        else {
+        } else {
             isScrolling = false;
         }
 
-        if(this.isHovered){
-            for(IGuiEventListener iguieventlistener : this.children()) {
+        if (this.isHovered) {
+            for (IGuiEventListener iguieventlistener : this.children()) {
                 if (iguieventlistener.mouseClicked(mouseX, mouseY, mouseButton)) {
                     this.setFocused(iguieventlistener);
                     if (mouseButton == 0) {
@@ -117,53 +118,53 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
                 }
             }
         }
-        
-        return super.mouseClicked( mouseX, mouseY, mouseButton );
+
+        return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
 
     @Override
-    public boolean mouseReleased( double mouseX, double mouseY, int mouseButton ) {
+    public boolean mouseReleased(double mouseX, double mouseY, int mouseButton) {
         isScrolling = false;
-        return super.mouseReleased( mouseX, mouseY, mouseButton );
+        return super.mouseReleased(mouseX, mouseY, mouseButton);
     }
 
 
     @Override
-    public boolean mouseDragged( double mouseX, double mouseY, int button, double onX, double onY ) {
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double onX, double onY) {
         if (isScrolling) {
             int listHeight = getListHeight();
             int max = listHeight - this.height;
             int insideHeight = (this.height - 4);
-            double covered = MathHelper.clamp( insideHeight / (float) listHeight, 0d, 1d );
+            double covered = MathHelper.clamp(insideHeight / (float) listHeight, 0d, 1d);
             int scrollBarHeight = (int) (insideHeight * covered);
             int scrollSpace = insideHeight - scrollBarHeight;
-            double mousePos = MathHelper.clamp( mouseY - (this.y + 2 + (scrollBarHeight / 2)), 0, scrollSpace );
+            double mousePos = MathHelper.clamp(mouseY - (this.y + 2 + (scrollBarHeight / 2)), 0, scrollSpace);
             double scrollPerc = mousePos / scrollSpace;
             scrollOffset = (int) (scrollPerc * max);
         }
-        return super.mouseDragged( mouseX, mouseY, button, onX, onY );
+        return super.mouseDragged(mouseX, mouseY, button, onX, onY);
     }
 
     @Override
-    public void renderButton( int mouseX, int mouseY, float partialTicks ) {
+    public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         // super.renderButton( mouseX, mouseY, partialTicks );
         // Minecraft mc = Minecraft.getInstance();
-        GuiUtil.drawFrame( x, y, x + width, y + height, 1, StyleManager.getCurrentStyle().getMainColor() );
+        GuiUtil.drawFrame(matrix, x, y, x + width, y + height, 1, StyleManager.getCurrentStyle().getMainColor());
         int listHeight = getListHeight();
-        GuiUtil.drawFrame( x + width - scrollBarWidth, y, x + width, y + height, 1, StyleManager.getCurrentStyle().getMainColor() );
+        GuiUtil.drawFrame(matrix, x + width - scrollBarWidth, y, x + width, y + height, 1, StyleManager.getCurrentStyle().getMainColor());
         int insideHeight = (this.height - 4);
-        double covered = MathHelper.clamp( insideHeight / (float) listHeight, 0d, 1d );
+        double covered = MathHelper.clamp(insideHeight / (float) listHeight, 0d, 1d);
         int scrollBarHeight = (int) (insideHeight * covered);
-        double scrolled = MathHelper.clamp( scrollOffset / (float) (listHeight - this.height), 0d, 1d );
+        double scrolled = MathHelper.clamp(scrollOffset / (float) (listHeight - this.height), 0d, 1d);
         int scrolledPixels = (int) (scrolled * (insideHeight - scrollBarHeight));
         int scrollTop = 2 + y + scrolledPixels;
-        boolean hovered = GuiUtil.isMouseInRegion( mouseX, mouseY, x + width - scrollBarWidth, y, scrollBarWidth, height );
-        fill( 2 + x + width - scrollBarWidth, scrollTop, x + width - 2, scrollTop + scrollBarHeight, StyleManager.getCurrentStyle().getFGColor( true, hovered ).getInt() );
+        boolean hovered = GuiUtil.isMouseInRegion(mouseX, mouseY, x + width - scrollBarWidth, y, scrollBarWidth, height);
+        fill(matrix, 2 + x + width - scrollBarWidth, scrollTop, x + width - 2, scrollTop + scrollBarHeight, StyleManager.getCurrentStyle().getFGColor(true, hovered).getInt());
 
         if (widgets.size() != 0) {
-            RenderUtil.glScissorBox( this.x + 1, this.y + 2, this.x + this.width - scrollBarWidth - 1, this.y + this.height - 1 );
-            GL11.glEnable( GL11.GL_SCISSOR_TEST );
+            RenderUtil.glScissorBox(this.x + 1, this.y + 2, this.x + this.width - scrollBarWidth - 1, this.y + this.height - 1);
+            GL11.glEnable(GL11.GL_SCISSOR_TEST);
 
             int x = this.x + padding;
             int y = this.y + padding - scrollOffset;
@@ -174,26 +175,24 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
             for (Widget w : widgets) {
                 w.x = x;
                 w.y = y;
-                w.setWidth( width - padding - padding - scrollBarWidth );
+                w.setWidth(width - padding - padding - scrollBarWidth);
 
                 if (this.y <= w.y + w.getHeight() && w.y < maxY) {
                     w.active = true;
                     w.visible = true;
-                    if(mouseOut){
-                        w.render(-10000, -10000, partialTicks );
+                    if (mouseOut) {
+                        w.render(matrix, -10000, -10000, partialTicks);
+                    } else {
+                        w.render(matrix, mouseX, mouseY, partialTicks);
                     }
-                    else{
-                        w.render(mouseX, mouseY, partialTicks );
-                    }
-                }
-                else {
+                } else {
                     w.active = false;
                     w.visible = false;
                 }
                 y = w.y + w.getHeight() + padding;
             }
 
-            GL11.glDisable( GL11.GL_SCISSOR_TEST );
+            GL11.glDisable(GL11.GL_SCISSOR_TEST);
         }
     }
 

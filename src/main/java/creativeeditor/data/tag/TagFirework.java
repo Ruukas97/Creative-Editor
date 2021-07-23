@@ -13,13 +13,13 @@ public class TagFirework extends SingularData<TagList<TagExplosion>, CompoundNBT
 
 
     public TagFirework(CompoundNBT nbt) {
-        this( new TagList<>( nbt.getList( NBTKeys.keys.fireworksExplosions(), NBT.TAG_COMPOUND ), TagExplosion::new ), nbt.getByte( NBTKeys.keys.fireworksFlight() ) );
+        this(new TagList<>(nbt.getList(NBTKeys.keys.fireworksExplosions(), NBT.TAG_COMPOUND), TagExplosion::new), nbt.getByte(NBTKeys.keys.fireworksFlight()));
     }
 
 
     public TagFirework(TagList<TagExplosion> list, byte flight) {
-        super( list );
-        this.flight = new DataByte( flight );
+        super(list);
+        this.flight = new DataByte(flight);
     }
 
 
@@ -33,8 +33,8 @@ public class TagFirework extends SingularData<TagList<TagExplosion>, CompoundNBT
     public CompoundNBT getNBT() {
         NBTKeys keys = NBTKeys.keys;
         CompoundNBT nbt = new CompoundNBT();
-        nbt.put( keys.fireworksFlight(), flight.getNBT() );
-        nbt.put( keys.fireworksExplosions(), data.getNBT() );
+        nbt.put(keys.fireworksFlight(), flight.getNBT());
+        nbt.put(keys.fireworksExplosions(), data.getNBT());
         return nbt;
     }
 }

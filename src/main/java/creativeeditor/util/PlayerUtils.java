@@ -5,7 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 
 public class PlayerUtils {
-    @SuppressWarnings( "resource" )
+    @SuppressWarnings("resource")
     public static PlayerEntity getLocalPlayer() {
         return Minecraft.getInstance().player;
     }

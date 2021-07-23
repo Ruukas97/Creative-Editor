@@ -4,12 +4,12 @@ import net.minecraft.nbt.DoubleNBT;
 
 public class DataDouble extends SingularData<Double, DoubleNBT> {
     public DataDouble(double value) {
-        super( value );
+        super(value);
     }
 
 
     public DataDouble(DoubleNBT nbt) {
-        this( nbt.getAsDouble() );
+        this(nbt.getAsDouble());
     }
 
 
@@ -21,6 +21,6 @@ public class DataDouble extends SingularData<Double, DoubleNBT> {
 
     @Override
     public DoubleNBT getNBT() {
-        return DoubleNBT.valueOf( data );
+        return DoubleNBT.valueOf(data);
     }
 }

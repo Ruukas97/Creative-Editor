@@ -4,12 +4,12 @@ import net.minecraft.nbt.IntArrayNBT;
 
 public class DataIntegerArray extends SingularData<int[], IntArrayNBT> {
     public DataIntegerArray(int... values) {
-        super( values );
+        super(values);
     }
 
 
     public DataIntegerArray(IntArrayNBT nbt) {
-        this( nbt.getAsIntArray() );
+        this(nbt.getAsIntArray());
     }
 
 
@@ -21,6 +21,6 @@ public class DataIntegerArray extends SingularData<int[], IntArrayNBT> {
 
     @Override
     public IntArrayNBT getNBT() {
-        return new IntArrayNBT( data );
+        return new IntArrayNBT(data);
     }
 }

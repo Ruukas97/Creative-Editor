@@ -2,6 +2,8 @@ package creativeeditor.screen.widgets;
 
 import javax.annotation.Nullable;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.styles.IStyledSlider;
@@ -15,7 +17,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn( Dist.CLIENT )
+@OnlyIn(Dist.CLIENT)
 public class StyledSlider extends Widget implements IStyledSlider<Integer> {
     public int value;
 
@@ -30,17 +32,17 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
 
 
     protected StyledSlider(int x, int y, int width, int height, String display, int value, int min, int max) {
-        this( x, y, width, height, display, true, value, min, max, null );
+        this(x, y, width, height, display, true, value, min, max, null);
     }
 
 
     protected StyledSlider(int x, int y, int width, int height, int value, int min, int max) {
-        this( x, y, width, height, "", false, value, min, max, null );
+        this(x, y, width, height, "", false, value, min, max, null);
     }
 
 
     protected StyledSlider(int x, int y, int width, int height, String display, boolean drawString, int value, int min, int max, SliderHandler handler) {
-        super( x, y, width, height, display );
+        super(x, y, width, height, new StringTextComponent(display));
         this.value = value;
         this.display = display;
         this.drawString = drawString;
@@ -48,55 +50,49 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
         this.max = max;
         this.handler = handler;
 
-        setMessage( drawString ? display + value : "" );
+        setMessage(new StringTextComponent(drawString ? display + value : ""));
     }
 
 
     @Override
-    public int getYImage( boolean par1 ) {
+    public int getYImage(boolean par1) {
         return 0;
     }
 
 
     @Override
-    protected String getNarrationMessage() {
-        return I18n.get( "gui.narrate.slider", getMessage() );
-    }
-
-
-    @Override
-    public void renderButton( int mouseX, int mouseY, float p3 ) {
+    public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float p3) {
         // super.renderButton(mouseX, mouseY, p3);
-        StyleManager.getCurrentStyle().renderButton( this, mouseX, mouseY, p3 );
+        StyleManager.getCurrentStyle().renderButton(matrix, this, mouseX, mouseY, p3);
     }
 
 
-    public void renderBg( Minecraft mc, int mouseX, int mouseY ) {
+    public void renderBg(Minecraft mc, int mouseX, int mouseY) {
         if (!this.visible)
             return;
 
-        StyleManager.getCurrentStyle().renderSlider( this, mouseX, mouseY );
+        StyleManager.getCurrentStyle().renderSlider(null, this, mouseX, mouseY);
     }
 
 
-    private void setValueFromMouse( double mouseX ) {
+    private void setValueFromMouse(double mouseX) {
         double updateValue;
         if (StyleManager.getCurrentStyle() instanceof StyleSpectrum)
             updateValue = (mouseX - (x + 1d)) / (width - 2.5d);
         else
             updateValue = (mouseX - (x + 4)) / (double) (width - 8);
-        setValue( (int) Math.round( updateValue * (max - min) + min ) );
+        setValue((int) Math.round(updateValue * (max - min) + min));
     }
 
 
     @Override
-    public void onClick( double mouseX, double mouseY ) {
-        setValueFromMouse( mouseX );
+    public void onClick(double mouseX, double mouseY) {
+        setValueFromMouse(mouseX);
     }
 
 
     @Override
-    public boolean keyPressed( int key1, int key2, int key3 ) {
+    public boolean keyPressed(int key1, int key2, int key3) {
         if (key1 == GLFW.GLFW_KEY_LEFT && value > min) {
             value--;
             updateSlider();
@@ -113,8 +109,8 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
     }
 
 
-    public void setValue( int value ) {
-        int clamped = MathHelper.clamp( value, min, max );
+    public void setValue(int value) {
+        int clamped = MathHelper.clamp(value, min, max);
         if (this.value != clamped) {
             this.value = clamped;
             updateSlider();
@@ -123,33 +119,33 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
 
 
     public void updateSlider() {
-        setMessage( drawString ? display + value : "" );
+        setMessage(new StringTextComponent(drawString ? display + value : ""));
         if (handler != null)
-            handler.onSlideValue( this );
+            handler.onSlideValue(this);
     }
 
 
     @Override
-    protected void onDrag( double mouseX, double p_onDrag_3_, double p_onDrag_5_, double p_onDrag_7_ ) {
-        setValueFromMouse( mouseX );
-        super.onDrag( mouseX, p_onDrag_3_, p_onDrag_5_, p_onDrag_7_ );
+    protected void onDrag(double mouseX, double p_onDrag_3_, double p_onDrag_5_, double p_onDrag_7_) {
+        setValueFromMouse(mouseX);
+        super.onDrag(mouseX, p_onDrag_3_, p_onDrag_5_, p_onDrag_7_);
     }
 
 
     @Override
-    public void playDownSound( SoundHandler soundHandler ) {
+    public void playDownSound(SoundHandler soundHandler) {
     }
 
 
     @Override
-    public void onRelease( double mouseX, double mouseY ) {
-        super.playDownSound( Minecraft.getInstance().getSoundHandler() );
+    public void onRelease(double mouseX, double mouseY) {
+        super.playDownSound(Minecraft.getInstance().getSoundManager());
     }
 
 
     @Override
     public int getFGColor() {
-        return StyleManager.getCurrentStyle().getFGColor( this ).getInt();
+        return StyleManager.getCurrentStyle().getFGColor(this).getInt();
     }
 
 
@@ -178,12 +174,12 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
 
 
     public interface SliderHandler {
-        void onSlideValue( StyledSlider slider );
+        void onSlideValue(StyledSlider slider);
     }
 
 
     @Override
-    public void setHovered( boolean b ) {
+    public void setHovered(boolean b) {
         isHovered = b;
     }
 }

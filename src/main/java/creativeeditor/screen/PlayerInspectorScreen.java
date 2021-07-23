@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import com.google.gson.Gson;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.data.DataItem;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
@@ -37,25 +38,25 @@ public class PlayerInspectorScreen extends ParentScreen {
         private String name;
         private long changedToAt;
     }
-    
+
     private static class MinecraftNameDated {
-		private final String name;
-    	private final String date;
-    	public MinecraftNameDated(MinecraftName undatedName) {
-			name = undatedName.name;
-			if (undatedName.changedToAt == 0) {
-				date = "the beginning of time";
-			}
-			else {
-				Date dateObject = new Date( undatedName.changedToAt );
-				date = dateFormat.format( dateObject );
-			}
-		}
+        private final String name;
+        private final String date;
+
+        public MinecraftNameDated(MinecraftName undatedName) {
+            name = undatedName.name;
+            if (undatedName.changedToAt == 0) {
+                date = "the beginning of time";
+            } else {
+                Date dateObject = new Date(undatedName.changedToAt);
+                date = dateFormat.format(dateObject);
+            }
+        }
     }
 
 
     public PlayerInspectorScreen(Screen lastScreen, PlayerEntity targetPlayer) {
-        super( new TranslationTextComponent( "gui.playerinspector" ), lastScreen );
+        super(new TranslationTextComponent("gui.playerinspector"), lastScreen);
         this.target = targetPlayer;
     }
 
@@ -65,24 +66,22 @@ public class PlayerInspectorScreen extends ParentScreen {
         super.init();
         playerUUID = "b712317a9e3649e9b8e8dbbae7b3fc02"; // This is Ruukas' uuid // PlayerEntity.getUUID( target.getGameProfile() ).toString();
         prevNames = new ArrayList<MinecraftNameDated>();
-        if (cashedNames.containsKey( playerUUID )) {
-        	System.out.println("already found previous names in cache");
-            prevNames = cashedNames.get( playerUUID );
-        }
-        else {
+        if (cashedNames.containsKey(playerUUID)) {
+            System.out.println("already found previous names in cache");
+            prevNames = cashedNames.get(playerUUID);
+        } else {
             try {
-                URL namesURL = new URL( String.format( "https://api.mojang.com/user/profiles/%s/names", playerUUID.replace( "-", "" ) ) );
-                InputStreamReader reader = new InputStreamReader( namesURL.openStream() );
+                URL namesURL = new URL(String.format("https://api.mojang.com/user/profiles/%s/names", playerUUID.replace("-", "")));
+                InputStreamReader reader = new InputStreamReader(namesURL.openStream());
                 Gson gson = new Gson();
-                prevNamesUndated = gson.fromJson( reader, MinecraftName[].class );
-                
+                prevNamesUndated = gson.fromJson(reader, MinecraftName[].class);
+
                 for (MinecraftName n : prevNamesUndated) {
-                	MinecraftNameDated datedName = new MinecraftNameDated( n );
-                	prevNames.add( datedName );
+                    MinecraftNameDated datedName = new MinecraftNameDated(n);
+                    prevNames.add(datedName);
                 }
-                cashedNames.put( playerUUID, prevNames );
-            }
-            catch (IOException e) {
+                cashedNames.put(playerUUID, prevNames);
+            } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
@@ -91,79 +90,79 @@ public class PlayerInspectorScreen extends ParentScreen {
 
 
     @Override
-    public boolean mouseClicked( double mouseX, double mouseY, int mouseButton ) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         int y = height - 16;
         int x = 9;
-        FontRenderer usedFont = minecraft.fontRenderer;
+        FontRenderer usedFont = minecraft.font;
         String uuidText = "Player UUID: " + playerUUID;
-        if (GuiUtil.isMouseInRegion( mouseX, mouseY, x, y, usedFont.getStringWidth( uuidText ), usedFont.FONT_HEIGHT )) {
+        if (GuiUtil.isMouseInRegion(mouseX, mouseY, x, y, usedFont.width(uuidText), usedFont.lineHeight)) {
             Minecraft mc = getMinecraft();
-            mc.keyboardListener.setClipboardString( playerUUID );
+            mc.keyboardHandler.setClipboard(playerUUID);
         }
 
 
         y = height / 2 - 45;
         x = width / 2 + 100;
-        for (ItemStack stack : target.getEquipmentAndArmor()) {
-            if (GuiUtil.isMouseInRegion( mouseX, mouseY, x, y, 16, 16 )) {
-                Minecraft mc = getMinecraft();
-                mc.playerController.sendSlotPacket( stack, InventoryUtils.getEmptySlot( mc.player.inventory ) );
-                return true;
-            }
+//        for (ItemStack stack : target.getEquipmentAndArmor()) {
+//            if (GuiUtil.isMouseInRegion( mouseX, mouseY, x, y, 16, 16 )) {
+//                Minecraft mc = getMinecraft();
+//                mc.playerController.sendSlotPacket( stack, InventoryUtils.getEmptySlot( mc.player.inventory ) );
+//                return true;
+//            }
+//
+//            y -= 15;
+//        }
+//        if (GuiUtil.isMouseInRegion( mouseX, mouseY, x, y, 16, 16 )) {
+//            Minecraft mc = getMinecraft();
+//            DataItem headItem = new DataItem( Items.PLAYER_HEAD );
+//            headItem.getTag().getSkullOwner().set( target.getGameProfile() );
+//            mc.playerController.sendSlotPacket( headItem.getItemStack(), InventoryUtils.getEmptySlot( mc.player.inventory ) );
+//            return true;
+//        }
 
-            y -= 15;
-        }
-        if (GuiUtil.isMouseInRegion( mouseX, mouseY, x, y, 16, 16 )) {
-            Minecraft mc = getMinecraft();
-            DataItem headItem = new DataItem( Items.PLAYER_HEAD );
-            headItem.getTag().getSkullOwner().set( target.getGameProfile() );
-            mc.playerController.sendSlotPacket( headItem.getItemStack(), InventoryUtils.getEmptySlot( mc.player.inventory ) );
-            return true;
-        }
 
-
-        return super.mouseClicked( mouseX, mouseY, mouseButton );
+        return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
 
     @Override
-    public void mainRender( int mouseX, int mouseY, float p3, Color color ) {
-        super.mainRender( mouseX, mouseY, p3, color );
+    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
+        super.mainRender(matrix, mouseX, mouseY, p3, color);
 
         // Render player model
-        InventoryScreen.drawEntityOnScreen( width / 2, height / 2, 50, width / 2f - mouseX, height / 3f - mouseY, target );
+//        InventoryScreen.drawEntityOnScreen( width / 2, height / 2, 50, width / 2f - mouseX, height / 3f - mouseY, target );
 
         // Render player UUID
         int y = height - 16;
         int x = 9;
-        FontRenderer usedFont = minecraft.fontRenderer;
+        FontRenderer usedFont = minecraft.font;
         String uuidText = "Player UUID: " + playerUUID;
-        drawString( usedFont, uuidText, x, y, (GuiUtil.isMouseInRegion( mouseX, mouseY, x, y, usedFont.getStringWidth( uuidText ), usedFont.FONT_HEIGHT )) ? 0xAAAAAA : 0xFFFFFF );
+        drawString(matrix, usedFont, uuidText, x, y, (GuiUtil.isMouseInRegion(mouseX, mouseY, x, y, usedFont.width(uuidText), usedFont.lineHeight)) ? 0xAAAAAA : 0xFFFFFF);
 
         // Render previous usernames
         y = 9;
-        drawString( usedFont, "Previous usernames:", x, y, 0xFFFFFF);
-        y += usedFont.FONT_HEIGHT + 3;
+        drawString(matrix, usedFont, "Previous usernames:", x, y, 0xFFFFFF);
+        y += usedFont.lineHeight + 3;
         for (MinecraftNameDated n : prevNames) {
-            drawString( usedFont, n.name + " since " + n.date, x, y, 0xFFFFFF );
-            y += usedFont.FONT_HEIGHT + 2;
+            drawString(matrix, usedFont, n.name + " since " + n.date, x, y, 0xFFFFFF);
+            y += usedFont.lineHeight + 2;
         }
 
         // Render equipped items and player head
         y = height / 2 - 45;
         x = width / 2 + 100;
-        for (ItemStack stack : target.getEquipmentAndArmor()) {
-            drawItemStack( stack, x, y, 0, 0, null );
-
-            if (GuiUtil.isMouseInRegion( mouseX, mouseY, x, y, 16, 16 )) {
-                renderTooltip( stack, mouseX, mouseY );
-
-            }
-
-            y -= 15;
-        }
-        DataItem headItem = new DataItem( Items.PLAYER_HEAD );
-        headItem.getTag().getSkullOwner().set( target.getGameProfile() );
-        drawItemStack( headItem.getItemStack(), x, y, 0, 0, null );
+//        for (ItemStack stack : target.getEquipmentAndArmor()) {
+//            drawItemStack( stack, x, y, 0, 0, null );
+//
+//            if (GuiUtil.isMouseInRegion( mouseX, mouseY, x, y, 16, 16 )) {
+//                renderTooltip( matrix, stack, mouseX, mouseY );
+//
+//            }
+//
+//            y -= 15;
+//        }
+        DataItem headItem = new DataItem(Items.PLAYER_HEAD);
+        headItem.getTag().getSkullOwner().set(target.getGameProfile());
+        drawItemStack(headItem.getItemStack(), x, y, 0, 0, null);
     }
 }

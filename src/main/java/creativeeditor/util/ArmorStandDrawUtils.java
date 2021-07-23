@@ -29,7 +29,7 @@ public class ArmorStandDrawUtils {
 
     public void updateArmorStand() {
         if (armorstand != null) {
-            armorstand.readAdditionalSaveData( getStandData().getNBT() );
+            armorstand.readAdditionalSaveData(getStandData().getNBT());
         }
     }
 
@@ -39,19 +39,19 @@ public class ArmorStandDrawUtils {
     }
 
 
-    public void drawArmorStand( ArmorStandEntity armorStand, int posX, int posY, int scale ) {
+    public void drawArmorStand(ArmorStandEntity armorStand, int posX, int posY, int scale) {
         //float f = (float) Math.atan( (double) (mouseX / 40.0F) );
         //float f1 = (float) Math.atan( (double) (mouseY / 40.0F) );
         RenderSystem.pushMatrix();
-        RenderSystem.translatef( (float) posX, (float) posY, 1050.0F );
-        RenderSystem.scalef( 1.0F, 1.0F, -1.0F );
+        RenderSystem.translatef((float) posX, (float) posY, 1050.0F);
+        RenderSystem.scalef(1.0F, 1.0F, -1.0F);
         MatrixStack matrixstack = new MatrixStack();
-        matrixstack.translate( 0.0D, 0.0D, 1000.0D );
-        matrixstack.scale( (float) scale, (float) scale, (float) scale );
-        Quaternion quaternion = Vector3f.ZP.rotationDegrees( 180.0F );
+        matrixstack.translate(0.0D, 0.0D, 1000.0D);
+        matrixstack.scale((float) scale, (float) scale, (float) scale);
+        Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
         //Quaternion quaternion1 = Vector3f.XP.rotationDegrees( f1 * 20.0F );
         //quaternion.multiply( quaternion1 );
-        matrixstack.translate( quaternion.i(), quaternion.j(), quaternion.k());
+        matrixstack.translate(quaternion.i(), quaternion.j(), quaternion.k());
         float f2 = armorStand.yBodyRotO;
         float f3 = armorStand.yBodyRot;
         float f4 = armorStand.xRot;
@@ -60,8 +60,7 @@ public class ArmorStandDrawUtils {
         int add = 0;
         if (isDragging) {
             add = 2 * (addRotation * -1);
-        }
-        else {
+        } else {
             add = 1;
         }
         armorStand.yBodyRotO = 180.0F + add;
@@ -71,11 +70,11 @@ public class ArmorStandDrawUtils {
         EntityRendererManager entityrenderermanager = Minecraft.getInstance().getEntityRenderDispatcher();
         //quaternion1.conjugate();
         //entityrenderermanager.setCameraOrientation( quaternion1 );
-        entityrenderermanager.setRenderShadow( false );
+        entityrenderermanager.setRenderShadow(false);
         IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().renderBuffers().bufferSource();
-        entityrenderermanager.render( armorStand, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, irendertypebuffer$impl, 15728880 );
+        entityrenderermanager.render(armorStand, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, irendertypebuffer$impl, 15728880);
         irendertypebuffer$impl.endBatch();
-        entityrenderermanager.setRenderShadow( true );
+        entityrenderermanager.setRenderShadow(true);
         armorStand.yBodyRotO = f2;
         armorStand.yBodyRot = f3;
         armorStand.xRot = f4;

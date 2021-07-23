@@ -15,21 +15,21 @@ public class DataListString extends DataList<DataString> {
 
     public DataListString(ListNBT nbt) {
         super();
-        nbt.forEach( this::add );
+        nbt.forEach(this::add);
     }
 
 
     public DataListString(List<DataString> list) {
-        super( list );
+        super(list);
     }
 
 
     @Override
-    public <T extends INBT> void add( T nbt ) {
+    public <T extends INBT> void add(T nbt) {
         if (nbt != null && nbt.getId() == NBT.TAG_STRING) {
             StringNBT str = (StringNBT) nbt;
             if (str != null && !str.getAsString().isEmpty()) {
-                add( new DataString( str ) );
+                add(new DataString(str));
             }
         }
     }

@@ -4,17 +4,17 @@ import net.minecraft.nbt.IntNBT;
 
 public class DataInteger extends SingularData<Integer, IntNBT> {
     public DataInteger() {
-        this( 0 );
+        this(0);
     }
 
 
     public DataInteger(IntNBT nbt) {
-        this( nbt.getAsInt() );
+        this(nbt.getAsInt());
     }
 
 
     public DataInteger(int value) {
-        super( value );
+        super(value);
     }
 
 
@@ -26,6 +26,6 @@ public class DataInteger extends SingularData<Integer, IntNBT> {
 
     @Override
     public IntNBT getNBT() {
-        return IntNBT.valueOf( data );
+        return IntNBT.valueOf(data);
     }
 }

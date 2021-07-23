@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.cache.LoadingCache;
@@ -42,17 +43,17 @@ import net.minecraft.util.Util;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class HeadRenderer extends ItemStackTileEntityRenderer {
-    public static final LazyValue<LoadingCache<GameProfile, Map<Type, MinecraftProfileTexture>>> skinLoader = new LazyValue<>( () -> {
-        return ObfuscationReflectionHelper.getPrivateValue( SkinManager.class, Minecraft.getInstance().getSkinManager(), "skinCacheLoader" );
-    } );
+    public static final LazyValue<LoadingCache<GameProfile, Map<Type, MinecraftProfileTexture>>> skinLoader = new LazyValue<>(() -> {
+        return ObfuscationReflectionHelper.getPrivateValue(SkinManager.class, Minecraft.getInstance().getSkinManager(), "skinCacheLoader");
+    });
     private static final GenericHeadModel headModel = new HumanoidHeadModel();
-    private static final ResourceLocation headSkin = DefaultPlayerSkin.getDefaultSkinLegacy();
+    private static final ResourceLocation headSkin = DefaultPlayerSkin.getDefaultSkin();
     private static final Random rand = new Random();
     private static final FPSSnooper fpsSnooper = new FPSSnooper();
 
 
     @Override
-    public void render( ItemStack itemStackIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn ) {
+    public void renderByItem(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
         Item item = itemStackIn.getItem();
         if (item instanceof BlockItem) {
             Block block = ((BlockItem) item).getBlock();
@@ -60,22 +61,21 @@ public class HeadRenderer extends ItemStackTileEntityRenderer {
                 GameProfile gameprofile = null;
                 if (itemStackIn.hasTag()) {
                     CompoundNBT compoundnbt = itemStackIn.getTag();
-                    if (compoundnbt.contains( "SkullOwner", 10 )) {
-                        gameprofile = NBTUtil.readGameProfile( compoundnbt.getCompound( "SkullOwner" ) );
-                    }
-                    else if (compoundnbt.contains( "SkullOwner", 8 ) && !StringUtils.isBlank( compoundnbt.getString( "SkullOwner" ) )) {
-                        GameProfile gameprofile1 = new GameProfile(null, compoundnbt.getString( "SkullOwner" ) );
-                        gameprofile = SkullTileEntity.updateGameProfile( gameprofile1 );
-                        compoundnbt.remove( "SkullOwner" );
-                        compoundnbt.put( "SkullOwner", NBTUtil.writeGameProfile( new CompoundNBT(), gameprofile ) );
+                    if (compoundnbt.contains("SkullOwner", 10)) {
+                        gameprofile = NBTUtil.readGameProfile(compoundnbt.getCompound("SkullOwner"));
+                    } else if (compoundnbt.contains("SkullOwner", 8) && !StringUtils.isBlank(compoundnbt.getString("SkullOwner"))) {
+                        GameProfile gameprofile1 = new GameProfile(null, compoundnbt.getString("SkullOwner"));
+                        gameprofile = SkullTileEntity.updateGameprofile(gameprofile1);
+                        compoundnbt.remove("SkullOwner");
+                        compoundnbt.put("SkullOwner", NBTUtil.writeGameProfile(new CompoundNBT(), gameprofile));
                     }
                 }
 
-                SkullBlock.ISkullType type = ((AbstractSkullBlock) block).getSkullType();
+                SkullBlock.ISkullType type = ((AbstractSkullBlock) block).getType();
                 if (type == SkullBlock.Types.PLAYER)
-                    render(null, 180.0F, gameprofile, 0.0F, matrixStackIn, bufferIn, combinedLightIn );
+                    render(null, 180.0F, gameprofile, 0.0F, matrixStackIn, bufferIn, combinedLightIn);
                 else
-                    SkullTileEntityRenderer.render( (Direction) null, 180.0F, type, gameprofile, 0.0F, matrixStackIn, bufferIn, combinedLightIn );
+                    SkullTileEntityRenderer.renderSkull((Direction) null, 180.0F, type, gameprofile, 0.0F, matrixStackIn, bufferIn, combinedLightIn);
             }
         }
     }
@@ -84,93 +84,89 @@ public class HeadRenderer extends ItemStackTileEntityRenderer {
     /**
      * Modified version of
      * {@link net.minecraft.client.renderer.tileentity.SkullTileEntityRenderer#render}
-     * 
      */
-    public static void render( Direction directionIn, float rotation, GameProfile profile, float animationProgress, MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int combinedLight ) {
-        matrixStackIn.push();
+    public static void render(Direction directionIn, float rotation, GameProfile profile, float animationProgress, MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int combinedLight) {
+        matrixStackIn.pushPose();
         if (directionIn == null) {
-            matrixStackIn.translate( 0.5D, 0.0D, 0.5D );
-        }
-        else {
+            matrixStackIn.translate(0.5D, 0.0D, 0.5D);
+        } else {
             switch (directionIn) {
-            case NORTH:
-                matrixStackIn.translate( 0.5D, 0.25D, 0.74F);
-                break;
-            case SOUTH:
-                matrixStackIn.translate( 0.5D, 0.25D, 0.26F);
-                break;
-            case WEST:
-                matrixStackIn.translate(0.74F, 0.25D, 0.5D );
-                break;
-            case EAST:
-            default:
-                matrixStackIn.translate(0.26F, 0.25D, 0.5D );
+                case NORTH:
+                    matrixStackIn.translate(0.5D, 0.25D, 0.74F);
+                    break;
+                case SOUTH:
+                    matrixStackIn.translate(0.5D, 0.25D, 0.26F);
+                    break;
+                case WEST:
+                    matrixStackIn.translate(0.74F, 0.25D, 0.5D);
+                    break;
+                case EAST:
+                default:
+                    matrixStackIn.translate(0.26F, 0.25D, 0.5D);
             }
         }
 
-        matrixStackIn.scale( -1.0F, -1.0F, 1.0F );
-        IVertexBuilder ivertexbuilder = buffer.getBuffer( getRenderType( profile ) );
-        headModel.func_225603_a_( animationProgress, (Util.milliTime() / 30 % 360), 0.0F );
-        headModel.render( matrixStackIn, ivertexbuilder, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F );
-        matrixStackIn.pop();
+        matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
+        IVertexBuilder ivertexbuilder = buffer.getBuffer(getRenderType(profile));
+        headModel.setupAnim(animationProgress, (Util.getMillis() / 30 % 360), 0.0F);
+        headModel.renderToBuffer(matrixStackIn, ivertexbuilder, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        matrixStackIn.popPose();
     }
 
 
-    private static RenderType getRenderType( GameProfile profile ) {
+    private static RenderType getRenderType(GameProfile profile) {
         if (profile != null) {
             Minecraft mc = Minecraft.getInstance();
-            LoadingCache<GameProfile, Map<Type, MinecraftProfileTexture>> loader = skinLoader.getValue();
-            Map<Type, MinecraftProfileTexture> map = loader.getIfPresent( profile );
+            LoadingCache<GameProfile, Map<Type, MinecraftProfileTexture>> loader = skinLoader.get();
+            Map<Type, MinecraftProfileTexture> map = loader.getIfPresent(profile);
             // map = loader.getUnchecked( profile );
             RenderType res = null;
-            if (map != null && map.containsKey( Type.SKIN )) {
-                res = RenderType.getEntityTranslucent( mc.getSkinManager().loadSkin( map.get( Type.SKIN ), Type.SKIN ) );
-            }
-            else {
-                if (rand.nextInt( 10 ) == 0)
-                    loader.getUnchecked( profile );
-                res = RenderType.getEntityCutoutNoCull( DefaultPlayerSkin.getDefaultSkin( PlayerEntity.getUUID( profile ) ) );
+            if (map != null && map.containsKey(Type.SKIN)) {
+//                res = RenderType.entityTranslucent( mc.getSkinManager().loadSkin( map.get( Type.SKIN ), Type.SKIN ) );
+            } else {
+                if (rand.nextInt(10) == 0)
+                    loader.getUnchecked(profile);
+                res = RenderType.entityCutoutNoCull(DefaultPlayerSkin.getDefaultSkin(profile.getId()));
             }
 
             return res;
-        }
-        else {
-            return RenderType.getEntityCutoutNoCull( headSkin );
+        } else {
+            return RenderType.entityCutoutNoCull(headSkin);
         }
     }
 
 
-    public static void loadSkin( MinecraftProfileTexture profileTexture, SkinManager.ISkinAvailableCallback skinAvailableCallback, boolean requireSecure ) {
+    public static void loadSkin(MinecraftProfileTexture profileTexture, SkinManager.ISkinAvailableCallback skinAvailableCallback, boolean requireSecure) {
         Runnable runnable = () -> {
             Minecraft mc = Minecraft.getInstance();
-            mc.execute( () -> {
-                RenderSystem.recordRenderCall( () -> {
+            mc.execute(() -> {
+                RenderSystem.recordRenderCall(() -> {
                     long startTime = System.nanoTime();
-                    mc.getSkinManager().loadSkin( profileTexture, Type.SKIN, skinAvailableCallback );
+//                    mc.getSkinManager().loadSkin( profileTexture, Type.SKIN, skinAvailableCallback );
                     long endTime = System.nanoTime();
                     long duration = (endTime - startTime);
                     // System.out.println( "Loading one skin took " + duration + "ns." );
-                } );
-            } );
+                });
+            });
         };
-        Util.getServerExecutor().execute( runnable );
+//        Util.getServerExecutor().execute( runnable );
     }
 
 
     static class FPSSnooper extends Snooper {
         int fps = -1;
-        long lastGet = Util.milliTime();
+        long lastGet = Util.getMillis();
 
 
         public FPSSnooper() {
-            super( "client", Minecraft.getInstance(), Util.milliTime() );
+            super("client", Minecraft.getInstance(), Util.getMillis());
         }
 
 
         public int getFps() {
-            long now = Util.milliTime();
+            long now = Util.getMillis();
             if (now - lastGet > 5000) {
-                Minecraft.getInstance().fillSnooper( this );
+                Minecraft.getInstance().populateSnooper(this);
                 lastGet = now;
             }
             return fps;
@@ -178,8 +174,8 @@ public class HeadRenderer extends ItemStackTileEntityRenderer {
 
 
         @Override
-        public void addClientStat( String statName, Object statValue ) {
-            if (statName.equals( "fps" )) {
+        public void setDynamicData(String statName, Object statValue) {
+            if (statName.equals("fps")) {
                 fps = (int) statValue;
             }
         }

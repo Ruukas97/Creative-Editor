@@ -1,5 +1,6 @@
 package creativeeditor.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import creativeeditor.data.DataItem;
 import creativeeditor.util.ColorUtils.Color;
@@ -16,22 +17,20 @@ public class ItemInspectorScreen extends ParentScreen {
 
 
     public ItemInspectorScreen(Screen lastScreen, DataItem item) {
-        super( new TranslationTextComponent( "gui.iteminspector" ), lastScreen );
+        super(new TranslationTextComponent("gui.iteminspector"), lastScreen);
         this.item = item;
         this.isScrolling = false;
     }
 
 
     @Override
-    public boolean mouseDragged( double p_mouseDragged_1_, double p_mouseDragged_3_, int p_mouseDragged_5_, double p_mouseDragged_6_, double p_mouseDragged_8_ ) {
+    public boolean mouseDragged(double p_mouseDragged_1_, double p_mouseDragged_3_, int p_mouseDragged_5_, double p_mouseDragged_6_, double p_mouseDragged_8_) {
         if (p_mouseDragged_5_ != 0) {
             this.isScrolling = false;
             return false;
-        }
-        else if (!this.isScrolling) {
+        } else if (!this.isScrolling) {
             this.isScrolling = true;
-        }
-        else {
+        } else {
             rotX += p_mouseDragged_6_;
             rotY += p_mouseDragged_8_;
             System.out.println(p_mouseDragged_6_);
@@ -41,16 +40,16 @@ public class ItemInspectorScreen extends ParentScreen {
 
 
     @Override
-    public void overlayRender( int mouseX, int mouseY, float p3, Color color ) {
-        super.overlayRender( mouseX, mouseY, p3, color );
-        ItemRendererUtils itemRenderUtils = new ItemRendererUtils( this.itemRenderer );
+    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
+        super.overlayRender(matrix, mouseX, mouseY, p3, color);
+        ItemRendererUtils itemRenderUtils = new ItemRendererUtils(this.itemRenderer);
 
         ItemStack stack = item.getItemStack();
         RenderSystem.pushMatrix();
-        RenderSystem.scalef( itemScale, itemScale, 1f );
+        RenderSystem.scalef(itemScale, itemScale, 1f);
         int x = (int) (width / (2 * itemScale) - 8);
         int y = (int) (30 / itemScale + height / (2 * itemScale) - 8);
-        itemRenderUtils.renderItemIntoGUI( stack, x, y, rotX, rotY );
+        itemRenderUtils.renderItemIntoGUI(stack, x, y, rotX, rotY);
         RenderSystem.popMatrix();
     }
 }

@@ -9,33 +9,33 @@ public class StyleManager {
 
     public static Style getCurrentStyle() {
         if (currentStyle == null) {
-            setCurrentStyle( currentID == -1 ? 0 : currentID );
+            setCurrentStyle(currentID == -1 ? 0 : currentID);
         }
         return currentStyle;
     }
 
 
-    private static void setCurrentStyle( Style style ) {
+    private static void setCurrentStyle(Style style) {
         if (style != null) {
             currentStyle = style;
         }
     }
 
 
-    public static void setCurrentStyle( int id ) {
+    public static void setCurrentStyle(int id) {
         if (currentID == -1 || currentID != id) {
-            setCurrentStyle( id == 0 ? new StyleSpectrum() : new StyleVanilla() );
+            setCurrentStyle(id == 0 ? new StyleSpectrum() : new StyleVanilla());
             currentID = id;
         }
     }
 
 
     public static void loadConfig() {
-        setCurrentStyle( Config.ACTIVESTYLE.get() );
+        setCurrentStyle(Config.ACTIVESTYLE.get());
     }
 
 
     public static void setNext() {
-        setCurrentStyle( (currentID + 1) % 2 );
+        setCurrentStyle((currentID + 1) % 2);
     }
 }

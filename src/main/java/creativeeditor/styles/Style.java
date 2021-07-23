@@ -1,5 +1,6 @@
 package creativeeditor.styles;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.screen.ParentScreen;
 import creativeeditor.util.ColorUtils.Color;
 import net.minecraft.client.gui.widget.Widget;
@@ -17,11 +18,11 @@ public interface Style {
     void update();
 
 
-    void renderBackground(ParentScreen screen);
+    void renderBackground(MatrixStack matrix, ParentScreen screen);
 
 
-    void renderButton(IStyledWidget button, int mouseX, int mouseY, float alpha);
+    void renderButton(MatrixStack matrix, IStyledWidget button, int mouseX, int mouseY, float alpha);
 
 
-    void renderSlider(IStyledSlider<?> slider, int mouseX, int mouseY);
+    void renderSlider(MatrixStack matrix, IStyledSlider<?> slider, int mouseX, int mouseY);
 }

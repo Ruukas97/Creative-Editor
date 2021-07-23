@@ -6,12 +6,12 @@ import net.minecraft.util.text.StringTextComponent;
 
 public class DataTextComponent extends SingularData<ITextComponent, StringNBT> {
     public DataTextComponent(ITextComponent data) {
-        super( data );
+        super(data);
     }
 
 
     public DataTextComponent(String data) {
-        this( new StringTextComponent( data ) );
+        this(new StringTextComponent(data));
     }
 
 
@@ -26,8 +26,8 @@ public class DataTextComponent extends SingularData<ITextComponent, StringNBT> {
     } // formatted
 
 
-    public void set( String s ) {
-        set( new StringTextComponent( s ) );
+    public void set(String s) {
+        set(new StringTextComponent(s));
     }
 
 
@@ -39,6 +39,6 @@ public class DataTextComponent extends SingularData<ITextComponent, StringNBT> {
 
     @Override
     public StringNBT getNBT() {
-        return StringNBT.valueOf( ITextComponent.Serializer.toJson( data ) );
+        return StringNBT.valueOf(ITextComponent.Serializer.toJson(data));
     }
 }

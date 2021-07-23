@@ -30,16 +30,16 @@ public class TagAttributeModifier extends SingularData<AttributeModifier, Compou
 
 
     public TagAttributeModifier(String name, AttributeModifier mod, EquipmentSlotType slot) {
-        super( mod );
+        super(mod);
     }
-    
+
     public TagAttributeModifier(INBT nbt) {
-        this( nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT() );
+        this(nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT());
     }
 
 
     public TagAttributeModifier(CompoundNBT nbt) {
-        this( nbt.getString( NBTKeys.keys.attributeName() ), AttributeModifier.load( nbt ), EquipmentSlotType.byName( nbt.getString( NBTKeys.keys.attributeSlot() ) ) );
+        this(nbt.getString(NBTKeys.keys.attributeName()), AttributeModifier.load(nbt), EquipmentSlotType.byName(nbt.getString(NBTKeys.keys.attributeSlot())));
     }
 
 
@@ -53,9 +53,9 @@ public class TagAttributeModifier extends SingularData<AttributeModifier, Compou
     public CompoundNBT getNBT() {
         CompoundNBT nbt = data.save();
         if (name != null && !name.isEmpty())
-            nbt.putString( NBTKeys.keys.attributeDisplay(), name );
+            nbt.putString(NBTKeys.keys.attributeDisplay(), name);
         if (slot != null)
-            nbt.putInt( NBTKeys.keys.attributeSlot(), slot.ordinal() );
+            nbt.putInt(NBTKeys.keys.attributeSlot(), slot.ordinal());
         return nbt;
     }
 }

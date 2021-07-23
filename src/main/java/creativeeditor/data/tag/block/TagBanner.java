@@ -14,7 +14,7 @@ public class TagBanner extends TagTileEntity<BannerTileEntity> {
 
 
     public TagBanner(CompoundNBT nbt) {
-        patterns = new TagList<>( nbt.getList( NBTKeys.keys.tagPatterns(), NBT.TAG_COMPOUND ), TagBannerPattern::new );
+        patterns = new TagList<>(nbt.getList(NBTKeys.keys.tagPatterns(), NBT.TAG_COMPOUND), TagBannerPattern::new);
     }
 
 
@@ -33,7 +33,7 @@ public class TagBanner extends TagTileEntity<BannerTileEntity> {
     @Override
     public CompoundNBT getNBT() {
         CompoundNBT nbt = new CompoundNBT();
-        nbt.put( NBTKeys.keys.tagPatterns(), patterns.getNBT() );
+        nbt.put(NBTKeys.keys.tagPatterns(), patterns.getNBT());
         return nbt;
     }
 }

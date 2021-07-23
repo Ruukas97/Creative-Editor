@@ -18,13 +18,13 @@ public abstract class StyleBase implements Style {
 
 
     @Override
-    public Color getFGColor( Widget widget ) {
-        return getFGColor( widget.active, widget.isHovered() );
+    public Color getFGColor(Widget widget) {
+        return getFGColor(widget.active, widget.isHovered());
     }
 
 
     @Override
-    public Color getFGColor( boolean active, boolean hovered ) {
+    public Color getFGColor(boolean active, boolean hovered) {
         if (!active)
             return buttonColor.inactive();
         if (!hovered)
@@ -45,7 +45,7 @@ public abstract class StyleBase implements Style {
 
 
         public StaticButtonColor(int hovered, int standard, int inactive) {
-            this( new Color( hovered ), new Color( standard ), new Color( inactive ) );
+            this(new Color(hovered), new Color(standard), new Color(inactive));
         }
 
 

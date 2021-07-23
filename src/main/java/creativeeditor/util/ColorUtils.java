@@ -4,10 +4,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn( Dist.CLIENT )
+@OnlyIn(Dist.CLIENT)
 public class ColorUtils {
-    @OnlyIn( Dist.CLIENT )
-    public static int multiplyColor( int firstColor, int secondColor ) {
+    @OnlyIn(Dist.CLIENT)
+    public static int multiplyColor(int firstColor, int secondColor) {
         int i = (firstColor & 16711680) >> 16;
         int j = (secondColor & 16711680) >> 16;
         int k = (firstColor & '\uff00') >> 8;
@@ -21,53 +21,53 @@ public class ColorUtils {
     }
 
 
-    public static int mcHSVtoRGB( float hue, float saturation, float value ) {
-        return MathHelper.hsvToRGB( hue, saturation, value );
+    public static int mcHSVtoRGB(float hue, float saturation, float value) {
+        return MathHelper.hsvToRgb(hue, saturation, value);
     }
 
 
-    public static int HSBtoRGB( float hue, float saturation, float brightness ) {
-        return java.awt.Color.HSBtoRGB( hue, saturation, brightness );
+    public static int HSBtoRGB(float hue, float saturation, float brightness) {
+        return java.awt.Color.HSBtoRGB(hue, saturation, brightness);
     }
 
 
-    @SuppressWarnings( "serial" )
+    @SuppressWarnings("serial")
     public static class Color extends Number implements Comparable<Integer> {
         protected int argb;
 
 
         public Color(int color) {
-            setInt( color );
+            setInt(color);
         }
 
 
         public Color(int r, int g, int b) {
-            setInt( 0xFF000000 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF );
+            setInt(0xFF000000 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF);
         }
 
 
         public Color(int a, int r, int g, int b) {
-            setARGB( a, r, g, b );
+            setARGB(a, r, g, b);
         }
 
 
-        public static Color fromHSV( float hue, float saturation, float value ) {
-            return new Color( mcHSVtoRGB( hue, saturation, value ) );
+        public static Color fromHSV(float hue, float saturation, float value) {
+            return new Color(mcHSVtoRGB(hue, saturation, value));
         }
 
 
-        public static Color fromHSB( float hue, float saturation, float brightness ) {
-            return new Color( HSBtoRGB( hue, saturation, brightness ) );
+        public static Color fromHSB(float hue, float saturation, float brightness) {
+            return new Color(HSBtoRGB(hue, saturation, brightness));
         }
 
 
-        public Color setRGB( int r, int g, int b ) {
-            return setInt( argb & 0xFF000000 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF );
+        public Color setRGB(int r, int g, int b) {
+            return setInt(argb & 0xFF000000 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF);
         }
 
 
-        public Color setARGB( int a, int r, int g, int b ) {
-            return setInt( (a & 0xFF) << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF );
+        public Color setARGB(int a, int r, int g, int b) {
+            return setInt((a & 0xFF) << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF);
         }
 
 
@@ -76,8 +76,8 @@ public class ColorUtils {
         }
 
 
-        public Color setAlpha( int alpha ) {
-            return setInt( (alpha & 0xFF) << 24 | argb & 0x00FFFFFF );
+        public Color setAlpha(int alpha) {
+            return setInt((alpha & 0xFF) << 24 | argb & 0x00FFFFFF);
         }
 
 
@@ -86,8 +86,8 @@ public class ColorUtils {
         }
 
 
-        public Color setRed( int red ) {
-            return setInt( (red & 0xFF) << 16 | argb & 0xFF00FFFF );
+        public Color setRed(int red) {
+            return setInt((red & 0xFF) << 16 | argb & 0xFF00FFFF);
         }
 
 
@@ -96,8 +96,8 @@ public class ColorUtils {
         }
 
 
-        public Color setGreen( int green ) {
-            return setInt( (green & 0xFF) << 8 | (argb & 0xFFFF00FF) );
+        public Color setGreen(int green) {
+            return setInt((green & 0xFF) << 8 | (argb & 0xFFFF00FF));
         }
 
 
@@ -106,8 +106,8 @@ public class ColorUtils {
         }
 
 
-        public Color setBlue( int blue ) {
-            return setInt( (blue & 0xFF) | (argb & 0xFFFFFF00) );
+        public Color setBlue(int blue) {
+            return setInt((blue & 0xFF) | (argb & 0xFFFFFF00));
         }
 
 
@@ -116,7 +116,7 @@ public class ColorUtils {
         }
 
 
-        public Color setInt( int color ) {
+        public Color setInt(int color) {
             argb = color;
             return this;
         }
@@ -129,31 +129,26 @@ public class ColorUtils {
             if (r == g && r == b) {
                 return this;
             }
-            int min = Math.min( r, Math.min( g, b ) );
-            int max = Math.max( r, Math.max( g, b ) );
+            int min = Math.min(r, Math.min(g, b));
+            int max = Math.max(r, Math.max(g, b));
 
             if (r == max && g != max) {
                 if (b == min) {
-                    setGreen( g + 1 );
+                    setGreen(g + 1);
+                } else {
+                    setBlue(b - 1);
                 }
-                else {
-                    setBlue( b - 1 );
-                }
-            }
-            else if (g == max && b != max) {
+            } else if (g == max && b != max) {
                 if (r == min) {
-                    setBlue( b + 1 );
+                    setBlue(b + 1);
+                } else {
+                    setRed(r - 1);
                 }
-                else {
-                    setRed( r - 1 );
-                }
-            }
-            else if (b == max && r != max) {
+            } else if (b == max && r != max) {
                 if (g == min) {
-                    setRed( r + 1 );
-                }
-                else {
-                    setGreen( g - 1 );
+                    setRed(r + 1);
+                } else {
+                    setGreen(g - 1);
                 }
             }
             return this;
@@ -164,8 +159,8 @@ public class ColorUtils {
             int r = getRed();
             int g = getGreen();
             int b = getBlue();
-            int min = Math.min( r, Math.min( g, b ) );
-            int max = Math.max( r, Math.max( g, b ) );
+            int min = Math.min(r, Math.min(g, b));
+            int max = Math.max(r, Math.max(g, b));
             return max - min;
         }
 
@@ -174,8 +169,8 @@ public class ColorUtils {
             float r = getRed();
             float g = getGreen();
             float b = getBlue();
-            float min = Math.min( r, Math.min( g, b ) );
-            float max = Math.max( r, Math.max( g, b ) );
+            float min = Math.min(r, Math.min(g, b));
+            float max = Math.max(r, Math.max(g, b));
             if (min == max) {
                 return 0f;
             }
@@ -192,7 +187,7 @@ public class ColorUtils {
 
 
         public float[] getHSB() {
-            return java.awt.Color.RGBtoHSB( getRed(), getGreen(), getBlue(), null );
+            return java.awt.Color.RGBtoHSB(getRed(), getGreen(), getBlue(), null);
         }
 
 
@@ -205,10 +200,10 @@ public class ColorUtils {
             float r = getRed() / 255f;
             float g = getGreen() / 255f;
             float b = getBlue() / 255f;
-            float min = Math.min( r, Math.min( g, b ) );
-            float max = Math.max( r, Math.max( g, b ) );
+            float min = Math.min(r, Math.min(g, b));
+            float max = Math.max(r, Math.max(g, b));
             float delta = max - min;
-            return delta == 0f ? 0f : 1f - Math.abs( min + max - 1f );
+            return delta == 0f ? 0f : 1f - Math.abs(min + max - 1f);
         }
 
 
@@ -216,8 +211,8 @@ public class ColorUtils {
             float r = getRed();
             float g = getGreen();
             float b = getBlue();
-            float min = Math.min( r, Math.min( g, b ) );
-            float max = Math.max( r, Math.max( g, b ) );
+            float min = Math.min(r, Math.min(g, b));
+            float max = Math.max(r, Math.max(g, b));
             return (min + max) / 510f;
         }
 
@@ -226,43 +221,43 @@ public class ColorUtils {
             float r = getRed();
             float g = getGreen();
             float b = getBlue();
-            float max = Math.max( r, Math.max( g, b ) );
+            float max = Math.max(r, Math.max(g, b));
             return max / 255f;
         }
 
 
-        public Color setValue( float value ) {
+        public Color setValue(float value) {
             float r = getRed();
             float g = getGreen();
             float b = getBlue();
-            float max = Math.max( r, Math.max( g, b ) );
+            float max = Math.max(r, Math.max(g, b));
             float v = max / 255f;
             float f = value / v;
-            setRed( (int) (r * f) );
-            setGreen( (int) (g * f) );
-            setBlue( (int) (b * f) );
+            setRed((int) (r * f));
+            setGreen((int) (g * f));
+            setBlue((int) (b * f));
             return this;
         }
 
 
         public String getHexString() {
-            return String.format( "#%06X", (getInt() & 0xFFFFFF) );
+            return String.format("#%06X", (getInt() & 0xFFFFFF));
         }
 
 
         public String getHexStringWithAlpha() {
-            return String.format( "#%08X", (getInt()) );
+            return String.format("#%08X", (getInt()));
         }
 
 
         public Color copy() {
-            return new Color( argb );
+            return new Color(argb);
         }
 
 
         @Override
-        public int compareTo( Integer o ) {
-            return Integer.compare( getInt(), o );
+        public int compareTo(Integer o) {
+            return Integer.compare(getInt(), o);
         }
 
 

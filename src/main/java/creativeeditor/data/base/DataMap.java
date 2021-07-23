@@ -15,12 +15,12 @@ import net.minecraft.nbt.INBT;
 public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> {
 
     public DataMap() {
-        this( Maps.newHashMap() );
+        this(Maps.newHashMap());
     }
 
 
     public DataMap(Map<String, Data<?, ?>> map) {
-        super( map );
+        super(map);
     }
 
 
@@ -29,50 +29,50 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
         if (nbt == null || nbt.isEmpty())
             return;
         for (String key : nbt.getAllKeys()) {
-            INBT value = nbt.get( key );
+            INBT value = nbt.get(key);
             if (value != null)
-                put( key, Data.getDataFromNBT( value ) );
+                put(key, Data.getDataFromNBT(value));
         }
     }
 
 
     @Nullable
-    public Data<?, ?> getData( String key ) {
-        return data.get( key );
+    public Data<?, ?> getData(String key) {
+        return data.get(key);
     }
 
 
     @Nonnull
-    public Data<?, ?> getDataDefaulted( String key, @Nonnull Data<?, ?> defaultValue ) {
-        if (!data.containsKey( key )) {
-            Data<?, ?> dat = data.get( key );
+    public Data<?, ?> getDataDefaulted(String key, @Nonnull Data<?, ?> defaultValue) {
+        if (!data.containsKey(key)) {
+            Data<?, ?> dat = data.get(key);
             if (dat != null)
                 return dat;
         }
 
-        put( key, defaultValue );
+        put(key, defaultValue);
         return defaultValue;
     }
 
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Nonnull
-    public <T extends Data<?, ?>> T getDataDefaultedForced( String key, @Nonnull T defaultValue ) {
-        if (data.containsKey( key )) {
-            Data<?, ?> existing = data.get( key );
+    public <T extends Data<?, ?>> T getDataDefaultedForced(String key, @Nonnull T defaultValue) {
+        if (data.containsKey(key)) {
+            Data<?, ?> existing = data.get(key);
             if (existing.getClass() == defaultValue.getClass()) {
                 return (T) existing;
             }
         }
 
-        put( key, defaultValue );
+        put(key, defaultValue);
         return defaultValue;
     }
 
 
-    public void put( String key, Data<?, ?> value ) {
+    public void put(String key, Data<?, ?> value) {
         if (value != null)
-            data.put( key, value );
+            data.put(key, value);
     }
 
 
@@ -97,12 +97,12 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
 
     public CompoundNBT getNBTIncludeAll() {
         CompoundNBT nbt = new CompoundNBT();
-        data.forEach( ( key, value ) -> {
+        data.forEach((key, value) -> {
             if (value instanceof DataMap)
-                nbt.put( key, ((DataMap) value).getNBTIncludeAll() );
+                nbt.put(key, ((DataMap) value).getNBTIncludeAll());
             else
-                nbt.put( key, value.getNBT() );
-        } );
+                nbt.put(key, value.getNBT());
+        });
         return nbt;
     }
 
@@ -110,10 +110,10 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
     @Override
     public CompoundNBT getNBT() {
         CompoundNBT nbt = new CompoundNBT();
-        data.forEach( ( key, value ) -> {
+        data.forEach((key, value) -> {
             if (!value.isDefault())
-                nbt.put( key, value.getNBT() );
-        } );
+                nbt.put(key, value.getNBT());
+        });
         return nbt;
     }
 }

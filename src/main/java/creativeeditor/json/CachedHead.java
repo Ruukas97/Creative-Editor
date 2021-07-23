@@ -29,24 +29,24 @@ public class CachedHead {
             if (!skinLoaded) {
                 skinLoaded = true;
                 Minecraft mc = Minecraft.getInstance();
-                mc.getSkinManager().registerSkins( data.getGameProfile(), null, false );
+                mc.getSkinManager().registerSkins(data.getGameProfile(), null, false);
             }
         }
     }
 
 
     public ItemStack getItemStack() {
-        ItemStack head = new ItemStack( Items.PLAYER_HEAD );
-        head.getOrCreateTagElement( "display" ).putString( "Name", data.getName() );
-        NBTUtil.writeGameProfile( head.getOrCreateTagElement( "SkullOwner" ), data.getGameProfile() );
+        ItemStack head = new ItemStack(Items.PLAYER_HEAD);
+        head.getOrCreateTagElement("display").putString("Name", data.getName());
+        NBTUtil.writeGameProfile(head.getOrCreateTagElement("SkullOwner"), data.getGameProfile());
         return head;
     }
 
 
     public DataItem getItem() {
-        DataItem head = new DataItem( new ItemStack( Items.PLAYER_HEAD ) );
-        head.getDisplayNameTag().set( data.getName() );
-        head.getTag().getSkullOwner().set( data );
+        DataItem head = new DataItem(new ItemStack(Items.PLAYER_HEAD));
+        head.getDisplayNameTag().set(data.getName());
+        head.getTag().getSkullOwner().set(data);
         return head;
     }
 }

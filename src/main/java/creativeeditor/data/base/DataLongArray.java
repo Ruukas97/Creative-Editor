@@ -5,12 +5,12 @@ import net.minecraft.nbt.LongArrayNBT;
 public class DataLongArray extends SingularData<long[], LongArrayNBT> {
 
     public DataLongArray(long... values) {
-        super( values );
+        super(values);
     }
 
 
     public DataLongArray(LongArrayNBT nbt) {
-        this( nbt.getAsLongArray() );
+        this(nbt.getAsLongArray());
     }
 
 
@@ -22,6 +22,6 @@ public class DataLongArray extends SingularData<long[], LongArrayNBT> {
 
     @Override
     public LongArrayNBT getNBT() {
-        return new LongArrayNBT( data );
+        return new LongArrayNBT(data);
     }
 }

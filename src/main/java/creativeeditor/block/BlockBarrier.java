@@ -11,14 +11,14 @@ import net.minecraft.world.IBlockReader;
 public class BlockBarrier extends BarrierBlock {
 
     public BlockBarrier() {
-        super( AbstractBlock.Properties.of(Material.BARRIER).strength(-1.0F, 3600000.8F).noDrops().noOcclusion());
-        setRegistryName( new ResourceLocation( "minecraft", "barrier" ) );
+        super(AbstractBlock.Properties.of(Material.BARRIER).strength(-1.0F, 3600000.8F).noDrops().noOcclusion());
+        setRegistryName(new ResourceLocation("minecraft", "barrier"));
     }
 
 
-    @SuppressWarnings( "deprecation" )
+    @SuppressWarnings("deprecation")
     @Override
-    public BlockRenderType getRenderShape( BlockState state ) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return CreativeEditor.BARRIER_VISIBLE ? BlockRenderType.MODEL : BlockRenderType.INVISIBLE;
     }
 }
