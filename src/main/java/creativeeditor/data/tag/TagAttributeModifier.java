@@ -1,24 +1,22 @@
 package creativeeditor.data.tag;
 
-import javax.annotation.Nullable;
-
 import creativeeditor.data.base.SingularData;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
-import net.minecraft.world.storage.loot.functions.SetAttributes;
+
+import javax.annotation.Nullable;
 
 public class TagAttributeModifier extends SingularData<AttributeModifier, CompoundNBT> {
     /**
-     * See: {@link SetAttributes}
-     * {@link ItemStack#addAttributeModifier(String, AttributeModifier, EquipmentSlotType)}
-     * {@link SharedMonsterAttributes}
+     * See: {@link }
+     * {@link ItemStack#(String, AttributeModifier, EquipmentSlotType)}
+     * {@link }
      */
 
     @Getter
@@ -41,7 +39,7 @@ public class TagAttributeModifier extends SingularData<AttributeModifier, Compou
 
 
     public TagAttributeModifier(CompoundNBT nbt) {
-        this( nbt.getString( NBTKeys.keys.attributeName() ), SharedMonsterAttributes.readAttributeModifier( nbt ), EquipmentSlotType.byName( nbt.getString( NBTKeys.keys.attributeSlot() ) ) );
+        this( nbt.getString( NBTKeys.keys.attributeName() ), AttributeModifier.load( nbt ), EquipmentSlotType.byName( nbt.getString( NBTKeys.keys.attributeSlot() ) ) );
     }
 
 
@@ -53,7 +51,7 @@ public class TagAttributeModifier extends SingularData<AttributeModifier, Compou
 
     @Override
     public CompoundNBT getNBT() {
-        CompoundNBT nbt = SharedMonsterAttributes.writeAttributeModifier( data );
+        CompoundNBT nbt = data.save();
         if (name != null && !name.isEmpty())
             nbt.putString( NBTKeys.keys.attributeDisplay(), name );
         if (slot != null)

@@ -7,10 +7,10 @@ import creativeeditor.data.DataItem;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Quaternion;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.item.ArmorStandEntity;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class ArmorStandDrawUtils {
 
@@ -29,7 +29,7 @@ public class ArmorStandDrawUtils {
 
     public void updateArmorStand() {
         if (armorstand != null) {
-            armorstand.readAdditional( getStandData().getNBT() );
+            armorstand.readAdditionalSaveData( getStandData().getNBT() );
         }
     }
 
@@ -51,12 +51,12 @@ public class ArmorStandDrawUtils {
         Quaternion quaternion = Vector3f.ZP.rotationDegrees( 180.0F );
         //Quaternion quaternion1 = Vector3f.XP.rotationDegrees( f1 * 20.0F );
         //quaternion.multiply( quaternion1 );
-        matrixstack.rotate( quaternion );
-        float f2 = armorStand.renderYawOffset;
-        float f3 = armorStand.rotationYaw;
-        float f4 = armorStand.rotationPitch;
-        float f5 = armorStand.prevRotationYawHead;
-        float f6 = armorStand.rotationYawHead;
+        matrixstack.translate( quaternion.i(), quaternion.j(), quaternion.k());
+        float f2 = armorStand.yBodyRotO;
+        float f3 = armorStand.yBodyRot;
+        float f4 = armorStand.xRot;
+        float f5 = armorStand.yHeadRotO;
+        float f6 = armorStand.yHeadRot;
         int add = 0;
         if (isDragging) {
             add = 2 * (addRotation * -1);
@@ -64,23 +64,23 @@ public class ArmorStandDrawUtils {
         else {
             add = 1;
         }
-        armorStand.renderYawOffset = 180.0F + add;
-        armorStand.rotationYaw = 180.0F;
-        armorStand.rotationYawHead = armorStand.rotationYaw;
-        armorStand.prevRotationYawHead = armorStand.rotationYaw;
-        EntityRendererManager entityrenderermanager = Minecraft.getInstance().getRenderManager();
+        armorStand.yBodyRotO = 180.0F + add;
+        armorStand.yBodyRot = 180.0F;
+        armorStand.yHeadRotO = armorStand.yRotO;
+        armorStand.yHeadRot = armorStand.yRot;
+        EntityRendererManager entityrenderermanager = Minecraft.getInstance().getEntityRenderDispatcher();
         //quaternion1.conjugate();
         //entityrenderermanager.setCameraOrientation( quaternion1 );
         entityrenderermanager.setRenderShadow( false );
-        IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
-        entityrenderermanager.renderEntityStatic( armorStand, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, irendertypebuffer$impl, 15728880 );
-        irendertypebuffer$impl.finish();
+        IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().renderBuffers().bufferSource();
+        entityrenderermanager.render( armorStand, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, irendertypebuffer$impl, 15728880 );
+        irendertypebuffer$impl.endBatch();
         entityrenderermanager.setRenderShadow( true );
-        armorStand.renderYawOffset = f2;
-        armorStand.rotationYaw = f3;
-        armorStand.rotationPitch = f4;
-        armorStand.prevRotationYawHead = f5;
-        armorStand.rotationYawHead = f6;
+        armorStand.yBodyRotO = f2;
+        armorStand.yBodyRot = f3;
+        armorStand.xRot = f4;
+        armorStand.yHeadRotO = f5;
+        armorStand.yHeadRot = f6;
         RenderSystem.popMatrix();
     }
 }

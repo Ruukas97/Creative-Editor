@@ -218,8 +218,8 @@ public class GuiUtil extends GuiUtils {
 
 
     public static void addToolTip(MatrixStack matrix, Screen screen, int xPos, int yPos, String... str) {
-        List<? extends ITextProperties> list = Arrays.asList(str);
-        drawHoveringText(null, matrix, list, xPos, yPos, screen.width, screen.height, -1, getFontRenderer());
+//        List<? extends ITextProperties> list = Arrays.asList(str);
+//        drawHoveringText(null, matrix, list, xPos, yPos, screen.width, screen.height, -1, getFontRenderer());
     }
 
 
@@ -246,7 +246,7 @@ public class GuiUtil extends GuiUtils {
         if (!stack.isEmpty()) {
             Minecraft mc = Minecraft.getInstance();
             mc.player.inventory.player.drop(stack, true);
-            mc.gameMode.sendPacketDropItem(stack);
+//            mc.gameMode.sendPacketDropItem(stack);
         }
     }
 

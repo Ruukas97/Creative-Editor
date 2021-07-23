@@ -13,7 +13,7 @@ import net.minecraft.util.NonNullList;
 public class ItemGroupCollection implements ItemCollection {
 
     @Getter
-    private final ItemGroup group;
+    private ItemGroup group;
 
 
     @Override

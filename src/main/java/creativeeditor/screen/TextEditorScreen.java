@@ -145,7 +145,7 @@ public class TextEditorScreen extends ParentScreen {
         String[] lines = getLines();
         List<String> wrapped = new ArrayList<>();
         for (String line : lines) {
-            wrapped.addAll( Arrays.asList( font.wrapFormattedStringToWidth( line, width - 30 ).split( "\n" ) ) );
+//            wrapped.addAll( Arrays.asList( font.wrapFormattedStringToWidth( line, width - 30 ).split( "\n" ) ) );
         }
 
         return wrapped;

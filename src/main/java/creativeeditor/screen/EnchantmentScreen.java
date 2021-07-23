@@ -52,7 +52,7 @@ public class EnchantmentScreen extends ParentScreen {
     public static class EnchantComparator implements Comparator<Enchantment> {
         @Override
         public int compare(Enchantment o1, Enchantment o2) {
-            return I18n.get(o1.getName()).compareTo(I18n.get(o2.getName()));
+            return I18n.get(o1.getDescriptionId()).compareTo(I18n.get(o2.getDescriptionId()));
         }
     }
 
@@ -75,7 +75,7 @@ public class EnchantmentScreen extends ParentScreen {
 
         list = addButton(new ScrollableScissorWindow(width / 3 + 5, yStart, containerWidth, yEnd, I18n.get("gui.enchantment.all")));
         for (Enchantment ench : sortedEnchants) {
-            StyledButton button = new StyledButton(0, 0, 50, 20, ench.getDisplayName(getLevel(ench)).getFormattedText(), b -> {
+            StyledButton button = new StyledButton(0, 0, 50, 20, ench.getFullname(getLevel(ench)).getString(), b -> {
                 TagEnchantment tag = new TagEnchantment(ench, getLevel(ench));
                 enchantmentsTag.add(tag);
                 addEnchantment(tag);
@@ -123,7 +123,7 @@ public class EnchantmentScreen extends ParentScreen {
     }
 
     public void addEnchantment(TagEnchantment tag) {
-        StyledButton button = new StyledButton(0, 0, 50, 20, tag.getEnchantment().getDisplayName(tag.getLevel()).getFormattedText(), b -> {
+        StyledButton button = new StyledButton(0, 0, 50, 20, tag.getEnchantment().getFullname(tag.getLevel()).getString(), b -> {
             setSelected(tag, b);
         });
         if (tag.getEnchantment().getRegistryName() != null)
@@ -148,21 +148,21 @@ public class EnchantmentScreen extends ParentScreen {
 
 
     @Override
-    public void mainRender(int mouseX, int mouseY, float partialTicks, Color color) {
-        super.mainRender(mouseX, mouseY, partialTicks, color);
+    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float partialTicks, Color color) {
+        super.mainRender(matrix, mouseX, mouseY, partialTicks, color);
 
         // int number = 5;
         // int offset = width / number;
         // int i = 1;
 
-        drawString(font, added.getMessage(), added.x, added.y - 10, color.getInt());
-        drawString(font, list.getMessage(), list.x, list.y - 10, color.getInt());
+        drawString(matrix, font, added.getMessage(), added.x, added.y - 10, color.getInt());
+        drawString(matrix, font, list.getMessage(), list.x, list.y - 10, color.getInt());
     }
 
 
     @Override
-    public void overlayRender(int mouseX, int mouseY, float partialTicks, Color color) {
-        super.overlayRender(mouseX, mouseY, partialTicks, color);
+    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float partialTicks, Color color) {
+        super.overlayRender(matrix, mouseX, mouseY, partialTicks, color);
 
         if (!added.isScrolling() && GuiUtil.isMouseIn(mouseX, mouseY, added.x, added.y, added.getWidth(), added.getHeight())) {
             for (Widget w : added.getWidgets()) {
@@ -170,7 +170,7 @@ public class EnchantmentScreen extends ParentScreen {
                     StyledButton b = (StyledButton) w;
                     String enchantment = b.getTooltip();
                     if (enchantment != null) {
-                        GuiUtil.addToolTip(this, b, mouseX, mouseY, I18n.get(enchantment));
+                        GuiUtil.addToolTip(matrix, this, b, mouseX, mouseY, I18n.get(enchantment));
                     }
                 }
             }
@@ -188,18 +188,18 @@ public class EnchantmentScreen extends ParentScreen {
                 Enchantment ench = GameRegistry.findRegistry(Enchantment.class).getValue(loc);
                 if (ench == null)
                     continue;
-                String name = I18n.get(ench.getName());
+                String name = I18n.get(ench.getDescriptionId());
                 String rarity = I18n.get("gui.enchantment.rarity." + ench.getRarity().toString().toLowerCase());
                 String rarityLine = I18n.get("gui.enchantment.tooltip.rarity", rarity);
                 String minLevel = I18n.get("gui.enchantment.tooltip.minlevel", ench.getMinLevel());
                 String maxLevel = I18n.get("gui.enchantment.tooltip.maxlevel", ench.getMaxLevel());
-                String typeLine = I18n.get("gui.enchantment.tooltip.type", ench.type != null ? ench.type.toString().toLowerCase() : "N/A");
-                String descKey = ench.getName() + ".desc";
-                if(false && !I18n.hasKey(descKey))
-                    GuiUtil.addToolTip(this, b, mouseX, mouseY, name, rarityLine, minLevel, maxLevel, typeLine);
+                String typeLine = I18n.get("gui.enchantment.tooltip.type", ench.category != null ? ench.category.toString().toLowerCase() : "N/A");
+                String descKey = ench.getDescriptionId() + ".desc";
+                if(false && !I18n.exists(descKey))
+                    GuiUtil.addToolTip(matrix, this, b, mouseX, mouseY, name, rarityLine, minLevel, maxLevel, typeLine);
                 else{
                     String descLine = I18n.get(descKey);
-                    GuiUtil.addToolTip(this, b, mouseX, mouseY, name, rarityLine, minLevel, maxLevel, typeLine, descLine);
+                    GuiUtil.addToolTip(matrix,this, b, mouseX, mouseY, name, rarityLine, minLevel, maxLevel, typeLine, descLine);
                 }
             }
         }

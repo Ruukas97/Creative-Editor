@@ -15,7 +15,7 @@ public class TagEffect extends SingularData<EffectInstance, CompoundNBT> {
     }
 
     public TagEffect(CompoundNBT nbt) {
-        this( EffectInstance.read( nbt ) );
+        this( EffectInstance.load( nbt ) );
     }
 
 
@@ -32,6 +32,6 @@ public class TagEffect extends SingularData<EffectInstance, CompoundNBT> {
 
     @Override
     public CompoundNBT getNBT() {
-        return data.write( new CompoundNBT() );
+        return data.save( new CompoundNBT() );
     }
 }
