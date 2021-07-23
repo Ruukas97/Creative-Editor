@@ -64,7 +64,7 @@ public class HeadRenderer extends ItemStackTileEntityRenderer {
                         gameprofile = NBTUtil.readGameProfile( compoundnbt.getCompound( "SkullOwner" ) );
                     }
                     else if (compoundnbt.contains( "SkullOwner", 8 ) && !StringUtils.isBlank( compoundnbt.getString( "SkullOwner" ) )) {
-                        GameProfile gameprofile1 = new GameProfile( (UUID) null, compoundnbt.getString( "SkullOwner" ) );
+                        GameProfile gameprofile1 = new GameProfile(null, compoundnbt.getString( "SkullOwner" ) );
                         gameprofile = SkullTileEntity.updateGameProfile( gameprofile1 );
                         compoundnbt.remove( "SkullOwner" );
                         compoundnbt.put( "SkullOwner", NBTUtil.writeGameProfile( new CompoundNBT(), gameprofile ) );
@@ -73,7 +73,7 @@ public class HeadRenderer extends ItemStackTileEntityRenderer {
 
                 SkullBlock.ISkullType type = ((AbstractSkullBlock) block).getSkullType();
                 if (type == SkullBlock.Types.PLAYER)
-                    render( (Direction) null, 180.0F, gameprofile, 0.0F, matrixStackIn, bufferIn, combinedLightIn );
+                    render(null, 180.0F, gameprofile, 0.0F, matrixStackIn, bufferIn, combinedLightIn );
                 else
                     SkullTileEntityRenderer.render( (Direction) null, 180.0F, type, gameprofile, 0.0F, matrixStackIn, bufferIn, combinedLightIn );
             }
@@ -94,17 +94,17 @@ public class HeadRenderer extends ItemStackTileEntityRenderer {
         else {
             switch (directionIn) {
             case NORTH:
-                matrixStackIn.translate( 0.5D, 0.25D, (double) 0.74F );
+                matrixStackIn.translate( 0.5D, 0.25D, 0.74F);
                 break;
             case SOUTH:
-                matrixStackIn.translate( 0.5D, 0.25D, (double) 0.26F );
+                matrixStackIn.translate( 0.5D, 0.25D, 0.26F);
                 break;
             case WEST:
-                matrixStackIn.translate( (double) 0.74F, 0.25D, 0.5D );
+                matrixStackIn.translate(0.74F, 0.25D, 0.5D );
                 break;
             case EAST:
             default:
-                matrixStackIn.translate( (double) 0.26F, 0.25D, 0.5D );
+                matrixStackIn.translate(0.26F, 0.25D, 0.5D );
             }
         }
 

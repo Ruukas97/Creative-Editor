@@ -1,5 +1,6 @@
 package creativeeditor.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataColor;
 import creativeeditor.screen.widgets.HexField;
@@ -15,7 +16,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class ColorScreen extends ParentItemScreen {
     @Getter
-    private DataColor color;
+    private final DataColor color;
     @Getter
     @Setter
     private boolean useAlpha;
@@ -132,9 +133,9 @@ public class ColorScreen extends ParentItemScreen {
 
 
     @Override
-    public void backRender( int mouseX, int mouseY, float p3, Color guiColor ) {
+    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color guiColor) {
         guiColor = color;
-        super.backRender( mouseX, mouseY, p3, guiColor );
+        super.backRender(matrix, mouseX, mouseY, p3, guiColor );
 
         // First vertical line
         fill( width / 3, 20, width / 3 + 1, height - 20, guiColor.getInt() );
@@ -190,16 +191,16 @@ public class ColorScreen extends ParentItemScreen {
         int halfWidth = width / 2;
         Color color = this.color;
         int i = 0;
-        drawCenteredString( font, I18n.format( "gui.color.rgb", color.getRed(), color.getGreen(), color.getBlue() ), halfWidth, 35 + (20 * i++), color.getInt() );
+        drawCenteredString( font, I18n.get( "gui.color.rgb", color.getRed(), color.getGreen(), color.getBlue() ), halfWidth, 35 + (20 * i++), color.getInt() );
         float[] hsb = java.awt.Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), null );
-        drawCenteredString( font, I18n.format( "gui.color.hsb", hsb[0], hsb[1], hsb[2] ), halfWidth, 35 + (20 * i++), color.getInt() );
+        drawCenteredString( font, I18n.get( "gui.color.hsb", hsb[0], hsb[1], hsb[2] ), halfWidth, 35 + (20 * i++), color.getInt() );
         // Color color2 = MathHelper.hsvToRGB( hue, saturation, value );
-        drawCenteredString( font, I18n.format( "gui.color.hsv", color.getHue(), color.getHSVSaturation(), color.getValue() ), halfWidth, 35 + (20 * i++), color.getInt() );
+        drawCenteredString( font, I18n.get( "gui.color.hsv", color.getHue(), color.getHSVSaturation(), color.getValue() ), halfWidth, 35 + (20 * i++), color.getInt() );
         if (useAlpha) {
-            drawCenteredString( font, I18n.format( "gui.color.alpha", color.getAlpha() ), halfWidth, 35 + (20 * i++), color.getInt() );
+            drawCenteredString( font, I18n.get( "gui.color.alpha", color.getAlpha() ), halfWidth, 35 + (20 * i++), color.getInt() );
         }
-        drawCenteredString( font, I18n.format( "gui.color.hex", color.getHexString() ), halfWidth, 35 + (20 * i++), color.getInt() );
-        drawCenteredString( font, I18n.format( "gui.color.dec", (color.getInt() & 0xFFFFFF) ), halfWidth, 35 + (20 * i++), color.getInt() );
+        drawCenteredString( font, I18n.get( "gui.color.hex", color.getHexString() ), halfWidth, 35 + (20 * i++), color.getInt() );
+        drawCenteredString( font, I18n.get( "gui.color.dec", (color.getInt() & 0xFFFFFF) ), halfWidth, 35 + (20 * i++), color.getInt() );
     }
 
 
@@ -207,6 +208,6 @@ public class ColorScreen extends ParentItemScreen {
     public void overlayRender( int mouseX, int mouseY, float p3, Color guiColor ) {
         guiColor = color;
         super.overlayRender( mouseX, mouseY, p3, guiColor );
-        GuiUtil.addToolTip( this, resetButton, mouseX, mouseY, I18n.format( "gui.color.reset" ) );
+        GuiUtil.addToolTip( this, resetButton, mouseX, mouseY, I18n.get( "gui.color.reset" ) );
     }
 }

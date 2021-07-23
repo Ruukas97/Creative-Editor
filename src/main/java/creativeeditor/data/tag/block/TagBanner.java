@@ -10,7 +10,7 @@ import net.minecraftforge.common.util.Constants.NBT;
 
 public class TagBanner extends TagTileEntity<BannerTileEntity> {
     @Getter
-    private TagList<TagBannerPattern> patterns;
+    private final TagList<TagBannerPattern> patterns;
 
 
     public TagBanner(CompoundNBT nbt) {

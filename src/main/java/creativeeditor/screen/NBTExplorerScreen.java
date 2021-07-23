@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.CreativeEditor;
 import creativeeditor.data.DataItem;
 import creativeeditor.screen.widgets.StyledButton;
@@ -86,7 +87,7 @@ public class NBTExplorerScreen extends ParentScreen {
             process.destroy();
         }
 
-        process = new ProcessBuilder( getNBTExplorer(), "\"" + openFile.toPath().toString() + "\"" ).start();
+        process = new ProcessBuilder( getNBTExplorer(), "\"" + openFile.toPath() + "\"" ).start();
     }
 
 
@@ -96,13 +97,13 @@ public class NBTExplorerScreen extends ParentScreen {
 
 
     public String getNBTExplorer() {
-        return "\"" + CreativeEditor.DATAPATH.resolve( "nbtexplorer" ).resolve( "NBTExplorer.exe" ).toString() + "\"";
+        return "\"" + CreativeEditor.DATAPATH.resolve( "nbtexplorer" ).resolve( "NBTExplorer.exe" ) + "\"";
     }
 
 
     @Override
-    public void backRender( int mouseX, int mouseY, float p3, Color color ) {
-        super.backRender( mouseX, mouseY, p3, color );
+    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
+        super.backRender(matrix, mouseX, mouseY, p3, color );
     }
 
 

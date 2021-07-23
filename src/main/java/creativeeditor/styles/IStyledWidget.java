@@ -4,17 +4,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.Widget;
 
 public interface IStyledWidget {
-    public Widget getWidget();
+    Widget getWidget();
 
 
-    public int getYImage( boolean b );
+    int getYImage(boolean b);
 
 
-    public int getBlitOffset();
+    int getBlitOffset();
 
 
-    public void setHovered( boolean b );
+    void setHovered(boolean b);
 
 
-    public void renderBg( Minecraft mc, int mouseX, int mouseY );
+    void renderBg(Minecraft mc, int mouseX, int mouseY);
 }

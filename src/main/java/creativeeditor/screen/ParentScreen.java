@@ -3,6 +3,7 @@ package creativeeditor.screen;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import creativeeditor.screen.widgets.StyledTextField;
@@ -49,7 +50,7 @@ public abstract class ParentScreen extends Screen {
 
     @Override
     public void onClose() {
-        minecraft.displayGuiScreen( lastScreen );
+        minecraft.setScreen( lastScreen );
     }
 
 
@@ -72,7 +73,7 @@ public abstract class ParentScreen extends Screen {
 
     /**
      * Modified version of
-     * {@link net.minecraft.client.gui.screen.inventory.ContainerScreen#drawItemStack}
+     * {@link net.minecraft.client.gui.screen.inventory.ContainerScreen#}
      * 
      * Draws an ItemStack.
      * 
@@ -82,14 +83,14 @@ public abstract class ParentScreen extends Screen {
     public void drawItemStack( ItemStack stack, int x, int y, float rotX, float rotY, String altText ) {
         RenderSystem.translatef( 0.0F, 0.0F, 32.0F );
         this.setBlitOffset( 200 );
-        this.itemRenderer.zLevel = 10.0F;
+        this.itemRenderer.blitOffset = 10.0F;
         net.minecraft.client.gui.FontRenderer font = stack.getItem().getFontRenderer( stack );
         if (font == null)
             font = this.font;
         new ItemRendererUtils(itemRenderer).renderItemIntoGUI(stack, x, y, rotX, rotY);
-        this.itemRenderer.renderItemOverlayIntoGUI( font, stack, x, y, altText );
+        this.itemRenderer.renderGuiItemDecorations( font, stack, x, y, altText );
         this.setBlitOffset( 0 );
-        this.itemRenderer.zLevel = 0.0F;
+        this.itemRenderer.blitOffset = 0.0F;
         RenderSystem.translatef( 0.0F, 0.0F, -32.0F );
     }
 
@@ -122,47 +123,47 @@ public abstract class ParentScreen extends Screen {
 
     @Override
     @Deprecated
-    public void render( int mouseX, int mouseY, float partialTicks ) {
+    public void render( MatrixStack matrix, int mouseX, int mouseY, float partialTicks ) {
         Color color = StyleManager.getCurrentStyle().getMainColor();
-        backRender( mouseX, mouseY, partialTicks, color );
-        mainRender( mouseX, mouseY, partialTicks, color );
-        overlayRender( mouseX, mouseY, partialTicks, color );
+        backRender( matrix, mouseX, mouseY, partialTicks, color );
+        mainRender( matrix, mouseX, mouseY, partialTicks, color );
+        overlayRender(matrix, mouseX, mouseY, partialTicks, color );
         StyleManager.getCurrentStyle().update();
     }
 
 
-    public void backRender( int mouseX, int mouseY, float p3, Color color ) {
+    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
         StyleManager.getCurrentStyle().renderBackground( this );
 
         // Frame
-        GuiUtil.drawFrame( 5, 5, width - 5, height - 5, 1, color );
+        GuiUtil.drawFrame( matrix,5, 5, width - 5, height - 5, 1, color );
 
         // GUI Title
-        drawCenteredString( font, getTitle().getFormattedText(), width / 2, 9, color.getInt() );
+        drawCenteredString(matrix, font, getTitle().getString(), width / 2, 9, color.getInt() );
 
         // Title underline
         int midX = width / 2;
         if (getTopLineWidth() == -1) {
-            int sWidthHalf = font.getStringWidth( getTitle().getFormattedText() ) / 2 + 3;
-            AbstractGui.fill( midX - sWidthHalf, 20, midX + sWidthHalf, 21, color.getInt() );
+            int sWidthHalf = font.width( getTitle().getString() ) / 2 + 3;
+            AbstractGui.fill( matrix, midX - sWidthHalf, 20, midX + sWidthHalf, 21, color.getInt() );
 
         }
         else if (getTopLineWidth() > 1) {
             int halfLineW = topLineWidth / 2;
-            AbstractGui.fill( midX - halfLineW, 20, midX + halfLineW, 21, color.getInt() );
+            AbstractGui.fill(matrix, midX - halfLineW, 20, midX + halfLineW, 21, color.getInt() );
         }
     }
 
 
-    public void mainRender( int mouseX, int mouseY, float p3, Color color ) {
-        buttons.forEach( b -> b.render( mouseX, mouseY, p3 ) );
-        renderWidgets.forEach( w -> w.render( mouseX, mouseY, p3 ) );
+    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color ) {
+        buttons.forEach( b -> b.render( matrix, mouseX, mouseY, p3 ) );
+        renderWidgets.forEach( w -> w.render( matrix, mouseX, mouseY, p3 ) );
     }
 
 
     /**
      * Should always be called last in render, but only once.
      */
-    public void overlayRender( int mouseX, int mouseY, float p3, Color color ) {
+    public void overlayRender( MatrixStack matrix, int mouseX, int mouseY, float p3, Color color ) {
     }
 }

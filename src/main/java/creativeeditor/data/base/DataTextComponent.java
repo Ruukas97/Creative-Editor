@@ -21,8 +21,8 @@ public class DataTextComponent extends SingularData<ITextComponent, StringNBT> {
 
 
     public String getFormatted() {
-        return data.getFormattedText();
-    }
+        return data.getString();
+    } // formatted
 
 
     public void set( String s ) {

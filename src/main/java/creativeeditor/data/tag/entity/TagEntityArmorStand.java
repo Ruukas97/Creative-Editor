@@ -14,20 +14,28 @@ import net.minecraftforge.common.util.Constants.NBT;
 public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
 
     private @Getter
+    final
     DataBoolean marker;
     private @Getter
+    final
     DataBoolean invisible;
     private @Getter
+    final
     DataBoolean noBasePlate;
     private @Getter
+    final
     DataBoolean noGravity;
     private @Getter
+    final
     DataBoolean showArms;
     private @Getter
+    final
     DataBoolean small;
     private @Getter
+    final
     Pose pose;
     private @Getter
+    final
     DataBitField disabledSlots;
 
 
@@ -46,7 +54,7 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
     @Override
     public ArmorStandEntity getData() {
         Minecraft mc = Minecraft.getInstance();
-        ArmorStandEntity stand = new ArmorStandEntity( mc.world, 0, 0, 0 );
+        ArmorStandEntity stand = new ArmorStandEntity( mc.level, 0, 0, 0 );
         pose.applyToArmorStand( stand );
         return stand;
     }
@@ -164,12 +172,12 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
 
 
         public void applyToArmorStand( ArmorStandEntity stand ) {
-            stand.setHeadRotation( head.getData() );
-            stand.setBodyRotation( body.getData() );
-            stand.setLeftArmRotation( leftArm.getData() );
-            stand.setRightArmRotation( rightArm.getData() );
-            stand.setLeftLegRotation( leftLeg.getData() );
-            stand.setRightLegRotation( rightLeg.getData() );
+            stand.setHeadPose( head.getData() );
+            stand.setBodyPose( body.getData() );
+            stand.setLeftArmPose( leftArm.getData() );
+            stand.setRightArmPose( rightArm.getData() );
+            stand.setLeftLegPose( leftLeg.getData() );
+            stand.setRightLegPose( rightLeg.getData() );
         }
 
     }

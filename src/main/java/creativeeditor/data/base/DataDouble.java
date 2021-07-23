@@ -9,7 +9,7 @@ public class DataDouble extends SingularData<Double, DoubleNBT> {
 
 
     public DataDouble(DoubleNBT nbt) {
-        this( nbt.getDouble() );
+        this( nbt.getAsDouble() );
     }
 
 

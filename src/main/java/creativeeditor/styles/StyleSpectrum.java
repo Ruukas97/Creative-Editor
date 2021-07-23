@@ -11,9 +11,9 @@ import net.minecraft.util.math.MathHelper;
 
 public class StyleSpectrum implements Style {
     private int spectrumTick = 0;
-    private static Color color = new Color( 0xFFFF0000 );
-    private static Color inactive = new Color( 0xFFDD00DD );
-    private static Color hovered = new Color( 0xFFFF9900 );
+    private static final Color color = new Color( 0xFFFF0000 );
+    private static final Color inactive = new Color( 0xFFDD00DD );
+    private static final Color hovered = new Color( 0xFFFF9900 );
 
 
     @Override
@@ -62,7 +62,7 @@ public class StyleSpectrum implements Style {
 
     @Override
     public void renderSlider( IStyledSlider<?> slider, int mouseX, int mouseY ) {
-        int x = slider.getWidget().x + 1 + (int) ((slider.getWidget().getWidth() - 3) * (slider.getValue().floatValue() - slider.getMin().floatValue()) / (float) (slider.getMax().floatValue() - slider.getMin().floatValue()));
+        int x = slider.getWidget().x + 1 + (int) ((slider.getWidget().getWidth() - 3) * (slider.getValue().floatValue() - slider.getMin().floatValue()) / (slider.getMax().floatValue() - slider.getMin().floatValue()));
         AbstractGui.fill( x, slider.getWidget().y + 3, x + 1, slider.getWidget().y + slider.getWidget().getHeight() - 3, getMainColor().getInt() );
     }
 

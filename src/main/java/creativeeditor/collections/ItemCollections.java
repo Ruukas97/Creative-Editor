@@ -2,6 +2,7 @@ package creativeeditor.collections;
 
 import java.util.ArrayList;
 
+import com.mojang.serialization.Lifecycle;
 import creativeeditor.tab.TabHead;
 import lombok.Getter;
 import net.minecraft.client.resources.I18n;
@@ -10,6 +11,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.registries.GameData;
 
 public class ItemCollections implements Iterable<ItemCollection> {
@@ -17,7 +19,7 @@ public class ItemCollections implements Iterable<ItemCollection> {
     // TODO hotbar
 
     @Getter
-    private ArrayList<ItemCollection> collections;
+    private final ArrayList<ItemCollection> collections;
 
 
     public ItemCollections() {
@@ -26,7 +28,7 @@ public class ItemCollections implements Iterable<ItemCollection> {
         collections.add(new ItemCollection() {
             @Override
             public String getName() {
-                return I18n.format("itemGroup.all");
+                return I18n.get("itemGroup.all");
             }
 
             @Override
@@ -46,7 +48,7 @@ public class ItemCollections implements Iterable<ItemCollection> {
 
             @Override
             public void fill(NonNullList<ItemStack> items) {
-                GameData.getWrapper( Item.class ).forEach(i -> {
+                GameData.getWrapper( Registry.ITEM_REGISTRY, Lifecycle.stable() ).forEach(i -> {
                     if (i != Items.AIR) {
                         items.add( new ItemStack( i ) );
                     }
@@ -55,8 +57,8 @@ public class ItemCollections implements Iterable<ItemCollection> {
         });
 
         for (int i = 0; i < ItemGroup.getGroupCountSafe(); i++) {
-            ItemGroup group = ItemGroup.GROUPS[i];
-            if (group != null && group != ItemGroup.SEARCH && group != ItemGroup.INVENTORY && group != ItemGroup.HOTBAR && !(group instanceof TabHead)) {
+            ItemGroup group = ItemGroup.TABS[i];
+            if (group != null && group != ItemGroup.TAB_SEARCH && group != ItemGroup.TAB_INVENTORY && group != ItemGroup.TAB_HOTBAR && !(group instanceof TabHead)) {
                 collections.add( new ItemGroupCollection( group ) );
             }
         }

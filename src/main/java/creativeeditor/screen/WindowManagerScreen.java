@@ -30,7 +30,7 @@ public class WindowManagerScreen extends Screen {
     @Override
     public void onClose() {
         super.onClose();
-        // minecraft.displayGuiScreen( lastScreen );
+        // minecraft.setScreen( lastScreen );
     }
 
 

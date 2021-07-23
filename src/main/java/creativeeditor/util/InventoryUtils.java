@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 public class InventoryUtils {
     public static int countItem( PlayerInventory inventory, Item item ) {
         int count = 0;
-        for (ItemStack stack : inventory.mainInventory) {
+        for (ItemStack stack : inventory.items) {
             if (stack.getItem() == item) {
                 count++;
             }
@@ -18,7 +18,7 @@ public class InventoryUtils {
 
     public static int getEmptySlotsCount( PlayerInventory inventory ) {
         int count = 0;
-        for (ItemStack stack : inventory.mainInventory) {
+        for (ItemStack stack : inventory.items) {
             if (stack.isEmpty())
                 count++;
         }
@@ -28,7 +28,7 @@ public class InventoryUtils {
 
     public static int getEmptySlot( PlayerInventory inventory ) {
         int count = 0;
-        for (ItemStack stack : inventory.mainInventory) {
+        for (ItemStack stack : inventory.items) {
             if (stack.isEmpty())
                 break;
             count++;

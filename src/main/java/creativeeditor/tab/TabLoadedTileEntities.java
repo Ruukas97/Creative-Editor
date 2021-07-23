@@ -21,10 +21,10 @@ public class TabLoadedTileEntities extends TabCreative {
 
 
     @Override
-    public void fill( NonNullList<ItemStack> items ) {
+    public void fillItemList( NonNullList<ItemStack> items ) {
         Minecraft mc = Minecraft.getInstance();
-        ClientWorld world = mc.world;
-        for (TileEntity te : world.loadedTileEntityList) {
+        ClientWorld world = mc.level;
+        for (TileEntity te : world.blockEntityList) {
             if(InventoryUtils.getEmptySlotsCount( mc.player.inventory ) == 0) {
                 break;
             }
@@ -43,18 +43,18 @@ public class TabLoadedTileEntities extends TabCreative {
         }
 
         NonNullList<ItemStack> stands = NonNullList.create();
-        for (Entity ent : world.getAllEntities()) {
+        for (Entity ent : world.entitiesForRendering()) {
             if (ent instanceof ArmorStandEntity) {
                 ArmorStandEntity stand = (ArmorStandEntity) ent;
                 CompoundNBT itemTag = new CompoundNBT();
                 CompoundNBT entityTag = new CompoundNBT();
-                stand.writeAdditional( entityTag );
+                stand.save( entityTag );
                 itemTag.put( NBTKeys.keys.tagEntityTag(), entityTag );
                 
                 DataItem dItem = new DataItem( Items.ARMOR_STAND, 1, itemTag, 0 );
                 
                 ItemStack stack = dItem.getData();
-                boolean found = false;;
+                boolean found = false;
                 for (ItemStack ex : stands) {
                     if (ex.equals( stack, false )) {
                         found = true;
@@ -74,7 +74,7 @@ public class TabLoadedTileEntities extends TabCreative {
 
 
     @Override
-    public ItemStack createIcon() {
+    public ItemStack makeIcon() {
         return new ItemStack( Items.LIME_SHULKER_BOX );
     }
 }

@@ -14,8 +14,8 @@ import net.minecraft.entity.item.ArmorStandEntity;
 
 public class ArmorStandDrawUtils {
 
-    private ArmorStandEntity armorstand;
-    private DataItem item;
+    private final ArmorStandEntity armorstand;
+    private final DataItem item;
 
     public int addRotation = 0;
     public boolean isDragging = false;

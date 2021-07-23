@@ -14,7 +14,7 @@ public class DataShort extends SingularData<Short, ShortNBT> {
 
 
     public DataShort(ShortNBT nbt) {
-        this( nbt.getShort() );
+        this( nbt.getAsShort() );
     }
 
 

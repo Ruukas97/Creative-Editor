@@ -8,7 +8,7 @@ public class ChatHandler {
 
     @SubscribeEvent
     public static void onChat( ClientChatReceivedEvent event ) {
-        String formatted = event.getMessage().getFormattedText();
+        String formatted = event.getMessage().getString();
         if (formatted.equals( lastMessage ))
             event.setCanceled( true );
         else

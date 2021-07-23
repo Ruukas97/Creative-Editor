@@ -9,7 +9,7 @@ public class DataByteArray extends SingularData<byte[], ByteArrayNBT> {
 
 
     public DataByteArray(ByteArrayNBT nbt) {
-        this( nbt.getByteArray() );
+        this( nbt.getAsByteArray() );
     }
 
 

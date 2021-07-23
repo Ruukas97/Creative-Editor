@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import lombok.Getter;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public enum MinecraftHeadsCategory {
     // @formatter:off
@@ -21,7 +22,7 @@ public enum MinecraftHeadsCategory {
 
 
     @Getter
-    private String name;
+    private final String name;
 
 
     MinecraftHeadsCategory(String name) {
@@ -29,8 +30,8 @@ public enum MinecraftHeadsCategory {
     }
 
 
-    public String getTranslationKey() {
-        return "gui.headcollection.category." + name;
+    public TranslationTextComponent getTranslationKey() {
+        return new TranslationTextComponent("gui.headcollection.category." + name);
     }
 
 

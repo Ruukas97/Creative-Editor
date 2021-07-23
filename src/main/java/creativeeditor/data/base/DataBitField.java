@@ -3,7 +3,7 @@ package creativeeditor.data.base;
 import net.minecraft.nbt.IntNBT;
 
 public class DataBitField extends SingularData<boolean[], IntNBT> {
-    private boolean keepSize;
+    private final boolean keepSize;
 
 
     public DataBitField(boolean keepSize, boolean... data) {
@@ -13,7 +13,7 @@ public class DataBitField extends SingularData<boolean[], IntNBT> {
 
 
     public DataBitField(int size, IntNBT data) {
-        this( size, data.getInt() );
+        this( size, data.getAsInt() );
     }
     
     public DataBitField(int size, int data) {

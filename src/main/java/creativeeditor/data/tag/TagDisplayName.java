@@ -12,16 +12,17 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class TagDisplayName extends DataTextComponent {
     private boolean returnEmpty = true;
-    private @Getter DataItem item;
+    private @Getter
+    final DataItem item;
 
 
     public TagDisplayName(StringNBT name, DataItem item) {
-        this( name.getString(), item );
+        this( name.getAsString(), item );
     }
 
 
     public TagDisplayName(String name, DataItem item) {
-        super( name.equals( "" ) ? new TranslationTextComponent( item.getItem().getItem().getTranslationKey() ) : ITextComponent.Serializer.fromJson( name ) );
+        super( name.equals( "" ) ? new TranslationTextComponent( item.getItem().getItem().getDescriptionId() ) : ITextComponent.Serializer.fromJson( name ) );
         returnEmpty = false;
         this.item = item;
     }

@@ -21,12 +21,12 @@ public class NumberField extends Widget {
     NumberRangeInt data;
     public char[] digits;
 
-    private char[] allowed = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+    private final char[] allowed = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
     private boolean isNegative;
 
     private int cursorCounter;
 
-    private boolean enableBackgroundDrawing = true;
+    private final boolean enableBackgroundDrawing = true;
     /**
      * if true the textbox can lose focus by clicking elsewhere on the screen
      */

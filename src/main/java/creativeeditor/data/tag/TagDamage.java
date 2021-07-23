@@ -4,7 +4,7 @@ import creativeeditor.data.DataItem;
 import creativeeditor.data.NumberRangeInt;
 
 public class TagDamage extends NumberRangeInt {
-    private DataItem item;
+    private final DataItem item;
 
 
     public TagDamage(DataItem item) {

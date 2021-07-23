@@ -41,7 +41,7 @@ public class TagAttributeModifier extends SingularData<AttributeModifier, Compou
 
 
     public TagAttributeModifier(CompoundNBT nbt) {
-        this( nbt.getString( NBTKeys.keys.attributeName() ), SharedMonsterAttributes.readAttributeModifier( nbt ), EquipmentSlotType.fromString( nbt.getString( NBTKeys.keys.attributeSlot() ) ) );
+        this( nbt.getString( NBTKeys.keys.attributeName() ), SharedMonsterAttributes.readAttributeModifier( nbt ), EquipmentSlotType.byName( nbt.getString( NBTKeys.keys.attributeSlot() ) ) );
     }
 
 

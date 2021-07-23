@@ -9,7 +9,7 @@ public class DataInteger extends SingularData<Integer, IntNBT> {
 
 
     public DataInteger(IntNBT nbt) {
-        this( nbt.getInt() );
+        this( nbt.getAsInt() );
     }
 
 

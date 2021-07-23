@@ -35,7 +35,7 @@ public class KeyInputHandler {
         CreativeEditor.LOGGER.info( "Initializing keybindings" );
         OPEN_EDITOR_KEY = registerKeybind( "editor", GLFW.GLFW_KEY_U );
         PLAYER_INSPECT = registerKeybind( "inspector", GLFW.GLFW_KEY_G );
-        OFF_HAND_SWING = registerKeybind( "offhandswing", InputMappings.INPUT_INVALID.getKeyCode() );
+        OFF_HAND_SWING = registerKeybind( "offhandswing", InputMappings.UNKNOWN.getValue() );
         HEAD_COLLECTION = registerKeybind( "headcollection", GLFW.GLFW_KEY_V );
         BARRIER_TOGGLE = registerKeybind( "barriertoggle", GLFW.GLFW_KEY_B );
         if (CreativeEditor.DEBUG)
@@ -47,10 +47,10 @@ public class KeyInputHandler {
     @SubscribeEvent
     public void onKeyInput( final KeyInputEvent event ) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.world == null || event.getAction() != GLFW.GLFW_PRESS || (mc.currentScreen != null && !(mc.currentScreen instanceof ContainerScreen<?>)))
+        if (mc.level == null || event.getAction() != GLFW.GLFW_PRESS || (mc.screen != null && !(mc.screen instanceof ContainerScreen<?>)))
             return;
 
-        if (event.getKey() == OPEN_EDITOR_KEY.getKey().getKeyCode()) {
+        if (event.getKey() == OPEN_EDITOR_KEY.getKey().getValue()) {
             /*long window = mc.getMainWindow().getHandle();
             long handle = GLFW.glfwCreateStandardCursor(GLFW.GLFW_IBEAM_CURSOR);
             GLFW.glfwSetCursor( window, handle );
@@ -60,40 +60,40 @@ public class KeyInputHandler {
                }
             });*/
             assert mc.player != null;
-            mc.displayGuiScreen( new MainScreen( mc.currentScreen, new DataItem( mc.player.getHeldItemMainhand() ) ) );
+            mc.setScreen( new MainScreen( mc.screen, new DataItem( mc.player.getMainHandItem() ) ) );
         }
-        else if (event.getKey() == PLAYER_INSPECT.getKey().getKeyCode()) {
-            Entity entity = mc.pointedEntity;
-            if (entity instanceof PlayerEntity) {
-                mc.displayGuiScreen( new PlayerInspectorScreen( mc.currentScreen, (PlayerEntity) mc.pointedEntity ) );
-            }
-            else {
-                mc.displayGuiScreen( new PlayerInspectorScreen( mc.currentScreen, mc.player ) );
-                // mc.displayGuiScreen( new ItemInspectorScreen( mc.currentScreen, new DataItem(
-                // mc.player.getHeldItemMainhand() ) ) );
-            }
+        else if (event.getKey() == PLAYER_INSPECT.getKey().getValue()) {
+//            Entity entity = mc.pointedEntity;
+//            if (entity instanceof PlayerEntity) {
+//                mc.setScreen( new PlayerInspectorScreen( mc.screen, (PlayerEntity) mc.pointedEntity ) );
+//            }
+//            else {
+//                mc.setScreen( new PlayerInspectorScreen( mc.screen, mc.player ) );
+//                // mc.setScreen( new ItemInspectorScreen( mc.screen, new DataItem(
+//                // mc.player.getHeldItemMainhand() ) ) );
+//            }
         }
-        else if (event.getKey() == OFF_HAND_SWING.getKey().getKeyCode()) {
+        else if (event.getKey() == OFF_HAND_SWING.getKey().getValue()) {
             assert mc.player != null;
-            mc.player.swingArm( Hand.OFF_HAND );
-            // mc.displayGuiScreen( new TextEditorScreen( mc.currentScreen ) );
+            mc.player.swing( Hand.OFF_HAND );
+            // mc.setScreen( new TextEditorScreen( mc.screen ) );
         }
-        else if (event.getKey() == HEAD_COLLECTION.getKey().getKeyCode()) {
-            mc.displayGuiScreen( new HeadCollectionScreen( mc.currentScreen ) );
+        else if (event.getKey() == HEAD_COLLECTION.getKey().getValue()) {
+            mc.setScreen( new HeadCollectionScreen( mc.screen ) );
         }
-        else if (event.getKey() == BARRIER_TOGGLE.getKey().getKeyCode()) {
+        else if (event.getKey() == BARRIER_TOGGLE.getKey().getValue()) {
             CreativeEditor.BARRIER_VISIBLE = !CreativeEditor.BARRIER_VISIBLE;
-            mc.worldRenderer.loadRenderers(); // reload chunks
+            mc.levelRenderer.allChanged(); // reload chunks
             System.out.println( "Set barrier visibility: " + CreativeEditor.BARRIER_VISIBLE );
         }
-        else if (CreativeEditor.DEBUG && event.getKey() == DEBUG_KEY.getKey().getKeyCode()) {
-            // mc.displayGuiScreen( new NBTExplorerScreen( mc.currentScreen, new DataItem(
+        else if (CreativeEditor.DEBUG && event.getKey() == DEBUG_KEY.getKey().getValue()) {
+            // mc.setScreen( new NBTExplorerScreen( mc.screen, new DataItem(
             // mc.player.getHeldItemMainhand() ) ) );
-            // mc.displayGuiScreen( new EnchantmentScreen( mc.currentScreen, new DataItem(
+            // mc.setScreen( new EnchantmentScreen( mc.screen, new DataItem(
             // mc.player.getHeldItemMainhand() ) ) );
-            // mc.displayGuiScreen( new ItemSpawnerScreen( mc.currentScreen ) );
-            mc.displayGuiScreen( new CreativeScreen( mc.player ) );
-            //mc.displayGuiScreen( new WindowManagerScreen( new StringTextComponent( CreativeEditor.NAME ) ) );
+            // mc.setScreen( new ItemSpawnerScreen( mc.screen ) );
+            mc.setScreen( new CreativeScreen( mc.player ) );
+            //mc.setScreen( new WindowManagerScreen( new StringTextComponent( CreativeEditor.NAME ) ) );
         }
     }
 

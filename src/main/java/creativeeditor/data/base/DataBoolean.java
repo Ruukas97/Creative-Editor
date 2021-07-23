@@ -14,7 +14,7 @@ public class DataBoolean extends SingularData<Boolean, ByteNBT> implements IPres
 
 
     public DataBoolean(ByteNBT nbt) {
-        this( nbt.getByte() != 0 );
+        this( nbt.getAsByte() != 0 );
     }
 
 

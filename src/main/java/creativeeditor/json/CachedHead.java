@@ -14,7 +14,7 @@ public class CachedHead {
     @Getter
     private boolean skinLoaded = false;
     @Getter
-    private ResourceLocation skin = null;
+    private final ResourceLocation skin = null;
 
 
     public CachedHead(MinecraftHeadsResponse data) {
@@ -29,7 +29,7 @@ public class CachedHead {
             if (!skinLoaded) {
                 skinLoaded = true;
                 Minecraft mc = Minecraft.getInstance();
-                mc.getSkinManager().loadProfileTextures( data.getGameProfile(), null, false );
+                mc.getSkinManager().registerSkins( data.getGameProfile(), null, false );
             }
         }
     }
@@ -37,8 +37,8 @@ public class CachedHead {
 
     public ItemStack getItemStack() {
         ItemStack head = new ItemStack( Items.PLAYER_HEAD );
-        head.getOrCreateChildTag( "display" ).putString( "Name", data.getName() );
-        NBTUtil.writeGameProfile( head.getOrCreateChildTag( "SkullOwner" ), data.getGameProfile() );
+        head.getOrCreateTagElement( "display" ).putString( "Name", data.getName() );
+        NBTUtil.writeGameProfile( head.getOrCreateTagElement( "SkullOwner" ), data.getGameProfile() );
         return head;
     }
 

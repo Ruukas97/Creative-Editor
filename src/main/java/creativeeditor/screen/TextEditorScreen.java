@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.data.base.DataString;
@@ -20,7 +21,7 @@ public class TextEditorScreen extends ParentScreen {
     //private boolean multiLine;
     private int cursor = 0;
     //private int selectionEnd = cursor;
-    private DataString text;
+    private final DataString text;
     private int cursorTicks = 0;
     private int preview = 0;
 
@@ -42,17 +43,17 @@ public class TextEditorScreen extends ParentScreen {
     protected void init() {
         super.init();
 
-        addButton( new StyledButton( 15, 15, 60, 10, I18n.format( "gui.texteditor.preview" ), b -> {
+        addButton( new StyledButton( 15, 15, 60, 10, I18n.get( "gui.texteditor.preview" ), b -> {
             preview = (preview + 1) % 3;
         } ) );
 
-        minecraft.keyboardListener.enableRepeatEvents( true );
+        minecraft.keyboardHandler.setSendRepeatsToGui( true );
     }
 
 
     @Override
     public void removed() {
-        minecraft.keyboardListener.enableRepeatEvents( false );
+        minecraft.keyboardHandler.setSendRepeatsToGui( false );
     }
 
 
@@ -123,7 +124,7 @@ public class TextEditorScreen extends ParentScreen {
     public boolean charTyped( char key, int modifier ) {
         if (super.charTyped( key, modifier ))
             return true;
-        if (key == 167 || SharedConstants.isAllowedCharacter( key )) {
+        if (key == 167 || SharedConstants.isAllowedChatCharacter( key )) {
             String s = text.get();
             text.set( s.substring( 0, cursor ) + key + s.substring( cursor ) );
             cursor++;
@@ -152,8 +153,8 @@ public class TextEditorScreen extends ParentScreen {
 
 
     @Override
-    public void mainRender( int mouseX, int mouseY, float p3, Color color ) {
-        super.mainRender( mouseX, mouseY, p3, color );
+    public void mainRender( MatrixStack matrix, int mouseX, int mouseY, float p3, Color color ) {
+        super.mainRender(matrix, mouseX, mouseY, p3, color );
 
         int i = 0;
         int chars = 0;
@@ -161,13 +162,13 @@ public class TextEditorScreen extends ParentScreen {
             int x = 15;
             int y = 30 + i * 10;
             String renderLine = line.replace( "" + (char) 167, "&" );
-            drawString( font, renderLine, x, y, -1 );
+            drawString(matrix, font, renderLine, x, y, -1 );
             if (cursorTicks < 10 && chars + renderLine.length() >= cursor) {
                 if (cursor - chars > 0) {
-                    x += font.getStringWidth( renderLine.substring( 0, cursor - chars ) );
+                    x += font.width( renderLine.substring( 0, cursor - chars ) );
                 }
                 y += 1;
-                fill( x, y, x + 1, y + 8, -1 );
+                fill(matrix,  x, y, x + 1, y + 8, -1 );
             }
             chars += renderLine.length() + 1;
             i++;
@@ -188,17 +189,17 @@ public class TextEditorScreen extends ParentScreen {
             if (newLine) {
                 int x = 15;
                 int y = 20 + i * 10;
-                fill( x, y, x + 1, y + 8, -1 );
+                fill(matrix, x, y, x + 1, y + 8, -1 );
             }
         }
     }
 
 
     @Override
-    public void overlayRender( int mouseX, int mouseY, float p3, Color color ) {
-        super.overlayRender( mouseX, mouseY, p3, color );
+    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color ) {
+        super.overlayRender( matrix, mouseX, mouseY, p3, color );
         if (preview == 1) {
-            GuiUtil.addToolTip( this, mouseX, mouseY, getLines() );
+            GuiUtil.addToolTip( matrix, this, mouseX, mouseY, getLines() );
         }
     }
 }

@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
@@ -27,7 +28,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class HeadCollectionScreen extends ParentScreen {
-    private List<CachedHead> filteredHeads = new LinkedList<>();
+    private final List<CachedHead> filteredHeads = new LinkedList<>();
 
     private static MinecraftHeadsCategory selCat = MinecraftHeadsCategory.alphabet;
     private static int currentElement = 0;
@@ -130,7 +131,7 @@ public class HeadCollectionScreen extends ParentScreen {
         if (filteredHeads.size() > 0) {
             long startTime = System.nanoTime();
 
-            for (int i = (int) Math.min( filteredHeads.size() - 1, currentPage * amountInPage ); i < (int) Math.min( filteredHeads.size(), (currentPage + 1) * amountInPage ); i++) {
+            for (int i = Math.min( filteredHeads.size() - 1, currentPage * amountInPage ); i < Math.min( filteredHeads.size(), (currentPage + 1) * amountInPage ); i++) {
                 int x = space + letterSpace + (16 * (i % maxInRow));
                 int y = heightOffset + topbar + (16 * ((i % amountInPage) / maxInRow));
                 Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().loadSkinFromCache( filteredHeads.get( i ).getData().getGameProfile() );
@@ -206,7 +207,7 @@ public class HeadCollectionScreen extends ParentScreen {
 
 
     @Override
-    public void backRender( int mouseX, int mouseY, float p3, Color color ) {
+    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
         // super.backRender( mouseX, mouseY, p3, color );
 
         maxInRow = (width - 250) / 14;
@@ -247,14 +248,14 @@ public class HeadCollectionScreen extends ParentScreen {
             int sW = font.getStringWidth( category.getName() );
             int sWH = sW / 2;
 
-            drawCenteredString( font, I18n.format( "gui.headcollection.category." + category.getName() ), x, y, (style.getFGColor( true, category == selCat || GuiUtil.isMouseInRegion( mouseX, mouseY, x - sWH, y - 1, sW, 10 ) ).getInt()) );
+            drawCenteredString( font, I18n.get( "gui.headcollection.category." + category.getName() ), x, y, (style.getFGColor( true, category == selCat || GuiUtil.isMouseInRegion( mouseX, mouseY, x - sWH, y - 1, sW, 10 ) ).getInt()) );
         }
 
-        drawString( font, I18n.format( "gui.headcollection" ) + " (" + filteredHeads.size() + ")", space + 7, heightOffset + 6, blandColor );
+        drawString( font, I18n.get( "gui.headcollection" ) + " (" + filteredHeads.size() + ")", space + 7, heightOffset + 6, blandColor );
 
-        drawCenteredString( font, searchString.length() > 0 ? searchString : I18n.format( "gui.headcollection.typesearch" ), width / 2, heightOffset + 6, blandColor );
+        drawCenteredString( font, searchString.length() > 0 ? searchString : I18n.get( "gui.headcollection.typesearch" ), width / 2, heightOffset + 6, blandColor );
 
-        String pageString = I18n.format( "gui.headcollection.currentpage", currentPage + 1, amountPages );
+        String pageString = I18n.get( "gui.headcollection.currentpage", currentPage + 1, amountPages );
         drawString( font, pageString, space + letterSpace + maxInRow * 16 - font.getStringWidth( pageString ), heightOffset + 6, blandColor );
 
         String nextPage = "-->";
@@ -272,18 +273,18 @@ public class HeadCollectionScreen extends ParentScreen {
             drawString( font, previousPage, space + letterSpace + maxInRow * 16 - 25 - nextPageW * 2, heightOffset + topbar + 168, style.getFGColor( true, selectedP ).getInt() );
         }
 
-        drawString( font, I18n.format( "gui.headcollection.credit" ), space + 7, heightOffset + topbar + 168, blandColor );
+        drawString( font, I18n.get( "gui.headcollection.credit" ), space + 7, heightOffset + topbar + 168, blandColor );
 
         // Has to be before tooltip cause of skull hover
-        drawCenteredString( font, I18n.format( "gui.headcollection.freeslots" ) + ": " + InventoryUtils.getEmptySlotsCount( minecraft.player.inventory ), width / 2, height - 45, blandColor );
+        drawCenteredString( font, I18n.get( "gui.headcollection.freeslots" ) + ": " + InventoryUtils.getEmptySlotsCount( minecraft.player.inventory ), width / 2, height - 45, blandColor );
 
-        drawCenteredString( font, I18n.format( "gui.headcollection.headsininventory" ) + ": " + InventoryUtils.countItem( minecraft.player.inventory, Items.PLAYER_HEAD ), width / 2, height - 35, blandColor );
+        drawCenteredString( font, I18n.get( "gui.headcollection.headsininventory" ) + ": " + InventoryUtils.countItem( minecraft.player.inventory, Items.PLAYER_HEAD ), width / 2, height - 35, blandColor );
 
 
         ItemStack hovered = null;
 
         if (filteredHeads.size() > 0) {
-            for (int i = (int) Math.min( filteredHeads.size() - 1, currentPage * amountInPage ); i < (int) Math.min( filteredHeads.size(), (currentPage + 1) * amountInPage ); i++) {
+            for (int i = Math.min( filteredHeads.size() - 1, currentPage * amountInPage ); i < Math.min( filteredHeads.size(), (currentPage + 1) * amountInPage ); i++) {
                 int x = space + letterSpace + (16 * (i % maxInRow));
                 int y = heightOffset + topbar + (16 * ((i % amountInPage) / maxInRow));
                 CachedHead cached = filteredHeads.get( i );
@@ -304,13 +305,13 @@ public class HeadCollectionScreen extends ParentScreen {
         int searchW = font.getStringWidth( searchString );
 
         if (hovered != null) {
-            GuiUtil.addToolTip( this, mouseX, mouseY, width, height, mouseX, mouseY, hovered.getDisplayName().getFormattedText(), "�7" + I18n.format( "gui.headcollection.clickhead" ), "�7" + I18n.format( "gui.headcollection.clickheadshift" ) );
+            GuiUtil.addToolTip( this, mouseX, mouseY, width, height, mouseX, mouseY, hovered.getDisplayName().getFormattedText(), "�7" + I18n.get( "gui.headcollection.clickhead" ), "�7" + I18n.get( "gui.headcollection.clickheadshift" ) );
         }
         else if (!searchString.equals( filteredString ) && GuiUtil.isMouseInRegion( mouseX, mouseY, (width / 2) - searchW / 2, 56, searchW, 8 )) {
-            GuiUtil.addToolTip( this, mouseX, mouseY, I18n.format( "gui.headcollection.clicksearch" ) );
+            GuiUtil.addToolTip( this, mouseX, mouseY, I18n.get( "gui.headcollection.clicksearch" ) );
         }
         else {
-            GuiUtil.addToolTip( this, space + 2, heightOffset + topbar, letterSpace - 4, 161, mouseX, mouseY, I18n.format( "gui.headcollection.changecategory" ) );
+            GuiUtil.addToolTip( this, space + 2, heightOffset + topbar, letterSpace - 4, 161, mouseX, mouseY, I18n.get( "gui.headcollection.changecategory" ) );
         }
 
         RenderSystem.translatef( 0.0F, 0.0F, -100.0F );

@@ -19,7 +19,7 @@ public class TooltipHandler {
         }
         
         Minecraft mc = Minecraft.getInstance();
-        if (!(mc.currentScreen instanceof ParentScreen))
+        if (!(mc.screen instanceof ParentScreen))
             StyleManager.getCurrentStyle().update();
 
         Color color1 = new Color( StyleManager.getCurrentStyle().getMainColor().getInt() );

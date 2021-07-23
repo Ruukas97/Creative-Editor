@@ -21,18 +21,18 @@ public class HexField extends Widget {
     DataColor dataColor;
     public char[] digits;
 
-    private char[] allowed = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f' };
+    private final char[] allowed = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f' };
 
     private int cursorCounter;
 
-    private boolean enableBackgroundDrawing = true;
+    private final boolean enableBackgroundDrawing = true;
     /**
      * if true the textbox can lose focus by clicking elsewhere on the screen
      */
     private boolean canLoseFocus = true;
 
     @Getter
-    private boolean enabled = true;
+    private final boolean enabled = true;
 
     private int cursorPosition;
 
@@ -243,7 +243,7 @@ public class HexField extends Widget {
 
     @Override
     public boolean changeFocus( boolean p_changeFocus_1_ ) {
-        return this.visible && this.isEnabled() ? super.changeFocus( p_changeFocus_1_ ) : false;
+        return this.visible && this.isEnabled() && super.changeFocus(p_changeFocus_1_);
     }
 
 

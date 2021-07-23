@@ -46,7 +46,7 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
 
 
     public StyledTextField(FontRenderer font, int x, int y, int width, int height, String msg) {
-        this( font, x, y, width, height, (StyledTextField) null, msg );
+        this( font, x, y, width, height, null, msg );
     }
 
 
@@ -80,7 +80,7 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
 
     protected String getNarrationMessage() {
         String s = this.getMessage();
-        return s.isEmpty() ? "" : I18n.format( "gui.narrate.editBox", s, this.text );
+        return s.isEmpty() ? "" : I18n.get( "gui.narrate.editBox", s, this.text );
     }
 
 
@@ -624,7 +624,7 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
 
     @Override
     public boolean changeFocus( boolean p_changeFocus_1_ ) {
-        return this.visible && this.isEnabled ? super.changeFocus( p_changeFocus_1_ ) : false;
+        return this.visible && this.isEnabled && super.changeFocus(p_changeFocus_1_);
     }
 
 

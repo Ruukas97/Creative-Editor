@@ -9,10 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class ItemInspectorScreen extends ParentScreen {
-    private DataItem item;
+    private final DataItem item;
     private boolean isScrolling;
     private float rotX = 0f, rotY = 0f;
-    private float itemScale = 10.0f;
+    private final float itemScale = 10.0f;
 
 
     public ItemInspectorScreen(Screen lastScreen, DataItem item) {
