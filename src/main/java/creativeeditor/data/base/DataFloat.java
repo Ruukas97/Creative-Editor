@@ -10,7 +10,7 @@ public class DataFloat extends SingularData<Float, FloatNBT> {
 
 
     public DataFloat(FloatNBT nbt) {
-        this( nbt.getLong() );
+        this( nbt.getAsLong() );
     }
 
 

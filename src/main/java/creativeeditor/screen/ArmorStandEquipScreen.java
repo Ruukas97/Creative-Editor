@@ -1,5 +1,6 @@
 package creativeeditor.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.data.DataItem;
 import creativeeditor.util.ColorUtils.Color;
 import net.minecraft.client.gui.screen.Screen;
@@ -33,8 +34,8 @@ public class ArmorStandEquipScreen extends ParentItemScreen{
 	}
 	
 	@Override
-	public void backRender(int mouseX, int mouseY, float p3, Color color) {
-		super.backRender(mouseX, mouseY, p3, color);
+	public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
+		super.backRender(matrix, mouseX, mouseY, p3, color);
 	}
 
 }

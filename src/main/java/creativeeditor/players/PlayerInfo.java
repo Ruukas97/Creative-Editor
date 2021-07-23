@@ -17,7 +17,7 @@ import creativeeditor.CreativeEditor;
 import lombok.Getter;
 
 public class PlayerInfo {
-    private static Path PATH = CreativeEditor.DATAPATH.resolve( "players" );
+    private static final Path PATH = CreativeEditor.DATAPATH.resolve( "players" );
     private static final HashMap<UUID, PlayerInfo> CACHE = new HashMap<>();
 
     @Getter

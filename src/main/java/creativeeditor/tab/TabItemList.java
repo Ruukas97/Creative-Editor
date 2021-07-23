@@ -4,8 +4,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
 public class TabItemList extends TabCreative {
-    private ItemStack[] items;
-    private ItemStack icon;
+    private final ItemStack[] items;
+    private final ItemStack icon;
 
 
     public TabItemList(String label, ItemStack icon, ItemStack... items) {
@@ -16,7 +16,7 @@ public class TabItemList extends TabCreative {
 
 
     @Override
-    public void fill( NonNullList<ItemStack> items ) {
+    public void fillItemList( NonNullList<ItemStack> items ) {
         for (ItemStack item : this.items) {
             items.add( item );
         }
@@ -24,7 +24,7 @@ public class TabItemList extends TabCreative {
 
 
     @Override
-    public ItemStack createIcon() {
+    public ItemStack makeIcon() {
         return icon;
     }
 }

@@ -15,7 +15,7 @@ public class DataLong extends SingularData<Long, LongNBT> {
 
 
     public DataLong(LongNBT nbt) {
-        this( nbt.getLong() );
+        this( nbt.getAsLong() );
     }
 
 

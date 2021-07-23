@@ -15,6 +15,7 @@ public class TagEnchantment implements Data<TagEnchantment, CompoundNBT> {
     private @Getter
     Enchantment enchantment;
     private @Getter
+    final
     int level;
 
 
@@ -29,7 +30,7 @@ public class TagEnchantment implements Data<TagEnchantment, CompoundNBT> {
             enchantment = GameRegistry.findRegistry( Enchantment.class ).getValue( rl );
         }
         catch (ResourceLocationException e) {
-            enchantment = Enchantment.getEnchantmentByID( 0 );
+            enchantment = Enchantment.byId( 0 );
         }
 
         level = nbt.getInt( "lvl" );

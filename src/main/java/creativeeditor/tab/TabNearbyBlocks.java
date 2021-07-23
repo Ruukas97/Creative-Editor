@@ -1,9 +1,5 @@
 package creativeeditor.tab;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-
 import creativeeditor.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -13,14 +9,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.vector.Vector3i;
+import net.minecraft.world.DimensionType;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 public class TabNearbyBlocks extends TabCreative {
     public TabNearbyBlocks() {
@@ -29,23 +30,23 @@ public class TabNearbyBlocks extends TabCreative {
 
 
     @Override
-    public void fill( NonNullList<ItemStack> items ) {
+    public void fillItemList( NonNullList<ItemStack> items ) {
         Minecraft mc = Minecraft.getInstance();
-        ClientWorld world = mc.world;
+        ClientWorld world = mc.level;
         ClientPlayerEntity player = mc.player;
-        BlockPos playerPos = new BlockPos( player );
+        BlockPos playerPos = new BlockPos( player.position() );
         HashMap<Item, Integer> map = new HashMap<>();
         int radius = Config.NEARBYBLOCKS_TAB_RADIUS.get();
         int diameter = radius * 2;
-        BlockPos original = playerPos.add( new Vec3i( -radius, -radius, -radius ) );
+        BlockPos original = playerPos.offset( new Vector3i( -radius, -radius, -radius ) );
 
         for (int x = 0; x < diameter; x++) {
             for (int y = 0; y < diameter; y++) {
-                if (y > world.getActualHeight() || y < 0)
+                if (y > world.dimensionType().logicalHeight() || y < 0) // logicalHeight = actualHeight?
                     continue;
 
                 for (int z = 0; z < diameter; z++) {
-                    BlockPos pos = new BlockPos( original ).add( new Vec3i( x, y, z ) );
+                    BlockPos pos = new BlockPos( original ).offset( new Vector3i( x, y, z ) );
                     BlockState state = world.getBlockState( pos );
                     Block block = state.getBlock();
                     Item item = block.asItem();
@@ -56,12 +57,12 @@ public class TabNearbyBlocks extends TabCreative {
 
                     if (block instanceof FlowingFluidBlock) {
                         FlowingFluidBlock fluidBlock = (FlowingFluidBlock) block;
-                        IFluidState fluidState = fluidBlock.getFluidState( state );
-                        if (fluidState.getLevel() != 8) {
+                        FluidState fluidState = fluidBlock.getFluidState( state );
+                        if (fluidState.getAmount() != 8) {
                             continue;
                         }
                         Fluid fluid = fluidBlock.getFluid();
-                        item = fluid.getFilledBucket();
+                        item = fluid.getBucket();
                     }
 
                     if (item == Items.AIR) {
@@ -69,9 +70,9 @@ public class TabNearbyBlocks extends TabCreative {
                     }
 
                     if (block.hasTileEntity( state )) {
-                        TileEntity te = world.getTileEntity( pos );
+                        TileEntity te = world.getBlockEntity( pos );
                         ItemStack stack = new ItemStack( item );
-                        mc.storeTEInStack( stack, te );
+                        mc.addCustomNbtData( stack, te );
 
                         boolean found = false;
                         for (ItemStack ex : items) {
@@ -133,7 +134,7 @@ public class TabNearbyBlocks extends TabCreative {
 
 
     @Override
-    public ItemStack createIcon() {
+    public ItemStack makeIcon() {
         return new ItemStack( Blocks.PURPLE_GLAZED_TERRACOTTA );
     }
 }

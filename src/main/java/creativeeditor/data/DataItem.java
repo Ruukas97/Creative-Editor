@@ -49,7 +49,7 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
 
 
     public DataItem(Item item, String nbtString) throws CommandSyntaxException {
-        this( item, 1, JsonToNBT.getTagFromJson( nbtString ), 0 );
+        this( item, 1, JsonToNBT.parseTag( nbtString ), 0 );
     }
 
 
@@ -73,7 +73,7 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
 
     private static CompoundNBT getTETag( Item item, TileEntity te ) {
         CompoundNBT nbt = new CompoundNBT();
-        CompoundNBT teTag = te.write( new CompoundNBT() );
+        CompoundNBT teTag = te.save( new CompoundNBT() );
 
         if (item instanceof SkullItem && teTag.contains( "Owner" )) {
             CompoundNBT compoundnbt2 = teTag.getCompound( "Owner" );
@@ -93,7 +93,7 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
 
 
     public ItemStack getItemStack() {
-        return ItemStack.read( getNBT() );
+        return ItemStack.of( getNBT() );
     }
 
 
@@ -105,7 +105,7 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
      * @return An itemstack including all data, with no cleanup.
      */
     public ItemStack getItemStackFull() {
-        return ItemStack.read( getNBT() );
+        return ItemStack.of( getNBT() );
     }
 
 

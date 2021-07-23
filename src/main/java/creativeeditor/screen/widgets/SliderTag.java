@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn( Dist.CLIENT )
 public class SliderTag extends Widget implements IStyledSlider<Integer> {
-    private NumberRangeInt range;
+    private final NumberRangeInt range;
 
     public String display;
     public boolean drawString;
@@ -49,7 +49,7 @@ public class SliderTag extends Widget implements IStyledSlider<Integer> {
 
     @Override
     protected String getNarrationMessage() {
-        return I18n.format( "gui.narrate.slider", getMessage() );
+        return I18n.get( "gui.narrate.slider", getMessage() );
     }
 
 
@@ -71,9 +71,9 @@ public class SliderTag extends Widget implements IStyledSlider<Integer> {
     private void setValueFromMouse( double mouseX ) {
         double updateValue;
         if (StyleManager.getCurrentStyle() instanceof StyleSpectrum)
-            updateValue = ((double) mouseX - (x + 1d)) / (double) (width - 2.5d);
+            updateValue = (mouseX - (x + 1d)) / (width - 2.5d);
         else
-            updateValue = ((double) mouseX - (x + 4)) / (double) (width - 8);
+            updateValue = (mouseX - (x + 4)) / (double) (width - 8);
         int round = (int) Math.round( updateValue * (range.getMax() - range.getMin()) + range.getMin() );
         setValue( round );
     }

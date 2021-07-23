@@ -30,7 +30,7 @@ import net.minecraft.nbt.StringNBT;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public interface Data<E, T extends INBT> {
-    public E getData();
+    E getData();
 
 
     /**
@@ -39,7 +39,7 @@ public interface Data<E, T extends INBT> {
      * 
      * @return true or false
      */
-    public boolean isDefault();
+    boolean isDefault();
 
 
     /**
@@ -47,10 +47,10 @@ public interface Data<E, T extends INBT> {
      * 
      * @return created IBNT object
      */
-    public T getNBT();
+    T getNBT();
 
 
-    public static <T> T convertInstanceOfObject( Object o, Class<T> clazz ) {
+    static <T> T convertInstanceOfObject(Object o, Class<T> clazz) {
         try {
             return clazz.cast( o );
         }
@@ -67,7 +67,7 @@ public interface Data<E, T extends INBT> {
      * @return the created data object
      */
     @Nullable
-    public static Data<?, ?> getDataFromNBT( INBT nbt ) {
+    static Data<?, ?> getDataFromNBT(INBT nbt) {
         switch (nbt.getId()) {
         case NBT.TAG_BYTE:
             return new DataByte( (ByteNBT) nbt );
@@ -105,7 +105,7 @@ public interface Data<E, T extends INBT> {
      * @param nbt The nbt to check
      * @return true or false
      */
-    public static boolean isNumber( INBT nbt ) {
+    static boolean isNumber(INBT nbt) {
         int id = nbt.getId();
         return id == NBT.TAG_ANY_NUMERIC || (NBT.TAG_BYTE <= id && id <= NBT.TAG_DOUBLE);
     }

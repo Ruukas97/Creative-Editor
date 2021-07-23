@@ -26,16 +26,16 @@ public class ItemWidgets implements Iterable<ClassSpecificWidget> {
         list = new ArrayList<>();
         Minecraft mc = Minecraft.getInstance();
 
-        add( new ClassSpecificWidget( I18n.format( "gui.enchanting" ), dItem -> EnchantmentType.ALL.canEnchantItem(dItem.getItem().getItem()), (item, info ) ->
-                new StyledTextButton( info.withTrigger( button -> mc.displayGuiScreen( new EnchantmentScreen( info.getParent(), item.getTag().getEnchantments() )) ) )
+        add( new ClassSpecificWidget( I18n.get( "gui.enchanting" ), dItem -> EnchantmentType.ALL.canEnchantItem(dItem.getItem().getItem()), (item, info ) ->
+                new StyledTextButton( info.withTrigger( button -> mc.setScreen( new EnchantmentScreen( info.getParent(), item.getTag().getEnchantments() )) ) )
         ));
 
-        add( new ClassSpecificWidget( I18n.format( "gui.armorstandeditor" ), dItem -> dItem.getItem().getItem() instanceof ArmorStandItem, (item, info ) ->
-                new StyledTextButton( info.withTrigger( button -> mc.displayGuiScreen( new ArmorstandScreen( info.getParent(), item ) ) ) )
+        add( new ClassSpecificWidget( I18n.get( "gui.armorstandeditor" ), dItem -> dItem.getItem().getItem() instanceof ArmorStandItem, (item, info ) ->
+                new StyledTextButton( info.withTrigger( button -> mc.setScreen( new ArmorstandScreen( info.getParent(), item ) ) ) )
         ));
 
-        add( new ClassSpecificWidget( I18n.format( "gui.color" ), dItem -> dItem.getItem().getItem() instanceof IDyeableArmorItem, (item, info ) ->
-            new StyledTextButton( info.withTrigger( button -> mc.displayGuiScreen( new ColorScreen( info.getParent(), item, item.getTag().getDisplay().getColor(), 10511680, false) ) ) )
+        add( new ClassSpecificWidget( I18n.get( "gui.color" ), dItem -> dItem.getItem().getItem() instanceof IDyeableArmorItem, (item, info ) ->
+            new StyledTextButton( info.withTrigger( button -> mc.setScreen( new ColorScreen( info.getParent(), item, item.getTag().getDisplay().getColor(), 10511680, false) ) ) )
         ));
     }
 

@@ -28,7 +28,7 @@ public class DataListString extends DataList<DataString> {
     public <T extends INBT> void add( T nbt ) {
         if (nbt != null && nbt.getId() == NBT.TAG_STRING) {
             StringNBT str = (StringNBT) nbt;
-            if (str != null && !str.getString().isEmpty()) {
+            if (str != null && !str.getAsString().isEmpty()) {
                 add( new DataString( str ) );
             }
         }

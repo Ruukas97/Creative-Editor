@@ -9,7 +9,7 @@ public class DataByte extends SingularData<Byte, ByteNBT> {
 
 
     public DataByte(ByteNBT nbt) {
-        this( nbt.getByte() );
+        this( nbt.getAsByte() );
     }
 
 

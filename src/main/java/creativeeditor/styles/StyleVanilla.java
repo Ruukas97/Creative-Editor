@@ -12,7 +12,7 @@ public class StyleVanilla extends StyleBase {
     }
 
 
-    private Color mainColor = new Color( 255, 200, 200, 200 );
+    private final Color mainColor = new Color( 255, 200, 200, 200 );
 
 
     @Override
@@ -54,6 +54,6 @@ public class StyleVanilla extends StyleBase {
 
     @Override
     public void renderSlider( IStyledSlider<?> slider, int mouseX, int mouseY ) {
-        GuiUtil.drawContinuousTexturedBox( Widget.WIDGETS_LOCATION, (int) (slider.getWidget().x + (slider.getWidget().getWidth() - 8) * ((float) (slider.getValue().floatValue() - slider.getMin().floatValue()) / (float) Math.max( 1, (slider.getMax().floatValue() - slider.getMin().floatValue()) ))), slider.getWidget().y, 0, 66, 8, slider.getWidget().getHeight(), 200, 20, 2, 3, 2, 2, slider.getBlitOffset() );
+        GuiUtil.drawContinuousTexturedBox( Widget.WIDGETS_LOCATION, (int) (slider.getWidget().x + (slider.getWidget().getWidth() - 8) * ((slider.getValue().floatValue() - slider.getMin().floatValue()) / Math.max( 1, (slider.getMax().floatValue() - slider.getMin().floatValue()) ))), slider.getWidget().y, 0, 66, 8, slider.getWidget().getHeight(), 200, 20, 2, 3, 2, 2, slider.getBlitOffset() );
     }
 }

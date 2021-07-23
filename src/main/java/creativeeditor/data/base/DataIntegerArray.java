@@ -9,7 +9,7 @@ public class DataIntegerArray extends SingularData<int[], IntArrayNBT> {
 
 
     public DataIntegerArray(IntArrayNBT nbt) {
-        this( nbt.getIntArray() );
+        this( nbt.getAsIntArray() );
     }
 
 

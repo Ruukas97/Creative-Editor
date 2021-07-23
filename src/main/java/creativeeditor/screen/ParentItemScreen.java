@@ -1,5 +1,6 @@
 package creativeeditor.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import creativeeditor.data.DataItem;
@@ -53,19 +54,19 @@ public class ParentItemScreen extends ParentScreen {
             boolean hasLastscreen = lastScreen != null;
             String butCloseBack = hasLastscreen ? "gui.main.back" : "gui.main.close";
 
-            backButton = addButton( new StyledButton( posX - bwidth - 1, posY, bwidth, 20, I18n.format( butCloseBack ), this::back ) );
+            backButton = addButton( new StyledButton( posX - bwidth - 1, posY, bwidth, 20, I18n.get( butCloseBack ), this::back ) );
 
-            resetButton = addButton( new StyledButton( posX, (hasLastscreen ? posY : posY - 11), bwidth, 20, I18n.format( "gui.main.reset" ), this::reset ) );
+            resetButton = addButton( new StyledButton( posX, (hasLastscreen ? posY : posY - 11), bwidth, 20, I18n.get( "gui.main.reset" ), this::reset ) );
 
-            saveButton = hasLastscreen ? null : addButton( new StyledButton( posX, posY + 10, bwidth, 20, I18n.format( "gui.main.save" ), this::save ) );
+            saveButton = hasLastscreen ? null : addButton( new StyledButton( posX, posY + 10, bwidth, 20, I18n.get( "gui.main.save" ), this::save ) );
 
-            dropButton = addButton( new StyledButton( posX + bwidth + 1, posY, bwidth, 20, I18n.format( "gui.main.drop" ), this::drop ) );
+            dropButton = addButton( new StyledButton( posX + bwidth + 1, posY, bwidth, 20, I18n.get( "gui.main.drop" ), this::drop ) );
         }
     }
 
 
     public void back( Widget w ) {
-        minecraft.displayGuiScreen( lastScreen );
+        minecraft.setScreen( lastScreen );
     }
 
 
@@ -84,13 +85,13 @@ public class ParentItemScreen extends ParentScreen {
 
     public void save( Widget w ) {
         if (item.getItem().getItem() != Items.AIR)
-            minecraft.playerController.sendSlotPacket( item.getItemStack(), 36 + minecraft.player.inventory.currentItem );
+            minecraft.gameMode.sendSlotPacket( item.getItemStack(), 36 + minecraft.player.inventory.selected );
     }
 
 
     public void drop( Widget w ) {
         if (item.getItem().getItem() != Items.AIR)
-            minecraft.playerController.sendPacketDropItem( item.getItemStack() );
+            minecraft.gameMode.sendPacketDropItem( item.getItemStack() );
         // Shift for /give
     }
 
@@ -112,21 +113,21 @@ public class ParentItemScreen extends ParentScreen {
             return true;
         }
         if (GuiUtil.isMouseIn( (int) mouseX, (int) mouseY, width / 2 - 17, 43, 36, 36 )) {
-            minecraft.displayGuiScreen(new ItemInspectorScreen(this, item));
+            minecraft.setScreen(new ItemInspectorScreen(this, item));
             return true;
         }
         return false;
     }
 
     @Override
-    public void mainRender( int mouseX, int mouseY, float p3, Color color ) {
-        super.mainRender( mouseX, mouseY, p3, color );
+    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color ) {
+        super.mainRender( matrix, mouseX, mouseY, p3, color );
     }
 
 
     @Override
-    public void overlayRender( int mouseX, int mouseY, float p3, Color color ) {
-        super.overlayRender( mouseX, mouseY, p3, color );
+    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color ) {
+        super.overlayRender(matrix, mouseX, mouseY, p3, color );
         // Item (Tooltip must render last or colors will be messed up)
         if (renderItem) {
             ItemStack stack = item.getItemStack();
@@ -138,7 +139,7 @@ public class ParentItemScreen extends ParentScreen {
             int xFrameEnd = x + 19;
             int yFrameStart = 41;
             if (ite == Items.AIR) {
-                drawCenteredString( font, ite.getDisplayName( stack ).getFormattedText(), x, y-3, color.getInt() );
+                drawCenteredString( matrix, font, ite.getName( stack ).getString(), x, y-3, color.getInt() );
             }
             else {
                 RenderSystem.pushMatrix();
@@ -153,14 +154,14 @@ public class ParentItemScreen extends ParentScreen {
             if (GuiUtil.isMouseIn( mouseX, mouseY, width / 2 - 17, 43, 36, 36 )){
                 itemRotX += 0.25;
                 if (itemScale == 2f)
-                    GuiUtil.drawFrame( xFrameStart, yFrameStart, xFrameEnd, 79, 1, StyleManager.getCurrentStyle().getFGColor(true, true) );
+                    GuiUtil.drawFrame( matrix, xFrameStart, yFrameStart, xFrameEnd, 79, 1, StyleManager.getCurrentStyle().getFGColor(true, true) );
 
-                renderTooltip( stack, mouseX, mouseY );
+                renderTooltip(matrix, stack, mouseX, mouseY );
             }
             else{
                 itemRotX = 0f;
                 if (itemScale == 2f)
-                    GuiUtil.drawFrame( xFrameStart, yFrameStart, xFrameEnd, 79, 1, color);
+                    GuiUtil.drawFrame( matrix, xFrameStart, yFrameStart, xFrameEnd, 79, 1, color);
             }
         }
     }

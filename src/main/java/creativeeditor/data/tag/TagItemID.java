@@ -2,17 +2,19 @@ package creativeeditor.data.tag;
 
 import javax.annotation.Nonnull;
 
+import com.mojang.serialization.Lifecycle;
 import creativeeditor.data.base.DataString;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.registries.GameData;
 
 public class TagItemID extends DataString {
     public TagItemID(INBT value) {
-        super( value instanceof StringNBT ? value.getString() : "minecraft:air" );
+        super( value instanceof StringNBT ? value.getAsString() : "minecraft:air" );
     }
 
 
@@ -39,7 +41,7 @@ public class TagItemID extends DataString {
 
     @Nonnull
     public Item getItem() {
-        return GameData.getWrapperDefaulted( Item.class ).getOrDefault( new ResourceLocation( get() ) );
+        return GameData.getWrapper( Registry.ITEM_REGISTRY, Lifecycle.stable() ).get( new ResourceLocation( get() ) ); // TODO: add lifecycle
     }
 
     public String getIDExcludingMC() {

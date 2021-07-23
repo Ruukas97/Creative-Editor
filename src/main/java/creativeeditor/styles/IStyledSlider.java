@@ -1,11 +1,11 @@
 package creativeeditor.styles;
 
 public interface IStyledSlider<T extends Number> extends IStyledWidget {
-    public T getValue();
+    T getValue();
 
 
-    public T getMin();
+    T getMin();
 
 
-    public T getMax();
+    T getMax();
 }

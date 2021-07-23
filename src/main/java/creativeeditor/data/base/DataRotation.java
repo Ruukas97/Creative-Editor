@@ -9,10 +9,13 @@ import net.minecraft.util.math.Rotations;
 
 public class DataRotation implements Data<Rotations, ListNBT> {
     private @Getter
+    final
     NumberRangeInt x;
     private @Getter
+    final
     NumberRangeInt y;
     private @Getter
+    final
     NumberRangeInt z;
 
 

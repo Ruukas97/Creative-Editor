@@ -7,13 +7,13 @@ import net.minecraft.client.Minecraft;
 public class RenderUtil {
     public static void glScissorBox( int left, int top, int right, int bottom ) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.currentScreen == null)
+        if (mc.screen == null)
             return;
 
         int width = right - left;
         int height = bottom - top;
-        int bottomY = mc.currentScreen.height - bottom;
-        double factor = mc.getMainWindow().getGuiScaleFactor();
+        int bottomY = mc.screen.height - bottom;
+        double factor = mc.getWindow().getGuiScale();
 
         int scissorX = (int) (left * factor);
         int scissorY = (int) (bottomY * factor);
@@ -25,11 +25,11 @@ public class RenderUtil {
 
     public static void glScissorRectangle( int x, int y, int width, int height ) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.currentScreen == null)
+        if (mc.screen == null)
             return;
 
-        int bottomY = mc.currentScreen.height - (y + height);
-        double factor = mc.getMainWindow().getGuiScaleFactor();
+        int bottomY = mc.screen.height - (y + height);
+        double factor = mc.getWindow().getGuiScale();
 
         int scissorX = (int) (x * factor);
         int scissorY = (int) (bottomY * factor);

@@ -2,6 +2,7 @@ package creativeeditor.screen;
 
 import java.util.Date;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import creativeeditor.collections.ItemCollection;
@@ -19,7 +20,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class ItemSpawnerScreen extends ParentScreen {
     private static final Inventory TMP_INVENTORY = new Inventory( 45 );
-    private static int selectedTabIndex = ItemGroup.BUILDING_BLOCKS.getIndex();
+    private static final int selectedTabIndex = ItemGroup.BUILDING_BLOCKS.getIndex();
     private float currentScroll;
     private boolean isScrolling;
     private TextFieldWidget searchField;
@@ -68,9 +69,9 @@ public class ItemSpawnerScreen extends ParentScreen {
 
 
     @Override
-    public void backRender( int mouseX, int mouseY, float p3, Color color ) {
+    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
         setTopLineWidth( width - 30 );
-        super.backRender( mouseX, mouseY, p3, color );
+        super.backRender(matrix, mouseX, mouseY, p3, color );
     }
 
 

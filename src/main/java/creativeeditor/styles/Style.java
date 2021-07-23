@@ -5,23 +5,23 @@ import creativeeditor.util.ColorUtils.Color;
 import net.minecraft.client.gui.widget.Widget;
 
 public interface Style {
-    public Color getMainColor();
+    Color getMainColor();
 
 
-    public Color getFGColor( Widget widget );
+    Color getFGColor(Widget widget);
 
 
-    public Color getFGColor( boolean active, boolean hovered );
+    Color getFGColor(boolean active, boolean hovered);
 
 
-    public void update();
+    void update();
 
 
-    public void renderBackground( ParentScreen screen );
+    void renderBackground(ParentScreen screen);
 
 
-    public void renderButton( IStyledWidget button, int mouseX, int mouseY, float alpha );
+    void renderButton(IStyledWidget button, int mouseX, int mouseY, float alpha);
 
 
-    public void renderSlider( IStyledSlider<?> slider, int mouseX, int mouseY );
+    void renderSlider(IStyledSlider<?> slider, int mouseX, int mouseY);
 }

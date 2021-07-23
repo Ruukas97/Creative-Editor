@@ -18,7 +18,7 @@ public class PlayerScreen extends ParentScreen {
     public void init( Minecraft p_init_1_, int p_init_2_, int p_init_3_ ) {
         super.init( p_init_1_, p_init_2_, p_init_3_ );
         PlayerAbilities playerAb = minecraft.player.abilities;
-        addButton( new StyledButton( 10, 10, 10, 10, I18n.format( "gui.player.flight" ), t -> {
+        addButton( new StyledButton( 10, 10, 10, 10, I18n.get( "gui.player.flight" ), t -> {
             if (playerAb.isCreativeMode || minecraft.isSingleplayer()) {
                 if (playerAb.isFlying) {
                     playerAb.allowFlying = false;

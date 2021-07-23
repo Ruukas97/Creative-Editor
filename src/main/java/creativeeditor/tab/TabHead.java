@@ -9,6 +9,7 @@ import creativeeditor.util.RandomUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
 
 public class TabHead extends TabCreative {
     public static ItemStack fallbackIcon = new ItemStack( Items.PLAYER_HEAD );
@@ -23,7 +24,7 @@ public class TabHead extends TabCreative {
 
 
     @Override
-    public ItemStack createIcon() {
+    public ItemStack makeIcon() {
         ArrayList<CachedHead> heads = MinecraftHeads.getHeads( category );
         CachedHead cached = RandomUtils.getRandomElement( heads );
         cached.loadTexture();
@@ -33,14 +34,14 @@ public class TabHead extends TabCreative {
 
 
     @Override
-    public ItemStack getIcon() {
+    public ItemStack getIconItem() {
         if (iconLoaded) {
-            return super.getIcon();
+            return super.getIconItem();
         }
 
         if (MinecraftHeads.isLoaded( category )) {
             iconLoaded = true;
-            return super.getIcon();
+            return super.getIconItem();
         }
 
         return fallbackIcon;
@@ -48,13 +49,13 @@ public class TabHead extends TabCreative {
 
 
     @Override
-    public void fill( NonNullList<ItemStack> items ) {
+    public void fillItemList( NonNullList<ItemStack> items ) {
         items.addAll( MinecraftHeads.createItemStacks( category ) );
     }
 
 
     @Override
-    public String getTranslationKey() {
+    public ITextComponent getDisplayName() {
         return category.getTranslationKey();
     }
 }

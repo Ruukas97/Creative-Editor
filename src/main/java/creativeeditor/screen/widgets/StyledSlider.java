@@ -60,7 +60,7 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
 
     @Override
     protected String getNarrationMessage() {
-        return I18n.format( "gui.narrate.slider", getMessage() );
+        return I18n.get( "gui.narrate.slider", getMessage() );
     }
 
 
@@ -82,9 +82,9 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
     private void setValueFromMouse( double mouseX ) {
         double updateValue;
         if (StyleManager.getCurrentStyle() instanceof StyleSpectrum)
-            updateValue = ((double) mouseX - (x + 1d)) / (double) (width - 2.5d);
+            updateValue = (mouseX - (x + 1d)) / (width - 2.5d);
         else
-            updateValue = ((double) mouseX - (x + 4)) / (double) (width - 8);
+            updateValue = (mouseX - (x + 4)) / (double) (width - 8);
         setValue( (int) Math.round( updateValue * (max - min) + min ) );
     }
 
@@ -177,7 +177,7 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
     }
 
 
-    public static interface SliderHandler {
+    public interface SliderHandler {
         void onSlideValue( StyledSlider slider );
     }
 

@@ -25,11 +25,11 @@ import net.minecraft.item.Items;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class PlayerInspectorScreen extends ParentScreen {
-    private PlayerEntity target;
+    private final PlayerEntity target;
     private String playerUUID;
     private MinecraftName[] prevNamesUndated;
     private ArrayList<MinecraftNameDated> prevNames;
-    private static HashMap<String, ArrayList<MinecraftNameDated>> cashedNames = new HashMap<String, ArrayList<MinecraftNameDated>>();
+    private static final HashMap<String, ArrayList<MinecraftNameDated>> cashedNames = new HashMap<String, ArrayList<MinecraftNameDated>>();
     private static final DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 
 
@@ -39,8 +39,8 @@ public class PlayerInspectorScreen extends ParentScreen {
     }
     
     private static class MinecraftNameDated {
-		private String name;
-    	private String date;
+		private final String name;
+    	private final String date;
     	public MinecraftNameDated(MinecraftName undatedName) {
 			name = undatedName.name;
 			if (undatedName.changedToAt == 0) {

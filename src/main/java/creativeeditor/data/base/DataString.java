@@ -15,7 +15,7 @@ public class DataString extends SingularData<String, StringNBT> {
 
 
     public DataString(StringNBT nbt) {
-        this( nbt.getString() );
+        this( nbt.getAsString() );
     }
 
 

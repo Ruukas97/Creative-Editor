@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import org.lwjgl.opengl.GL11;
 
 import creativeeditor.config.Config;
@@ -26,12 +26,14 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class MainScreen extends ParentItemScreen {
 
-    private ArrayList<Widget> toolsWidgets = new ArrayList<>(), loreWidgets = new ArrayList<>(), editWidgets = new ArrayList<>(), advancedWidgets = new ArrayList<>();
+    private final ArrayList<Widget> toolsWidgets = new ArrayList<>();
+    private final ArrayList<Widget> loreWidgets = new ArrayList<>();
+    private final ArrayList<Widget> editWidgets = new ArrayList<>();
+    private final ArrayList<Widget> advancedWidgets = new ArrayList<>();
     private StyledTextButton nbtButton, tooltipButton, toolsButton, loreButton, editButton, advancedButton;
     private NumberField countField, damageField;
     private StyledDataTextField idField;
@@ -71,12 +73,12 @@ public class MainScreen extends ParentItemScreen {
 
         assert minecraft != null;
         minecraft.keyboardListener.enableRepeatEvents( true );
-        String nbtLocal = I18n.format( "gui.main.nbt" );
-        String tooltipLocal = I18n.format( "gui.main.tooltip" );
-        String toolsLocal = I18n.format( "gui.main.tools" );
-        String loreLocal = I18n.format( "gui.main.display" );
-        String editLocal = I18n.format( "gui.main.data" );
-        String advancedLocal = I18n.format( "gui.main.other" );
+        String nbtLocal = I18n.get( "gui.main.nbt" );
+        String tooltipLocal = I18n.get( "gui.main.tooltip" );
+        String toolsLocal = I18n.get( "gui.main.tools" );
+        String loreLocal = I18n.get( "gui.main.display" );
+        String editLocal = I18n.get( "gui.main.data" );
+        String advancedLocal = I18n.get( "gui.main.other" );
 
         int nbtWidth = font.getStringWidth( nbtLocal );
         int tooltipWidth = font.getStringWidth( tooltipLocal );
@@ -152,20 +154,20 @@ public class MainScreen extends ParentItemScreen {
         }
 
         // Tools
-        String styleLocal = I18n.format( "gui.main.style" );
+        String styleLocal = I18n.get( "gui.main.style" );
         styleButton = addButton( new StyledTextButton( width / 6, 55, font.getStringWidth( styleLocal ), styleLocal, b -> StyleManager.setNext() ) );
         toolsWidgets.add( styleButton );
 
-        String headsLocal = I18n.format( "gui.headcollection" );
-        StyledTextButton headsButton = addButton( new StyledTextButton( width / 6, 75, font.getStringWidth( headsLocal ), headsLocal, b -> minecraft.displayGuiScreen( new HeadCollectionScreen(this)) ) );
+        String headsLocal = I18n.get( "gui.headcollection" );
+        StyledTextButton headsButton = addButton( new StyledTextButton( width / 6, 75, font.getStringWidth( headsLocal ), headsLocal, b -> minecraft.setScreen( new HeadCollectionScreen(this)) ) );
         toolsWidgets.add( headsButton );
 
-        String spawnerLocal = I18n.format( "gui.itemspawner" );
-        StyledTextButton spawnerButton = addButton( new StyledTextButton( width / 6, 95, font.getStringWidth( spawnerLocal ), spawnerLocal, b -> minecraft.displayGuiScreen( new ItemSpawnerScreen(this)) ) );
+        String spawnerLocal = I18n.get( "gui.itemspawner" );
+        StyledTextButton spawnerButton = addButton( new StyledTextButton( width / 6, 95, font.getStringWidth( spawnerLocal ), spawnerLocal, b -> minecraft.setScreen( new ItemSpawnerScreen(this)) ) );
         toolsWidgets.add( spawnerButton );
 
         // Lore
-        String resetLore = I18n.format( "gui.main.resetlore" );
+        String resetLore = I18n.get( "gui.main.resetlore" );
         int resetWidth = font.getStringWidth( resetLore );
         int resetX = width - 22 - resetWidth / 2;
         int nameX = 2 * width / 3 + 16;
@@ -180,11 +182,11 @@ public class MainScreen extends ParentItemScreen {
         loreWidgets.add( clearButton );
 
         // General Item
-        String id = I18n.format( "gui.main.id" );
+        String id = I18n.get( "gui.main.id" );
         int idWidth = font.getStringWidth( id );
-        String count = I18n.format( "gui.main.count" );
+        String count = I18n.get( "gui.main.count" );
         int countWidth = font.getStringWidth( count );
-        String damage = I18n.format( "gui.main.damage" );
+        String damage = I18n.get( "gui.main.damage" );
         int damageWidth = font.getStringWidth( damage );
 
         int x = width / 3 + 16 + Math.max(idWidth, Math.max( countWidth, damageWidth ));
@@ -325,8 +327,8 @@ public class MainScreen extends ParentItemScreen {
 
 
     @Override
-    public void backRender( int mouseX, int mouseY, float partialTicks, Color color ) {
-        super.backRender( mouseX, mouseY, partialTicks, color );
+    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float partialTicks, Color color) {
+        super.backRender(matrix, mouseX, mouseY, partialTicks, color );
 
         // First vertical line
         fill( width / 3, 20, width / 3 + 1, height - 20, color.getInt() );
@@ -354,9 +356,9 @@ public class MainScreen extends ParentItemScreen {
 
         int x = width / 3 + 10;
         boolean dmgEnabled = getItem().getTag().getDamage().getMax() > 0;
-        String count = I18n.format( "gui.main.count" );
+        String count = I18n.get( "gui.main.count" );
         int countWidth = font.getStringWidth( count );
-        String dmgString = I18n.format( "gui.main.damage" );
+        String dmgString = I18n.get( "gui.main.damage" );
         int damageWidth = font.getStringWidth( dmgString );
         int idoffset = Math.max( countWidth, damageWidth );
 
@@ -372,7 +374,7 @@ public class MainScreen extends ParentItemScreen {
             unbreakable.y = 121;
         }
 
-        String id = I18n.format( "gui.main.id" );
+        String id = I18n.get( "gui.main.id" );
         // int idWidth = font.getStringWidth( id );
         drawString( font, id, x, 85, color.getInt() );
 

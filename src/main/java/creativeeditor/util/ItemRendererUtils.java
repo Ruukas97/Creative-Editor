@@ -22,7 +22,7 @@ public class ItemRendererUtils {
 
 
     public void renderItemIntoGUI(ItemStack stack, int x, int y, float xRot, float yRot) {
-        this.renderItemModelIntoGUI(stack, x, y, xRot, yRot, itemRenderer.getItemModelWithOverrides(stack, null, null));
+        this.renderItemModelIntoGUI(stack, x, y, xRot, yRot, itemRenderer.getModel(stack, null, null));
     }
 
     public TextureManager getTextureManager() {
@@ -31,8 +31,8 @@ public class ItemRendererUtils {
 
     protected void renderItemModelIntoGUI(ItemStack stack, int x, int y, float xRot, float yRot, IBakedModel bakedmodel) {
         RenderSystem.pushMatrix();
-        getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-        getTextureManager().getTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE).setBlurMipmapDirect(false, false);
+        getTextureManager().bind(AtlasTexture.LOCATION_BLOCKS);
+        getTextureManager().getTexture(AtlasTexture.LOCATION_BLOCKS).setBlurMipmap(false, false);
         RenderSystem.enableRescaleNormal();
         RenderSystem.enableAlphaTest();
         RenderSystem.defaultAlphaFunc();
@@ -41,17 +41,17 @@ public class ItemRendererUtils {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         setupGuiTransform(x, y, xRot, yRot, bakedmodel.isGui3d());
         MatrixStack matrixstack = new MatrixStack();
-        IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
-        boolean flag = !bakedmodel.func_230044_c_();
+        IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().renderBuffers().bufferSource();
+        boolean flag = !bakedmodel.usesBlockLight();
         if (flag) {
-            RenderHelper.setupGuiFlatDiffuseLighting();
+            RenderHelper.setupForFlatItems();
         }
 
-        itemRenderer.renderItem(stack, ItemCameraTransforms.TransformType.GUI, false, matrixstack, irendertypebuffer$impl, 15728880, OverlayTexture.NO_OVERLAY, bakedmodel);
-        irendertypebuffer$impl.finish();
+        itemRenderer.render(stack, ItemCameraTransforms.TransformType.GUI, false, matrixstack, irendertypebuffer$impl, 15728880, OverlayTexture.NO_OVERLAY, bakedmodel);
+        irendertypebuffer$impl.endBatch();
         RenderSystem.enableDepthTest();
         if (flag) {
-            RenderHelper.setupGui3DDiffuseLighting();
+            RenderHelper.setupFor3DItems();
         }
 
         RenderSystem.disableAlphaTest();
@@ -60,7 +60,7 @@ public class ItemRendererUtils {
     }
 
     private void setupGuiTransform(int xPosition, int yPosition, float xRotation, float yRotation, boolean isGui3d) {
-        RenderSystem.translatef((float) xPosition, (float) yPosition, 100.0F + itemRenderer.zLevel);
+        RenderSystem.translatef((float) xPosition, (float) yPosition, 100.0F + itemRenderer.blitOffset);
         RenderSystem.translatef(8.0F, 8.0F, 0.0F);
         RenderSystem.scalef(1.0F, -1.0F, 1.0F);
         RenderSystem.scalef(16.0F, 16.0F, 16.0F);

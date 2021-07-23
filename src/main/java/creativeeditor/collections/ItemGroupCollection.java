@@ -18,7 +18,7 @@ public class ItemGroupCollection implements ItemCollection {
 
     @Override
     public String getName() {
-        return I18n.format( group.getTranslationKey() );
+        return I18n.get( group.getDisplayName().getString() );
     }
 
 
@@ -31,7 +31,7 @@ public class ItemGroupCollection implements ItemCollection {
 
     @Override
     public ItemStack getIcon() {
-        return group.getIcon();
+        return group.getIconItem();
     }
 
 
@@ -43,6 +43,6 @@ public class ItemGroupCollection implements ItemCollection {
 
     @Override
     public void fill( NonNullList<ItemStack> items ) {
-        group.fill( items );
+        group.fillItemList( items );
     }
 }

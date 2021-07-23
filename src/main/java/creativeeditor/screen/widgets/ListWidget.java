@@ -6,7 +6,7 @@ import net.minecraft.client.gui.widget.list.ExtendedList;
 public class ListWidget extends ExtendedList<ListWidget.ListEntry> {
     private final int listWidth;
 
-    private ParentScreen parent;
+    private final ParentScreen parent;
 
     @SuppressWarnings( "resource" )
     public ListWidget(ParentScreen parent, int listWidth) {

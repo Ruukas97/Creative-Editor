@@ -28,7 +28,7 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
         this();
         if (nbt == null || nbt.isEmpty())
             return;
-        for (String key : nbt.keySet()) {
+        for (String key : nbt.getAllKeys()) {
             INBT value = nbt.get( key );
             if (value != null)
                 put( key, Data.getDataFromNBT( value ) );

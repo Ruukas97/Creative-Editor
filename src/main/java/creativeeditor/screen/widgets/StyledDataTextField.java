@@ -10,7 +10,7 @@ import net.minecraft.util.SharedConstants;
 import net.minecraft.util.text.StringTextComponent;
 
 public class StyledDataTextField extends StyledTextField implements DataController {
-    private Data<?, StringNBT> data;
+    private final Data<?, StringNBT> data;
 
 
     public StyledDataTextField(FontRenderer fontIn, int x, int y, int width, int height, Data<?, StringNBT> data) {

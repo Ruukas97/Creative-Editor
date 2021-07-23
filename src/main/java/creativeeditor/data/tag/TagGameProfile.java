@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTUtil;
 
 public class TagGameProfile extends SingularData<GameProfile, CompoundNBT> {
     public TagGameProfile(String username) {
-        this( new GameProfile( (UUID) null, username ) );
+        this( new GameProfile(null, username ) );
     }
 
 

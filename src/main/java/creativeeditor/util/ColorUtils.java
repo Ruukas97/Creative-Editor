@@ -274,7 +274,7 @@ public class ColorUtils {
 
         @Override
         public long longValue() {
-            return (long) getInt();
+            return getInt();
         }
 
 
@@ -286,7 +286,7 @@ public class ColorUtils {
 
         @Override
         public double doubleValue() {
-            return (double) getInt();
+            return getInt();
         }
 
 

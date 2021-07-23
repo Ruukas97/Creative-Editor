@@ -35,7 +35,7 @@ public class TagExplosion implements Data<TagExplosion, CompoundNBT> {
         NBTKeys keys = NBTKeys.keys;
         flicker = new DataBoolean( nbt.getBoolean( keys.explosionFlicker() ) );
         trail = new DataBoolean( nbt.getBoolean( keys.explosionTrail() ) );
-        shape = Shape.get( nbt.getByte( keys.explosionShape() ) );
+        shape = Shape.byId( nbt.getByte( keys.explosionShape() ) );
         colors = new TagList<>( nbt.getList( keys.explosionColors(), NBT.TAG_INT ), DataColor::new );
         fadeColors = new TagList<>( nbt.getList( keys.explosionFadeColor(), NBT.TAG_INT ), DataColor::new );
     }

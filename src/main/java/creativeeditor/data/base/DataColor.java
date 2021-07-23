@@ -26,7 +26,7 @@ public class DataColor extends Color implements Data<Color, IntNBT> {
 
 
     public DataColor(IntNBT nbt) {
-        this( nbt.getInt() );
+        this( nbt.getAsInt() );
     }
 
 
