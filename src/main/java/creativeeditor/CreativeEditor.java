@@ -13,7 +13,7 @@ import creativeeditor.events.TooltipHandler;
 import creativeeditor.render.ArmorStandRendering;
 import creativeeditor.render.HeadRenderer;
 import creativeeditor.render.ShieldRenderer;
-import creativeeditor.resourcepack.ResourcePacks;
+//import creativeeditor.resourcepack.ResourcePacks;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.tab.CreativeTabs;
 import creativeeditor.util.ReflectionUtils;
@@ -47,7 +47,7 @@ public class CreativeEditor {
 
         KeyInputHandler.init();
         CreativeTabs.init();
-        ResourcePacks.init();
+//        ResourcePacks.init();
 
         // Register Events
         LOGGER.info( "Registering events" );

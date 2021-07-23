@@ -59,7 +59,7 @@ public class ItemCollections implements Iterable<ItemCollection> {
         for (int i = 0; i < ItemGroup.getGroupCountSafe(); i++) {
             ItemGroup group = ItemGroup.TABS[i];
             if (group != null && group != ItemGroup.TAB_SEARCH && group != ItemGroup.TAB_INVENTORY && group != ItemGroup.TAB_HOTBAR && !(group instanceof TabHead)) {
-                collections.add( new ItemGroupCollection( group ) );
+//                collections.add( new ItemGroupCollection( group ) );
             }
         }
     }

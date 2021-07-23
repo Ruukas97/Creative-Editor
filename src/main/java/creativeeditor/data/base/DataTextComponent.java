@@ -16,7 +16,8 @@ public class DataTextComponent extends SingularData<ITextComponent, StringNBT> {
 
 
     public String getUnformatted() {
-        return data.getUnformattedComponentText();
+        return data.getString();
+//        return data.getUnformattedComponentText(); = OLD
     }
 
 
@@ -32,7 +33,7 @@ public class DataTextComponent extends SingularData<ITextComponent, StringNBT> {
 
     @Override
     public boolean isDefault() {
-        return data.getUnformattedComponentText().length() == 0;
+        return data.getString().length() == 0;
     }
 
 

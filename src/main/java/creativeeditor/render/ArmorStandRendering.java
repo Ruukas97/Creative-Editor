@@ -8,9 +8,10 @@ import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.util.ResourceLocation;
 
 public class ArmorStandRendering {
+
     public static <E extends ArmorStandItem> void addPropertyOverrides( E stand ) {
-        stand.addPropertyOverride( new ResourceLocation( "nobaseplate" ), propertyGetter(TagEntityArmorStand::getNoBasePlate) );
-        stand.addPropertyOverride( new ResourceLocation( "showarms" ), propertyGetter(TagEntityArmorStand::getShowArms) );
+//        stand.addPropertyOverride( new ResourceLocation( "nobaseplate" ), propertyGetter(TagEntityArmorStand::getNoBasePlate) );
+//        stand.addPropertyOverride( new ResourceLocation( "showarms" ), propertyGetter(TagEntityArmorStand::getShowArms) );
     }
 
 

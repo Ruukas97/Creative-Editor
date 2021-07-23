@@ -84,14 +84,14 @@ public class ParentItemScreen extends ParentScreen {
 
 
     public void save( Widget w ) {
-        if (item.getItem().getItem() != Items.AIR)
-            minecraft.gameMode.sendSlotPacket( item.getItemStack(), 36 + minecraft.player.inventory.selected );
+        if (item.getItem().getItem() != Items.AIR);
+//            minecraft.gameMode.sendSlotPacket( item.getItemStack(), 36 + minecraft.player.inventory.selected );
     }
 
 
     public void drop( Widget w ) {
-        if (item.getItem().getItem() != Items.AIR)
-            minecraft.gameMode.sendPacketDropItem( item.getItemStack() );
+        if (item.getItem().getItem() != Items.AIR);
+//            minecraft.gameMode.sendPacketDropItem( item.getItemStack() );
         // Shift for /give
     }
 

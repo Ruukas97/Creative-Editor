@@ -34,7 +34,7 @@ public class TagDisplayName extends DataTextComponent {
             return true;
         }
 
-        return data.getFormattedText().equals( getDefault().getFormattedText() ) || data instanceof TranslationTextComponent;
+        return data.getString().equals( getDefault().getString() ) || data instanceof TranslationTextComponent;
     }
 
 
@@ -48,7 +48,7 @@ public class TagDisplayName extends DataTextComponent {
         returnEmpty = true;
         ItemStack copy = item.getItemStack();
         returnEmpty = false;
-        CompoundNBT display = copy.getChildTag( keys.tagDisplay() );
+        CompoundNBT display = copy.getTagElement( keys.tagDisplay() );
         if (display != null) {
             display.remove( keys.displayName() );
         }
