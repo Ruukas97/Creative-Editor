@@ -4,12 +4,12 @@ import net.minecraft.nbt.ByteArrayNBT;
 
 public class DataByteArray extends SingularData<byte[], ByteArrayNBT> {
     public DataByteArray(byte... values) {
-        super( values );
+        super(values);
     }
 
 
     public DataByteArray(ByteArrayNBT nbt) {
-        this( nbt.getAsByteArray() );
+        this(nbt.getAsByteArray());
     }
 
 
@@ -21,6 +21,6 @@ public class DataByteArray extends SingularData<byte[], ByteArrayNBT> {
 
     @Override
     public ByteArrayNBT getNBT() {
-        return new ByteArrayNBT( data );
+        return new ByteArrayNBT(data);
     }
 }

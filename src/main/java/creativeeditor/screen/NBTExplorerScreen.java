@@ -27,7 +27,7 @@ public class NBTExplorerScreen extends ParentScreen {
 
 
     public NBTExplorerScreen(Screen lastScreen, DataItem item) {
-        super( new TranslationTextComponent( "gui.externalnbt" ), lastScreen );
+        super(new TranslationTextComponent("gui.externalnbt"), lastScreen);
         this.item = item;
     }
 
@@ -45,31 +45,29 @@ public class NBTExplorerScreen extends ParentScreen {
 
         // i++;
 
-        StyledButton open = addButton( new StyledButton( 15 + slice * i + slice / 2, height / 2 + 10, 80, 20, "Open", button -> {
+        StyledButton open = addButton(new StyledButton(15 + slice * i + slice / 2, height / 2 + 10, 80, 20, "Open", button -> {
             try {
                 open();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        } ) );
+        }));
         i++;
 
-        StyledButton reload = addButton( new StyledButton( 15 + slice * i + slice / 2, height / 2 + 10, 80, 20, "Reload", button -> {
+        StyledButton reload = addButton(new StyledButton(15 + slice * i + slice / 2, height / 2 + 10, 80, 20, "Reload", button -> {
             if (openFile != null) {
                 try {
-                    item = new DataItem( ItemStack.read( CompressedStreamTools.read( openFile ) ) );
-                }
-                catch (IOException e) {
+                    item = new DataItem(ItemStack.of(CompressedStreamTools.read(openFile)));
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        } ) );
+        }));
         i++;
 
-        StyledButton save = addButton( new StyledButton( 15 + slice * i + slice / 2, height / 2 + 10, 80, 20, "Save", button -> {
-            minecraft.playerController.sendSlotPacket( item.getItemStack(), 36 + minecraft.player.inventory.currentItem );
-        } ) );
+        StyledButton save = addButton(new StyledButton(15 + slice * i + slice / 2, height / 2 + 10, 80, 20, "Save", button -> {
+//            minecraft.gameMode.sendSlotPacket( item.getItemStack(), 36 + minecraft.player.inventory.currentItem );
+        }));
         i++;
     }
 
@@ -78,44 +76,44 @@ public class NBTExplorerScreen extends ParentScreen {
         if (openFile == null) {
             File nbtDir = getTempDir().toFile();
             nbtDir.mkdirs();
-            openFile = File.createTempFile( "external", ".dat", nbtDir );
+            openFile = File.createTempFile("external", ".dat", nbtDir);
             openFile.deleteOnExit();
-            CompressedStreamTools.write( item.getNBT(), openFile );
+            CompressedStreamTools.write(item.getNBT(), openFile);
         }
 
         if (process != null) {
             process.destroy();
         }
 
-        process = new ProcessBuilder( getNBTExplorer(), "\"" + openFile.toPath() + "\"" ).start();
+        process = new ProcessBuilder(getNBTExplorer(), "\"" + openFile.toPath() + "\"").start();
     }
 
 
     public Path getTempDir() {
-        return CreativeEditor.DATAPATH.resolve( "temp" );
+        return CreativeEditor.DATAPATH.resolve("temp");
     }
 
 
     public String getNBTExplorer() {
-        return "\"" + CreativeEditor.DATAPATH.resolve( "nbtexplorer" ).resolve( "NBTExplorer.exe" ) + "\"";
+        return "\"" + CreativeEditor.DATAPATH.resolve("nbtexplorer").resolve("NBTExplorer.exe") + "\"";
     }
 
 
     @Override
     public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
-        super.backRender(matrix, mouseX, mouseY, p3, color );
+        super.backRender(matrix, mouseX, mouseY, p3, color);
     }
 
 
     @Override
-    public void mainRender( int mouseX, int mouseY, float p3, Color color ) {
-        super.mainRender( mouseX, mouseY, p3, color );
+    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
+        super.mainRender(matrix, mouseX, mouseY, p3, color);
     }
 
 
     @Override
-    public void overlayRender( int mouseX, int mouseY, float p3, Color color ) {
-        super.overlayRender( mouseX, mouseY, p3, color );
+    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
+        super.overlayRender(matrix, mouseX, mouseY, p3, color);
     }
 
 }

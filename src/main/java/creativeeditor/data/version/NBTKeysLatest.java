@@ -342,12 +342,12 @@ public class NBTKeysLatest extends NBTKeys {
     public String tagPatterns() {
         return "Patterns";
     }
-    
+
     @Override
     public String patternPattern() {
         return "Pattern";
     }
-    
+
     @Override
     public String patternColor() {
         return "Color";

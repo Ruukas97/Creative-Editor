@@ -48,11 +48,11 @@ public class ItemCollections implements Iterable<ItemCollection> {
 
             @Override
             public void fill(NonNullList<ItemStack> items) {
-                GameData.getWrapper( Registry.ITEM_REGISTRY, Lifecycle.stable() ).forEach(i -> {
+                GameData.getWrapper(Registry.ITEM_REGISTRY, Lifecycle.stable()).forEach(i -> {
                     if (i != Items.AIR) {
-                        items.add( new ItemStack( i ) );
+                        items.add(new ItemStack(i));
                     }
-                } );
+                });
             }
         });
 

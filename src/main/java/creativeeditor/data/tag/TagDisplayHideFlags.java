@@ -5,7 +5,7 @@ import net.minecraft.nbt.IntNBT;
 
 public class TagDisplayHideFlags extends SingularData<TagDisplayHideFlags.HideFlags, IntNBT> {
     public TagDisplayHideFlags(HideFlags hideFlags) {
-        super( hideFlags );
+        super(hideFlags);
     }
 
 
@@ -14,7 +14,7 @@ public class TagDisplayHideFlags extends SingularData<TagDisplayHideFlags.HideFl
     }
 
 
-    public void setEnchantsHidden( boolean value ) {
+    public void setEnchantsHidden(boolean value) {
         data.enchants = value;
     }
 
@@ -24,7 +24,7 @@ public class TagDisplayHideFlags extends SingularData<TagDisplayHideFlags.HideFl
     }
 
 
-    public void setAttributesHidden( boolean value ) {
+    public void setAttributesHidden(boolean value) {
         data.attributes = value;
     }
 
@@ -34,7 +34,7 @@ public class TagDisplayHideFlags extends SingularData<TagDisplayHideFlags.HideFl
     }
 
 
-    public void setUnbreakableHidden( boolean value ) {
+    public void setUnbreakableHidden(boolean value) {
         data.unbreakable = value;
     }
 
@@ -44,7 +44,7 @@ public class TagDisplayHideFlags extends SingularData<TagDisplayHideFlags.HideFl
     }
 
 
-    public void setCanDestroyHidden( boolean value ) {
+    public void setCanDestroyHidden(boolean value) {
         data.canDestroy = value;
     }
 
@@ -54,7 +54,7 @@ public class TagDisplayHideFlags extends SingularData<TagDisplayHideFlags.HideFl
     }
 
 
-    public void setCanPlaceOnHidden( boolean value ) {
+    public void setCanPlaceOnHidden(boolean value) {
         data.canPlaceOn = value;
     }
 
@@ -64,7 +64,7 @@ public class TagDisplayHideFlags extends SingularData<TagDisplayHideFlags.HideFl
     }
 
 
-    public void setItemInfoHidden( boolean value ) {
+    public void setItemInfoHidden(boolean value) {
         data.itemInfo = value;
     }
 
@@ -95,7 +95,7 @@ public class TagDisplayHideFlags extends SingularData<TagDisplayHideFlags.HideFl
 
     @Override
     public IntNBT getNBT() {
-        return IntNBT.valueOf( getInt() );
+        return IntNBT.valueOf(getInt());
     }
 
 
@@ -114,7 +114,7 @@ public class TagDisplayHideFlags extends SingularData<TagDisplayHideFlags.HideFl
 
 
         public HideFlags() {
-            this( false, false, false, false, false, false );
+            this(false, false, false, false, false, false);
         }
     }
 }

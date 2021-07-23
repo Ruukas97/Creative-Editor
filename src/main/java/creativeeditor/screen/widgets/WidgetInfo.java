@@ -22,8 +22,8 @@ public class WidgetInfo {
     private Screen parent;
 
 
-    public WidgetInfo withTrigger( IPressable trigger ) {
-        setTrigger( trigger );
+    public WidgetInfo withTrigger(IPressable trigger) {
+        setTrigger(trigger);
         return this;
     }
 }

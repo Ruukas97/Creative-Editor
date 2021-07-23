@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 
 public class RenderUtil {
-    public static void glScissorBox( int left, int top, int right, int bottom ) {
+    public static void glScissorBox(int left, int top, int right, int bottom) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.screen == null)
             return;
@@ -19,11 +19,11 @@ public class RenderUtil {
         int scissorY = (int) (bottomY * factor);
         int scissorWidth = (int) (width * factor);
         int scissorHeight = (int) (height * factor);
-        GL11.glScissor( scissorX, scissorY, scissorWidth, scissorHeight );
+        GL11.glScissor(scissorX, scissorY, scissorWidth, scissorHeight);
     }
 
 
-    public static void glScissorRectangle( int x, int y, int width, int height ) {
+    public static void glScissorRectangle(int x, int y, int width, int height) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.screen == null)
             return;
@@ -35,11 +35,11 @@ public class RenderUtil {
         int scissorY = (int) (bottomY * factor);
         int scissorWidth = (int) (width * factor);
         int scissorHeight = (int) (height * factor);
-        GL11.glScissor( scissorX, scissorY, scissorWidth, scissorHeight );
+        GL11.glScissor(scissorX, scissorY, scissorWidth, scissorHeight);
     }
 
 
-    public static int scaled( int i, double scaleFactor ) {
+    public static int scaled(int i, double scaleFactor) {
         return (int) (i * scaleFactor);
     }
 

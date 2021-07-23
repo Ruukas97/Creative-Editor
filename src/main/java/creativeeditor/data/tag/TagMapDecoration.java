@@ -26,16 +26,16 @@ public class TagMapDecoration implements Data<TagMapDecoration, CompoundNBT> {
     private final DataDouble rotation;
 
     public TagMapDecoration(INBT nbt) {
-        this( nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT() );
+        this(nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT());
     }
 
     public TagMapDecoration(CompoundNBT nbt) {
         NBTKeys keys = NBTKeys.keys;
-        id = new DataString( nbt.getString( keys.decorationId() ) );
-        type = MapDecoration.Type.byIcon( nbt.getByte( keys.decorationType() ) );
-        x = new DataDouble( nbt.getDouble( "x" ) );
-        y = new DataDouble( nbt.getDouble( "y" ) );
-        rotation = new DataDouble( nbt.getDouble( keys.decorationRotation() ) );
+        id = new DataString(nbt.getString(keys.decorationId()));
+        type = MapDecoration.Type.byIcon(nbt.getByte(keys.decorationType()));
+        x = new DataDouble(nbt.getDouble("x"));
+        y = new DataDouble(nbt.getDouble("y"));
+        rotation = new DataDouble(nbt.getDouble(keys.decorationRotation()));
     }
 
 
@@ -55,11 +55,11 @@ public class TagMapDecoration implements Data<TagMapDecoration, CompoundNBT> {
     public CompoundNBT getNBT() {
         CompoundNBT nbt = new CompoundNBT();
         NBTKeys keys = NBTKeys.keys;
-        nbt.put( keys.decorationId(), id.getNBT() );
-        nbt.put( keys.decorationType(), ByteNBT.valueOf( type.getIcon() ) );
-        nbt.put( "x", x.getNBT() );
-        nbt.put( "y", y.getNBT() );
-        nbt.put( keys.decorationRotation(), rotation.getNBT() );
+        nbt.put(keys.decorationId(), id.getNBT());
+        nbt.put(keys.decorationType(), ByteNBT.valueOf(type.getIcon()));
+        nbt.put("x", x.getNBT());
+        nbt.put("y", y.getNBT());
+        nbt.put(keys.decorationRotation(), rotation.getNBT());
         return nbt;
     }
 }

@@ -22,7 +22,7 @@ public class ClassSpecificWidget {
 
 
     @Nullable
-    public Widget get( WidgetInfo info, DataItem item ) {
-        return requirement.apply( item ) ? widgetCreator.apply( item, info ) : null;
+    public Widget get(WidgetInfo info, DataItem item) {
+        return requirement.apply(item) ? widgetCreator.apply(item, info) : null;
     }
 }

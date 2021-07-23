@@ -6,7 +6,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 //@EventBusSubscriber( modid = CreativeEditor.MODID, value = { Dist.CLIENT } )
 public class PlayerNameplateHandler {
     @SubscribeEvent
-    public void onPreRenderPlayerSpecial( RenderNameplateEvent e ) {
+    public void onPreRenderPlayerSpecial(RenderNameplateEvent e) {
         /*Minecraft mc = Minecraft.getInstance();
         if (!(e.getRenderer() instanceof PlayerRenderer && e.getEntity() instanceof AbstractClientPlayerEntity) || mc.screen != null && mc.screen instanceof ContainerScreen<?>)
             return;

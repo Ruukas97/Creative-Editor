@@ -36,8 +36,8 @@ public abstract class NBTKeys {
 
 
     public abstract String displayColor();
-    
-    
+
+
     public abstract String displayMapColor();
 
 
@@ -86,13 +86,16 @@ public abstract class NBTKeys {
 
 
     public abstract String attributeUUIDLeast();
-    
+
     // Effecs
     public abstract String tagCustomPotionEffects();
+
     public abstract String tagPotion();
+
     public abstract String tagCustomPotionColor();
+
     public abstract String tagEffects();
-    
+
     // Block
     public abstract String tagCanPlaceOn();
 
@@ -102,44 +105,63 @@ public abstract class NBTKeys {
 
 
     // Specific Item/Blocks
-    
+
     // Banners
     public abstract String tagPatterns();
+
     public abstract String patternPattern();
+
     public abstract String patternColor();
 
-    
+
     // Books
     public abstract String tagResolved();
+
     public abstract String tagGeneration();
+
     public abstract String tagAuthor();
+
     public abstract String tagTitle();
+
     public abstract String tagPages();
 
-    
+
     // Crossbows
     public abstract String tagChargedProjectiles();
+
     public abstract String tagCharged();
-    
+
     // Fireworks
     public abstract String tagExplosion();
+
     public abstract String explosionFlicker();
+
     public abstract String explosionTrail();
+
     public abstract String explosionShape();
+
     public abstract String explosionColors();
+
     public abstract String explosionFadeColor();
+
     public abstract String tagFireworks();
+
     public abstract String fireworksFlight();
+
     public abstract String fireworksExplosions();
-    
+
     // Heads
     public abstract String tagSkullOwner();
 
     // Maps
     public abstract String tagMapNumber();
+
     public abstract String tagMapDecorations();
+
     public abstract String decorationId();
+
     public abstract String decorationType();
+
     public abstract String decorationRotation();
 
 

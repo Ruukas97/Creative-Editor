@@ -32,7 +32,7 @@ public class ShieldRenderer extends ItemStackTileEntityRenderer {
 
 
     @Override
-    public void renderByItem(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn ) {
+    public void renderByItem(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
 //        Item item = itemStackIn.getItem();
 //        if (item == Items.SHIELD) {
 //            String displayName = itemStackIn.getDisplayName().getString();
@@ -67,7 +67,7 @@ public class ShieldRenderer extends ItemStackTileEntityRenderer {
     }
 
 
-    public static void renderBannerPatterns( MatrixStack matrixStack, IRenderTypeBuffer renderType, int combinedLight, int combinedOverlay, ModelRenderer modelRenderer, RenderMaterial materialIn, boolean isBanner, List<Pair<BannerPattern, DyeColor>> patterns ) {
+    public static void renderBannerPatterns(MatrixStack matrixStack, IRenderTypeBuffer renderType, int combinedLight, int combinedOverlay, ModelRenderer modelRenderer, RenderMaterial materialIn, boolean isBanner, List<Pair<BannerPattern, DyeColor>> patterns) {
 //        modelRenderer.render( matrixStack, materialIn.getBuffer( renderType, RenderType::getEntitySolid ), combinedLight, combinedOverlay );
 //
 //        float hue = ((float) (Util.milliTime() % 50000)) / 50000;

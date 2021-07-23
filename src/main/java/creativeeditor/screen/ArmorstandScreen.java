@@ -28,7 +28,7 @@ public class ArmorstandScreen extends ParentItemScreen {
 
 
     public ArmorstandScreen(Screen lastScreen, DataItem item) {
-        super( new TranslationTextComponent( "gui.armorstandeditor" ), lastScreen, item );
+        super(new TranslationTextComponent("gui.armorstandeditor"), lastScreen, item);
         this.renderItem = false;
 
     }
@@ -40,49 +40,49 @@ public class ArmorstandScreen extends ParentItemScreen {
         int x1 = width / divideX;
         int y1 = height / divideY;
         if (armorStand == null) {
-            ArmorStandEntity entity = new ArmorStandEntity( minecraft.level, 0, 0, 0 );
+            ArmorStandEntity entity = new ArmorStandEntity(minecraft.level, 0, 0, 0);
             armorStand = entity;
-            drawArmor = new ArmorStandDrawUtils( armorStand, item );
+            drawArmor = new ArmorStandDrawUtils(armorStand, item);
         }
 
         Pose pose = drawArmor.getStandData().getPose();
 
-        addSliders( x1, y1, pose.getHead() );
+        addSliders(x1, y1, pose.getHead());
         y1 += (int) (buttonHeight * 1.5);
-        addSliders( x1, y1, pose.getBody() );
+        addSliders(x1, y1, pose.getBody());
         y1 += (int) (buttonHeight * 1.5);
         if (drawArmor.getStandData().getShowArms().get()) {
-            addSliders( x1, y1, pose.getRightArm() );
+            addSliders(x1, y1, pose.getRightArm());
             y1 += (int) (buttonHeight * 1.5);
-            addSliders( x1, y1, pose.getLeftArm() );
+            addSliders(x1, y1, pose.getLeftArm());
             y1 += (int) (buttonHeight * 1.5);
         }
-        addSliders( x1, y1, pose.getRightLeg() );
+        addSliders(x1, y1, pose.getRightLeg());
         y1 += (int) (buttonHeight * 1.5);
-        addSliders( x1, y1, pose.getLeftLeg() );
+        addSliders(x1, y1, pose.getLeftLeg());
         y1 += buttonHeight * 2;
 
         int butWidth = 130;
-        addButton( new StyledButton( x1 + (buttonWidth / 3), y1, butWidth, 18, I18n.get( "gui.armorstandeditor.properties" ), t -> {
-            minecraft.setScreen( new ArmorstandPropScreen( this, item, armorStand ) );
-        } ) );
-        addButton( new StyledButton( x1 + (buttonWidth / 3) + butWidth + 5, y1, butWidth, 18, I18n.get( "gui.armorstandeditor.equipment" ), t -> {
-            minecraft.setScreen( new ArmorStandEquipScreen( this, item, armorStand ) );
-        } ) );
+        addButton(new StyledButton(x1 + (buttonWidth / 3), y1, butWidth, 18, I18n.get("gui.armorstandeditor.properties"), t -> {
+            minecraft.setScreen(new ArmorstandPropScreen(this, item, armorStand));
+        }));
+        addButton(new StyledButton(x1 + (buttonWidth / 3) + butWidth + 5, y1, butWidth, 18, I18n.get("gui.armorstandeditor.equipment"), t -> {
+            minecraft.setScreen(new ArmorStandEquipScreen(this, item, armorStand));
+        }));
 
 
     }
 
 
-    public void addSliders( int posX, int posY, DataRotation rot ) {
-        addButton( new SliderTag( posX + ((buttonWidth + 5) * 1), posY, buttonWidth, buttonHeight, rot.getX() ) );
-        addButton( new SliderTag( posX + ((buttonWidth + 5) * 2), posY, buttonWidth, buttonHeight, rot.getY() ) );
-        addButton( new SliderTag( posX + ((buttonWidth + 5) * 3), posY, buttonWidth, buttonHeight, rot.getZ() ) );
+    public void addSliders(int posX, int posY, DataRotation rot) {
+        addButton(new SliderTag(posX + ((buttonWidth + 5) * 1), posY, buttonWidth, buttonHeight, rot.getX()));
+        addButton(new SliderTag(posX + ((buttonWidth + 5) * 2), posY, buttonWidth, buttonHeight, rot.getY()));
+        addButton(new SliderTag(posX + ((buttonWidth + 5) * 3), posY, buttonWidth, buttonHeight, rot.getZ()));
     }
 
 
     @Override
-    public void reset( Widget w ) {
+    public void reset(Widget w) {
         drawArmor.getStandData().getPose().reset();
     }
 
@@ -90,12 +90,12 @@ public class ArmorstandScreen extends ParentItemScreen {
     @Override
     public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
         drawArmor.updateArmorStand();
-        super.backRender(matrix, mouseX, mouseY, p3, color );
+        super.backRender(matrix, mouseX, mouseY, p3, color);
     }
 
 
     @Override
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color ) {
+    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
         int x1 = width / divideX;
         int y1 = height / divideY;
 
@@ -106,14 +106,14 @@ public class ArmorstandScreen extends ParentItemScreen {
                     continue;
                 }
             }
-            drawCenteredString(matrix, font, I18n.get( "gui.armorstandeditor." + s.toString().toLowerCase() ), x1 + (buttonWidth / 3 * 2), y1 + (buttonHeight / 4), color.getInt() );
+            drawCenteredString(matrix, font, I18n.get("gui.armorstandeditor." + s.toString().toLowerCase()), x1 + (buttonWidth / 3 * 2), y1 + (buttonHeight / 4), color.getInt());
             y1 += (int) (buttonHeight * 1.5);
 
         }
 
-        super.mainRender( matrix, mouseX, mouseY, p3, color );
+        super.mainRender(matrix, mouseX, mouseY, p3, color);
         if (armorStand != null) {
-            drawArmor.drawArmorStand( armorStand, (int) (this.width / 3 * 2.5), (int) (this.height / 5 * 3.8), 70 );
+            drawArmor.drawArmorStand(armorStand, (int) (this.width / 3 * 2.5), (int) (this.height / 5 * 3.8), 70);
         }
     }
 
@@ -122,15 +122,15 @@ public class ArmorstandScreen extends ParentItemScreen {
 
 
     @Override
-    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color ) {
-        super.overlayRender(matrix, mouseX, mouseY, p3, color );
-        GuiUtil.addToolTip( matrix, this, resetButton, mouseX, mouseY, I18n.get( "gui.armorstandeditor.reset" ) );
+    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
+        super.overlayRender(matrix, mouseX, mouseY, p3, color);
+        GuiUtil.addToolTip(matrix, this, resetButton, mouseX, mouseY, I18n.get("gui.armorstandeditor.reset"));
     }
 
 
     @Override
-    public boolean mouseDragged( double p_mouseDragged_1_, double p_mouseDragged_3_, int p_mouseDragged_5_, double p_mouseDragged_6_, double p_mouseDragged_8_ ) {
-        super.mouseDragged( p_mouseDragged_1_, p_mouseDragged_3_, p_mouseDragged_5_, p_mouseDragged_6_, p_mouseDragged_8_ );
+    public boolean mouseDragged(double p_mouseDragged_1_, double p_mouseDragged_3_, int p_mouseDragged_5_, double p_mouseDragged_6_, double p_mouseDragged_8_) {
+        super.mouseDragged(p_mouseDragged_1_, p_mouseDragged_3_, p_mouseDragged_5_, p_mouseDragged_6_, p_mouseDragged_8_);
         if (isInRegion) {
             drawArmor.isDragging = true;
             drawArmor.addRotation = (int) p_mouseDragged_6_;
@@ -141,8 +141,8 @@ public class ArmorstandScreen extends ParentItemScreen {
 
 
     @Override
-    public boolean mouseClicked( double mouseX, double mouseY, int mouseButton ) {
-        super.mouseClicked( mouseX, mouseY, mouseButton );
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
         isInRegion = mouseX > (width / 11 * 8);
         return true;
 
@@ -150,8 +150,8 @@ public class ArmorstandScreen extends ParentItemScreen {
 
 
     @Override
-    public boolean mouseReleased( double p_mouseReleased_1_, double p_mouseReleased_3_, int p_mouseReleased_5_ ) {
-        super.mouseReleased( p_mouseReleased_1_, p_mouseReleased_3_, p_mouseReleased_5_ );
+    public boolean mouseReleased(double p_mouseReleased_1_, double p_mouseReleased_3_, int p_mouseReleased_5_) {
+        super.mouseReleased(p_mouseReleased_1_, p_mouseReleased_3_, p_mouseReleased_5_);
         drawArmor.isDragging = false;
         drawArmor.addRotation = 0;
         return true;

@@ -18,7 +18,7 @@ public class ItemGroupCollection implements ItemCollection {
 
     @Override
     public String getName() {
-        return I18n.get( group.getDisplayName().getString() );
+        return I18n.get(group.getDisplayName().getString());
     }
 
 
@@ -42,7 +42,7 @@ public class ItemGroupCollection implements ItemCollection {
 
 
     @Override
-    public void fill( NonNullList<ItemStack> items ) {
-        group.fillItemList( items );
+    public void fill(NonNullList<ItemStack> items) {
+        group.fillItemList(items);
     }
 }

@@ -1,5 +1,7 @@
 package creativeeditor.screen.widgets;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.data.NumberRangeInt;
@@ -21,7 +23,7 @@ public class NumberField extends Widget {
     NumberRangeInt data;
     public char[] digits;
 
-    private final char[] allowed = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+    private final char[] allowed = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
     private boolean isNegative;
 
     private int cursorCounter;
@@ -36,29 +38,28 @@ public class NumberField extends Widget {
 
 
     public NumberField(FontRenderer font, int x, int y, int width, int height, NumberRangeInt data) {
-        super( x, y, width, height, "" );
+        super(x, y, width, height, new StringTextComponent(""));
         this.data = data;
         this.fontRenderer = font;
 
-        String min = Integer.toString( data.getMin() );
-        String max = Integer.toString( data.getMin() );
+        String min = Integer.toString(data.getMin());
+        String max = Integer.toString(data.getMin());
         int d;
         if (max.length() >= min.length()) {
             d = max.length();
-            this.width = font.getStringWidth( max );
-        }
-        else {
+            this.width = font.width(max);
+        } else {
             d = min.length();
-            this.width = font.getStringWidth( min );
+            this.width = font.width(min);
         }
 
         this.digits = new char[d];
-        setValue( data.get() );
+        setValue(data.get());
     }
 
 
     public NumberField(FontRenderer font, int x, int y, int height, NumberRangeInt data) {
-        super( x, y, 1000, height, "" );
+        super(x, y, 1000, height, new StringTextComponent(""));
         this.data = data;
         this.fontRenderer = font;
 
@@ -71,15 +72,15 @@ public class NumberField extends Widget {
 
         // TODO signed vs unsigned has different lengths
 
-        this.width = font.getStringWidth( "0" ) * d + 8;
+        this.width = font.width("0") * d + 8;
 
         this.digits = new char[d];
-        setValue( data.get() );
+        setValue(data.get());
     }
 
 
     public String getValueAsString() {
-        return (isNegative ? '-' : "") + new String( digits );
+        return (isNegative ? '-' : "") + new String(digits);
     }
 
 
@@ -94,25 +95,22 @@ public class NumberField extends Widget {
     /**
      * Sets the text of the textbox, and moves the cursor to the end.
      */
-    public void setDigit( int i, char c ) {
-        if (isAllowed( c )) {
+    public void setDigit(int i, char c) {
+        if (isAllowed(c)) {
             digits[i] = c;
         }
 
         if (getDigitsValue() > data.getMax()) {
             String maxStr = (data.getMax() + "");
             int diff = digits.length - maxStr.length();
-            char mC = maxStr.charAt( this.cursorPosition - diff );
+            char mC = maxStr.charAt(this.cursorPosition - diff);
 
             if (c == mC) {
-                this.setValue( data.getMax() );
+                this.setValue(data.getMax());
+            } else {
+                this.setDigit(mC);
             }
-            else {
-                this.setDigit( mC );
-            }
-        }
-
-        else if (getDigitsValue() < data.getMin()) {
+        } else if (getDigitsValue() < data.getMin()) {
             String minStr = (data.getMin() + "");
 
             String zeroes = "";
@@ -126,31 +124,30 @@ public class NumberField extends Widget {
             minStr = zeroes + minStr;
 
             int diff = digits.length - minStr.length();
-            char mC = minStr.charAt( this.cursorPosition - diff );
+            char mC = minStr.charAt(this.cursorPosition - diff);
 
             if (c == mC) {
-                this.setValue( data.getMin() );
-            }
-            else {
-                this.setDigit( mC );
+                this.setValue(data.getMin());
+            } else {
+                this.setDigit(mC);
             }
         }
-        data.set( getDigitsValue() );
+        data.set(getDigitsValue());
     }
 
 
     /**
      * Sets the text of the textbox, and moves the cursor to the end.
      */
-    public void setDigit( char c ) {
-        this.setDigit( cursorPosition, c );
+    public void setDigit(char c) {
+        this.setDigit(cursorPosition, c);
     }
 
 
-    private void setValue( int value ) {
-        String s = Integer.toString( value );
+    private void setValue(int value) {
+        String s = Integer.toString(value);
         if (value < 0)
-            s = s.substring( 1 );
+            s = s.substring(1);
 
         int diff = this.getValueAsString().length() - s.length();
 
@@ -161,7 +158,7 @@ public class NumberField extends Widget {
         resetDigits();
 
         for (int i = 0; i < s.length(); i++) {
-            this.digits[diff + i] = s.charAt( i );
+            this.digits[diff + i] = s.charAt(i);
         }
     }
 
@@ -177,11 +174,11 @@ public class NumberField extends Widget {
      * Returns the contents of the textbox
      */
     private int getDigitsValue() {
-        return Integer.parseInt( getValueAsString() );
+        return Integer.parseInt(getValueAsString());
     }
 
 
-    public boolean isAllowed( char c ) {
+    public boolean isAllowed(char c) {
         for (char ch : allowed) {
             if (c == ch) {
                 return true;
@@ -195,18 +192,18 @@ public class NumberField extends Widget {
      * Moves the text cursor by a specified number of characters and clears the
      * selection
      */
-    public void moveCursor( boolean right ) {
-        this.setCursorPosition( this.cursorPosition + (right ? 1 : -1) );
+    public void moveCursor(boolean right) {
+        this.setCursorPosition(this.cursorPosition + (right ? 1 : -1));
     }
 
 
     /**
      * Sets the current position of the cursor.
      */
-    public void setCursorPosition( int pos ) {
+    public void setCursorPosition(int pos) {
         this.cursorPosition = pos;
         int i = digits.length - 1;
-        this.cursorPosition = MathHelper.clamp( this.cursorPosition, 0, i );
+        this.cursorPosition = MathHelper.clamp(this.cursorPosition, 0, i);
     }
 
 
@@ -214,7 +211,7 @@ public class NumberField extends Widget {
      * Moves the cursor to the very start of this text box.
      */
     public void setCursorPositionZero() {
-        this.setCursorPosition( 0 );
+        this.setCursorPosition(0);
     }
 
 
@@ -222,119 +219,112 @@ public class NumberField extends Widget {
      * Moves the cursor to the very end of this text box.
      */
     public void setCursorPositionEnd() {
-        this.setCursorPosition( digits.length - 1 );
+        this.setCursorPosition(digits.length - 1);
     }
 
 
     @Override
-    public boolean keyPressed( int keyCode, int scanCode, int modifier ) {
+    public boolean keyPressed(int keyCode, int scanCode, int modifier) {
         switch (keyCode) {
-        case GLFW.GLFW_KEY_LEFT:
-            moveCursor( false );
-            return true;
-        case GLFW.GLFW_KEY_RIGHT:
-            moveCursor( true );
-            return true;
-        default:
-            return super.keyPressed( keyCode, scanCode, modifier );
+            case GLFW.GLFW_KEY_LEFT:
+                moveCursor(false);
+                return true;
+            case GLFW.GLFW_KEY_RIGHT:
+                moveCursor(true);
+                return true;
+            default:
+                return super.keyPressed(keyCode, scanCode, modifier);
         }
 
     }
 
 
     @Override
-    public boolean charTyped( char typedChar, int keyCode ) {
+    public boolean charTyped(char typedChar, int keyCode) {
         Minecraft mc = Minecraft.getInstance();
         if (!this.isFocused()) {
             return false;
-        }
-        else if (Screen.isCopy( keyCode )) {
-            mc.keyboardListener.setClipboardString( String.valueOf( digits ) );
+        } else if (Screen.isCopy(keyCode)) {
+            mc.keyboardHandler.setClipboard(String.valueOf(digits));
             return true;
-        }
-        else if (Screen.isPaste( keyCode )) {
+        } else if (Screen.isPaste(keyCode)) {
             if (this.active) {
                 try {
-                    setValue( Integer.decode( mc.keyboardListener.getClipboardString() ) );
-                }
-                catch (NumberFormatException e) {
+                    setValue(Integer.decode(mc.keyboardHandler.getClipboard()));
+                } catch (NumberFormatException e) {
                 }
             }
 
             return true;
-        }
-        else if (Screen.isCut( keyCode )) {
-            mc.keyboardListener.setClipboardString( String.valueOf( digits ) );
+        } else if (Screen.isCut(keyCode)) {
+            mc.keyboardHandler.setClipboard(String.valueOf(digits));
 
             if (this.active) {
                 resetDigits();
             }
 
             return true;
-        }
-        else {
+        } else {
             switch (keyCode) {
-            case 14:
+                case 14:
 
-                if (this.active) {
-                    setDigit( '0' );
-                }
-
-                return true;
-            case 199:
-
-                setCursorPositionZero();
-
-                return true;
-            case 203:
-
-                this.moveCursor( false );
-
-                return true;
-            case 205:
-
-                this.moveCursor( true );
-
-                return true;
-            case 207:
-
-                this.setCursorPositionEnd();
-
-                return true;
-            case 211:
-
-                if (this.active) {
-                    setDigit( '0' );
-                }
-
-                return true;
-            default:
-                if (active) {
-                    if (typedChar == '-' && data.getMin() < 0) {
-                        isNegative = true;
-                    }
-                    else if (typedChar == '+' && data.getMax() > -1) {
-                        isNegative = false;
-                    }
-                    else if (isAllowed( typedChar )) {
-                        setDigit( typedChar );
-                        moveCursor( true );
+                    if (this.active) {
+                        setDigit('0');
                     }
 
                     return true;
-                }
-                return false;
+                case 199:
+
+                    setCursorPositionZero();
+
+                    return true;
+                case 203:
+
+                    this.moveCursor(false);
+
+                    return true;
+                case 205:
+
+                    this.moveCursor(true);
+
+                    return true;
+                case 207:
+
+                    this.setCursorPositionEnd();
+
+                    return true;
+                case 211:
+
+                    if (this.active) {
+                        setDigit('0');
+                    }
+
+                    return true;
+                default:
+                    if (active) {
+                        if (typedChar == '-' && data.getMin() < 0) {
+                            isNegative = true;
+                        } else if (typedChar == '+' && data.getMax() > -1) {
+                            isNegative = false;
+                        } else if (isAllowed(typedChar)) {
+                            setDigit(typedChar);
+                            moveCursor(true);
+                        }
+
+                        return true;
+                    }
+                    return false;
             }
         }
     }
 
 
     @Override
-    public boolean mouseClicked( double mouseX, double mouseY, int mouseButton ) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         boolean flag = mouseX >= this.x && mouseX < this.x + this.width && mouseY >= this.y && mouseY < this.y + this.height;
 
         if (this.canLoseFocus) {
-            this.setFocused( flag );
+            this.setFocused(flag);
         }
 
         if (this.isFocused() && flag && mouseButton == 0) {
@@ -344,32 +334,31 @@ public class NumberField extends Widget {
                 i -= 4;
             }
 
-            String s = this.fontRenderer.trimStringToWidth( this.getValueAsString(), this.getWidth() );
-            this.setCursorPosition( this.fontRenderer.trimStringToWidth( s, i ).length() );
+            String s = this.fontRenderer.plainSubstrByWidth(this.getValueAsString(), this.getWidth());
+            this.setCursorPosition(this.fontRenderer.plainSubstrByWidth(s, i).length());
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
 
     @Override
-    public void renderButton( int p_renderButton_1_, int p_renderButton_2_, float p_renderButton_3_ ) {
+    public void renderButton(MatrixStack matrix, int p_renderButton_1_, int p_renderButton_2_, float p_renderButton_3_) {
         Style style = StyleManager.getCurrentStyle();
-        Color color = style.getFGColor( this );
+        Color color = style.getFGColor(this);
         String s = getValueAsString();
 
         if (digits.length != 0 && s.length() == digits.length && s.length() != 0 && getDigitsValue() != data.get()) {
-            setValue( data.get() );
+            setValue(data.get());
         }
 
         if (this.getEnableBackgroundDrawing()) {
-            GuiUtil.drawFrame( x, y, x + width, y + height, 1, color );
+            GuiUtil.drawFrame(matrix, x, y, x + width, y + height, 1, color);
         }
 
         int cursorPos = this.cursorPosition;
-        String string = this.fontRenderer.trimStringToWidth( s, this.getWidth() );
+        String string = this.fontRenderer.plainSubstrByWidth(s, this.getWidth());
         boolean cursorFine = cursorPos >= 0 && cursorPos <= string.length();
         boolean displayCursor = isFocused() && this.cursorCounter / 6 % 2 == 0 && cursorFine;
         int textX = this.enableBackgroundDrawing ? this.x + 4 : this.x;
@@ -377,8 +366,8 @@ public class NumberField extends Widget {
         int halfX = textX;
 
         if (!string.isEmpty()) {
-            String halfString = cursorFine ? string.substring( 0, cursorPos ) : string;
-            halfX = this.fontRenderer.drawStringWithShadow( halfString, (float) textX, (float) textY, color.getInt() ) - 1;
+            String halfString = cursorFine ? string.substring(0, cursorPos) : string;
+            halfX = this.fontRenderer.drawShadow(matrix, halfString, (float) textX, (float) textY, color.getInt()) - 1;
         }
 
         int cursorX = halfX;
@@ -388,11 +377,11 @@ public class NumberField extends Widget {
         }
 
         if (!string.isEmpty() && cursorFine && cursorPos < string.length()) {
-            halfX = this.fontRenderer.drawStringWithShadow( string.substring( cursorPos ), (float) halfX, (float) textY, color.getInt() );
+            halfX = this.fontRenderer.drawShadow(matrix, string.substring(cursorPos), (float) halfX, (float) textY, color.getInt());
         }
 
         if (displayCursor) {
-            this.fontRenderer.drawStringWithShadow( "_", (float) cursorX, (float) textY, color.getInt() );
+            this.fontRenderer.drawShadow(matrix, "_", (float) cursorX, (float) textY, color.getInt());
         }
     }
 
@@ -418,8 +407,8 @@ public class NumberField extends Widget {
      * Sets focus to this gui element
      */
     @Override
-    public void setFocused( boolean isFocusedIn ) {
-        super.setFocused( isFocusedIn );
+    public void setFocused(boolean isFocusedIn) {
+        super.setFocused(isFocusedIn);
         if (isFocusedIn) {
             this.cursorCounter = 0;
         }
@@ -440,7 +429,7 @@ public class NumberField extends Widget {
      * Sets whether this text box loses focus when something other than it is
      * clicked.
      */
-    public void setCanLoseFocus( boolean canLoseFocusIn ) {
+    public void setCanLoseFocus(boolean canLoseFocusIn) {
         this.canLoseFocus = canLoseFocusIn;
     }
 }

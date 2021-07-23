@@ -1,5 +1,7 @@
 package creativeeditor.screen.widgets;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.data.NumberRangeFloat;
@@ -13,7 +15,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn( Dist.CLIENT )
+@OnlyIn(Dist.CLIENT)
 public class SliderTagFloat extends Widget implements IStyledSlider<Float> {
     private final NumberRangeFloat range;
 
@@ -22,79 +24,72 @@ public class SliderTagFloat extends Widget implements IStyledSlider<Float> {
 
 
     public SliderTagFloat(int x, int y, int width, int height, String display, NumberRangeFloat range) {
-        this( x, y, width, height, display, true, range );
+        this(x, y, width, height, display, true, range);
     }
 
 
     public SliderTagFloat(int x, int y, int width, int height, NumberRangeFloat range) {
-        this( x, y, width, height, "", true, range );
+        this(x, y, width, height, "", true, range);
     }
 
 
     public SliderTagFloat(int x, int y, int width, int height, String display, boolean drawString, NumberRangeFloat range) {
-        super( x, y, width, height, display );
+        super(x, y, width, height, new StringTextComponent(display));
         this.display = display;
         this.drawString = drawString;
         this.range = range;
 
-        setMessage( drawString ? display + range.get() : "" );
+        setMessage(new StringTextComponent(drawString ? display + range.get() : ""));
     }
 
 
     @Override
-    public int getYImage( boolean b ) {
+    public int getYImage(boolean b) {
         return 0;
     }
 
-
     @Override
-    protected String getNarrationMessage() {
-        return I18n.get( "gui.narrate.slider", getMessage() );
-    }
-
-
-    @Override
-    public void renderButton( int mouseX, int mouseY, float p3 ) {
+    public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float p3) {
         // super.renderButton(mouseX, mouseY, p3);
-        StyleManager.getCurrentStyle().renderButton( this, mouseX, mouseY, p3 );
+        StyleManager.getCurrentStyle().renderButton(matrix, this, mouseX, mouseY, p3);
     }
 
 
-    public void renderBg( Minecraft mc, int mouseX, int mouseY ) {
+    public void renderBg(Minecraft mc, int mouseX, int mouseY) {
         if (!this.visible)
             return;
 
-        StyleManager.getCurrentStyle().renderSlider( this, mouseX, mouseY );
+        StyleManager.getCurrentStyle().renderSlider(null, this, mouseX, mouseY);
     }
 
 
-    private void setValueFromMouse( double mouseX ) {
+    private void setValueFromMouse(double mouseX) {
         float updateValue;
         if (StyleManager.getCurrentStyle() instanceof StyleSpectrum)
             updateValue = (((float) mouseX - (x + 1f)) / (width - 2.5f));
         else
             updateValue = ((float) mouseX - (x + 4)) / (float) (width - 8);
         float round = updateValue * (range.getMax() - range.getMin()) + range.getMin();
-        setValue( round );
+        setValue(round);
     }
 
 
     @Override
-    public void onClick( double mouseX, double mouseY ) {
-        setValueFromMouse( mouseX );
+    public void onClick(double mouseX, double mouseY) {
+        setValueFromMouse(mouseX);
     }
 
 
     @Override
-    public boolean keyPressed( int key1, int key2, int key3 ) {
+    public boolean keyPressed(int key1, int key2, int key3) {
         if (key1 == GLFW.GLFW_KEY_LEFT && getValue() > getMin()) {
-            range.set( range.get() - 1 );
+            range.set(range.get() - 1);
             updateSlider();
             return true;
         }
 
         if (key1 == GLFW.GLFW_KEY_RIGHT && getValue() < getMax()) {
-            range.set( range.get() + 1 );
+            range.set(range.get() + 1);
             updateSlider();
             return true;
         }
@@ -103,9 +98,9 @@ public class SliderTagFloat extends Widget implements IStyledSlider<Float> {
     }
 
 
-    public void setValue( float value ) {
+    public void setValue(float value) {
         float old = getValue();
-        range.set( value );
+        range.set(value);
         if (getValue() != old) {
             updateSlider();
         }
@@ -113,31 +108,31 @@ public class SliderTagFloat extends Widget implements IStyledSlider<Float> {
 
 
     public void updateSlider() {
-        setMessage( drawString ? display + getValue() : "" );
+        setMessage(new StringTextComponent(drawString ? display + getValue() : ""));
     }
 
 
     @Override
-    protected void onDrag( double mouseX, double p_onDrag_3_, double p_onDrag_5_, double p_onDrag_7_ ) {
-        setValueFromMouse( mouseX );
-        super.onDrag( mouseX, p_onDrag_3_, p_onDrag_5_, p_onDrag_7_ );
+    protected void onDrag(double mouseX, double p_onDrag_3_, double p_onDrag_5_, double p_onDrag_7_) {
+        setValueFromMouse(mouseX);
+        super.onDrag(mouseX, p_onDrag_3_, p_onDrag_5_, p_onDrag_7_);
     }
 
 
     @Override
-    public void playDownSound( SoundHandler soundHandler ) {
+    public void playDownSound(SoundHandler soundHandler) {
     }
 
 
     @Override
-    public void onRelease( double mouseX, double mouseY ) {
-        super.playDownSound( Minecraft.getInstance().getSoundHandler() );
+    public void onRelease(double mouseX, double mouseY) {
+        super.playDownSound(Minecraft.getInstance().getSoundManager());
     }
 
 
     @Override
     public int getFGColor() {
-        return StyleManager.getCurrentStyle().getFGColor( this ).getInt();
+        return StyleManager.getCurrentStyle().getFGColor(this).getInt();
     }
 
     @Override
@@ -147,7 +142,7 @@ public class SliderTagFloat extends Widget implements IStyledSlider<Float> {
 
 
     @Override
-    public void setHovered( boolean b ) {
+    public void setHovered(boolean b) {
         isHovered = b;
     }
 

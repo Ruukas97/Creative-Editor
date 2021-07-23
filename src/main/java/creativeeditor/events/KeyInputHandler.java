@@ -32,20 +32,20 @@ public class KeyInputHandler {
 
 
     public static void init() {
-        CreativeEditor.LOGGER.info( "Initializing keybindings" );
-        OPEN_EDITOR_KEY = registerKeybind( "editor", GLFW.GLFW_KEY_U );
-        PLAYER_INSPECT = registerKeybind( "inspector", GLFW.GLFW_KEY_G );
-        OFF_HAND_SWING = registerKeybind( "offhandswing", InputMappings.UNKNOWN.getValue() );
-        HEAD_COLLECTION = registerKeybind( "headcollection", GLFW.GLFW_KEY_V );
-        BARRIER_TOGGLE = registerKeybind( "barriertoggle", GLFW.GLFW_KEY_B );
+        CreativeEditor.LOGGER.info("Initializing keybindings");
+        OPEN_EDITOR_KEY = registerKeybind("editor", GLFW.GLFW_KEY_U);
+        PLAYER_INSPECT = registerKeybind("inspector", GLFW.GLFW_KEY_G);
+        OFF_HAND_SWING = registerKeybind("offhandswing", InputMappings.UNKNOWN.getValue());
+        HEAD_COLLECTION = registerKeybind("headcollection", GLFW.GLFW_KEY_V);
+        BARRIER_TOGGLE = registerKeybind("barriertoggle", GLFW.GLFW_KEY_B);
         if (CreativeEditor.DEBUG)
-            DEBUG_KEY = registerKeybind( "debug", GLFW.GLFW_KEY_H );
+            DEBUG_KEY = registerKeybind("debug", GLFW.GLFW_KEY_H);
 
     }
 
 
     @SubscribeEvent
-    public void onKeyInput( final KeyInputEvent event ) {
+    public void onKeyInput(final KeyInputEvent event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null || event.getAction() != GLFW.GLFW_PRESS || (mc.screen != null && !(mc.screen instanceof ContainerScreen<?>)))
             return;
@@ -60,9 +60,8 @@ public class KeyInputHandler {
                }
             });*/
             assert mc.player != null;
-            mc.setScreen( new MainScreen( mc.screen, new DataItem( mc.player.getMainHandItem() ) ) );
-        }
-        else if (event.getKey() == PLAYER_INSPECT.getKey().getValue()) {
+            mc.setScreen(new MainScreen(mc.screen, new DataItem(mc.player.getMainHandItem())));
+        } else if (event.getKey() == PLAYER_INSPECT.getKey().getValue()) {
 //            Entity entity = mc.pointedEntity;
 //            if (entity instanceof PlayerEntity) {
 //                mc.setScreen( new PlayerInspectorScreen( mc.screen, (PlayerEntity) mc.pointedEntity ) );
@@ -72,35 +71,31 @@ public class KeyInputHandler {
 //                // mc.setScreen( new ItemInspectorScreen( mc.screen, new DataItem(
 //                // mc.player.getHeldItemMainhand() ) ) );
 //            }
-        }
-        else if (event.getKey() == OFF_HAND_SWING.getKey().getValue()) {
+        } else if (event.getKey() == OFF_HAND_SWING.getKey().getValue()) {
             assert mc.player != null;
-            mc.player.swing( Hand.OFF_HAND );
+            mc.player.swing(Hand.OFF_HAND);
             // mc.setScreen( new TextEditorScreen( mc.screen ) );
-        }
-        else if (event.getKey() == HEAD_COLLECTION.getKey().getValue()) {
-            mc.setScreen( new HeadCollectionScreen( mc.screen ) );
-        }
-        else if (event.getKey() == BARRIER_TOGGLE.getKey().getValue()) {
+        } else if (event.getKey() == HEAD_COLLECTION.getKey().getValue()) {
+            mc.setScreen(new HeadCollectionScreen(mc.screen));
+        } else if (event.getKey() == BARRIER_TOGGLE.getKey().getValue()) {
             CreativeEditor.BARRIER_VISIBLE = !CreativeEditor.BARRIER_VISIBLE;
             mc.levelRenderer.allChanged(); // reload chunks
-            System.out.println( "Set barrier visibility: " + CreativeEditor.BARRIER_VISIBLE );
-        }
-        else if (CreativeEditor.DEBUG && event.getKey() == DEBUG_KEY.getKey().getValue()) {
+            System.out.println("Set barrier visibility: " + CreativeEditor.BARRIER_VISIBLE);
+        } else if (CreativeEditor.DEBUG && event.getKey() == DEBUG_KEY.getKey().getValue()) {
             // mc.setScreen( new NBTExplorerScreen( mc.screen, new DataItem(
             // mc.player.getHeldItemMainhand() ) ) );
             // mc.setScreen( new EnchantmentScreen( mc.screen, new DataItem(
             // mc.player.getHeldItemMainhand() ) ) );
             // mc.setScreen( new ItemSpawnerScreen( mc.screen ) );
-            mc.setScreen( new CreativeScreen( mc.player ) );
+            mc.setScreen(new CreativeScreen(mc.player));
             //mc.setScreen( new WindowManagerScreen( new StringTextComponent( CreativeEditor.NAME ) ) );
         }
     }
 
 
-    private static KeyBinding registerKeybind( String name, int keyCode ) {
-        KeyBinding key = new KeyBinding( "key." + name, keyCode, CreativeEditor.NAME );
-        ClientRegistry.registerKeyBinding( key );
+    private static KeyBinding registerKeybind(String name, int keyCode) {
+        KeyBinding key = new KeyBinding("key." + name, keyCode, CreativeEditor.NAME);
+        ClientRegistry.registerKeyBinding(key);
         return key;
     }
 }

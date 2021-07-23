@@ -11,24 +11,24 @@ import net.minecraft.util.text.StringTextComponent;
 
 public class CommandUtil {
     public ItemStack getStackFromCommand(String command) throws CommandSyntaxException {
-        if(!command.startsWith("/give ")){
-            Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new StringTextComponent("Must have a /give command in clipboard to paste item!"));
+        if (!command.startsWith("/give ")) {
+            Minecraft.getInstance().gui.getChat().addMessage(new StringTextComponent("Must have a /give command in clipboard to paste item!"));
             return ItemStack.EMPTY;
         }
         command = command.substring(6);
         int spaceIndex = command.indexOf(' ');
-        if(spaceIndex == -1){
+        if (spaceIndex == -1) {
             return ItemStack.EMPTY;
         }
 
         StringReader reader = new StringReader(command.substring(spaceIndex + 1));
         ItemInput item = ItemArgument.item().parse(reader);
 
-        if(reader.canRead(1)){
+        if (reader.canRead(1)) {
             reader.skipWhitespace();
         }
 
         int count = reader.canRead() ? IntegerArgumentType.integer(1).parse(reader) : 1;
-        return item.createStack(count, false);
+        return item.createItemStack(count, false);
     }
 }

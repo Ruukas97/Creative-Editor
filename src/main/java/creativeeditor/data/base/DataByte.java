@@ -4,12 +4,12 @@ import net.minecraft.nbt.ByteNBT;
 
 public class DataByte extends SingularData<Byte, ByteNBT> {
     public DataByte(byte value) {
-        super( value );
+        super(value);
     }
 
 
     public DataByte(ByteNBT nbt) {
-        this( nbt.getAsByte() );
+        this(nbt.getAsByte());
     }
 
 
@@ -21,6 +21,6 @@ public class DataByte extends SingularData<Byte, ByteNBT> {
 
     @Override
     public ByteNBT getNBT() {
-        return ByteNBT.valueOf( data );
+        return ByteNBT.valueOf(data);
     }
 }

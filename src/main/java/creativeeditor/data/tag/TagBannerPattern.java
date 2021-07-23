@@ -23,20 +23,20 @@ public class TagBannerPattern implements Data<Pair<BannerPattern, DyeColor>, Com
 
 
     public TagBannerPattern(INBT nbt) {
-        this( nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT() );
+        this(nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT());
     }
 
 
     public TagBannerPattern(CompoundNBT nbt) {
         NBTKeys keys = NBTKeys.keys;
-        color = DyeColor.byId( nbt.getInt( keys.patternColor() ) );
-        pattern = BannerPattern.byHash( nbt.getString( keys.patternPattern() ) );
+        color = DyeColor.byId(nbt.getInt(keys.patternColor()));
+        pattern = BannerPattern.byHash(nbt.getString(keys.patternPattern()));
     }
 
 
     @Override
     public Pair<BannerPattern, DyeColor> getData() {
-        return Pair.of( pattern, color );
+        return Pair.of(pattern, color);
     }
 
 
@@ -50,8 +50,8 @@ public class TagBannerPattern implements Data<Pair<BannerPattern, DyeColor>, Com
     public CompoundNBT getNBT() {
         NBTKeys keys = NBTKeys.keys;
         CompoundNBT nbt = new CompoundNBT();
-        nbt.putInt( keys.patternColor(), color.getId() );
-        nbt.putString( keys.patternPattern(), pattern.getHashname() );
+        nbt.putInt(keys.patternColor(), color.getId());
+        nbt.putString(keys.patternPattern(), pattern.getHashname());
         return nbt;
     }
 }

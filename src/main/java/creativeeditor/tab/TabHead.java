@@ -12,21 +12,21 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 
 public class TabHead extends TabCreative {
-    public static ItemStack fallbackIcon = new ItemStack( Items.PLAYER_HEAD );
+    public static ItemStack fallbackIcon = new ItemStack(Items.PLAYER_HEAD);
     public boolean iconLoaded = false;
     public MinecraftHeadsCategory category;
 
 
     public TabHead(MinecraftHeadsCategory category) {
-        super( category.getName() );
+        super(category.getName());
         this.category = category;
     }
 
 
     @Override
     public ItemStack makeIcon() {
-        ArrayList<CachedHead> heads = MinecraftHeads.getHeads( category );
-        CachedHead cached = RandomUtils.getRandomElement( heads );
+        ArrayList<CachedHead> heads = MinecraftHeads.getHeads(category);
+        CachedHead cached = RandomUtils.getRandomElement(heads);
         cached.loadTexture();
         ItemStack head = cached.getItemStack();
         return head != null ? head.copy() : fallbackIcon;
@@ -39,7 +39,7 @@ public class TabHead extends TabCreative {
             return super.getIconItem();
         }
 
-        if (MinecraftHeads.isLoaded( category )) {
+        if (MinecraftHeads.isLoaded(category)) {
             iconLoaded = true;
             return super.getIconItem();
         }
@@ -49,8 +49,8 @@ public class TabHead extends TabCreative {
 
 
     @Override
-    public void fillItemList( NonNullList<ItemStack> items ) {
-        items.addAll( MinecraftHeads.createItemStacks( category ) );
+    public void fillItemList(NonNullList<ItemStack> items) {
+        items.addAll(MinecraftHeads.createItemStacks(category));
     }
 
 

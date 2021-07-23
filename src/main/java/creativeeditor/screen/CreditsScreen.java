@@ -6,6 +6,6 @@ import net.minecraft.util.text.ITextComponent;
 public class CreditsScreen extends ParentScreen {
 
     public CreditsScreen(ITextComponent title, Screen lastScreen) {
-        super( title, lastScreen );
-    }    
+        super(title, lastScreen);
+    }
 }

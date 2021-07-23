@@ -34,53 +34,52 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
 
 
     public DataItem() {
-        this( ItemStack.EMPTY, 0 );
+        this(ItemStack.EMPTY, 0);
     }
 
 
     public DataItem(IItemProvider item) {
-        this( new ItemStack( item ) );
+        this(new ItemStack(item));
     }
 
 
     public DataItem(ItemStack stack) {
-        this( stack, 0 );
+        this(stack, 0);
     }
 
 
     public DataItem(Item item, String nbtString) throws CommandSyntaxException {
-        this( item, 1, JsonToNBT.parseTag( nbtString ), 0 );
+        this(item, 1, JsonToNBT.parseTag(nbtString), 0);
     }
 
 
     public DataItem(ItemStack stack, int slot) {
-        this( stack.getItem(), stack.getCount(), stack.getTag(), slot );
+        this(stack.getItem(), stack.getCount(), stack.getTag(), slot);
     }
 
 
     public DataItem(Item item, int count, CompoundNBT tag, int slot) {
-        this.item = new TagItemID( item );
-        this.count = new NumberRangeInt( count, 1, 64 );
-        this.slot = new NumberRangeInt( slot, 0, 45 );
-        this.tag = new TagItemNBT( this, tag );
+        this.item = new TagItemID(item);
+        this.count = new NumberRangeInt(count, 1, 64);
+        this.slot = new NumberRangeInt(slot, 0, 45);
+        this.tag = new TagItemNBT(this, tag);
     }
 
 
     public DataItem(Item item, int count, TileEntity te, int slot) {
-        this( item, count, getTETag( item, te ), slot );
+        this(item, count, getTETag(item, te), slot);
     }
 
 
-    private static CompoundNBT getTETag( Item item, TileEntity te ) {
+    private static CompoundNBT getTETag(Item item, TileEntity te) {
         CompoundNBT nbt = new CompoundNBT();
-        CompoundNBT teTag = te.save( new CompoundNBT() );
+        CompoundNBT teTag = te.save(new CompoundNBT());
 
-        if (item instanceof SkullItem && teTag.contains( "Owner" )) {
-            CompoundNBT compoundnbt2 = teTag.getCompound( "Owner" );
-            nbt.put( "SkullOwner", compoundnbt2 );
-        }
-        else {
-            nbt.put( "BlockEntityTag", teTag );
+        if (item instanceof SkullItem && teTag.contains("Owner")) {
+            CompoundNBT compoundnbt2 = teTag.getCompound("Owner");
+            nbt.put("SkullOwner", compoundnbt2);
+        } else {
+            nbt.put("BlockEntityTag", teTag);
         }
         return nbt;
     }
@@ -93,7 +92,7 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
 
 
     public ItemStack getItemStack() {
-        return ItemStack.of( getNBT() );
+        return ItemStack.of(getNBT());
     }
 
 
@@ -101,11 +100,11 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
      * This reads the map into an ItemStack including all keys. So no default checks
      * are made. This should be used mainly when the itemstack is needed in an
      * isDefault check to avoid creating endless loops.
-     * 
+     *
      * @return An itemstack including all data, with no cleanup.
      */
     public ItemStack getItemStackFull() {
-        return ItemStack.of( getNBT() );
+        return ItemStack.of(getNBT());
     }
 
 
@@ -129,11 +128,11 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
         NBTKeys keys = NBTKeys.keys;
         CompoundNBT nbt = new CompoundNBT();
         if (!getSlot().isDefault())
-            nbt.put( keys.stackSlot(), getSlot().getNBT() );
-        nbt.put( keys.stackID(), getItem().getNBT() );
-        nbt.put( keys.stackCount(), getCount().getNBT() );
+            nbt.put(keys.stackSlot(), getSlot().getNBT());
+        nbt.put(keys.stackID(), getItem().getNBT());
+        nbt.put(keys.stackCount(), getCount().getNBT());
         if (!getTag().isDefault())
-            nbt.put( keys.stackTag(), getTag().getNBT() );
+            nbt.put(keys.stackTag(), getTag().getNBT());
         return nbt;
     }
 

@@ -26,16 +26,16 @@ public class ItemWidgets implements Iterable<ClassSpecificWidget> {
         list = new ArrayList<>();
         Minecraft mc = Minecraft.getInstance();
 
-        add( new ClassSpecificWidget( I18n.get( "gui.enchanting" ), dItem -> EnchantmentType.ALL.canEnchantItem(dItem.getItem().getItem()), (item, info ) ->
-                new StyledTextButton( info.withTrigger( button -> mc.setScreen( new EnchantmentScreen( info.getParent(), item.getTag().getEnchantments() )) ) )
+        add(new ClassSpecificWidget(I18n.get("gui.enchanting"), dItem -> EnchantmentType.BREAKABLE.canEnchant(dItem.getItem().getItem()), (item, info) ->
+                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new EnchantmentScreen(info.getParent(), item.getTag().getEnchantments()))))
         ));
 
-        add( new ClassSpecificWidget( I18n.get( "gui.armorstandeditor" ), dItem -> dItem.getItem().getItem() instanceof ArmorStandItem, (item, info ) ->
-                new StyledTextButton( info.withTrigger( button -> mc.setScreen( new ArmorstandScreen( info.getParent(), item ) ) ) )
+        add(new ClassSpecificWidget(I18n.get("gui.armorstandeditor"), dItem -> dItem.getItem().getItem() instanceof ArmorStandItem, (item, info) ->
+                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new ArmorstandScreen(info.getParent(), item))))
         ));
 
-        add( new ClassSpecificWidget( I18n.get( "gui.color" ), dItem -> dItem.getItem().getItem() instanceof IDyeableArmorItem, (item, info ) ->
-            new StyledTextButton( info.withTrigger( button -> mc.setScreen( new ColorScreen( info.getParent(), item, item.getTag().getDisplay().getColor(), 10511680, false) ) ) )
+        add(new ClassSpecificWidget(I18n.get("gui.color"), dItem -> dItem.getItem().getItem() instanceof IDyeableArmorItem, (item, info) ->
+                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new ColorScreen(info.getParent(), item, item.getTag().getDisplay().getColor(), 10511680, false))))
         ));
     }
 
@@ -53,21 +53,21 @@ public class ItemWidgets implements Iterable<ClassSpecificWidget> {
     }
 
 
-    public void add( ClassSpecificWidget widget ) {
-        list.add( widget );
+    public void add(ClassSpecificWidget widget) {
+        list.add(widget);
     }
 
 
-    public void add( String text, Function<DataItem, Boolean> requirement, BiFunction<DataItem, WidgetInfo, Widget> widgetCreator ) {
-        add( new ClassSpecificWidget( text, requirement, widgetCreator ) );
+    public void add(String text, Function<DataItem, Boolean> requirement, BiFunction<DataItem, WidgetInfo, Widget> widgetCreator) {
+        add(new ClassSpecificWidget(text, requirement, widgetCreator));
     }
 
 
-    public void add( String text, Class<? extends Item> itemClass, BiFunction<DataItem, WidgetInfo, Widget> widgetCreator ) {
-        add( new ClassSpecificWidget( text, itemClass::isInstance, widgetCreator ) );
+    public void add(String text, Class<? extends Item> itemClass, BiFunction<DataItem, WidgetInfo, Widget> widgetCreator) {
+        add(new ClassSpecificWidget(text, itemClass::isInstance, widgetCreator));
     }
 
-    public WidgetInfoSupport<?> modifiedTriggerSupport( WidgetInfoSupport<?> sup, IPressable trigger ) {
-        return inf -> sup.fromWidgetInfo( inf.withTrigger( trigger ) );
+    public WidgetInfoSupport<?> modifiedTriggerSupport(WidgetInfoSupport<?> sup, IPressable trigger) {
+        return inf -> sup.fromWidgetInfo(inf.withTrigger(trigger));
     }
 }

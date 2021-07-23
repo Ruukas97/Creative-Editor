@@ -9,18 +9,18 @@ public class TagEffect extends SingularData<EffectInstance, CompoundNBT> {
     /*
      * See: {@link Potion} {@link Potions} {@link Effect} {@link EffectInstance}
      */
-    
+
     public TagEffect(INBT nbt) {
-        this( nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT() );
+        this(nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT());
     }
 
     public TagEffect(CompoundNBT nbt) {
-        this( EffectInstance.load( nbt ) );
+        this(EffectInstance.load(nbt));
     }
 
 
     public TagEffect(EffectInstance data) {
-        super( data );
+        super(data);
     }
 
 
@@ -32,6 +32,6 @@ public class TagEffect extends SingularData<EffectInstance, CompoundNBT> {
 
     @Override
     public CompoundNBT getNBT() {
-        return data.save( new CompoundNBT() );
+        return data.save(new CompoundNBT());
     }
 }

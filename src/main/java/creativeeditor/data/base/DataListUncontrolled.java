@@ -14,19 +14,19 @@ public class DataListUncontrolled extends DataList<Data<?, ?>> {
 
     public DataListUncontrolled(ListNBT nbt) {
         this();
-        nbt.forEach( this::add );
+        nbt.forEach(this::add);
     }
 
 
     public DataListUncontrolled(List<Data<?, ?>> list) {
-        super( list );
+        super(list);
     }
 
 
     @Override
-    public <T extends INBT> void add( T nbt ) {
-        Data<?, ?> res = Data.getDataFromNBT( nbt );
+    public <T extends INBT> void add(T nbt) {
+        Data<?, ?> res = Data.getDataFromNBT(nbt);
         if (res != null)
-            add( res );
+            add(res);
     }
 }

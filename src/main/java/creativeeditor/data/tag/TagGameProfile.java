@@ -12,32 +12,32 @@ import net.minecraft.nbt.NBTUtil;
 
 public class TagGameProfile extends SingularData<GameProfile, CompoundNBT> {
     public TagGameProfile(String username) {
-        this( new GameProfile(null, username ) );
+        this(new GameProfile(null, username));
     }
 
 
     public TagGameProfile(CompoundNBT nbt) {
-        this( NBTUtil.readGameProfile( nbt ) );
+        this(NBTUtil.readGameProfile(nbt));
     }
 
 
     public TagGameProfile(GameProfile profile) {
-        super( profile );
+        super(profile);
     }
 
 
     public TagGameProfile(MinecraftProfilePropertiesResponse profile) {
-        super( new GameProfile( profile.getId(), profile.getName() ) );
-        data.getProperties().putAll( profile.getProperties() );
+        super(new GameProfile(profile.getId(), profile.getName()));
+        data.getProperties().putAll(profile.getProperties());
     }
 
 
     public TagGameProfile(MinecraftHeadsResponse profile) {
-        super( new GameProfile( profile.getUUID(), profile.getName() ) );
-        data.getProperties().putAll( profile.getProperties() );
+        super(new GameProfile(profile.getUUID(), profile.getName()));
+        data.getProperties().putAll(profile.getProperties());
     }
 
-    public void set( MinecraftHeadsResponse element ) {
+    public void set(MinecraftHeadsResponse element) {
         data = element.getGameProfile();
     }
 
@@ -49,6 +49,6 @@ public class TagGameProfile extends SingularData<GameProfile, CompoundNBT> {
 
     @Override
     public CompoundNBT getNBT() {
-        return NBTUtil.writeGameProfile( new CompoundNBT(), data );
+        return NBTUtil.writeGameProfile(new CompoundNBT(), data);
     }
 }

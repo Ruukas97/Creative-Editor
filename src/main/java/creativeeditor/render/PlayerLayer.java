@@ -14,20 +14,20 @@ import net.minecraft.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn( Dist.CLIENT )
+@OnlyIn(Dist.CLIENT)
 public class PlayerLayer extends LayerRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> {
     public PlayerLayer(IEntityRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> model) {
-        super( model );
+        super(model);
     }
 
 
     public static void init() {
         Minecraft mc = Minecraft.getInstance();
-        EntityRenderer<?> renderer = mc.getRenderManager().renderers.get( EntityType.PLAYER );
+        EntityRenderer<?> renderer = mc.getEntityRenderDispatcher().renderers.get(EntityType.PLAYER);
         if (renderer instanceof PlayerRenderer) {
             PlayerRenderer playerRenderer = (PlayerRenderer) renderer;
-            mc.getRenderManager().getSkinMap().get( "default" ).addLayer( new PlayerLayer( playerRenderer ) );
-            mc.getRenderManager().getSkinMap().get( "slim" ).addLayer( new PlayerLayer( playerRenderer ) );
+            mc.getEntityRenderDispatcher().getSkinMap().get("default").addLayer(new PlayerLayer(playerRenderer));
+            mc.getEntityRenderDispatcher().getSkinMap().get("slim").addLayer(new PlayerLayer(playerRenderer));
         }
     }
 
@@ -39,7 +39,7 @@ public class PlayerLayer extends LayerRenderer<AbstractClientPlayerEntity, Playe
 
     // @formatter:off
     @Override
-    public void render( MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, AbstractClientPlayerEntity entityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch ) {
+    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, AbstractClientPlayerEntity entityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         /*
 
         if (PlayerInfo.getByUUID( entityIn.getUniqueID() ).getNamePlate()) {

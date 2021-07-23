@@ -7,10 +7,10 @@ public class ChatHandler {
     private static String lastMessage;
 
     @SubscribeEvent
-    public static void onChat( ClientChatReceivedEvent event ) {
+    public static void onChat(ClientChatReceivedEvent event) {
         String formatted = event.getMessage().getString();
-        if (formatted.equals( lastMessage ))
-            event.setCanceled( true );
+        if (formatted.equals(lastMessage))
+            event.setCanceled(true);
         else
             lastMessage = formatted;
     }

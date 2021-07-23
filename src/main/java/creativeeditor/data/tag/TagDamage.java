@@ -8,13 +8,13 @@ public class TagDamage extends NumberRangeInt {
 
 
     public TagDamage(DataItem item) {
-        super( 0, 0 );
+        super(0, 0);
         this.item = item;
     }
 
 
     public TagDamage(DataItem item, int value) {
-        super( value, 0, 0 );
+        super(value, 0, 0);
         this.item = item;
     }
 

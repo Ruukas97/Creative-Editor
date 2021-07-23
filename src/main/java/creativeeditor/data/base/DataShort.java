@@ -4,17 +4,17 @@ import net.minecraft.nbt.ShortNBT;
 
 public class DataShort extends SingularData<Short, ShortNBT> {
     public DataShort() {
-        this( (short) 0 );
+        this((short) 0);
     }
 
 
     public DataShort(short value) {
-        super( value );
+        super(value);
     }
 
 
     public DataShort(ShortNBT nbt) {
-        this( nbt.getAsShort() );
+        this(nbt.getAsShort());
     }
 
 
@@ -26,6 +26,6 @@ public class DataShort extends SingularData<Short, ShortNBT> {
 
     @Override
     public ShortNBT getNBT() {
-        return ShortNBT.valueOf( data );
+        return ShortNBT.valueOf(data);
     }
 }

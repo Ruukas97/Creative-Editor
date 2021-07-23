@@ -16,16 +16,16 @@ import net.minecraft.util.NonNullList;
 public class TabLoadedTileEntities extends TabCreative {
 
     public TabLoadedTileEntities() {
-        super( "tileentities" );
+        super("tileentities");
     }
 
 
     @Override
-    public void fillItemList( NonNullList<ItemStack> items ) {
+    public void fillItemList(NonNullList<ItemStack> items) {
         Minecraft mc = Minecraft.getInstance();
         ClientWorld world = mc.level;
         for (TileEntity te : world.blockEntityList) {
-            if(InventoryUtils.getEmptySlotsCount( mc.player.inventory ) == 0) {
+            if (InventoryUtils.getEmptySlotsCount(mc.player.inventory) == 0) {
                 break;
             }
 
@@ -48,33 +48,33 @@ public class TabLoadedTileEntities extends TabCreative {
                 ArmorStandEntity stand = (ArmorStandEntity) ent;
                 CompoundNBT itemTag = new CompoundNBT();
                 CompoundNBT entityTag = new CompoundNBT();
-                stand.save( entityTag );
-                itemTag.put( NBTKeys.keys.tagEntityTag(), entityTag );
-                
-                DataItem dItem = new DataItem( Items.ARMOR_STAND, 1, itemTag, 0 );
-                
+                stand.save(entityTag);
+                itemTag.put(NBTKeys.keys.tagEntityTag(), entityTag);
+
+                DataItem dItem = new DataItem(Items.ARMOR_STAND, 1, itemTag, 0);
+
                 ItemStack stack = dItem.getData();
                 boolean found = false;
                 for (ItemStack ex : stands) {
-                    if (ex.equals( stack, false )) {
+                    if (ex.equals(stack, false)) {
                         found = true;
                         if (ex.getCount() < 64)
-                            ex.setCount( ex.getCount() + 1 );
+                            ex.setCount(ex.getCount() + 1);
                         break;
                     }
                 }
                 if (!found) {
-                    stands.add( stack );
+                    stands.add(stack);
                 }
             }
         }
-        
-        items.addAll( stands );
+
+        items.addAll(stands);
     }
 
 
     @Override
     public ItemStack makeIcon() {
-        return new ItemStack( Items.LIME_SHULKER_BOX );
+        return new ItemStack(Items.LIME_SHULKER_BOX);
     }
 }

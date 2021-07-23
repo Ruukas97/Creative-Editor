@@ -9,16 +9,16 @@ public class TabItemList extends TabCreative {
 
 
     public TabItemList(String label, ItemStack icon, ItemStack... items) {
-        super( label );
+        super(label);
         this.icon = icon;
         this.items = items;
     }
 
 
     @Override
-    public void fillItemList( NonNullList<ItemStack> items ) {
+    public void fillItemList(NonNullList<ItemStack> items) {
         for (ItemStack item : this.items) {
-            items.add( item );
+            items.add(item);
         }
     }
 
