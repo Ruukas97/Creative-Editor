@@ -13,13 +13,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class RegistryHandler {
 
     @SubscribeEvent
-    public static void registerParticles(ParticleFactoryRegisterEvent e) {
-        //Minecraft mc = Minecraft.getInstance();
-        //mc.particles.registerFactory( ParticleTypes.BARRIER, new ParticleBarrier.Factory() );
-    }
-
-
-    @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> e) {
         System.out.println("Registering barrier");
         e.getRegistry().register(new BlockBarrier());
