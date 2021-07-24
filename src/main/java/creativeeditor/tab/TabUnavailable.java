@@ -31,15 +31,5 @@ public class TabUnavailable extends TabCreative {
                 items.add(new ItemStack(i));
             }
         });
-
-        DataItem stand = new DataItem(Items.ARMOR_STAND, 1, new CompoundNBT(), 0);
-        TagEntityArmorStand data = stand.getTag().getArmorStandTag();
-
-        data.getShowArms().set(true);
-        items.add(stand.getData());
-        data.getNoBasePlate().set(true);
-        items.add(stand.getData());
-        data.getShowArms().set(false);
-        items.add(stand.getData());
     }
 }

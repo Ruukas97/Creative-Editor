@@ -1,6 +1,0 @@
-{
-    "parent": "item/armor_stand",
-    "textures": {
-        "layer0": "creativeeditor:item/armor_stand_nobaseplate"
-    }
-}
