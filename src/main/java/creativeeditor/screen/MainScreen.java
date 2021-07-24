@@ -13,10 +13,13 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainScreen extends ParentItemScreen {
 
@@ -382,11 +385,11 @@ public class MainScreen extends ParentItemScreen {
         if (Config.MAIN_LEFT_TAB.get() == 0) {
             // NBT
             assert minecraft != null;
-//            List<String> nbtLines = Arrays.asList( (minecraft.options.advancedItemTooltips ? item.getNBT() : item.getTag().getNBT()).toFormattedComponent( " ", 0 ).getFormattedText().split( "\n" ) );
-
-//            GuiUtil.drawHoveringText( item.getItemStack(), matrix, nbtLines, 0, 60, width / 3 - 1, height, -1, font );
+            List<ITextProperties> list = new ArrayList<>();
+            list.add(item.getTag().getNBT().getPrettyDisplay(" ", 0));
+            GuiUtil.drawHoveringText( item.getItemStack(), matrix, list, 0, 60, width / 3 - 1, height, -1, font );
         } else if (Config.MAIN_LEFT_TAB.get() == 1) {
-            // renderTooltip(item.getItemStackClean(), 0, 60);
+             renderTooltip(matrix, item.getItemStack(), 0, 60);
             ItemStack stack = item.getItemStack();
 
             GuiUtil.drawHoveringText(item.getItemStack(), matrix, getTooltipFromItem(stack), 0, 60, width / 3 - 1, height, -1, font);

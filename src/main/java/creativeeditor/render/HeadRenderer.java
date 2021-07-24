@@ -44,7 +44,7 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class HeadRenderer extends ItemStackTileEntityRenderer {
     public static final LazyValue<LoadingCache<GameProfile, Map<Type, MinecraftProfileTexture>>> skinLoader = new LazyValue<>(() -> {
-        return ObfuscationReflectionHelper.getPrivateValue(SkinManager.class, Minecraft.getInstance().getSkinManager(), "insecureSkinCache");
+        return ObfuscationReflectionHelper.getPrivateValue(SkinManager.class, Minecraft.getInstance().getSkinManager(), "insecureSkinCache"); //field_152798_f obf name
     });
     private static final GenericHeadModel headModel = new HumanoidHeadModel();
     private static final ResourceLocation headSkin = DefaultPlayerSkin.getDefaultSkin();
