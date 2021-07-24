@@ -6,11 +6,13 @@ import creativeeditor.data.base.DataTextComponent;
 import creativeeditor.screen.DataController;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.nbt.StringNBT;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.util.text.StringTextComponent;
 
 public class StyledDataTextField extends StyledTextField implements DataController {
     private final Data<?, StringNBT> data;
+    private boolean isResourceLocationField = false;
 
 
     public StyledDataTextField(FontRenderer fontIn, int x, int y, int width, int height, Data<?, StringNBT> data) {
@@ -76,6 +78,21 @@ public class StyledDataTextField extends StyledTextField implements DataControll
         }
     }
 
+
+    public void setIsResourceLocationField(boolean bool) {
+        isResourceLocationField = bool;
+    }
+
+    @Override
+    public boolean charTyped(char char1, int char2) {
+        if (isResourceLocationField) {
+            if(!ResourceLocation.validPathChar(char1)) {
+                return false;
+            }
+        }
+        return super.charTyped(char1, char2);
+
+    }
 
     /**
      * Deletes the given number of characters from the current cursor's position,

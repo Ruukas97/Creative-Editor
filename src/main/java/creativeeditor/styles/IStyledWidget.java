@@ -1,5 +1,6 @@
 package creativeeditor.styles;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.Widget;
 
@@ -16,5 +17,5 @@ public interface IStyledWidget {
     void setHovered(boolean b);
 
 
-    void renderBg(Minecraft mc, int mouseX, int mouseY);
+    void renderBg(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY);
 }

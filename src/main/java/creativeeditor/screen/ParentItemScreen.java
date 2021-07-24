@@ -9,21 +9,28 @@ import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
 import creativeeditor.util.ItemRendererUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.play.client.CCreativeInventoryActionPacket;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class ParentItemScreen extends ParentScreen {
     protected DataItem item;
 
     // Back, reset, drop, save button (has essential buttons)
     protected boolean hasEssButtons = true;
-    protected StyledButton backButton, resetButton, saveButton, dropButton;
+    protected StyledButton backButton;
+    protected StyledButton resetButton;
+    protected StyledButton saveButton;
+    protected StyledButton dropButton;
 
     // render item
     protected boolean renderItem = true;
@@ -54,13 +61,13 @@ public class ParentItemScreen extends ParentScreen {
             boolean hasLastscreen = lastScreen != null;
             String butCloseBack = hasLastscreen ? "gui.main.back" : "gui.main.close";
 
-            backButton = addButton(new StyledButton(posX - bwidth - 1, posY, bwidth, 20, I18n.get(butCloseBack), this::back));
+            backButton = addButton(new StyledButton(posX - bwidth - 1, posY, bwidth, 20, new TranslationTextComponent(butCloseBack), this::back));
 
-            resetButton = addButton(new StyledButton(posX, (hasLastscreen ? posY : posY - 11), bwidth, 20, I18n.get("gui.main.reset"), this::reset));
+            resetButton = addButton(new StyledButton(posX, (hasLastscreen ? posY : posY - 11), bwidth, 20, new TranslationTextComponent("gui.main.reset"), this::reset));
 
-            saveButton = hasLastscreen ? null : addButton(new StyledButton(posX, posY + 10, bwidth, 20, I18n.get("gui.main.save"), this::save));
+            saveButton = hasLastscreen ? null : addButton(new StyledButton(posX, posY + 10, bwidth, 20, new TranslationTextComponent("gui.main.save"), this::save));
 
-            dropButton = addButton(new StyledButton(posX + bwidth + 1, posY, bwidth, 20, I18n.get("gui.main.drop"), this::drop));
+            dropButton = addButton(new StyledButton(posX + bwidth + 1, posY, bwidth, 20, new TranslationTextComponent("gui.main.drop"), this::drop));
         }
     }
 
@@ -84,15 +91,17 @@ public class ParentItemScreen extends ParentScreen {
 
 
     public void save(Widget w) {
-        if (item.getItem().getItem() != Items.AIR) ;
-//            minecraft.gameMode.sendSlotPacket( item.getItemStack(), 36 + minecraft.player.inventory.selected );
+        if (item.getItem().getItem() != Items.AIR) {
+            minecraft.getConnection().send(new CCreativeInventoryActionPacket(36 + minecraft.player.inventory.selected, item.getItemStack()));
+        }
     }
 
 
     public void drop(Widget w) {
-        if (item.getItem().getItem() != Items.AIR) ;
-//            minecraft.gameMode.sendPacketDropItem( item.getItemStack() );
-        // Shift for /give
+        if (item.getItem().getItem() != Items.AIR) {
+            minecraft.getConnection().send(new CCreativeInventoryActionPacket(-1, item.getItemStack()));
+            // Shift for /give
+        }
     }
 
 
