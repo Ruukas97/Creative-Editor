@@ -23,4 +23,5 @@ public class DataByte extends SingularData<Byte, ByteNBT> {
     public ByteNBT getNBT() {
         return ByteNBT.valueOf(data);
     }
+
 }

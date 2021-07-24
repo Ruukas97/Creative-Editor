@@ -3,6 +3,7 @@ package creativeeditor.screen.widgets;
 import creativeeditor.data.base.DataBoolean;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class StyledTFToggle extends StyledButton {
     private final String text;

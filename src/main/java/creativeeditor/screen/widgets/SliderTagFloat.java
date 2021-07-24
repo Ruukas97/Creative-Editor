@@ -54,12 +54,12 @@ public class SliderTagFloat extends Widget implements IStyledSlider<Float> {
         StyleManager.getCurrentStyle().renderButton(matrix, this, mouseX, mouseY, p3);
     }
 
-
-    public void renderBg(Minecraft mc, int mouseX, int mouseY) {
+    @Override
+    public void renderBg(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY) {
         if (!this.visible)
             return;
 
-        StyleManager.getCurrentStyle().renderSlider(null, this, mouseX, mouseY);
+        StyleManager.getCurrentStyle().renderSlider(matrix, this, mouseX, mouseY);
     }
 
 

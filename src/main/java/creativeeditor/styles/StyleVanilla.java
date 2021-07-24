@@ -38,11 +38,11 @@ public class StyleVanilla extends StyleBase {
         button.setHovered(mouseX >= widget.x && mouseY >= widget.y && mouseX < widget.x + widget.getWidth() && mouseY < widget.y + widget.getHeight());
         int k = button.getYImage(widget.isHovered());
         GuiUtil.drawContinuousTexturedBox(Widget.WIDGETS_LOCATION, widget.x, widget.y, 0, 46 + k * 20, widget.getWidth(), widget.getHeight(), 200, 20, 2, 3, 2, 2, button.getBlitOffset());
-        button.renderBg(mc, mouseX, mouseY);
+        button.renderBg(matrix, mc, mouseX, mouseY);
 
         int color = getFGColor(widget).getInt();
 
-        String buttonText = widget.getMessage().toString();
+        String buttonText = widget.getMessage().getString();
         int strWidth = mc.font.width(buttonText);
         int ellipsisWidth = mc.font.width("...");
 

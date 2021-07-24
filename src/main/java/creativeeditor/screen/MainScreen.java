@@ -1,22 +1,9 @@
 package creativeeditor.screen;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
-import org.lwjgl.opengl.GL11;
-
 import creativeeditor.config.Config;
 import creativeeditor.data.DataItem;
-import creativeeditor.screen.widgets.ClassSpecificWidget;
-import creativeeditor.screen.widgets.ItemWidgets;
-import creativeeditor.screen.widgets.NumberField;
-import creativeeditor.screen.widgets.SliderTag;
-import creativeeditor.screen.widgets.StyledDataTextField;
-import creativeeditor.screen.widgets.StyledTextButton;
-import creativeeditor.screen.widgets.StyledToggle;
-import creativeeditor.screen.widgets.WidgetInfo;
+import creativeeditor.screen.widgets.*;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
@@ -27,6 +14,9 @@ import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TranslationTextComponent;
+import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
 
 public class MainScreen extends ParentItemScreen {
 
@@ -192,6 +182,7 @@ public class MainScreen extends ParentItemScreen {
         int x = width / 3 + 16 + Math.max(idWidth, Math.max(countWidth, damageWidth));
 
         idField = addButton(new StyledDataTextField(font, x, 81, (width - width / 3 - 8) - x, 16, item.getItem()));
+        idField.setIsResourceLocationField(true);
 
         int countX = x;
         this.countField = addButton(new NumberField(font, countX, 101, 16, item.getCount()));
@@ -208,7 +199,6 @@ public class MainScreen extends ParentItemScreen {
         setLeftTab(Config.MAIN_LEFT_TAB.get(), false);
         setRightTab(Config.MAIN_RIGHT_TAB.get(), false);
     }
-
 
     @Override
     public void onClose() {
