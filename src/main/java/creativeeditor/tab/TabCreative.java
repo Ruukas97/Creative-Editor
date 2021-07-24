@@ -5,15 +5,18 @@ import net.minecraft.util.ResourceLocation;
 
 public abstract class TabCreative extends ItemGroup {
     boolean hasSearchBar = true;
+    private final String path = "textures/gui/container/creative_inventory/tab_";
+    private final String searchTabPath = path + "item_search.png";
+    private final String normalTabPath = path + "items.png";
 
     public TabCreative(String label) {
         super(label);
-        setBackgroundImage(new ResourceLocation("item_search.png"));
+        setBackgroundImage(new ResourceLocation(searchTabPath));
     }
 
     public TabCreative setHasSearchBar(boolean has) {
         hasSearchBar = has;
-        setBackgroundImage(new ResourceLocation(has ? "item_search.png" : "items.png"));
+        setBackgroundImage(new ResourceLocation(has ? searchTabPath : normalTabPath));
         return this;
     }
 

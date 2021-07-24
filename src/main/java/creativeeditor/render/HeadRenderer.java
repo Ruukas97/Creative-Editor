@@ -44,7 +44,7 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class HeadRenderer extends ItemStackTileEntityRenderer {
     public static final LazyValue<LoadingCache<GameProfile, Map<Type, MinecraftProfileTexture>>> skinLoader = new LazyValue<>(() -> {
-        return ObfuscationReflectionHelper.getPrivateValue(SkinManager.class, Minecraft.getInstance().getSkinManager(), "skinCacheLoader");
+        return ObfuscationReflectionHelper.getPrivateValue(SkinManager.class, Minecraft.getInstance().getSkinManager(), "insecureSkinCache");
     });
     private static final GenericHeadModel headModel = new HumanoidHeadModel();
     private static final ResourceLocation headSkin = DefaultPlayerSkin.getDefaultSkin();
@@ -122,10 +122,9 @@ public class HeadRenderer extends ItemStackTileEntityRenderer {
             // map = loader.getUnchecked( profile );
             RenderType res = null;
             if (map != null && map.containsKey(Type.SKIN)) {
-//                res = RenderType.entityTranslucent( mc.getSkinManager().loadSkin( map.get( Type.SKIN ), Type.SKIN ) );
+                res = RenderType.entityTranslucent( mc.getSkinManager().registerTexture( map.get( Type.SKIN ), Type.SKIN ));
             } else {
-                if (rand.nextInt(10) == 0)
-                    loader.getUnchecked(profile);
+                // loader.getUnchecked
                 res = RenderType.entityCutoutNoCull(DefaultPlayerSkin.getDefaultSkin(profile.getId()));
             }
 
@@ -142,14 +141,14 @@ public class HeadRenderer extends ItemStackTileEntityRenderer {
             mc.execute(() -> {
                 RenderSystem.recordRenderCall(() -> {
                     long startTime = System.nanoTime();
-//                    mc.getSkinManager().loadSkin( profileTexture, Type.SKIN, skinAvailableCallback );
+                    mc.getSkinManager().registerTexture( profileTexture, Type.SKIN);
                     long endTime = System.nanoTime();
                     long duration = (endTime - startTime);
                     // System.out.println( "Loading one skin took " + duration + "ns." );
                 });
             });
         };
-//        Util.getServerExecutor().execute( runnable );
+        Util.backgroundExecutor().execute( runnable );
     }
 
 
