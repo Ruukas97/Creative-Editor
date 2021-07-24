@@ -12,12 +12,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @Mod.EventBusSubscriber(modid = CreativeEditor.MODID, bus = Bus.MOD)
 public class RegistryHandler {
 
-    @SubscribeEvent
-    public static void registerParticles(ParticleFactoryRegisterEvent e) {
-        //Minecraft mc = Minecraft.getInstance();
-        //mc.particles.registerFactory( ParticleTypes.BARRIER, new ParticleBarrier.Factory() );
-    }
-
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> e) {
