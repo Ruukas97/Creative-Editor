@@ -3,12 +3,15 @@ package creativeeditor.tab;
 import com.mojang.serialization.Lifecycle;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.registries.GameData;
 
 public class TabUnavailable extends TabCreative {
@@ -31,5 +34,10 @@ public class TabUnavailable extends TabCreative {
                 items.add(new ItemStack(i));
             }
         });
+        ItemStack stack = new ItemStack(Items.ITEM_FRAME);
+        stack.getOrCreateTagElement("EntityTag").putInt("Invisible", 1);
+        String itemName = I18n.get("item.tag.invisible") + " " + I18n.get("item.minecraft.item_frame");
+        stack.setHoverName(new StringTextComponent(itemName));
+        items.add(stack);
     }
 }
