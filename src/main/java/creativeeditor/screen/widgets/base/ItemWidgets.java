@@ -1,31 +1,31 @@
-package creativeeditor.screen.widgets;
+package creativeeditor.screen.widgets.base;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Spliterator;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import creativeeditor.data.DataItem;
 import creativeeditor.screen.ArmorstandScreen;
 import creativeeditor.screen.ColorScreen;
 import creativeeditor.screen.EnchantmentScreen;
+import creativeeditor.screen.EntitySpecificScreen;
+import creativeeditor.screen.widgets.ClassSpecificWidget;
+import creativeeditor.screen.widgets.StyledTextButton;
+import creativeeditor.screen.widgets.WidgetInfo;
+import creativeeditor.screen.widgets.WidgetInfoSupport;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button.IPressable;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.item.ArmorStandItem;
-import net.minecraft.item.IDyeableArmorItem;
-import net.minecraft.item.Item;
+import net.minecraft.item.*;
 
-public class ItemWidgets implements Iterable<ClassSpecificWidget> {
-    private static ItemWidgets instance;
-    private final ArrayList<ClassSpecificWidget> list;
+public class ItemWidgets extends WidgetIteratorBase {
 
-    private ItemWidgets() {
-        list = new ArrayList<>();
-        Minecraft mc = Minecraft.getInstance();
-
+    public ItemWidgets() {
         add(new ClassSpecificWidget(I18n.get("gui.enchanting"), dItem -> EnchantmentType.BREAKABLE.canEnchant(dItem.getItem().getItem()), (item, info) ->
                 new StyledTextButton(info.withTrigger(button -> mc.setScreen(new EnchantmentScreen(info.getParent(), item.getTag().getEnchantments()))))
         ));
@@ -33,41 +33,27 @@ public class ItemWidgets implements Iterable<ClassSpecificWidget> {
         add(new ClassSpecificWidget(I18n.get("gui.armorstandeditor"), dItem -> dItem.getItem().getItem() instanceof ArmorStandItem, (item, info) ->
                 new StyledTextButton(info.withTrigger(button -> mc.setScreen(new ArmorstandScreen(info.getParent(), item))))
         ));
+        add(new ClassSpecificWidget(I18n.get("gui.entityspecific"), dItem -> isEntityItem(dItem.getItem().getItem()), (item, info) ->
+                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new EntitySpecificScreen(info.getParent(), item))))
+        ));
 
         add(new ClassSpecificWidget(I18n.get("gui.color"), dItem -> dItem.getItem().getItem() instanceof IDyeableArmorItem, (item, info) ->
                 new StyledTextButton(info.withTrigger(button -> mc.setScreen(new ColorScreen(info.getParent(), item, item.getTag().getDisplay().getColor(), 10511680, false))))
         ));
     }
 
-
-    public static ItemWidgets getInstance() {
-        if (instance == null)
-            instance = new ItemWidgets();
-        return instance;
+    private boolean isEntityItem(Item item) {
+        return item instanceof SpawnEggItem || item instanceof ItemFrameItem || item instanceof ArmorStandItem || item instanceof MinecartItem;
     }
-
 
     @Override
-    public Iterator<ClassSpecificWidget> iterator() {
-        return list.iterator();
+    public void forEach(Consumer<? super ClassSpecificWidget> action) {
+        super.forEach(action);
     }
 
-
-    public void add(ClassSpecificWidget widget) {
-        list.add(widget);
+    @Override
+    public Spliterator<ClassSpecificWidget> spliterator() {
+        return super.spliterator();
     }
 
-
-    public void add(String text, Function<DataItem, Boolean> requirement, BiFunction<DataItem, WidgetInfo, Widget> widgetCreator) {
-        add(new ClassSpecificWidget(text, requirement, widgetCreator));
-    }
-
-
-    public void add(String text, Class<? extends Item> itemClass, BiFunction<DataItem, WidgetInfo, Widget> widgetCreator) {
-        add(new ClassSpecificWidget(text, itemClass::isInstance, widgetCreator));
-    }
-
-    public WidgetInfoSupport<?> modifiedTriggerSupport(WidgetInfoSupport<?> sup, IPressable trigger) {
-        return inf -> sup.fromWidgetInfo(inf.withTrigger(trigger));
-    }
 }

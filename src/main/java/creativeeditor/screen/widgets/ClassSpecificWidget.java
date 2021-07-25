@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import creativeeditor.data.DataItem;
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.item.ArmorStandItem;
 
 public class ClassSpecificWidget {
     public final String text;
@@ -17,6 +18,12 @@ public class ClassSpecificWidget {
     public ClassSpecificWidget(String text, Function<DataItem, Boolean> requirement, BiFunction<DataItem, WidgetInfo, Widget> widgetCreator) {
         this.text = text;
         this.requirement = requirement;
+        this.widgetCreator = widgetCreator;
+    }
+
+    public ClassSpecificWidget(String text, BiFunction<DataItem, WidgetInfo, Widget> widgetCreator) {
+        this.text = text;
+        this.requirement =  dItem -> true;
         this.widgetCreator = widgetCreator;
     }
 
