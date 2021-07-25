@@ -11,7 +11,6 @@ import creativeeditor.config.Config;
 import creativeeditor.render.ArmorStandRendering;
 import creativeeditor.render.HeadRenderer;
 import creativeeditor.render.ShieldRenderer;
-//import creativeeditor.resourcepack.ResourcePacks;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.tab.CreativeTabs;
 import creativeeditor.util.ReflectionUtils;

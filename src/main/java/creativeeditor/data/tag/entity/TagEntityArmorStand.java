@@ -4,8 +4,10 @@ import creativeeditor.data.Data;
 import creativeeditor.data.base.DataBitField;
 import creativeeditor.data.base.DataBoolean;
 import creativeeditor.data.base.DataRotation;
+import creativeeditor.data.tag.TagItemList;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.Rotations;
@@ -40,6 +42,7 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
 
 
     public TagEntityArmorStand(CompoundNBT nbt) {
+        super(new TagItemList(nbt.getList("ArmorItems", NBT.TAG_COMPOUND), 4), new TagItemList(nbt.getList("HandItems", NBT.TAG_COMPOUND), 2));
         marker = new DataBoolean(nbt.getBoolean("Marker"));
         invisible = new DataBoolean(nbt.getBoolean("Invisible"));
         noBasePlate = new DataBoolean(nbt.getBoolean("NoBasePlate"));
@@ -54,7 +57,7 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
     @Override
     public ArmorStandEntity getData() {
         Minecraft mc = Minecraft.getInstance();
-        ArmorStandEntity stand = new ArmorStandEntity(mc.level, 0, 0, 0);
+        ArmorStandEntity stand = new ArmorStandEntity(EntityType.ARMOR_STAND, mc.level);
         pose.applyToArmorStand(stand);
         return stand;
     }

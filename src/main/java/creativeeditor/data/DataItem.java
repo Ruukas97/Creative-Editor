@@ -34,9 +34,12 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
 
 
     public DataItem() {
-        this(ItemStack.EMPTY, 0);
+        this(ItemStack.EMPTY);
     }
 
+    public DataItem(CompoundNBT nbt) {
+        this(ItemStack.of(nbt));
+    }
 
     public DataItem(IItemProvider item) {
         this(new ItemStack(item));
@@ -122,6 +125,13 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
         return getTag().getDamage();
     }
 
+    public DataItem split(int count) {
+        int i = Math.min(count, this.count.get());
+        DataItem item = new DataItem(getNBT());
+        item.count.set(i);
+        this.count.set(this.count.get()-count);
+        return item;
+    }
 
     @Override
     public CompoundNBT getNBT() {
