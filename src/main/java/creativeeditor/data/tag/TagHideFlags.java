@@ -1,121 +1,85 @@
 package creativeeditor.data.tag;
 
+import creativeeditor.data.base.DataBitField;
 import creativeeditor.data.base.DataBoolean;
-import creativeeditor.data.base.SingularData;
 import net.minecraft.nbt.IntNBT;
 
-public class TagHideFlags extends SingularData<TagHideFlags.HideFlags, IntNBT> {
-    public TagHideFlags(HideFlags hideFlags) {
-        super(hideFlags);
+public class TagHideFlags extends DataBitField {
+    public static final int
+    ENCHANTS = 0,
+    ATTRIBUTES = 1,
+    UNBREAKABLE = 2,
+    CAN_DESTROY = 3,
+    CAN_PLACE = 4,
+    ITEM_INFO = 5,
+    DYED = 6;
+
+    public TagHideFlags(IntNBT value) {
+        super(7, value);
+    }
+    public TagHideFlags(int value) {
+        super(7, value);
     }
 
-    public DataBoolean getEnchantsHidden() {
-        return new DataBoolean(data.enchants);
+    public boolean getEnchantsHidden() {
+        return data[ENCHANTS];
     }
-
 
     public void setEnchantsHidden(boolean value) {
-        data.enchants = value;
+        data[ENCHANTS] = value;
     }
 
-
-    public DataBoolean getAttributesHidden() {
-        return new DataBoolean(data.attributes);
+    public boolean getAttributesHidden() {
+        return data[ATTRIBUTES];
     }
 
 
     public void setAttributesHidden(boolean value) {
-        data.attributes = value;
+        data[ATTRIBUTES] = value;
     }
 
-
     public boolean getUnbreakableHidden() {
-        return data.unbreakable;
+        return data[UNBREAKABLE];
     }
 
 
     public void setUnbreakableHidden(boolean value) {
-        data.unbreakable = value;
+        data[UNBREAKABLE] = value;
     }
-
 
     public boolean getCanDestroyHidden() {
-        return data.canDestroy;
+        return data[CAN_DESTROY];
     }
 
-
     public void setCanDestroyHidden(boolean value) {
-        data.canDestroy = value;
+        data[CAN_DESTROY] = value;
     }
 
 
     public boolean getCanPlaceOnHidden() {
-        return data.canPlaceOn;
+        return data[CAN_PLACE];
     }
-
 
     public void setCanPlaceOnHidden(boolean value) {
-        data.canPlaceOn = value;
+        data[CAN_PLACE] = value;
     }
-
 
     public boolean getItemInfoHidden() {
-        return data.itemInfo;
+        return data[ITEM_INFO];
     }
-
 
     public void setItemInfoHidden(boolean value) {
-        data.itemInfo = value;
+        data[ITEM_INFO] = value;
+    }
+
+    public boolean getDyedHidden() {
+        return data[DYED];
     }
 
 
-    public int getInt() {
-        int result = 0;
-        if (getEnchantsHidden().get())
-            result += 1;
-        if (getAttributesHidden().get())
-            result += 2;
-        if (getUnbreakableHidden())
-            result += 4;
-        if (getCanDestroyHidden())
-            result += 8;
-        if (getCanPlaceOnHidden())
-            result += 16;
-        if (getItemInfoHidden())
-            result += 32;
-        return result;
+    public void getDyedHidden(boolean value) {
+        data[DYED] = value;
     }
-
-    public static HideFlags getFlags(int i) {
-        boolean enchants, attributes, unbreakable, canDestroy, canPlaceOn, itemInfo;
-        enchants = attributes = unbreakable = canDestroy = canPlaceOn = itemInfo = false;
-        if(i >= 32) {
-            i -= 32;
-            itemInfo = true;
-        }
-        if(i >= 16) {
-            i -= 16;
-            canPlaceOn = true;
-        }
-        if(i >= 8) {
-            i -= 8;
-            canDestroy = true;
-        }
-        if(i >= 4) {
-            i -= 4;
-            unbreakable = true;
-        }
-        if(i >= 2) {
-            i -= 2;
-            attributes = true;
-        }
-        if(i >= 1) {
-            i -= 1;
-            enchants = true;
-        }
-        return new HideFlags(enchants, attributes, unbreakable, canDestroy, canPlaceOn, itemInfo);
-    }
-
 
     @Override
     public boolean isDefault() {
@@ -126,25 +90,5 @@ public class TagHideFlags extends SingularData<TagHideFlags.HideFlags, IntNBT> {
     @Override
     public IntNBT getNBT() {
         return IntNBT.valueOf(getInt());
-    }
-
-
-    public static class HideFlags {
-        public boolean enchants, attributes, unbreakable, canDestroy, canPlaceOn, itemInfo;
-
-
-        public HideFlags(boolean enchants, boolean attributes, boolean unbreakable, boolean canDestroy, boolean canPlaceOn, boolean itemInfo) {
-            this.enchants = enchants;
-            this.attributes = attributes;
-            this.unbreakable = unbreakable;
-            this.canDestroy = canDestroy;
-            this.canPlaceOn = canPlaceOn;
-            this.itemInfo = itemInfo;
-        }
-
-
-        public HideFlags() {
-            this(false, false, false, false, false, false);
-        }
     }
 }
