@@ -7,6 +7,7 @@ import creativeeditor.data.DataItem;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.util.math.vector.Quaternion;
@@ -62,6 +63,7 @@ public class ArmorStandDrawUtils {
         armorStand.yHeadRotO = armorStand.yRot;
         EntityRendererManager entityrenderermanager = Minecraft.getInstance().getEntityRenderDispatcher();
         entityrenderermanager.setRenderShadow( false );
+        RenderHelper.setupForFlatItems();
         IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().renderBuffers().bufferSource();;
         entityrenderermanager.render( armorStand, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, irendertypebuffer$impl, 15728880 );
         irendertypebuffer$impl.endBatch();
