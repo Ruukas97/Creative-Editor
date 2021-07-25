@@ -1,8 +1,10 @@
 package creativeeditor.data.base;
 
+import creativeeditor.screen.widgets.StyledBitToggle;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.nbt.IntNBT;
 
-public class DataBitField extends SingularData<boolean[], IntNBT> {
+public class DataBitField extends SingularData<boolean[], IntNBT> implements Button.IPressable {
     private final boolean keepSize;
 
 
@@ -66,5 +68,14 @@ public class DataBitField extends SingularData<boolean[], IntNBT> {
     @Override
     public IntNBT getNBT() {
         return IntNBT.valueOf(getInt());
+    }
+
+    @Override
+    public void onPress(Button button) {
+        if(button instanceof StyledBitToggle){
+            StyledBitToggle but = (StyledBitToggle)button;
+            data[but.index] = !data[but.index];
+            but.updateMessage(data[but.index]);
+        }
     }
 }

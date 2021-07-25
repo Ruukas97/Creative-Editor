@@ -1,6 +1,7 @@
 package creativeeditor.screen.armorstand;
 
 import com.mojang.datafixers.util.Pair;
+import creativeeditor.CreativeEditor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -13,7 +14,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
+
 public class EquipmentContainer extends Container {
+    public static final ResourceLocation EMPTY_ARMOR_SLOT_SWORD = new ResourceLocation(CreativeEditor.MODID, "item/empty_armor_slot_sword.png");
     private static final EquipmentSlotType[] SLOT_IDS = new EquipmentSlotType[]{EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET};
     private static final ResourceLocation[] TEXTURE_EMPTY_SLOTS = new ResourceLocation[]{PlayerContainer.EMPTY_ARMOR_SLOT_BOOTS, PlayerContainer.EMPTY_ARMOR_SLOT_LEGGINGS, PlayerContainer.EMPTY_ARMOR_SLOT_CHESTPLATE, PlayerContainer.EMPTY_ARMOR_SLOT_HELMET};
 
@@ -53,7 +57,12 @@ public class EquipmentContainer extends Container {
         }
 
         // Player off-hand
-        this.addSlot(new Slot(playerInventory, 40, 77, 62)).index += 5;
+        this.addSlot(new Slot(playerInventory, 40, 77, 62) {
+            @OnlyIn(Dist.CLIENT)
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                return Pair.of(PlayerContainer.BLOCK_ATLAS, EMPTY_ARMOR_SLOT_SWORD);
+            }
+        }).index += 5;
 
         // Equipment hands armor
         this.addSlot(new Slot(equipmentInventory, 0, 83, 8));
