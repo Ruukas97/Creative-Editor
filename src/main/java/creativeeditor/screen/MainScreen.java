@@ -192,7 +192,7 @@ public class MainScreen extends ParentItemScreen {
         dmgX += this.damageField.getWidth() + 8;
         this.damageSlider = addButton(new SliderTag(dmgX, 121, (width - width / 3 - 8) - dmgX, 16, item.getTag().getDamage()));
 
-        this.unbreakable = addButton(new StyledToggle(width / 2 - 40, 141, 80, 16, "item.tag.unbreakable.true", "item.tag.unbreakable.false", item.getTag().getUnbreakable()));
+        this.unbreakable = addButton(new StyledToggle(width / 2 - 40, 141, 80, 16, I18n.get("item.tag.unbreakable.true"), I18n.get("item.tag.unbreakable.false"), item.getTag().getUnbreakable()));
 
         setLeftTab(Config.MAIN_LEFT_TAB.get(), false);
         setRightTab(Config.MAIN_RIGHT_TAB.get(), false);

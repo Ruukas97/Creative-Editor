@@ -1,16 +1,16 @@
 package creativeeditor.data.tag;
 
+import creativeeditor.data.base.DataBoolean;
 import creativeeditor.data.base.SingularData;
 import net.minecraft.nbt.IntNBT;
 
-public class TagDisplayHideFlags extends SingularData<TagDisplayHideFlags.HideFlags, IntNBT> {
-    public TagDisplayHideFlags(HideFlags hideFlags) {
+public class TagHideFlags extends SingularData<TagHideFlags.HideFlags, IntNBT> {
+    public TagHideFlags(HideFlags hideFlags) {
         super(hideFlags);
     }
 
-
-    public boolean getEnchantsHidden() {
-        return data.enchants;
+    public DataBoolean getEnchantsHidden() {
+        return new DataBoolean(data.enchants);
     }
 
 
@@ -19,8 +19,8 @@ public class TagDisplayHideFlags extends SingularData<TagDisplayHideFlags.HideFl
     }
 
 
-    public boolean getAttributesHidden() {
-        return data.attributes;
+    public DataBoolean getAttributesHidden() {
+        return new DataBoolean(data.attributes);
     }
 
 
@@ -71,9 +71,9 @@ public class TagDisplayHideFlags extends SingularData<TagDisplayHideFlags.HideFl
 
     public int getInt() {
         int result = 0;
-        if (getEnchantsHidden())
+        if (getEnchantsHidden().get())
             result += 1;
-        if (getAttributesHidden())
+        if (getAttributesHidden().get())
             result += 2;
         if (getUnbreakableHidden())
             result += 4;
@@ -84,6 +84,36 @@ public class TagDisplayHideFlags extends SingularData<TagDisplayHideFlags.HideFl
         if (getItemInfoHidden())
             result += 32;
         return result;
+    }
+
+    public static HideFlags getFlags(int i) {
+        boolean enchants, attributes, unbreakable, canDestroy, canPlaceOn, itemInfo;
+        enchants = attributes = unbreakable = canDestroy = canPlaceOn = itemInfo = false;
+        if(i >= 32) {
+            i -= 32;
+            itemInfo = true;
+        }
+        if(i >= 16) {
+            i -= 16;
+            canPlaceOn = true;
+        }
+        if(i >= 8) {
+            i -= 8;
+            canDestroy = true;
+        }
+        if(i >= 4) {
+            i -= 4;
+            unbreakable = true;
+        }
+        if(i >= 2) {
+            i -= 2;
+            attributes = true;
+        }
+        if(i >= 1) {
+            i -= 1;
+            enchants = true;
+        }
+        return new HideFlags(enchants, attributes, unbreakable, canDestroy, canPlaceOn, itemInfo);
     }
 
 

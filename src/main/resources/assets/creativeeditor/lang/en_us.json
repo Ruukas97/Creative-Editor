@@ -143,5 +143,7 @@
   "gui.playerinspector": "Player Inspector",
   "item.tag.unbreakable.false": "Can Break",
   "item.tag.unbreakable.true": "Unbreakable",
-  "item.tag.invisible": "Invisible"
+  "item.tag.invisible": "Invisible",
+  "gui.toggle.on":  "on",
+  "gui.toggle.off": "off"
 }

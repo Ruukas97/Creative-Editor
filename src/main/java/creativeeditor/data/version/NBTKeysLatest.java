@@ -55,6 +55,9 @@ public class NBTKeysLatest extends NBTKeys {
         return "display";
     }
 
+    @Override
+    public String tagHideFlags() { return "HideFlags"; }
+
 
     @Override
     public String displayColor() {
