@@ -7,7 +7,6 @@ import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.CreativeEditor;
 import creativeeditor.screen.HeadCollectionScreen;
-import creativeeditor.screen.PlayerInspectorScreen;
 import creativeeditor.screen.WindowManagerScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
@@ -24,7 +23,6 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 public class KeyInputHandler {
     private static KeyBinding OPEN_EDITOR_KEY;
-    private static KeyBinding PLAYER_INSPECT;
     private static KeyBinding OFF_HAND_SWING;
     public static KeyBinding HEAD_COLLECTION;
     public static KeyBinding BARRIER_TOGGLE;
@@ -34,7 +32,6 @@ public class KeyInputHandler {
     public static void init() {
         CreativeEditor.LOGGER.info("Initializing keybindings");
         OPEN_EDITOR_KEY = registerKeybind("editor", GLFW.GLFW_KEY_U);
-        PLAYER_INSPECT = registerKeybind("inspector", GLFW.GLFW_KEY_G);
         OFF_HAND_SWING = registerKeybind("offhandswing", InputMappings.UNKNOWN.getValue());
         HEAD_COLLECTION = registerKeybind("headcollection", GLFW.GLFW_KEY_V);
         BARRIER_TOGGLE = registerKeybind("barriertoggle", GLFW.GLFW_KEY_B);
@@ -61,16 +58,6 @@ public class KeyInputHandler {
             });*/
             assert mc.player != null;
             mc.setScreen(new MainScreen(mc.screen, new DataItem(mc.player.getMainHandItem())));
-        } else if (event.getKey() == PLAYER_INSPECT.getKey().getValue()) {
-//            Entity entity = mc.pointedEntity;
-//            if (entity instanceof PlayerEntity) {
-//                mc.setScreen( new PlayerInspectorScreen( mc.screen, (PlayerEntity) mc.pointedEntity ) );
-//            }
-//            else {
-//                mc.setScreen( new PlayerInspectorScreen( mc.screen, mc.player ) );
-//                // mc.setScreen( new ItemInspectorScreen( mc.screen, new DataItem(
-//                // mc.player.getHeldItemMainhand() ) ) );
-//            }
         } else if (event.getKey() == OFF_HAND_SWING.getKey().getValue()) {
             assert mc.player != null;
             mc.player.swing(Hand.OFF_HAND);

@@ -62,8 +62,8 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
 
     @Override
     public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float p3) {
-        // super.renderButton(mouseX, mouseY, p3);
         StyleManager.getCurrentStyle().renderButton(matrix, this, mouseX, mouseY, p3);
+        super.renderButton(matrix, mouseX, mouseY, p3);
     }
 
 

@@ -1,33 +1,29 @@
 package creativeeditor.screen;
 
-import java.util.ArrayList;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
 import creativeeditor.screen.widgets.StyledTFToggle;
-import creativeeditor.util.ArmorStandDrawUtils;
 import creativeeditor.util.ColorUtils.Color;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class ArmorstandPropScreen extends ParentItemScreen {
+import java.util.ArrayList;
+
+public class ArmorstandPropScreen extends BaseArmorstandScreen {
 
     ArmorStandEntity armorstand;
     ArrayList<StyledTFToggle> buttonList;
-    private final ArmorStandDrawUtils drawArmor;
 
-    public ArmorstandPropScreen(Screen lastScreen, DataItem item, ArmorStandEntity arm) {
+    public ArmorstandPropScreen(Screen lastScreen, DataItem item) {
         super(new TranslationTextComponent("gui.armorstandeditorproperties"), lastScreen, item);
         this.renderItem = false;
-        this.armorstand = arm;
-        drawArmor = new ArmorStandDrawUtils(armorstand, item);
     }
 
     @Override
-    public void init() {
+    public void postInit() {
         super.init();
         buttonList = new ArrayList<StyledTFToggle>();
         TagEntityArmorStand tagArmor = drawArmor.getStandData();

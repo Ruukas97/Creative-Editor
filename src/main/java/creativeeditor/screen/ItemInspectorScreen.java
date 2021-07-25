@@ -33,7 +33,6 @@ public class ItemInspectorScreen extends ParentScreen {
         } else {
             rotX += p_mouseDragged_6_;
             rotY += p_mouseDragged_8_;
-            System.out.println(p_mouseDragged_6_);
         }
         return true;
     }
