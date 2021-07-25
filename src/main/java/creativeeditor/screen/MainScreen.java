@@ -394,7 +394,7 @@ public class MainScreen extends ParentItemScreen {
             // NBT
             assert minecraft != null;
             List<ITextProperties> list = new ArrayList<>();
-            list.add(item.getTag().getNBT().getPrettyDisplay(" ", 0));
+            list.add((minecraft.options.advancedItemTooltips ? item.getNBT() : item.getTag().getNBT()).getPrettyDisplay(" ", 0));
             GuiUtil.drawHoveringText( item.getItemStack(), matrix, list, 0, 60, width / 3 - 1, height, -1, font );
         } else if (Config.MAIN_LEFT_TAB.get() == 1) {
              renderTooltip(matrix, item.getItemStack(), 0, 60);
