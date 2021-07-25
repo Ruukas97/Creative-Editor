@@ -2,14 +2,12 @@ package creativeeditor;
 
 import java.nio.file.Path;
 
+import creativeeditor.events.*;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import creativeeditor.config.Config;
-import creativeeditor.events.KeyInputHandler;
-import creativeeditor.events.PlayerNameplateHandler;
-import creativeeditor.events.ScreenHandler;
-import creativeeditor.events.TooltipHandler;
 import creativeeditor.render.ArmorStandRendering;
 import creativeeditor.render.HeadRenderer;
 import creativeeditor.render.ShieldRenderer;
@@ -55,6 +53,7 @@ public class CreativeEditor {
         MinecraftForge.EVENT_BUS.register(new PlayerNameplateHandler());
         MinecraftForge.EVENT_BUS.register(new TooltipHandler());
         MinecraftForge.EVENT_BUS.register(new KeyInputHandler());
+        FMLJavaModLoadingContext.get().getModEventBus().register( new TextureStitchHandler());
         // MinecraftForge.EVENT_BUS.register( new NetworkHandler() );
 
         if (Config.SPECTRUM_SHIELD_ENABLED.get())
