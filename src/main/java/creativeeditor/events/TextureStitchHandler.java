@@ -1,6 +1,6 @@
 package creativeeditor.events;
 
-import creativeeditor.screen.armorstand.ArmorstandContainer;
+import creativeeditor.screen.armorstand.EquipmentContainer;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -8,7 +8,7 @@ public class TextureStitchHandler {
 
     @SubscribeEvent
     public void onTextureStitch(TextureStitchEvent.Pre e) {
-        e.addSprite(ArmorstandContainer.EMPTY_ARMOR_SLOT_SWORD);
+        e.addSprite(EquipmentContainer.EMPTY_ARMOR_SLOT_SWORD);
     }
 
 }

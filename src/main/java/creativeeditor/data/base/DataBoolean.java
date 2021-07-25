@@ -1,5 +1,6 @@
 package creativeeditor.data.base;
 
+import creativeeditor.screen.widgets.StyledBitToggle;
 import creativeeditor.screen.widgets.StyledTFToggle;
 import creativeeditor.screen.widgets.StyledToggle;
 import net.minecraft.client.gui.widget.button.Button;
@@ -47,6 +48,8 @@ public class DataBoolean extends SingularData<Boolean, ByteNBT> implements IPres
             ((StyledToggle) button).updateMessage(data);
         } else if (button instanceof StyledTFToggle) {
             ((StyledTFToggle) button).updateMessage(data);
+        } else if (button instanceof StyledBitToggle) {
+            ((StyledBitToggle) button).updateMessage(data);
         }
     }
 }
