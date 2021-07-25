@@ -129,6 +129,7 @@
   "gui.texteditor": "Text Editor",
   "gui.texteditor.preview": "Preview",
   "gui.itemflag": "Item Flags Editor",
+  "gui.iteminspector":  "Item Inspector",
   "flag.enchantment": "Enchantments",
   "flag.attributemod": "AttributeMod",
   "flag.unbreakable": "Unbreakable",
@@ -140,5 +141,6 @@
   "gui.player": "Player Capabilities",
   "gui.playerinspector": "Player Inspector",
   "item.tag.unbreakable.false": "Can Break",
-  "item.tag.unbreakable.true": "Unbreakable"
+  "item.tag.unbreakable.true": "Unbreakable",
+  "item.tag.invisible": "Invisible"
 }
