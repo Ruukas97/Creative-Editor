@@ -4,22 +4,18 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataRotation;
 import creativeeditor.data.tag.entity.TagEntityArmorStand.Pose;
+import creativeeditor.screen.armorstand.ArmorstandContainer;
+import creativeeditor.screen.armorstand.ArmorstandInventory;
 import creativeeditor.screen.widgets.SliderTag;
 import creativeeditor.screen.widgets.StyledButton;
-import creativeeditor.util.ArmorStandDrawUtils;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class ArmorstandScreen extends ParentItemScreen {
-
-    private ArmorStandEntity armorStand = null;
-    private ArmorStandDrawUtils drawArmor;
-
+public class ArmorstandScreen extends BaseArmorstandScreen {
 
     private final int buttonWidth = 80;
     private final int buttonHeight = 15;
@@ -30,21 +26,14 @@ public class ArmorstandScreen extends ParentItemScreen {
     public ArmorstandScreen(Screen lastScreen, DataItem item) {
         super(new TranslationTextComponent("gui.armorstandeditor"), lastScreen, item);
         this.renderItem = false;
-
     }
 
 
     @Override
-    protected void init() {
+    protected void postInit() {
         super.init();
         int x1 = width / divideX;
         int y1 = height / divideY;
-        if (armorStand == null) {
-            ArmorStandEntity entity = new ArmorStandEntity(minecraft.level, 0, 0, 0);
-            armorStand = entity;
-            drawArmor = new ArmorStandDrawUtils(armorStand, item);
-        }
-
         Pose pose = drawArmor.getStandData().getPose();
 
         addSliders(x1, y1, pose.getHead());
@@ -64,10 +53,10 @@ public class ArmorstandScreen extends ParentItemScreen {
 
         int butWidth = 130;
         addButton(new StyledButton(x1 + (buttonWidth / 3), y1, butWidth, 18, I18n.get("gui.armorstandeditor.properties"), t -> {
-            minecraft.setScreen(new ArmorstandPropScreen(this, item, armorStand));
+            minecraft.setScreen(new ArmorstandPropScreen(this, item));
         }));
         addButton(new StyledButton(x1 + (buttonWidth / 3) + butWidth + 5, y1, butWidth, 18, I18n.get("gui.armorstandeditor.equipment"), t -> {
-            minecraft.setScreen(new ArmorStandEquipScreen(this, item, armorStand));
+            minecraft.setScreen(new ArmorStandEquipScreen(this, new ArmorstandContainer(new ArmorstandInventory(item.getItemStack()))));
         }));
 
 
@@ -112,13 +101,8 @@ public class ArmorstandScreen extends ParentItemScreen {
         }
 
         super.mainRender(matrix, mouseX, mouseY, p3, color);
-        if (armorStand != null) {
-            drawArmor.drawArmorStand(armorStand, (int) (this.width / 3 * 2.5), (int) (this.height / 5 * 3.8), 70);
-        }
     }
 
-
-    private boolean isInRegion = false;
 
 
     @Override
@@ -128,31 +112,10 @@ public class ArmorstandScreen extends ParentItemScreen {
     }
 
 
-    @Override
-    public boolean mouseDragged(double p_mouseDragged_1_, double p_mouseDragged_3_, int p_mouseDragged_5_, double p_mouseDragged_6_, double p_mouseDragged_8_) {
-        super.mouseDragged(p_mouseDragged_1_, p_mouseDragged_3_, p_mouseDragged_5_, p_mouseDragged_6_, p_mouseDragged_8_);
-        if (isInRegion) {
-            drawArmor.isDragging = true;
-            drawArmor.addRotation = (int) p_mouseDragged_6_;
-        }
-        return true;
-
-    }
-
-
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
-        isInRegion = mouseX > (width / 11 * 8);
-        return true;
-
-    }
-
 
     @Override
     public boolean mouseReleased(double p_mouseReleased_1_, double p_mouseReleased_3_, int p_mouseReleased_5_) {
         super.mouseReleased(p_mouseReleased_1_, p_mouseReleased_3_, p_mouseReleased_5_);
-        drawArmor.isDragging = false;
         drawArmor.addRotation = 0;
         return true;
     }
