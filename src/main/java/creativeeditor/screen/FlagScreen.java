@@ -1,6 +1,7 @@
 package creativeeditor.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import creativeeditor.screen.widgets.StyledToggle;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.data.DataItem;
 import creativeeditor.screen.widgets.StyledButton;
@@ -19,6 +20,7 @@ public class FlagScreen extends ParentItemScreen {
 
     @Override
     protected void init() {
+        super.init();
         // render Item
         setRenderItem(true, 1f);
 
@@ -30,17 +32,27 @@ public class FlagScreen extends ParentItemScreen {
             // later: make this a toggle button
             int x = (i < amount / 2 ? thirdWidth : 2 * thirdWidth) - 60; // 1/3 of width if i < 3, other 2/3 of width
             int y = height / 7 * 2 + (30 * (i < amount / 2 ? i : i - amount / 2)); // i*30, or (i-3)*30 if i>=3
-            addButton(new StyledButton(x, y, 120, 20, I18n.get(HideFlagUtils.Flags.values()[i].getKey()), (Button b) -> {
-            }));
+            addButton(new StyledToggle(x, y, 120, 20, I18n.get(HideFlagUtils.Flags.values()[i].getKey()), item.getTag().getDisplayHideFlags().get());
         }
         addButton(new StyledButton(width / 2 - 60, height / 7 * 4, 120, 20, I18n.get("flag.switchall"), (Button b) -> {
         }));
-        super.init();
+
     }
 
 
     @Override
+    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
+        super.overlayRender(matrix, mouseX, mouseY, p3, color);
+    }
+
+    @Override
     public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
         super.mainRender(matrix, mouseX, mouseY, p3, color);
+    }
+
+
+    @Override
+    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
+        super.backRender(matrix, mouseX, mouseY, p3, color);
     }
 }

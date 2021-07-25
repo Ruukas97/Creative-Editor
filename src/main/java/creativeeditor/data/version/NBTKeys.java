@@ -46,6 +46,9 @@ public abstract class NBTKeys {
 
     public abstract String displayLore();
 
+    public abstract String tagHideFlags();
+
+
 
     // Enchantments
     public abstract String tagEnchantments();
