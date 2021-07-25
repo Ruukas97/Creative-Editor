@@ -43,6 +43,7 @@ public class KeyInputHandler {
 
     @SubscribeEvent
     public void onKeyInput(final KeyInputEvent event) {
+        if (InputMappings.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), 292)) return;
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null || event.getAction() != GLFW.GLFW_PRESS || (mc.screen != null && !(mc.screen instanceof ContainerScreen<?>)))
             return;
