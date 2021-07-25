@@ -1,7 +1,6 @@
 package creativeeditor.screen.armorstand;
 
 import com.mojang.datafixers.util.Pair;
-import creativeeditor.CreativeEditor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -14,12 +13,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ArmorstandContainer extends Container {
+public class EquipmentContainer extends Container {
     private static final EquipmentSlotType[] SLOT_IDS = new EquipmentSlotType[]{EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET};
     private static final ResourceLocation[] TEXTURE_EMPTY_SLOTS = new ResourceLocation[]{PlayerContainer.EMPTY_ARMOR_SLOT_BOOTS, PlayerContainer.EMPTY_ARMOR_SLOT_LEGGINGS, PlayerContainer.EMPTY_ARMOR_SLOT_CHESTPLATE, PlayerContainer.EMPTY_ARMOR_SLOT_HELMET};
-    public static final ResourceLocation EMPTY_ARMOR_SLOT_SWORD = new ResourceLocation(CreativeEditor.MODID, "item/empty_armor_slot_sword");
 
-    public ArmorstandContainer(ArmorstandInventory armorstandInventory) {
+    public EquipmentContainer(EquipmentInventory equipmentInventory) {
         super(null, 0);
         PlayerInventory playerInventory = Minecraft.getInstance().player.inventory;
 
@@ -55,21 +53,11 @@ public class ArmorstandContainer extends Container {
         }
 
         // Player off-hand
-        this.addSlot(new Slot(playerInventory, 40, 77, 62) {
-            @OnlyIn(Dist.CLIENT)
-            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
-            }
-        }).index += 5;
+        this.addSlot(new Slot(playerInventory, 40, 77, 62)).index += 5;
 
         // Equipment hands armor
-        this.addSlot(new Slot(armorstandInventory, 0, 83, 8) {
-            @OnlyIn(Dist.CLIENT)
-            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return Pair.of(PlayerContainer.BLOCK_ATLAS, EMPTY_ARMOR_SLOT_SWORD);
-            }
-        });
-        this.addSlot(new Slot(armorstandInventory, 1, 83, 26) {
+        this.addSlot(new Slot(equipmentInventory, 0, 83, 8));
+        this.addSlot(new Slot(equipmentInventory, 1, 83, 26) {
             @OnlyIn(Dist.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
@@ -78,7 +66,7 @@ public class ArmorstandContainer extends Container {
 
         for (int k = 0; k < 4; ++k) {
             final EquipmentSlotType equipmentslottype = SLOT_IDS[k];
-            this.addSlot(new Slot(armorstandInventory, 5 - k, 152, 8 + k * 18) {
+            this.addSlot(new Slot(equipmentInventory, 5 - k, 152, 8 + k * 18) {
                 public boolean mayPickup(PlayerEntity player) {
                     return !getItem().isEmpty() && super.mayPickup(player);
                 }

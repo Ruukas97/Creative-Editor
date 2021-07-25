@@ -4,8 +4,8 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataRotation;
 import creativeeditor.data.tag.entity.TagEntityArmorStand.Pose;
-import creativeeditor.screen.armorstand.ArmorstandContainer;
-import creativeeditor.screen.armorstand.ArmorstandInventory;
+import creativeeditor.screen.armorstand.EquipmentContainer;
+import creativeeditor.screen.armorstand.EquipmentInventory;
 import creativeeditor.screen.widgets.SliderTag;
 import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.util.ColorUtils.Color;
@@ -56,7 +56,7 @@ public class ArmorstandScreen extends BaseArmorstandScreen {
             minecraft.setScreen(new ArmorstandPropScreen(this, item));
         }));
         addButton(new StyledButton(x1 + (buttonWidth / 3) + butWidth + 5, y1, butWidth, 18, I18n.get("gui.armorstandeditor.equipment"), t -> {
-            minecraft.setScreen(new ArmorStandEquipScreen(this, new ArmorstandContainer(new ArmorstandInventory(item.getItemStack()))));
+            minecraft.setScreen(new ArmorStandEquipScreen(this, item.getTag().getArmorStandTag()));
         }));
 
 
