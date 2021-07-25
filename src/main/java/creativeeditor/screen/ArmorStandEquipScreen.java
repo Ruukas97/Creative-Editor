@@ -8,12 +8,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 
-public class ArmorStandEquipScreen extends ContainerScreen {
+public class ArmorStandEquipScreen extends ContainerScreen<ArmorstandContainer> {
 
     private Screen lastScreen;
     private float xMouse;
@@ -58,9 +59,17 @@ public class ArmorStandEquipScreen extends ContainerScreen {
     }
 
     @Override
-    protected void slotClicked(Slot p_184098_1_, int p_184098_2_, int p_184098_3_, ClickType p_184098_4_) {
-        System.out.println(p_184098_1_ != null ? p_184098_1_.index : "");
-        super.slotClicked(p_184098_1_, p_184098_2_, p_184098_3_, p_184098_4_);
+    protected void slotClicked(Slot slot, int index, int button, ClickType clickType) {
+        if (slot != null) {
+            index = slot.index;
+
+            if (!(slot.container instanceof PlayerInventory)) {
+                menu.clicked(index, button, clickType, minecraft.player);
+                return;
+            }
+        }
+
+        minecraft.gameMode.handleInventoryMouseClick(menu.containerId, index, button, clickType, minecraft.player);
     }
 
     @Override
