@@ -4,6 +4,8 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.config.Config;
 import creativeeditor.data.DataItem;
 import creativeeditor.screen.widgets.*;
+import creativeeditor.screen.widgets.base.AdvancedWidgets;
+import creativeeditor.screen.widgets.base.ItemWidgets;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
@@ -18,16 +20,15 @@ import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainScreen extends ParentItemScreen {
 
     private final ArrayList<Widget> toolsWidgets = new ArrayList<>();
-    private final ArrayList<Widget> loreWidgets = new ArrayList<>();
+    private final ArrayList<Widget> displayWidgets = new ArrayList<>();
     private final ArrayList<Widget> editWidgets = new ArrayList<>();
     private final ArrayList<Widget> advancedWidgets = new ArrayList<>();
-    private StyledTextButton nbtButton, tooltipButton, toolsButton, loreButton, editButton, advancedButton;
+    private StyledTextButton nbtButton, tooltipButton, toolsButton, displayButton, editButton, advancedButton;
     private NumberField countField, damageField;
     private StyledDataTextField idField;
     private SliderTag countSlider, damageSlider;
@@ -91,7 +92,7 @@ public class MainScreen extends ParentItemScreen {
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
         toolsWidgets.clear();
-        loreWidgets.clear();
+        displayWidgets.clear();
         editWidgets.clear();
         advancedWidgets.clear();
 
@@ -111,10 +112,10 @@ public class MainScreen extends ParentItemScreen {
             }
         }));
 
-        loreButton = addButton(new StyledTextButton(loreX, 35, loreWidth, loreLocal, b -> {
+        displayButton = addButton(new StyledTextButton(loreX, 35, loreWidth, loreLocal, b -> {
             setRightTab(0, true);
 
-            for (Widget lore : loreWidgets) {
+            for (Widget lore : displayWidgets) {
                 lore.visible = true;
             }
         }));
@@ -122,7 +123,7 @@ public class MainScreen extends ParentItemScreen {
         editButton = addButton(new StyledTextButton(editX, 35, editWidth, editLocal, b -> {
             setRightTab(1, true);
 
-            for (Widget lore : loreWidgets) {
+            for (Widget lore : displayWidgets) {
                 lore.visible = false;
             }
         }));
@@ -130,21 +131,15 @@ public class MainScreen extends ParentItemScreen {
         advancedButton = addButton(new StyledTextButton(advancedX, 35, advancedWidth, advancedLocal, b -> {
             setRightTab(2, true);
 
-            for (Widget lore : loreWidgets) {
+            for (Widget lore : displayWidgets) {
                 lore.visible = false;
             }
         }));
 
-        int y = 55;
-        for (ClassSpecificWidget w : ItemWidgets.getInstance()) {
-            WidgetInfo info = new WidgetInfo(width - width / 6, y, font.width(w.text), 10, w.text, null, this);
-            Widget widget = w.get(info, item);
-            if (widget != null) {
-                addButton(widget);
-                editWidgets.add(widget);
-                y += 20;
-            }
-        }
+        // Widgets
+        loadWidgets(new ItemWidgets(), editWidgets);
+        loadWidgets(new AdvancedWidgets(), advancedWidgets);
+
 
         // Tools
         String styleLocal = I18n.get("gui.main.style");
@@ -165,14 +160,14 @@ public class MainScreen extends ParentItemScreen {
         int resetX = width - 22 - resetWidth / 2;
         int nameX = 2 * width / 3 + 16;
         nameField = new StyledDataTextField(font, nameX, 55, resetX - nameX - resetWidth / 2 - 7, 20, item.getDisplayNameTag());
-        loreWidgets.add(nameField);
+        displayWidgets.add(nameField);
         children.add(nameField);
         clearButton = addButton(new StyledTextButton(resetX, 67, resetWidth, resetLore, b -> {
             nameField.setText(item.getDisplayNameTag().getDefault().getString());
             nameField.setCursorPos(0);
             nameField.setSelectionPos(0);
         }));
-        loreWidgets.add(clearButton);
+        displayWidgets.add(clearButton);
 
         // General Item
         String id = I18n.get("gui.main.id");
@@ -201,6 +196,19 @@ public class MainScreen extends ParentItemScreen {
 
         setLeftTab(Config.MAIN_LEFT_TAB.get(), false);
         setRightTab(Config.MAIN_RIGHT_TAB.get(), false);
+    }
+
+    private void loadWidgets(Iterable<ClassSpecificWidget> widgets, ArrayList<Widget> widgetList) {
+        int y = 55;
+        for (ClassSpecificWidget w : widgets) {
+            WidgetInfo info = new WidgetInfo(width - width / 6, y, font.width(w.text), 10, w.text, null, this);
+            Widget widget = w.get(info, item);
+            if (widget != null) {
+                addButton(widget);
+                widgetList.add(widget);
+                y += 20;
+            }
+        }
     }
 
     @Override
@@ -252,11 +260,11 @@ public class MainScreen extends ParentItemScreen {
 
         switch (Config.MAIN_RIGHT_TAB.get()) {
             case 0:
-                loreButton.active = false;
+                displayButton.active = false;
                 editButton.active = true;
                 advancedButton.active = true;
 
-                for (Widget lore : loreWidgets) {
+                for (Widget lore : displayWidgets) {
                     lore.visible = true;
                 }
                 for (Widget edit : editWidgets) {
@@ -267,11 +275,11 @@ public class MainScreen extends ParentItemScreen {
                 }
                 break;
             case 1:
-                loreButton.active = true;
+                displayButton.active = true;
                 editButton.active = false;
                 advancedButton.active = true;
 
-                for (Widget lore : loreWidgets) {
+                for (Widget lore : displayWidgets) {
                     lore.visible = false;
                 }
                 for (Widget edit : editWidgets) {
@@ -282,11 +290,11 @@ public class MainScreen extends ParentItemScreen {
                 }
                 break;
             case 2:
-                loreButton.active = true;
+                displayButton.active = true;
                 editButton.active = true;
                 advancedButton.active = false;
 
-                for (Widget lore : loreWidgets) {
+                for (Widget lore : displayWidgets) {
                     lore.visible = false;
                 }
                 for (Widget edit : editWidgets) {
