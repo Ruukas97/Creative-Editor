@@ -4,8 +4,10 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import creativeeditor.data.DataItem;
 import lombok.AllArgsConstructor;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -15,6 +17,10 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextProperties;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 public class ItemRendererUtils {
@@ -23,6 +29,12 @@ public class ItemRendererUtils {
 
     public void renderItemIntoGUI(ItemStack stack, int x, int y, float xRot, float yRot) {
         this.renderItemModelIntoGUI(stack, x, y, xRot, yRot, itemRenderer.getModel(stack, null, null));
+    }
+
+    public static void renderFormattedItemNBT(MatrixStack matrix, DataItem item, int mouseX, int mouseY, int width, int height, int maxTextWidth, FontRenderer font) {
+        List<ITextProperties> list = new ArrayList<>();
+        list.add((Minecraft.getInstance().options.advancedItemTooltips ? item.getNBT() : item.getTag().getNBT()).getPrettyDisplay(" ", 0));
+        GuiUtil.drawHoveringText( item.getItemStack(), matrix, list, mouseX, mouseY, width, height, maxTextWidth, font );
     }
 
     public TextureManager getTextureManager() {

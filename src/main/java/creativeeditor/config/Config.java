@@ -44,7 +44,7 @@ public class Config {
         BUILDER.pop();
 
         BUILDER.comment("Creative Tab Settings").push(CATEGORY_TABS);
-        HEAD_TABS_ENABLED = BUILDER.comment("Whether or not the minecraft-heads Creative Tabs should be enabled.").define("headTabsEnabled", true);
+        HEAD_TABS_ENABLED = BUILDER.comment("Whether or not the minecraft-heads Creative Tabs should be enabled.").define("headTabsEnabled", false);
         NEARBYBLOCKS_TAB_ENABLED = BUILDER.comment("Whether or not the tab showing nearby blocks should be enabled.").define("nearbyBlocksTabEnabled", true);
         NEARBYBLOCKS_TAB_MULTIPLESTACKS = BUILDER.comment("If the nearby blocks tab should add multiple stacks for blocks that occur more than 64 times, or limit at one stack.").define("nearbyBlocksTabMultipleStacks", true);
         NEARBYBLOCKS_TAB_RADIUS = BUILDER.comment("The radius of the area the nearby blocks tab searches for blocks in.").defineInRange("nearbyBlocksTabRadius", 16, 1, 128);
@@ -54,7 +54,7 @@ public class Config {
         BUILDER.comment("Internal - Don't change manually").push(CATEGORY_TABS);
         MAIN_LEFT_TAB = BUILDER.comment("Which tab the editor was last on.").defineInRange("mainLeftTab", 0, 0, 2);
         MAIN_RIGHT_TAB = BUILDER.comment("Which tab the editor was last on.").defineInRange("mainRightTab", 0, 0, 2);
-        ACTIVESTYLE = BUILDER.comment("Which style is currently being used.").defineInRange("activeStyle", 0, 0, 20);
+        ACTIVESTYLE = BUILDER.comment("Which style is currently being used.").defineInRange("activeStyle", 1, 0, 20);
         BUILDER.pop();
 
         CLIENT = BUILDER.build();

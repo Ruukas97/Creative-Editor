@@ -2,7 +2,7 @@ package creativeeditor.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.data.DataItem;
-import creativeeditor.util.ArmorStandDrawUtils;
+import creativeeditor.util.EntityDrawUtils;
 import creativeeditor.util.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
@@ -12,7 +12,7 @@ import net.minecraft.util.text.ITextComponent;
 public abstract class BaseArmorstandScreen extends ParentItemScreen {
 
     private static ArmorStandEntity armorStand = null;
-    protected static ArmorStandDrawUtils drawArmor;
+    protected static EntityDrawUtils drawArmor;
     private boolean isInRegion = false;
 
     public BaseArmorstandScreen(ITextComponent title, Screen lastScreen, DataItem editing) {
@@ -26,7 +26,7 @@ public abstract class BaseArmorstandScreen extends ParentItemScreen {
         if (armorStand == null) {
             ArmorStandEntity entity = new ArmorStandEntity(minecraft.level, 0, 0, 0);
             armorStand = entity;
-            drawArmor = new ArmorStandDrawUtils(armorStand, item);
+            drawArmor = new EntityDrawUtils(armorStand, item);
         }
         postInit();
     }
