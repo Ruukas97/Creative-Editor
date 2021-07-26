@@ -54,5 +54,8 @@ public class LoreEditorScreen extends ParentItemScreen {
         updateLines();
     }
 
-
+    @Override
+    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
+        super.mainRender(matrix, mouseX, mouseY, p3, color);
+    }
 }
