@@ -4,7 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import creativeeditor.CreativeEditor;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
-import creativeeditor.screen.armorstand.EquipmentContainer;
+import creativeeditor.screen.container.EquipmentContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;

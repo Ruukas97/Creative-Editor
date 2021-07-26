@@ -2,16 +2,25 @@ package creativeeditor.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.data.DataItem;
+import creativeeditor.screen.container.TagExplorerContainer;
+import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.screen.widgets.StyledTextField;
 import creativeeditor.util.ColorUtils;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TranslationTextComponent;
+
+import javax.annotation.Nullable;
 
 public class TagExplorerScreen extends ParentScreen {
 
     private DataItem item;
     private StyledTextField textField;
+    private StyledButton button;
+    private final int fieldWidth = 200;
+    private final int fieldHeight = 20;
+    int yField;
 
     public TagExplorerScreen(Screen lastScreen, DataItem item) {
         super(new TranslationTextComponent("gui.tagexplorer"), lastScreen);
@@ -21,13 +30,19 @@ public class TagExplorerScreen extends ParentScreen {
     @Override
     protected void init() {
         super.init();
-        textField = new StyledTextField(minecraft.font, 10, 10, 100, 20, "Yes");
+        yField = height / 2 - fieldHeight / 2;
+        textField = addWidget(new StyledTextField(minecraft.font, width / 2 - fieldWidth / 2, yField, fieldWidth, fieldHeight, ""));
+        textField.setText("{Damage:%d}");
+        int buttonWidth = 100;
+        button = addButton(new StyledButton(width / 2 - buttonWidth / 2, yField + (fieldHeight * 2), buttonWidth, fieldHeight, I18n.get("gui.tagexplorer.explore"), t -> minecraft.setScreen(new TagExplorerContainerScreen(this))));
+
     }
 
     @Override
     public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
         super.mainRender(matrix, mouseX, mouseY, p3, color);
         textField.render(matrix, mouseY, mouseY, p3);
+        drawCenteredString(matrix, font, I18n.get("gui.tagexplorer.help"), width / 2, yField - fieldHeight, color.getInt());
     }
 
     @Override
@@ -40,6 +55,12 @@ public class TagExplorerScreen extends ParentScreen {
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         textField.mouseClicked(mouseX, mouseY, mouseButton);
         return super.mouseClicked(mouseX, mouseY, mouseButton);
+    }
+
+    @Override
+    public boolean charTyped(char p_231042_1_, int p_231042_2_) {
+        textField.charTyped(p_231042_1_, p_231042_2_);
+        return super.charTyped(p_231042_1_, p_231042_2_);
     }
 
     @Override
