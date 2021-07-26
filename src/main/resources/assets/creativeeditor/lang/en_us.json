@@ -149,5 +149,7 @@
   "gui.toggle.on":  "on",
   "gui.toggle.off": "off",
   "gui.tagexplorer.help": "Use %%s for integer variable",
-  "gui.tagexplorer.explore": "Explore"
+  "gui.tagexplorer.explore": "Explore",
+  "gui.loreeditor": "Lore Editor",
+  "gui.loreeditor.addline": "Add line"
 }
