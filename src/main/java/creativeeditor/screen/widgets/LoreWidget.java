@@ -71,18 +71,15 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
 
     @Override
     public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partial) {
-        System.out.println("Hello2");
-        up.x = this.x;
-        up.y = this.y;
-        up.render(matrix, mouseX, mouseY, partial);
-        down.x = this.x + 20;
-        down.y = this.y;
-        down.render(matrix, mouseX, mouseY, partial);
-        delete.x = this.x + 40;
-        delete.y = this.y;
-        delete.render(matrix, mouseX, mouseY, partial);
-        field.x = this.x + 60;
-        field.y = this.y;
-        field.render(matrix, mouseX, mouseY, partial);
+        renderChild(up, 0, 0, matrix, mouseX, mouseY, partial);
+        renderChild(down, 20, 0, matrix, mouseX, mouseY, partial);
+        renderChild(delete, 40, 0, matrix, mouseX, mouseY, partial);
+        renderChild(field, 60, 0, matrix, mouseX, mouseY, partial);
+    }
+
+    public void renderChild(Widget child, int offsetX, int offsetY, MatrixStack matrix, int mouseX, int mouseY, float partial){
+        child.x = this.x;
+        child.y = this.y;
+        child.render(matrix, mouseX, mouseY, partial);
     }
 }
