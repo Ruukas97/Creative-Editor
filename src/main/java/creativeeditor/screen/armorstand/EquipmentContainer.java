@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 
 public class EquipmentContainer extends Container {
-    public static final ResourceLocation EMPTY_ARMOR_SLOT_SWORD = new ResourceLocation(CreativeEditor.MODID, "item/empty_armor_slot_sword.png");
+    public static final ResourceLocation EMPTY_ARMOR_SLOT_SWORD = new ResourceLocation(CreativeEditor.MODID, "item/empty_armor_slot_sword");
     private static final EquipmentSlotType[] SLOT_IDS = new EquipmentSlotType[]{EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET};
     private static final ResourceLocation[] TEXTURE_EMPTY_SLOTS = new ResourceLocation[]{PlayerContainer.EMPTY_ARMOR_SLOT_BOOTS, PlayerContainer.EMPTY_ARMOR_SLOT_LEGGINGS, PlayerContainer.EMPTY_ARMOR_SLOT_CHESTPLATE, PlayerContainer.EMPTY_ARMOR_SLOT_HELMET};
 
@@ -60,12 +60,17 @@ public class EquipmentContainer extends Container {
         this.addSlot(new Slot(playerInventory, 40, 77, 62) {
             @OnlyIn(Dist.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return Pair.of(PlayerContainer.BLOCK_ATLAS, EMPTY_ARMOR_SLOT_SWORD);
+                return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
             }
         }).index += 5;
 
         // Equipment hands armor
-        this.addSlot(new Slot(equipmentInventory, 0, 83, 8));
+        this.addSlot(new Slot(equipmentInventory, 0, 83, 8) {
+            @OnlyIn(Dist.CLIENT)
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                return Pair.of(PlayerContainer.BLOCK_ATLAS, EMPTY_ARMOR_SLOT_SWORD);
+            }
+        });
         this.addSlot(new Slot(equipmentInventory, 1, 83, 26) {
             @OnlyIn(Dist.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
