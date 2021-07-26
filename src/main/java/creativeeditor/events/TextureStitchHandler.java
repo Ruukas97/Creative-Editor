@@ -1,6 +1,6 @@
 package creativeeditor.events;
 
-import creativeeditor.screen.armorstand.EquipmentContainer;
+import creativeeditor.screen.container.EquipmentContainer;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 

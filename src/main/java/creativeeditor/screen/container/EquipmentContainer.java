@@ -1,4 +1,4 @@
-package creativeeditor.screen.armorstand;
+package creativeeditor.screen.container;
 
 import com.mojang.datafixers.util.Pair;
 import creativeeditor.CreativeEditor;
@@ -13,8 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import javax.annotation.Nullable;
 
 public class EquipmentContainer extends Container {
     public static final ResourceLocation EMPTY_ARMOR_SLOT_SWORD = new ResourceLocation(CreativeEditor.MODID, "item/empty_armor_slot_sword");

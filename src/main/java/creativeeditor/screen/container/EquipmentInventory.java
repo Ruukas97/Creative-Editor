@@ -1,4 +1,4 @@
-package creativeeditor.screen.armorstand;
+package creativeeditor.screen.container;
 
 import creativeeditor.data.DataItem;
 import creativeeditor.data.tag.TagItemList;

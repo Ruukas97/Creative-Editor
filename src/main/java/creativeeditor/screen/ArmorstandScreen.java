@@ -4,8 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataRotation;
 import creativeeditor.data.tag.entity.TagEntityArmorStand.Pose;
-import creativeeditor.screen.armorstand.EquipmentContainer;
-import creativeeditor.screen.armorstand.EquipmentInventory;
 import creativeeditor.screen.widgets.SliderTag;
 import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.util.ColorUtils.Color;

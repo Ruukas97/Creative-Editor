@@ -2,7 +2,7 @@ package creativeeditor.data.tag.entity;
 
 import creativeeditor.data.Data;
 import creativeeditor.data.tag.TagItemList;
-import creativeeditor.screen.armorstand.EquipmentInventory;
+import creativeeditor.screen.container.EquipmentInventory;
 import lombok.Getter;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
