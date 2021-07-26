@@ -1,8 +1,11 @@
 package creativeeditor.events;
 
 import creativeeditor.data.DataItem;
+import creativeeditor.screen.LoreEditorScreen;
 import creativeeditor.screen.MainScreen;
 import net.minecraft.client.gui.screen.inventory.CreativeScreen;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import org.lwjgl.glfw.GLFW;
 
 import creativeeditor.CreativeEditor;
@@ -43,7 +46,7 @@ public class KeyInputHandler {
 
     @SubscribeEvent
     public void onKeyInput(final KeyInputEvent event) {
-        if (InputMappings.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), 292)) return;
+        if (InputMappings.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), 292)) return; // F3 key
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null || event.getAction() != GLFW.GLFW_PRESS || (mc.screen != null && !(mc.screen instanceof ContainerScreen<?>)))
             return;
@@ -70,12 +73,12 @@ public class KeyInputHandler {
             mc.levelRenderer.allChanged(); // reload chunks
             System.out.println("Set barrier visibility: " + CreativeEditor.BARRIER_VISIBLE);
         } else if (CreativeEditor.DEBUG && event.getKey() == DEBUG_KEY.getKey().getValue()) {
-            // mc.setScreen( new NBTExplorerScreen( mc.screen, new DataItem(
+             mc.setScreen( new LoreEditorScreen( mc.screen, new DataItem(new ItemStack(Items.DIAMOND))));
             // mc.player.getHeldItemMainhand() ) ) );
             // mc.setScreen( new EnchantmentScreen( mc.screen, new DataItem(
             // mc.player.getHeldItemMainhand() ) ) );
             // mc.setScreen( new ItemSpawnerScreen( mc.screen ) );
-            mc.setScreen(new CreativeScreen(mc.player));
+//            mc.setScreen(new CreativeScreen(mc.player));
             //mc.setScreen( new WindowManagerScreen( new StringTextComponent( CreativeEditor.NAME ) ) );
         }
     }

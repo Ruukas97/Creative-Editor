@@ -24,7 +24,7 @@ public class FlagScreen extends ParentItemScreen {
     protected void init() {
         super.init();
         // render Item
-        setRenderItem(true, 1f);
+        setRenderItem(true, 1.5f);
 
         hasEssButtons = true;
 
