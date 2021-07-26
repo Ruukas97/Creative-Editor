@@ -5,12 +5,18 @@ import net.minecraft.client.gui.widget.Widget;
 
 public abstract class StyleBase implements Style {
     protected ButtonColor buttonColor;
+    private static final Color color = new Color(100, 100, 100);
 
 
     public StyleBase(ButtonColor buttonColor) {
         this.buttonColor = buttonColor;
     }
 
+
+    @Override
+    public Color getMainColor() {
+        return color.copy();
+    }
 
     @Override
     public void update() {

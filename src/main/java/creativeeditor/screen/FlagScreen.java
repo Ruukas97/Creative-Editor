@@ -7,6 +7,7 @@ import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.data.DataItem;
 import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.util.HideFlagUtils;
+import creativeeditor.util.ItemRendererUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
@@ -27,17 +28,22 @@ public class FlagScreen extends ParentItemScreen {
 
         hasEssButtons = true;
 
-        int thirdWidth = width / 3;
-        int amount = HideFlagUtils.Flags.values().length;
+        int thirdWidth = width / 4;
+        int amount = HideFlagUtils.Flags.values().length + 1;
         for (int i = 0; i < amount; i++) {
-            // later: make this a toggle button
-            int x = (i < amount / 2 ? thirdWidth : 2 * thirdWidth) - 60; // 1/3 of width if i < 3, other 2/3 of width
+            int x = (i < amount / 2 ? 2 * thirdWidth : 3 * thirdWidth + 20) - 80; // 1/3 of width if i < 3, other 2/3 of width
             int y = height / 7 * 2 + (30 * (i < amount / 2 ? i : i - amount / 2)); // i*30, or (i-3)*30 if i>=3
+            if(i >= amount-1) {
+                addButton(new StyledButton(x, y, 120, 20, I18n.get("flag.switchall"), (Button b) -> {
+                    for(int j = 0; j < amount-1; j++) {
+                        item.getTag().getDisplayHideFlags().get()[j] = !item.getTag().getDisplayHideFlags().get()[j];
+                        init();
+                    }
+                }));
+                continue;
+            }
             addButton(new StyledBitToggle(x, y, 120, 20, I18n.get(HideFlagUtils.Flags.values()[i].getKey()), item.getTag().getDisplayHideFlags(), i));
         }
-
-        addButton(new StyledButton(width / 2 - 60, height / 7 * 4, 120, 20, I18n.get("flag.switchall"), (Button b) -> {
-        }));
 
     }
 
@@ -50,6 +56,10 @@ public class FlagScreen extends ParentItemScreen {
     @Override
     public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
         super.mainRender(matrix, mouseX, mouseY, p3, color);
+        matrix.pushPose();
+        matrix.scale(0.9F, 0.9F, 0.9F);
+        ItemRendererUtils.renderFormattedItemNBT(matrix, item, 10, 50, width / 3 - 1, height, -1, font );
+        matrix.popPose();
     }
 
 

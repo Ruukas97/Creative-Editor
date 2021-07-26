@@ -8,19 +8,16 @@ import creativeeditor.screen.widgets.base.AdvancedWidgets;
 import creativeeditor.screen.widgets.base.ItemWidgets;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
-import creativeeditor.util.GuiUtil;
+import creativeeditor.util.ItemRendererUtils;
 import creativeeditor.util.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainScreen extends ParentItemScreen {
 
@@ -390,18 +387,20 @@ public class MainScreen extends ParentItemScreen {
 
         RenderUtil.glScissorBox(6, 41, width / 3, height - 6);
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        matrix.pushPose();
         if (Config.MAIN_LEFT_TAB.get() == 0) {
             // NBT
             assert minecraft != null;
-            List<ITextProperties> list = new ArrayList<>();
-            list.add((minecraft.options.advancedItemTooltips ? item.getNBT() : item.getTag().getNBT()).getPrettyDisplay(" ", 0));
-            GuiUtil.drawHoveringText( item.getItemStack(), matrix, list, 0, 60, width / 3 - 1, height, -1, font );
+            matrix.scale(0.75F, 0.75F, 0.75F);
+            ItemRendererUtils.renderFormattedItemNBT(matrix, item, 5, 80, width / 3 - 1, height, -1, font );
         } else if (Config.MAIN_LEFT_TAB.get() == 1) {
-             renderTooltip(matrix, item.getItemStack(), 0, 60);
-            ItemStack stack = item.getItemStack();
 
-            GuiUtil.drawHoveringText(item.getItemStack(), matrix, getTooltipFromItem(stack), 0, 60, width / 3 - 1, height, -1, font);
+            matrix.scale(0.9F, 0.9F, 0.9F);
+            renderTooltip(matrix, item.getItemStack(), 3, 68);
+//          GuiUtil.drawHoveringText(item.getItemStack(), matrix, getTooltipFromItem(item.getItemStack()), 0, 60, width / 3 - 1, height, -1, font);
+
         }
+        matrix.popPose();
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
     }
 }
