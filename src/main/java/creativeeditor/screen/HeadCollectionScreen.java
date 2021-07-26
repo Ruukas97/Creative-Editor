@@ -1,16 +1,9 @@
 package creativeeditor.screen;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import com.mojang.blaze3d.matrix.MatrixStack;
-import org.lwjgl.glfw.GLFW;
-
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import creativeeditor.json.CachedHead;
 import creativeeditor.json.MinecraftHeads;
 import creativeeditor.json.MinecraftHeadsCategory;
@@ -24,8 +17,14 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.network.play.client.CCreativeInventoryActionPacket;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TranslationTextComponent;
+import org.lwjgl.glfw.GLFW;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class HeadCollectionScreen extends ParentScreen {
     private final List<CachedHead> filteredHeads = new LinkedList<>();
@@ -56,11 +55,14 @@ public class HeadCollectionScreen extends ParentScreen {
         if (!searchString.equals(filteredString)) {
             filteredHeads.clear();
 
-            for (CachedHead head : MinecraftHeads.getHeads(selCat)) {
-                if (head.getData().getName().contains(searchString)) {
-                    filteredHeads.add(head);
+            Thread thread = new Thread(() -> {
+                for (CachedHead head : MinecraftHeads.getHeads(selCat)) {
+                    if (head.getData().getName().contains(searchString)) {
+                        filteredHeads.add(head);
+                    }
                 }
-            }
+            });
+            thread.start();
 
             currentElement = 0;
             filteredString = searchString;
@@ -140,14 +142,14 @@ public class HeadCollectionScreen extends ParentScreen {
                 if (mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16) {
                     ItemStack is = filteredHeads.get(i).getItemStack();
                     if (hasShiftDown()) {
-//                        minecraft.playerController.sendPacketDropItem( is );
+                        minecraft.getConnection().send(new CCreativeInventoryActionPacket(-1, is));
                     } else {
                         int slot = InventoryUtils.getEmptySlotsCount(minecraft.player.inventory);
                         if (slot <= 0) {
-//                            minecraft.playerController.sendPacketDropItem( is );
+                            minecraft.getConnection().send(new CCreativeInventoryActionPacket(-1, is));
                         } else {
                             int emptySlot = InventoryUtils.getEmptySlot(minecraft.player.inventory);
-//                            minecraft.gameMode.sendSlotPacket( is, emptySlot );
+                            minecraft.getConnection().send(new CCreativeInventoryActionPacket(emptySlot, is));
                             minecraft.player.playSound(SoundEvents.ITEM_PICKUP, 0.1F, 1.01F);
                         }
 
