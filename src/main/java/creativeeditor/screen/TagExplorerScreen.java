@@ -2,16 +2,12 @@ package creativeeditor.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.data.DataItem;
-import creativeeditor.screen.container.TagExplorerContainer;
 import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.screen.widgets.StyledTextField;
 import creativeeditor.util.ColorUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TranslationTextComponent;
-
-import javax.annotation.Nullable;
 
 public class TagExplorerScreen extends ParentScreen {
 
@@ -34,7 +30,7 @@ public class TagExplorerScreen extends ParentScreen {
         textField = addWidget(new StyledTextField(minecraft.font, width / 2 - fieldWidth / 2, yField, fieldWidth, fieldHeight, ""));
         textField.setText("{Damage:%d}");
         int buttonWidth = 100;
-        button = addButton(new StyledButton(width / 2 - buttonWidth / 2, yField + (fieldHeight * 2), buttonWidth, fieldHeight, I18n.get("gui.tagexplorer.explore"), t -> minecraft.setScreen(new TagExplorerContainerScreen(this))));
+        button = addButton(new StyledButton(width / 2 - buttonWidth / 2, yField + (fieldHeight * 2), buttonWidth, fieldHeight, I18n.get("gui.tagexplorer.explore"), t -> minecraft.setScreen(null)));
 
     }
 
