@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.opengl.GL11;
 
@@ -106,7 +107,7 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
             isScrolling = false;
         }
 
-        if (this.isHovered) {
+        if (this.isHovered && this.children().size() > 0) {
             for (IGuiEventListener iguieventlistener : this.children()) {
                 if (iguieventlistener.mouseClicked(mouseX, mouseY, mouseButton)) {
                     this.setFocused(iguieventlistener);
@@ -118,7 +119,6 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
                 }
             }
         }
-
         return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
@@ -195,5 +195,8 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
         }
     }
+
+    @Override
+    public void playDownSound(SoundHandler p_230988_1_) {}
 
 }

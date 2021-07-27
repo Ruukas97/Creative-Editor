@@ -25,7 +25,7 @@ public class MainScreen extends ParentItemScreen {
     private final ArrayList<Widget> displayWidgets = new ArrayList<>();
     private final ArrayList<Widget> editWidgets = new ArrayList<>();
     private final ArrayList<Widget> advancedWidgets = new ArrayList<>();
-    private StyledTextButton nbtButton, tooltipButton, toolsButton, displayButton, editButton, advancedButton;
+    private StyledTextButton nbtButton, tooltipButton, toolsButton, displayButton, editButton, advancedButton, loreButton;
     private NumberField countField, damageField;
     private StyledDataTextField idField;
     private SliderTag countSlider, damageSlider;
@@ -156,8 +156,10 @@ public class MainScreen extends ParentItemScreen {
         int resetWidth = font.width(resetLore);
         int resetX = width - 22 - resetWidth / 2;
         int nameX = 2 * width / 3 + 16;
+        loreButton = addButton(new StyledTextButton(width * 2 / 3 + 16 + (width / 3 / 2 / 2), 95, 20, I18n.get("gui.loreeditor"), t -> minecraft.setScreen(new LoreEditorScreen(null, item))));
         nameField = new StyledDataTextField(font, nameX, 55, resetX - nameX - resetWidth / 2 - 7, 20, item.getDisplayNameTag());
         displayWidgets.add(nameField);
+        displayWidgets.add(loreButton);
         children.add(nameField);
         clearButton = addButton(new StyledTextButton(resetX, 67, resetWidth, resetLore, b -> {
             nameField.setText(item.getDisplayNameTag().getDefault().getString());
