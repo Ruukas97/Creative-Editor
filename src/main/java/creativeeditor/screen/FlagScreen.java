@@ -2,7 +2,6 @@ package creativeeditor.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.screen.widgets.StyledBitToggle;
-import creativeeditor.screen.widgets.StyledToggle;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.data.DataItem;
 import creativeeditor.screen.widgets.StyledButton;
@@ -36,13 +35,13 @@ public class FlagScreen extends ParentItemScreen {
             if(i >= amount-1) {
                 addButton(new StyledButton(x, y, 120, 20, I18n.get("flag.switchall"), (Button b) -> {
                     for(int j = 0; j < amount-1; j++) {
-                        item.getTag().getDisplayHideFlags().get()[j] = !item.getTag().getDisplayHideFlags().get()[j];
+                        item.getTag().getHideFlags().get()[j] = !item.getTag().getHideFlags().get()[j];
                         init();
                     }
                 }));
                 continue;
             }
-            addButton(new StyledBitToggle(x, y, 120, 20, I18n.get(HideFlagUtils.Flags.values()[i].getKey()), item.getTag().getDisplayHideFlags(), i));
+            addButton(new StyledBitToggle(x, y, 120, 20, I18n.get(HideFlagUtils.Flags.values()[i].getKey()), item.getTag().getHideFlags(), i));
         }
 
     }

@@ -31,6 +31,7 @@ public class ParentItemScreen extends ParentScreen {
     protected boolean renderItem = true;
     protected float itemScale = 2.0f;
     protected float itemRotX = 0.0f;
+    protected int correctX = 0;
 
     // render tooltip top left
     protected boolean renderToolTip = false;
@@ -111,6 +112,11 @@ public class ParentItemScreen extends ParentScreen {
             this.itemScale = scale;
     }
 
+    public void setRenderItem(boolean shouldRender, float scale, int correctX) {
+        setRenderItem(shouldRender, scale);
+        this.correctX = correctX;
+    }
+
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (super.mouseClicked(mouseX, mouseY, mouseButton)) {
@@ -139,7 +145,7 @@ public class ParentItemScreen extends ParentScreen {
             Item ite = item.getItem().getItem();
             int x = width / 2;
             int y = 60;
-            int xFrameStart = x - 19;
+            int xFrameStart = x - 19 + correctX;
             int xFrameEnd = x + 19;
             int yFrameStart = 41;
             if (ite == Items.AIR) {

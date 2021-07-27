@@ -151,5 +151,6 @@
   "gui.tagexplorer.help": "Use %%s for integer variable",
   "gui.tagexplorer.explore": "Explore",
   "gui.loreeditor": "Lore Editor",
-  "gui.loreeditor.addline": "Add line"
+  "gui.loreeditor.addline": "Add line",
+  "gui.loreeditor.copy": "Copy"
 }

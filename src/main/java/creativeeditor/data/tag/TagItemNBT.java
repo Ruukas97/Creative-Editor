@@ -40,8 +40,9 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
     @Getter
     private final TagDisplay display;
 
+
     @Getter
-    private final TagHideFlags displayHideFlags;
+    private final TagHideFlags hideFlags;
 
     // Enchantments
     @Getter
@@ -132,8 +133,9 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
         // Display
         display = add(keys.tagDisplay(), new TagDisplay(item, nbt.getCompound(keys.tagDisplay())));
 
+
         // Flags
-        displayHideFlags = add(keys.tagHideFlags(), new TagHideFlags(nbt.getInt(keys.tagHideFlags())));
+        hideFlags = add(keys.tagHideFlags(), new TagHideFlags(nbt.getInt(keys.tagHideFlags())));
 
         // Enchantments
         enchantments = add(keys.tagEnchantments(), new TagList<>(nbt.getList(keys.tagEnchantments(), NBT.TAG_COMPOUND), TagEnchantment::new));
