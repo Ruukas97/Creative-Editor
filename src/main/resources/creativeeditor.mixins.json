@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "creativeeditor.mixin",
+  "refmap": "creativeeditor.refmap.json",
+  "mixins": [
+    "SharedConstantsMixin",
+    "TextFormattingMixin"
+  ],
+  "client": [],
+  "server": []
+}
