@@ -1,13 +1,13 @@
 package creativeeditor.util;
 
-import java.util.concurrent.Callable;
-import java.util.function.Supplier;
-
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+
+import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 
 public class ReflectionUtils {
     public static void setTeisr(Item item, Supplier<Callable<ItemStackTileEntityRenderer>> teisr) {

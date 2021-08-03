@@ -1,7 +1,5 @@
 package creativeeditor.data.tag;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import creativeeditor.data.Data;
 import creativeeditor.data.version.NBTKeys;
 import lombok.AllArgsConstructor;
@@ -11,6 +9,7 @@ import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.tileentity.BannerPattern;
+import org.apache.commons.lang3.tuple.Pair;
 
 @AllArgsConstructor
 public class TagBannerPattern implements Data<Pair<BannerPattern, DyeColor>, CompoundNBT> {

@@ -1,11 +1,8 @@
 package creativeeditor.screen;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import creativeeditor.screen.widgets.StyledTextField;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
@@ -18,9 +15,10 @@ import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
+
+import java.util.List;
 
 public abstract class ParentScreen extends Screen {
     protected final Screen lastScreen;

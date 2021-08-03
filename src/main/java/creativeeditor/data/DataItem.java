@@ -1,7 +1,6 @@
 package creativeeditor.data;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-
 import creativeeditor.data.tag.TagDamage;
 import creativeeditor.data.tag.TagDisplayName;
 import creativeeditor.data.tag.TagItemID;

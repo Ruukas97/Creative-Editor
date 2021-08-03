@@ -1,7 +1,5 @@
 package creativeeditor.data.tag;
 
-import javax.annotation.Nonnull;
-
 import com.mojang.serialization.Lifecycle;
 import creativeeditor.data.base.DataString;
 import net.minecraft.item.Item;
@@ -11,6 +9,8 @@ import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.registries.GameData;
+
+import javax.annotation.Nonnull;
 
 public class TagItemID extends DataString {
     public TagItemID(INBT value) {

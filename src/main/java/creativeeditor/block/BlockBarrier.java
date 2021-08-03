@@ -1,12 +1,12 @@
 package creativeeditor.block;
 
 import creativeeditor.CreativeEditor;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.BarrierBlock;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 
 public class BlockBarrier extends BarrierBlock {
 

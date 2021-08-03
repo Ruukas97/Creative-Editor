@@ -1,16 +1,15 @@
 package creativeeditor.events;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.util.text.StringTextComponent;
-import org.lwjgl.openal.ALUtil;
-
 import net.minecraft.client.gui.screen.OptionsSoundsScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.lwjgl.openal.ALUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScreenHandler {
 

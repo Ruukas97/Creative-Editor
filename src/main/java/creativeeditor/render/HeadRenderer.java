@@ -1,46 +1,25 @@
 package creativeeditor.render;
 
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.common.cache.LoadingCache;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-
-import net.minecraft.block.AbstractSkullBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.SkullBlock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.model.GenericHeadModel;
 import net.minecraft.client.renderer.entity.model.HumanoidHeadModel;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.SkullTileEntityRenderer;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.SkinManager;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTUtil;
 import net.minecraft.profiler.Snooper;
-import net.minecraft.tileentity.SkullTileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.LazyValue;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+
+import java.util.Map;
+import java.util.Random;
 
 public class HeadRenderer extends ItemStackTileEntityRenderer {
     public static final LazyValue<LoadingCache<GameProfile, Map<Type, MinecraftProfileTexture>>> skinLoader = new LazyValue<>(() -> {

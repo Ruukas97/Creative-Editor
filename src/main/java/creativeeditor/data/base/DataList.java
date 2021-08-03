@@ -1,13 +1,12 @@
 package creativeeditor.data.base;
 
-import java.util.List;
-import java.util.ListIterator;
-
 import com.google.common.collect.Lists;
-
 import creativeeditor.data.Data;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
+
+import java.util.List;
+import java.util.ListIterator;
 
 public abstract class DataList<E extends Data<?, ?>> extends SingularData<List<E>, ListNBT> implements Iterable<E> {
     public DataList() {

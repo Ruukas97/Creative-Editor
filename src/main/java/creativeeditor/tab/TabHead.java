@@ -1,7 +1,5 @@
 package creativeeditor.tab;
 
-import java.util.ArrayList;
-
 import creativeeditor.json.CachedHead;
 import creativeeditor.json.MinecraftHeads;
 import creativeeditor.json.MinecraftHeadsCategory;
@@ -10,6 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
+
+import java.util.ArrayList;
 
 public class TabHead extends TabCreative {
     public static ItemStack fallbackIcon = new ItemStack(Items.PLAYER_HEAD);

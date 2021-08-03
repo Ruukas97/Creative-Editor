@@ -1,8 +1,7 @@
 package creativeeditor.util;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
+import org.lwjgl.opengl.GL11;
 
 public class RenderUtil {
     public static void glScissorBox(int left, int top, int right, int bottom) {

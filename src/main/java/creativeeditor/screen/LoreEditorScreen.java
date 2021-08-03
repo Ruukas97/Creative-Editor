@@ -2,13 +2,11 @@ package creativeeditor.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.data.DataItem;
-import creativeeditor.data.base.DataList;
 import creativeeditor.data.base.DataString;
 import creativeeditor.screen.widgets.LoreWidget;
 import creativeeditor.screen.widgets.ScrollableScissorWindow;
 import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.util.ColorUtils;
-import net.minecraft.client.KeyboardListener;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;

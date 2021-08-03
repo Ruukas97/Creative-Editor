@@ -16,7 +16,6 @@ import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;

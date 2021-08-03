@@ -1,13 +1,11 @@
 package creativeeditor.screen.widgets;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
-
-import javax.annotation.Nullable;
-
 import creativeeditor.data.DataItem;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.item.ArmorStandItem;
+
+import javax.annotation.Nullable;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class ClassSpecificWidget {
     public final String text;

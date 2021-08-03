@@ -1,25 +1,19 @@
 package creativeeditor.data.tag;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.mojang.authlib.GameProfile;
-
 import creativeeditor.data.Data;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.NumberRangeInt;
-import creativeeditor.data.base.DataBoolean;
-import creativeeditor.data.base.DataColor;
-import creativeeditor.data.base.DataInteger;
-import creativeeditor.data.base.DataListString;
-import creativeeditor.data.base.DataString;
+import creativeeditor.data.base.*;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants.NBT;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
     @Getter

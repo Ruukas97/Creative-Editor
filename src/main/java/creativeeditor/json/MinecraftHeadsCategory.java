@@ -1,10 +1,10 @@
 package creativeeditor.json;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import lombok.Getter;
 import net.minecraft.util.text.TranslationTextComponent;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public enum MinecraftHeadsCategory {
     // @formatter:off

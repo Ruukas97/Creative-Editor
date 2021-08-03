@@ -1,10 +1,10 @@
 package creativeeditor.data.base;
 
-import java.util.List;
-
 import creativeeditor.data.Data;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
+
+import java.util.List;
 
 public class DataListUncontrolled extends DataList<Data<?, ?>> {
     public DataListUncontrolled() {

@@ -1,15 +1,14 @@
 package creativeeditor.data.tag;
 
-import java.util.List;
-import java.util.ListIterator;
-import java.util.function.Function;
-
 import com.google.common.collect.Lists;
-
 import creativeeditor.data.Data;
 import creativeeditor.data.base.SingularData;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
+
+import java.util.List;
+import java.util.ListIterator;
+import java.util.function.Function;
 
 public class TagList<E extends Data<?, ?>> extends SingularData<List<E>, ListNBT> implements Iterable<E> {
     protected Function<INBT, E> addFunction;

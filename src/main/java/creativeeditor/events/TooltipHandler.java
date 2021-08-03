@@ -1,7 +1,6 @@
 package creativeeditor.events;
 
 import creativeeditor.screen.ParentScreen;
-import creativeeditor.styles.Style;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.styles.StyleVanilla;
 import creativeeditor.util.ColorUtils.Color;

@@ -2,7 +2,6 @@ package creativeeditor.util;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import creativeeditor.data.DataItem;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
 import net.minecraft.client.Minecraft;

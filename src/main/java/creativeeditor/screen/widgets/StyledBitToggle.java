@@ -1,7 +1,6 @@
 package creativeeditor.screen.widgets;
 
 import creativeeditor.data.base.DataBitField;
-import creativeeditor.data.base.DataBoolean;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.StringTextComponent;
 

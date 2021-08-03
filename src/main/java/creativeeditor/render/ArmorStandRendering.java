@@ -5,7 +5,6 @@ import creativeeditor.data.base.DataBoolean;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
 import net.minecraft.item.ArmorStandItem;
 import net.minecraft.item.IItemPropertyGetter;
-import net.minecraft.util.ResourceLocation;
 
 public class ArmorStandRendering {
 

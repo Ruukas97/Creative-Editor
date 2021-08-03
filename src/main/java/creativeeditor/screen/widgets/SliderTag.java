@@ -1,9 +1,6 @@
 package creativeeditor.screen.widgets;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.util.text.StringTextComponent;
-import org.lwjgl.glfw.GLFW;
-
 import creativeeditor.data.NumberRangeInt;
 import creativeeditor.styles.IStyledSlider;
 import creativeeditor.styles.StyleManager;
@@ -11,9 +8,10 @@ import creativeeditor.styles.StyleSpectrum;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.lwjgl.glfw.GLFW;
 
 @OnlyIn(Dist.CLIENT)
 public class SliderTag extends Widget implements IStyledSlider<Integer> {
