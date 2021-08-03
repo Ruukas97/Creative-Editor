@@ -1,16 +1,14 @@
 package creativeeditor.data.base;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.google.common.collect.Maps;
-
 import creativeeditor.data.Data;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> {
 

@@ -1,10 +1,7 @@
 package creativeeditor.data.tag;
 
-import java.util.UUID;
-
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.yggdrasil.response.MinecraftProfilePropertiesResponse;
-
 import creativeeditor.data.base.SingularData;
 import creativeeditor.json.MinecraftHeadsResponse;
 import net.minecraft.nbt.CompoundNBT;

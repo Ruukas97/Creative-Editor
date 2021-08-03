@@ -1,9 +1,8 @@
 package creativeeditor.util;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
-
-import javax.annotation.Nullable;
 
 public class RandomUtils {
     public static final Random RANDOM = new Random();

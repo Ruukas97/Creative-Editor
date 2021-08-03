@@ -1,12 +1,11 @@
 package creativeeditor.json;
 
-import java.util.UUID;
-
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
-
 import lombok.Getter;
+
+import java.util.UUID;
 
 public class MinecraftHeadsResponse {
     private String uuid;

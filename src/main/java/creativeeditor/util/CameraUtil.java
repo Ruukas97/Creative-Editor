@@ -1,7 +1,6 @@
 package creativeeditor.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 
 public class CameraUtil {
     public static void cyclePerspective() {

@@ -1,15 +1,8 @@
 package creativeeditor.util;
 
-import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import creativeeditor.data.DataItem;
 import creativeeditor.screen.ParentScreen;
 import creativeeditor.util.ColorUtils.Color;
@@ -24,8 +17,11 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
 import net.minecraftforge.fml.client.gui.GuiUtils;
+
+import javax.annotation.Nullable;
+import java.net.URI;
+import java.util.List;
 
 public class GuiUtil extends GuiUtils {
     @SuppressWarnings("resource")

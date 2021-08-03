@@ -1,24 +1,21 @@
 package creativeeditor.screen.widgets;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.util.text.StringTextComponent;
-import org.lwjgl.opengl.GL11;
-
 import com.google.common.collect.Lists;
-
+import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.GuiUtil;
 import creativeeditor.util.RenderUtil;
 import lombok.Getter;
+import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.INestedGuiEventHandler;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.StringTextComponent;
+import org.lwjgl.opengl.GL11;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ScrollableScissorWindow extends Widget implements INestedGuiEventHandler {
     @Nullable

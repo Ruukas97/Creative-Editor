@@ -1,10 +1,10 @@
 package creativeeditor.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import creativeeditor.screen.widgets.StyledBitToggle;
-import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.data.DataItem;
+import creativeeditor.screen.widgets.StyledBitToggle;
 import creativeeditor.screen.widgets.StyledButton;
+import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.HideFlagUtils;
 import creativeeditor.util.ItemRendererUtils;
 import net.minecraft.client.gui.screen.Screen;

@@ -1,28 +1,21 @@
 package creativeeditor.events;
 
+import creativeeditor.CreativeEditor;
 import creativeeditor.data.DataItem;
+import creativeeditor.screen.HeadCollectionScreen;
 import creativeeditor.screen.LoreEditorScreen;
 import creativeeditor.screen.MainScreen;
-import net.minecraft.client.gui.screen.inventory.CreativeScreen;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import org.lwjgl.glfw.GLFW;
-
-import creativeeditor.CreativeEditor;
-import creativeeditor.screen.HeadCollectionScreen;
-import creativeeditor.screen.WindowManagerScreen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import org.lwjgl.glfw.GLFW;
 
 public class KeyInputHandler {
     private static KeyBinding OPEN_EDITOR_KEY;

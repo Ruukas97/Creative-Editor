@@ -1,33 +1,10 @@
 package creativeeditor.data;
 
-import javax.annotation.Nullable;
-
-import creativeeditor.data.base.DataByte;
-import creativeeditor.data.base.DataByteArray;
-import creativeeditor.data.base.DataDouble;
-import creativeeditor.data.base.DataFloat;
-import creativeeditor.data.base.DataInteger;
-import creativeeditor.data.base.DataIntegerArray;
-import creativeeditor.data.base.DataListUncontrolled;
-import creativeeditor.data.base.DataLong;
-import creativeeditor.data.base.DataLongArray;
-import creativeeditor.data.base.DataMap;
-import creativeeditor.data.base.DataShort;
-import creativeeditor.data.base.DataString;
-import net.minecraft.nbt.ByteArrayNBT;
-import net.minecraft.nbt.ByteNBT;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.DoubleNBT;
-import net.minecraft.nbt.FloatNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.IntArrayNBT;
-import net.minecraft.nbt.IntNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.LongArrayNBT;
-import net.minecraft.nbt.LongNBT;
-import net.minecraft.nbt.ShortNBT;
-import net.minecraft.nbt.StringNBT;
+import creativeeditor.data.base.*;
+import net.minecraft.nbt.*;
 import net.minecraftforge.common.util.Constants.NBT;
+
+import javax.annotation.Nullable;
 
 public interface Data<E, T extends INBT> {
     E getData();

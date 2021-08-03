@@ -1,15 +1,14 @@
 package creativeeditor.config;
 
-import java.nio.file.Path;
-
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
-
 import creativeeditor.CreativeEditor;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+
+import java.nio.file.Path;
 
 @Mod.EventBusSubscriber(modid = CreativeEditor.MODID)
 public class Config {

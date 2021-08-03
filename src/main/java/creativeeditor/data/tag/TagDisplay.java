@@ -34,7 +34,7 @@ public class TagDisplay implements Data<TagDisplay, CompoundNBT> {
 
     @Override
     public boolean isDefault() {
-        return color.isDefault() && name.isDefault() && lore.isDefault();
+        return color.isDefault() && mapColor.isDefault() && name.isDefault() && lore.isDefault();
     }
 
 

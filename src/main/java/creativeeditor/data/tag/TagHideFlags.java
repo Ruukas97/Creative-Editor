@@ -1,7 +1,6 @@
 package creativeeditor.data.tag;
 
 import creativeeditor.data.base.DataBitField;
-import creativeeditor.data.base.DataBoolean;
 import net.minecraft.nbt.IntNBT;
 
 public class TagHideFlags extends DataBitField {
