@@ -32,8 +32,6 @@ public class ItemWidgets extends WidgetIteratorBase {
         add(new ClassSpecificWidget(I18n.get("gui.color"), dItem -> getColorableItem(dItem) != null, (item, info) -> new StyledTextButton(info.withTrigger(button -> {
             if (item.getItem().getItem() instanceof IDyeableArmorItem) {
                 mc.setScreen(new ColorScreen(info.getParent(), item, getColorableItem(item), 10511680, false));
-            } else if(item.getItem().getItem() instanceof FilledMapItem) {
-                mc.setScreen(new ColorScreen(info.getParent(), item, getColorableItem(item), 1, false));
             } else {
                 mc.setScreen(new ColorScreen(info.getParent(), item, getColorableItem(item), false));
             }
