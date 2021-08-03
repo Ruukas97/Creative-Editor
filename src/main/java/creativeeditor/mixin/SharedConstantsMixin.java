@@ -9,7 +9,7 @@ public class SharedConstantsMixin {
 
     @Overwrite
     public static boolean isAllowedChatCharacter(char p) { //func_71566_a
-        return (p >= ' ' && p != ' ');
+        return (p >= ' ' && p != '');
     }
 
 }

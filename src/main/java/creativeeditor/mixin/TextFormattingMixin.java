@@ -11,6 +11,6 @@ public class TextFormattingMixin {
 
     @Overwrite
     public static String stripFormatting(@Nullable String string) { // func_110646_a
-        return string == null ? null : string;
+        return string;
     }
 }
