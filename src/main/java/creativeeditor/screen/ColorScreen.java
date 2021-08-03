@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataColor;
 import creativeeditor.screen.widgets.HexField;
+import creativeeditor.screen.widgets.SliderColorTag;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
 import lombok.Getter;
@@ -47,7 +48,12 @@ public class ColorScreen extends ParentItemScreen {
     @Override
     protected void init() {
         super.init();
-        hex = addButton(new HexField(font, width / 3 + 11, 100, 16, color));
+        hex = addButton(new HexField(font, width / 3 + (font.width("#FFFFFF") + 8), (height / 3 + 20 * 2) + 10, 16, color));
+        int yStart = this.height / 2 - 50;
+        int x = width * 2 / 3 + 16;
+        addButton(new SliderColorTag(x, yStart, width - 20 - x, 20, color, 0)); // red
+        addButton(new SliderColorTag(x, yStart + 35, width - 20 - x, 20, color, 1)); // green
+        addButton(new SliderColorTag(x, yStart + 70, width - 20 - x, 20, color, 2)); // blue
     }
 
 
@@ -132,7 +138,6 @@ public class ColorScreen extends ParentItemScreen {
 
     @Override
     public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color guiColor) {
-        guiColor = color;
         super.backRender(matrix, mouseX, mouseY, p3, guiColor);
 
         // First vertical line
@@ -147,6 +152,9 @@ public class ColorScreen extends ParentItemScreen {
         int leftText = (5 + width / 3) / 2;
         drawCenteredString(matrix, font, "Color Pickers", leftText, 30, guiColor.getInt());
         drawCenteredString(matrix, font, "HSB Picker", leftText, 45, guiColor.getInt());
+
+        int rightText = width * 2 / 3 + 16;
+        drawCenteredString(matrix, font, "RGB Sliders", rightText + ((width - 20 - rightText) / 2), 30, guiColor.getInt());
 
 
         int x = 25;
@@ -184,27 +192,26 @@ public class ColorScreen extends ParentItemScreen {
 
     @Override
     public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color guiColor) {
-        guiColor = color;
         super.mainRender(matrix, mouseX, mouseY, p3, guiColor);
         int halfWidth = width / 2;
+        int yStart = height / 3 + 15;
         Color color = this.color;
         int i = 0;
-        drawCenteredString(matrix, font, I18n.get("gui.color.rgb", color.getRed(), color.getGreen(), color.getBlue()), halfWidth, 35 + (20 * i++), color.getInt());
-        float[] hsb = java.awt.Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
-        drawCenteredString(matrix, font, I18n.get("gui.color.hsb", hsb[0], hsb[1], hsb[2]), halfWidth, 35 + (20 * i++), color.getInt());
+        drawCenteredString(matrix, font, I18n.get("gui.color.rgb", color.getRed(), color.getGreen(), color.getBlue()), halfWidth, yStart + (20 * i++), guiColor.getInt());
+//        float[] hsb = java.awt.Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
+//        drawCenteredString(matrix, font, I18n.get("gui.color.hsb", hsb[0], hsb[1], hsb[2]), halfWidth, 35 + (20 * i++), color.getInt());
         // Color color2 = MathHelper.hsvToRGB( hue, saturation, value );
-        drawCenteredString(matrix, font, I18n.get("gui.color.hsv", color.getHue(), color.getHSVSaturation(), color.getValue()), halfWidth, 35 + (20 * i++), color.getInt());
-        if (useAlpha) {
-            drawCenteredString(matrix, font, I18n.get("gui.color.alpha", color.getAlpha()), halfWidth, 35 + (20 * i++), color.getInt());
-        }
-        drawCenteredString(matrix, font, I18n.get("gui.color.hex", color.getHexString()), halfWidth, 35 + (20 * i++), color.getInt());
-        drawCenteredString(matrix, font, I18n.get("gui.color.dec", (color.getInt() & 0xFFFFFF)), halfWidth, 35 + (20 * i++), color.getInt());
+//        drawCenteredString(matrix, font, I18n.get("gui.color.hsv", color.getHue(), color.getHSVSaturation(), color.getValue()), halfWidth, 35 + (20 * i++), color.getInt());
+//        if (useAlpha) {
+//            drawCenteredString(matrix, font, I18n.get("gui.color.alpha", color.getAlpha()), halfWidth, 35 + (20 * i++), color.getInt());
+//        }
+        drawCenteredString(matrix, font, I18n.get("gui.color.hex", color.getHexString()), halfWidth, yStart + (20 * i++), guiColor.getInt());
+//        drawCenteredString(matrix, font, I18n.get("gui.color.dec", (color.getInt() & 0xFFFFFF)), halfWidth, 35 + (20 * i++), color.getInt());
     }
 
 
     @Override
     public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color guiColor) {
-        guiColor = color;
         super.overlayRender(matrix, mouseX, mouseY, p3, guiColor);
         GuiUtil.addToolTip(matrix, this, resetButton, mouseX, mouseY, I18n.get("gui.color.reset"));
     }

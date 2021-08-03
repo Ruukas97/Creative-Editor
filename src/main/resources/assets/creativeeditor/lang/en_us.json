@@ -152,5 +152,7 @@
   "gui.tagexplorer.explore": "Explore",
   "gui.loreeditor": "Lore Editor",
   "gui.loreeditor.addline": "Add line",
-  "gui.loreeditor.copy": "Copy"
+  "gui.loreeditor.copy": "Copy",
+  "gui.potion": "Potion Editor",
+  "gui.potion.color": "Color Editor"
 }

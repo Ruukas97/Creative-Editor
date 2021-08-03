@@ -1,27 +1,16 @@
 package creativeeditor.screen.widgets.base;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
 import creativeeditor.data.DataItem;
-import creativeeditor.screen.ArmorstandScreen;
-import creativeeditor.screen.ColorScreen;
-import creativeeditor.screen.EnchantmentScreen;
-import creativeeditor.screen.EntitySpecificScreen;
+import creativeeditor.data.base.DataColor;
+import creativeeditor.screen.*;
 import creativeeditor.screen.widgets.ClassSpecificWidget;
 import creativeeditor.screen.widgets.StyledTextButton;
-import creativeeditor.screen.widgets.WidgetInfo;
-import creativeeditor.screen.widgets.WidgetInfoSupport;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.gui.widget.button.Button.IPressable;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.item.*;
+
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 public class ItemWidgets extends WidgetIteratorBase {
 
@@ -36,10 +25,31 @@ public class ItemWidgets extends WidgetIteratorBase {
         add(new ClassSpecificWidget(I18n.get("gui.entityspecific"), dItem -> isEntityItem(dItem.getItem().getItem()), (item, info) ->
                 new StyledTextButton(info.withTrigger(button -> mc.setScreen(new EntitySpecificScreen(info.getParent(), item))))
         ));
-
-        add(new ClassSpecificWidget(I18n.get("gui.color"), dItem -> dItem.getItem().getItem() instanceof IDyeableArmorItem, (item, info) ->
-                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new ColorScreen(info.getParent(), item, item.getTag().getDisplay().getColor(), 10511680, false))))
+        add(new ClassSpecificWidget(I18n.get("gui.potion"), dItem -> dItem.getItem().getItem() instanceof PotionItem, (item, info) ->
+                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new PotionEditorScreen(info.getParent(), item))))
         ));
+
+        add(new ClassSpecificWidget(I18n.get("gui.color"), dItem -> getColorableItem(dItem) != null, (item, info) -> new StyledTextButton(info.withTrigger(button -> {
+            if (item.getItem().getItem() instanceof IDyeableArmorItem) {
+                mc.setScreen(new ColorScreen(info.getParent(), item, getColorableItem(item), 10511680, false));
+            } else if(item.getItem().getItem() instanceof FilledMapItem) {
+                mc.setScreen(new ColorScreen(info.getParent(), item, getColorableItem(item), 1, false));
+            } else {
+                mc.setScreen(new ColorScreen(info.getParent(), item, getColorableItem(item), false));
+            }
+        }))));
+    }
+
+    private DataColor getColorableItem(DataItem item) {
+        Item stack = item.getItem().getItem();
+        if(stack instanceof PotionItem) {
+            return item.getTag().getPotionColor();
+        } else if(stack instanceof IDyeableArmorItem) {
+            return item.getTag().getDisplay().getColor();
+        } else if(stack instanceof FilledMapItem) {
+            return item.getTag().getDisplay().getMapColor();
+        }
+        return null;
     }
 
     private boolean isEntityItem(Item item) {
