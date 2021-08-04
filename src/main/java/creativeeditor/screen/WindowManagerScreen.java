@@ -1,6 +1,5 @@
 package creativeeditor.screen;
 
-import com.ibm.icu.text.TimeZoneNames;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;

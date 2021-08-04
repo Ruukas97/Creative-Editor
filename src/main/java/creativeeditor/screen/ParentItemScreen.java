@@ -9,6 +9,7 @@ import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -95,9 +96,22 @@ public class ParentItemScreen extends ParentScreen {
 
     public void drop(Widget w) {
         if (item.getItem().getItem() != Items.AIR) {
-            minecraft.getConnection().send(new CCreativeInventoryActionPacket(-1, item.getItemStack()));
-            // Shift for /give
+            if(hasShiftDown()) {
+
+                minecraft.keyboardHandler.setClipboard(generateGiveCommand(item));
+            } else {
+                minecraft.getConnection().send(new CCreativeInventoryActionPacket(-1, item.getItemStack()));
+            }
+
         }
+    }
+
+    private String generateGiveCommand(DataItem item) {
+        String nbt = item.getTag().getNBT().toString();
+        nbt = (nbt.length() > 2) ? nbt : "";
+        String resource_location = item.getItem().getItem().getRegistryName().toString();
+        String amount = item.getCount().get() > 1 ? " " + item.getCount().get() : "";
+        return "/give @p " + resource_location + nbt + amount;
     }
 
 
@@ -139,6 +153,7 @@ public class ParentItemScreen extends ParentScreen {
     public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
         super.overlayRender(matrix, mouseX, mouseY, p3, color);
         // Item (Tooltip must render last or colors will be messed up)
+        GuiUtil.addToolTip(matrix, this, dropButton, mouseX, mouseY, I18n.get("gui.main.copyclipboard"));
         if (renderItem) {
             ItemStack stack = item.getItemStack();
 

@@ -349,7 +349,8 @@ public class MainScreen extends ParentItemScreen {
 
         // Item Name
         String itemCount = item.getCount().get() > 1 ? item.getCount().get() + "x " : "";
-        String itemOverview = itemCount + item.getItemStack().getDisplayName().getString();
+        String displayName = item.getItemStack().getDisplayName().getString();
+        String itemOverview = itemCount + addChar(displayName, "§r", displayName.length() - 1);
         String overviewTrimmed = font.plainSubstrByWidth(itemOverview, width / 3 - 15);
         drawCenteredString(matrix, font, overviewTrimmed.equals(itemOverview) ? overviewTrimmed : overviewTrimmed + "...", width / 2, 27, color.getInt());
 
@@ -380,6 +381,10 @@ public class MainScreen extends ParentItemScreen {
         //drawString( font, item.getItem().getIDExcludingMC(), x + 6 + idoffset, 85, color.getInt() );
 
         drawString(matrix, font, count, x, 105, color.getInt());
+    }
+
+    private String addChar(String str, String ch, int position) {
+        return str.substring(0, position) + ch + str.substring(position);
     }
 
 

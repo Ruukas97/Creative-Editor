@@ -3,7 +3,6 @@ package creativeeditor.registry;
 import creativeeditor.CreativeEditor;
 import creativeeditor.block.BlockBarrier;
 import net.minecraft.block.Block;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

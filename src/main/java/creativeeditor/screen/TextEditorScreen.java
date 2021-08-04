@@ -1,12 +1,6 @@
 package creativeeditor.screen;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
-import org.lwjgl.glfw.GLFW;
-
 import creativeeditor.data.base.DataString;
 import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.util.ColorUtils.Color;
@@ -15,6 +9,10 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.util.text.TranslationTextComponent;
+import org.lwjgl.glfw.GLFW;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TextEditorScreen extends ParentScreen {
     //private boolean plainText;

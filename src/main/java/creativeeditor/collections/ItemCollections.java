@@ -1,18 +1,17 @@
 package creativeeditor.collections;
 
-import java.util.ArrayList;
-
 import com.mojang.serialization.Lifecycle;
 import creativeeditor.tab.TabHead;
 import lombok.Getter;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.registries.GameData;
+
+import java.util.ArrayList;
 
 public class ItemCollections implements Iterable<ItemCollection> {
     public static final ItemCollections INSTANCE = new ItemCollections();

@@ -1,10 +1,6 @@
 package creativeeditor.screen;
 
-import java.util.Comparator;
-import java.util.List;
-
 import com.google.common.collect.Lists;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.data.tag.TagEnchantment;
 import creativeeditor.data.tag.TagList;
@@ -22,6 +18,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Comparator;
+import java.util.List;
 
 public class EnchantmentScreen extends ParentScreen {
 

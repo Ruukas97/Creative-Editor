@@ -154,5 +154,6 @@
   "gui.loreeditor.addline": "Add line",
   "gui.loreeditor.copy": "Copy",
   "gui.potion": "Potion Editor",
-  "gui.potion.color": "Color Editor"
+  "gui.potion.color": "Color Editor",
+  "gui.main.copyclipboard": "Hold shift to copy /give command to clipboard"
 }

@@ -1,13 +1,13 @@
 package creativeeditor.collections;
 
-import javax.annotation.Nullable;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+
+import javax.annotation.Nullable;
 
 @AllArgsConstructor
 public class ItemGroupCollection implements ItemCollection {

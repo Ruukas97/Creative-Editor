@@ -1,5 +1,11 @@
 package creativeeditor.players;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
+import creativeeditor.CreativeEditor;
+import lombok.Getter;
+
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -7,14 +13,6 @@ import java.io.Reader;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.UUID;
-
-import javax.annotation.Nullable;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
-
-import creativeeditor.CreativeEditor;
-import lombok.Getter;
 
 public class PlayerInfo {
     private static final Path PATH = CreativeEditor.DATAPATH.resolve("players");

@@ -1,18 +1,5 @@
 package creativeeditor.particle;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.IParticleFactory;
-import net.minecraft.client.particle.IParticleRenderType;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.SpriteTexturedParticle;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particles.BasicParticleType;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
 //public class ParticleBarrier extends SpriteTexturedParticle {
 //    private ParticleBarrier(ClientWorld world, double x, double y, double z, IItemProvider item) {
 //        super(world , x, y, z);
