@@ -2,8 +2,8 @@ package creativeeditor.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.data.DataItem;
-import creativeeditor.util.EntityDrawUtils;
 import creativeeditor.util.ColorUtils;
+import creativeeditor.util.EntityDrawUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.item.ArmorStandEntity;

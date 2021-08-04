@@ -1,13 +1,7 @@
 package creativeeditor;
 
-import java.nio.file.Path;
-
-import creativeeditor.events.*;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import creativeeditor.config.Config;
+import creativeeditor.events.*;
 import creativeeditor.render.ArmorStandRendering;
 import creativeeditor.render.HeadRenderer;
 import creativeeditor.render.ShieldRenderer;
@@ -20,7 +14,12 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.nio.file.Path;
 
 @Mod(CreativeEditor.MODID)
 public class CreativeEditor {

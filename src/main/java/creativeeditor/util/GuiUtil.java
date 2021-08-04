@@ -17,10 +17,13 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.ITextProperties;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.client.gui.GuiUtils;
 
 import javax.annotation.Nullable;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GuiUtil extends GuiUtils {
@@ -214,8 +217,11 @@ public class GuiUtil extends GuiUtils {
 
 
     public static void addToolTip(MatrixStack matrix, Screen screen, int xPos, int yPos, String... str) {
-//        List<? extends ITextProperties> list = Arrays.asList(str);
-//        drawHoveringText(null, matrix, list, xPos, yPos, screen.width, screen.height, -1, getFontRenderer());
+        List<ITextProperties> list = new ArrayList<>();
+        for(String s : str) {
+            list.add(new StringTextComponent(s));
+        }
+        drawHoveringText(null, matrix, list, xPos, yPos, screen.width, screen.height, -1, getFontRenderer());
     }
 
 

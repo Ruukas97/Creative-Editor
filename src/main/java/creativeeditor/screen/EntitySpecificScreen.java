@@ -4,7 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.data.DataItem;
 import creativeeditor.util.ColorUtils;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class EntitySpecificScreen extends ParentItemScreen{

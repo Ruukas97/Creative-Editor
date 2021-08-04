@@ -1,10 +1,7 @@
 package creativeeditor.screen;
 
-import java.util.Date;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import creativeeditor.collections.ItemCollection;
 import creativeeditor.collections.ItemCollections;
 import creativeeditor.styles.StyleManager;
@@ -17,6 +14,8 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TranslationTextComponent;
+
+import java.util.Date;
 
 public class ItemSpawnerScreen extends ParentScreen {
     private static final Inventory TMP_INVENTORY = new Inventory(45);

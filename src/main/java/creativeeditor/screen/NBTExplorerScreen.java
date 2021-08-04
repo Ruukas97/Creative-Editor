@@ -1,9 +1,5 @@
 package creativeeditor.screen;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.CreativeEditor;
 import creativeeditor.data.DataItem;
@@ -13,6 +9,10 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.util.text.TranslationTextComponent;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 
 public class NBTExplorerScreen extends ParentScreen {
     /*
