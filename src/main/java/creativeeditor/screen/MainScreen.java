@@ -67,14 +67,14 @@ public class MainScreen extends ParentItemScreen {
         String nbtLocal = I18n.get("gui.main.nbt");
         String tooltipLocal = I18n.get("gui.main.tooltip");
         String toolsLocal = I18n.get("gui.main.tools");
-        String loreLocal = I18n.get("gui.main.display");
+        String displayLocal = I18n.get("gui.main.display");
         String editLocal = I18n.get("gui.main.data");
         String advancedLocal = I18n.get("gui.main.other");
 
         int nbtWidth = font.width(nbtLocal);
         int tooltipWidth = font.width(tooltipLocal);
         int toolsWidth = font.width(toolsLocal);
-        int loreWidth = font.width(loreLocal);
+        int displayWidth = font.width(displayLocal);
         int editWidth = font.width(editLocal);
         int advancedWidth = font.width(advancedLocal);
 
@@ -83,8 +83,8 @@ public class MainScreen extends ParentItemScreen {
         int tooltipX = (nbtX + toolsX) / 2;
 
         int advancedX = width - 21 - advancedWidth / 2;
-        int loreX = 2 * width / 3 + 17 + loreWidth / 2;
-        int editX = ((loreX + loreWidth / 2) + (advancedX - advancedWidth / 2)) / 2;
+        int loreX = 2 * width / 3 + 17 + displayWidth / 2;
+        int editX = ((loreX + displayWidth / 2) + (advancedX - advancedWidth / 2)) / 2;
 
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
@@ -109,7 +109,7 @@ public class MainScreen extends ParentItemScreen {
             }
         }));
 
-        displayButton = addButton(new StyledTextButton(loreX, 35, loreWidth, loreLocal, b -> {
+        displayButton = addButton(new StyledTextButton(loreX, 35, displayWidth, displayLocal, b -> {
             setRightTab(0, true);
 
             for (Widget lore : displayWidgets) {
@@ -156,7 +156,10 @@ public class MainScreen extends ParentItemScreen {
         int resetWidth = font.width(resetLore);
         int resetX = width - 22 - resetWidth / 2;
         int nameX = 2 * width / 3 + 16;
-        loreButton = addButton(new StyledTextButton(width * 2 / 3 + 16 + (width / 3 / 2 / 2), 95, 20, I18n.get("gui.loreeditor"), t -> minecraft.setScreen(new LoreEditorScreen(null, item))));
+
+        String lore = I18n.get("gui.loreeditor");
+        int loreWidth = font.width(lore);
+        loreButton = addButton(new StyledTextButton(width * 2 / 3 + 16 + (width / 3 / 2 / 2), 95, loreWidth, lore, t -> minecraft.setScreen(new LoreEditorScreen(null, item))));
         nameField = new StyledDataTextField(font, nameX, 55, resetX - nameX - resetWidth / 2 - 7, 20, item.getDisplayNameTag());
         displayWidgets.add(nameField);
         displayWidgets.add(loreButton);
