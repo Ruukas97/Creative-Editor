@@ -28,6 +28,7 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
         this.count = count;
         children = new ArrayList<>();
         field = new StyledTextField(font, 0, 0, fieldWidth, this.height, "lore");
+        field.setMaxStringLength(100);
         up = new StyledButton(0, 0, squareSize, this.height, "\u2191", t -> loreEditorScreen.moveUp(this));
         down = new StyledButton(0, 0, squareSize, this.height, "\u2193", t -> loreEditorScreen.moveDown(this));
         delete = new StyledButton(0, 0, squareSize, this.height, "\u2715", t -> loreEditorScreen.removeLine(this));
@@ -115,4 +116,9 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
         return INestedGuiEventHandler.super.charTyped(p_231042_1_, p_231042_2_);
     }
 
+    @Override
+    public boolean keyPressed(int p_231046_1_, int p_231046_2_, int p_231046_3_) {
+        children.forEach(t -> t.keyPressed(p_231046_1_, p_231046_2_, p_231046_3_));
+        return INestedGuiEventHandler.super.keyPressed(p_231046_1_, p_231046_2_, p_231046_3_);
+    }
 }
