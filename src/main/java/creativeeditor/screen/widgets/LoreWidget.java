@@ -79,10 +79,6 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
         return this;
     }
 
-    @Override
-    public void render(MatrixStack matrix, int mouseX, int mouseY, float partial) {
-        super.render(matrix, mouseX, mouseY, partial);
-    }
 
     @Override
     public boolean mouseClicked(double p_231044_1_, double p_231044_3_, int p_231044_5_) {

@@ -55,12 +55,15 @@ public class MainScreen extends ParentItemScreen {
 
     @Override
     protected void init() {
+        renderColorHelper = true;
         super.init();
         //if (item.getItem().getItem() == Items.AIR)
         //    item.getItem().setItem( Items.STICK );
         if (item.getCount().get() < 1) {
             item.getCount().set(1);
         }
+
+
 
         assert minecraft != null;
         minecraft.keyboardHandler.setSendRepeatsToGui(true);

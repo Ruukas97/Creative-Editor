@@ -5,6 +5,7 @@ import creativeeditor.data.DataItem;
 import creativeeditor.screen.HeadCollectionScreen;
 import creativeeditor.screen.LoreEditorScreen;
 import creativeeditor.screen.MainScreen;
+import creativeeditor.screen.ParentItemScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.settings.KeyBinding;
@@ -12,6 +13,7 @@ import net.minecraft.client.util.InputMappings;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -66,7 +68,13 @@ public class KeyInputHandler {
             mc.levelRenderer.allChanged(); // reload chunks
             System.out.println("Set barrier visibility: " + CreativeEditor.BARRIER_VISIBLE);
         } else if (CreativeEditor.DEBUG && event.getKey() == DEBUG_KEY.getKey().getValue()) {
-             mc.setScreen( new LoreEditorScreen( mc.screen, new DataItem(new ItemStack(Items.DIAMOND))));
+             mc.setScreen( new ParentItemScreen(new StringTextComponent(""), null, new DataItem(new ItemStack(Items.DIAMOND))) {
+                 @Override
+                 protected void init() {
+                     renderColorHelper = true;
+                     super.init();
+                 }
+             });
             // mc.player.getHeldItemMainhand() ) ) );
             // mc.setScreen( new EnchantmentScreen( mc.screen, new DataItem(
             // mc.player.getHeldItemMainhand() ) ) );

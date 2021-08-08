@@ -3,6 +3,8 @@ package creativeeditor.screen;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import creativeeditor.data.DataItem;
+import creativeeditor.screen.widgets.ColorButton;
+import creativeeditor.screen.widgets.ColorHelperWidget;
 import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.util.ColorUtils.Color;
@@ -27,9 +29,11 @@ public class ParentItemScreen extends ParentScreen {
     protected StyledButton resetButton;
     protected StyledButton saveButton;
     protected StyledButton dropButton;
+    protected Widget colorHelperWidget;
 
     // render item
     protected boolean renderItem = true;
+    protected boolean renderColorHelper = false;
     protected float itemScale = 2.0f;
     protected float itemRotX = 0.0f;
     protected int correctX = 0;
@@ -65,7 +69,9 @@ public class ParentItemScreen extends ParentScreen {
             saveButton = hasLastscreen ? null : addButton(new StyledButton(posX, posY + 10, bwidth, 20, new TranslationTextComponent("gui.main.save"), this::save));
 
             dropButton = addButton(new StyledButton(posX + bwidth + 1, posY, bwidth, 20, new TranslationTextComponent("gui.main.drop"), this::drop));
+
         }
+        if(renderColorHelper) renderWidgets.add(new ColorHelperWidget());
     }
 
 
