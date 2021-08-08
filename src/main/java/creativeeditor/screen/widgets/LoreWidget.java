@@ -16,16 +16,20 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
     private final int spacing = 4;
     private final int squareSize = 20;
     private int count = 0;
-    private final int fieldWidth = 200;
+    private final int offset = 20;
+    private final int fieldWidth = width - (squareSize  * 3 + (offset * 2 + (offset / 2)));
     private LoreEditorScreen loreEditorScreen;
+    private FontRenderer font;
     private StyledButton up, down, delete;
     public StyledTextField field;
     private List<Widget> children;
 
-    public LoreWidget(int count, FontRenderer font, LoreEditorScreen loreEditorScreen) {
-        super(0, 0, 20, 20, StringTextComponent.EMPTY);
+    public LoreWidget(int count, int width,  FontRenderer font, LoreEditorScreen loreEditorScreen) {
+        super(0, 0, width, 20, StringTextComponent.EMPTY);
         this.loreEditorScreen = loreEditorScreen;
         this.count = count;
+        this.font = font;
+        System.out.println(this.width);
         children = new ArrayList<>();
         field = new StyledTextField(font, 0, 0, fieldWidth, this.height, "lore");
         field.setMaxStringLength(100);
@@ -39,11 +43,10 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
         children.add(field);
     }
 
-    public LoreWidget(int count, FontRenderer font, LoreEditorScreen loreEditorScreen, String text) {
-        this(count, font, loreEditorScreen);
+    public LoreWidget(int count, int width, FontRenderer font, LoreEditorScreen loreEditorScreen, String text) {
+        this(count, width, font, loreEditorScreen);
         field.setText(text);
     }
-
 
     @Override
     public List<? extends IGuiEventListener> children() {
@@ -95,10 +98,10 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
         lastSpacingCount = 0;
         FontRenderer font = loreEditorScreen.getFontRenderer();
         drawCenteredString(matrix, font, count + ".", this.x + squareSize / 2, this.y + (squareSize - font.lineHeight) / 2, getFGColor());
-        renderChild(field, 20, 0, matrix, mouseX, mouseY, partial);
+        renderChild(field, offset, 0, matrix, mouseX, mouseY, partial);
         renderChild(up, fieldWidth, 0, matrix, mouseX, mouseY, partial);
-        renderChild(down, 20, 0, matrix, mouseX, mouseY, partial);
-        renderChild(delete, 20, 0, matrix, mouseX, mouseY, partial);
+        renderChild(down, offset, 0, matrix, mouseX, mouseY, partial);
+        renderChild(delete, offset, 0, matrix, mouseX, mouseY, partial);
 
     }
 
@@ -120,5 +123,18 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
     public boolean keyPressed(int p_231046_1_, int p_231046_2_, int p_231046_3_) {
         children.forEach(t -> t.keyPressed(p_231046_1_, p_231046_2_, p_231046_3_));
         return INestedGuiEventHandler.super.keyPressed(p_231046_1_, p_231046_2_, p_231046_3_);
+    }
+
+    public void setFocusField(boolean bool) {
+        field.setFocused(bool);
+    }
+
+    public String getText() {
+        return field.getText();
+    }
+
+    @Override
+    public boolean isFocused() {
+        return field.isFocused();
     }
 }

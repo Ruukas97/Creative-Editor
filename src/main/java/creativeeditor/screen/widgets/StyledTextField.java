@@ -601,6 +601,10 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
         return this.visible && this.isEnabled && super.changeFocus(p_changeFocus_1_);
     }
 
+    @Override
+    protected void setFocused(boolean p_230996_1_) {
+        super.setFocused(p_230996_1_);
+    }
 
     @Override
     public boolean isMouseOver(double p_isMouseOver_1_, double p_isMouseOver_3_) {
