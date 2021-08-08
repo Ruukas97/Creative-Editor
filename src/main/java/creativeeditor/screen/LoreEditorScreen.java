@@ -107,7 +107,7 @@ public class LoreEditorScreen extends ParentItemScreen {
     public void moveUp(LoreWidget w) {
         int i = loreLines.indexOf(w);
         loreLines.remove(w);
-        loreLines.add(i > 0 ? i - 1 : 0, w);
+        loreLines.add(i > 0 ? i - 1 : loreLines.size(), w);
         updateLines();
     }
 
@@ -115,7 +115,7 @@ public class LoreEditorScreen extends ParentItemScreen {
         int i = loreLines.indexOf(w);
         int size = loreLines.size();
         loreLines.remove(w);
-        loreLines.add(i < size - 1 ? i + 1 : size - 1, w);
+        loreLines.add(i < size - 1 ? i + 1 : 0, w);
         updateLines();
     }
 
