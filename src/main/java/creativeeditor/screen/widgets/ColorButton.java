@@ -1,26 +1,40 @@
 package creativeeditor.screen.widgets;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.IGuiEventListener;
+import net.minecraft.util.StringUtils;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.List;
+import java.util.Objects;
 
 public class ColorButton extends StyledButton {
 
-    private String s;
+    private String c;
+    private List<IGuiEventListener> children;
 
-    public ColorButton(int x, int y, int width, int height, String s) {
+    public ColorButton(List<IGuiEventListener> children, int x, int y, int width, int height, String s, String c) {
         super(x, y, width, height, new StringTextComponent(s), t -> t.onPress());
-        this.s = s;
+        this.children = children;
+        this.c = c;
     }
 
     public void onPress() {
-        System.out.println(s);
-        Minecraft mc = Minecraft.getInstance();
-        mc.keyboardHandler.keyPress(mc.getWindow().getWindow(), GLFW.GLFW_KEY_SEMICOLON, 0, 0, 0);
-//        InputMappings.setupKeyboardCallbacks(mc.getWindow().getWindow(), (p_228001_1_, p_228001_3_, p_228001_4_, p_228001_5_, p_228001_6_) -> {
-//            mc.execute(() -> {
-//                mc.keyboardHandler.keyPress(p_228001_1_, p_228001_3_, p_228001_4_, p_228001_5_, p_228001_6_);
-//            });
-//        }
+        for(IGuiEventListener eventListener : children) {
+            if(eventListener instanceof StyledTextField) {
+                StyledTextField textField = (StyledTextField) eventListener;
+                if(textField.isFocused()) {
+                    if(!c.equalsIgnoreCase("clean")) {
+                        for(int i = 0; i < c.length(); i++) {
+                            textField.charTyped(c.charAt(i), c.charAt(i));
+                        }
+                    } else {
+                        textField.setText(StringUtils.stripColor(textField.getText()));
+                    }
+                }
+            }
+        }
     }
 }

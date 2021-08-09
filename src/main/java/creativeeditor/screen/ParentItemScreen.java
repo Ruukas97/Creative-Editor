@@ -29,7 +29,6 @@ public class ParentItemScreen extends ParentScreen {
     protected StyledButton resetButton;
     protected StyledButton saveButton;
     protected StyledButton dropButton;
-    protected Widget colorHelperWidget;
 
     // render item
     protected boolean renderItem = true;
@@ -71,7 +70,9 @@ public class ParentItemScreen extends ParentScreen {
             dropButton = addButton(new StyledButton(posX + bwidth + 1, posY, bwidth, 20, new TranslationTextComponent("gui.main.drop"), this::drop));
 
         }
-        if(renderColorHelper) renderWidgets.add(new ColorHelperWidget());
+        int butWidth = 156;
+        int butHeight = 30;
+        if(renderColorHelper) renderWidgets.add(new ColorHelperWidget(children, butWidth, butHeight, width, height));
     }
 
 

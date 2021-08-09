@@ -46,6 +46,8 @@ public class MainScreen extends ParentItemScreen {
     public void tick() {
         if (nameField != null)
             nameField.tick();
+        if(idField != null)
+            idField.tick();
         if (countField != null)
             countField.updateCursorCounter();
         if (damageField != null)
