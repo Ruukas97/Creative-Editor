@@ -2,10 +2,9 @@
   "required": true,
   "package": "creativeeditor.mixin",
   "refmap": "creativeeditor.refmap.json",
+  "compatibilityLevel": "JAVA_8",
   "mixins": [
     "SharedConstantsMixin",
     "TextFormattingMixin"
-  ],
-  "client": [],
-  "server": []
+  ]
 }
