@@ -5,6 +5,7 @@ import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataColor;
 import creativeeditor.screen.widgets.HexField;
 import creativeeditor.screen.widgets.SliderColorTag;
+import creativeeditor.util.CEStringUtils;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
 import lombok.Getter;
@@ -200,7 +201,7 @@ public class ColorScreen extends ParentItemScreen {
         int yStart = height / 3 + 15;
         Color color = this.color;
         int i = 0;
-        drawCenteredString(matrix, font, I18n.get("gui.color.rgb", color.getRed(), color.getGreen(), color.getBlue()), halfWidth, yStart + (20 * i++), guiColor.getInt());
+        drawCenteredString(matrix, font, I18n.get("gui.color.rgb", CEStringUtils.zeroPaddedInt(color.getRed(), 3), CEStringUtils.zeroPaddedInt(color.getGreen(), 3), CEStringUtils.zeroPaddedInt(color.getBlue(), 3)), halfWidth, yStart + (20 * i++), guiColor.getInt());
 //        float[] hsb = java.awt.Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
 //        drawCenteredString(matrix, font, I18n.get("gui.color.hsb", hsb[0], hsb[1], hsb[2]), halfWidth, 35 + (20 * i++), color.getInt());
         // Color color2 = MathHelper.hsvToRGB( hue, saturation, value );
