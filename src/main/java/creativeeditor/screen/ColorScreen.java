@@ -22,7 +22,7 @@ public class ColorScreen extends ParentItemScreen {
     @Setter
     private boolean useAlpha;
 
-    // private StyledSlider red, green, blue, hue, saturation, brightness, alpha;
+    private SliderColorTag red, green, blue;
     private HexField hex;
 
     private boolean draggingSatBrightPicker = false;
@@ -51,9 +51,9 @@ public class ColorScreen extends ParentItemScreen {
         hex = addButton(new HexField(font, width / 3 + (font.width("#FFFFFF") + 8), (height / 3 + 20 * 2) + 10, 16, color));
         int yStart = this.height / 2 - 50;
         int x = width * 2 / 3 + 16;
-        addButton(new SliderColorTag(x, yStart, width - 20 - x, 20, color, 0)); // red
-        addButton(new SliderColorTag(x, yStart + 35, width - 20 - x, 20, color, 1)); // green
-        addButton(new SliderColorTag(x, yStart + 70, width - 20 - x, 20, color, 2)); // blue
+        red = addButton(new SliderColorTag(x, yStart, width - 20 - x, 20, color, 0)); // red
+        green = addButton(new SliderColorTag(x, yStart + 35, width - 20 - x, 20, color, 1)); // green
+        blue = addButton(new SliderColorTag(x, yStart + 70, width - 20 - x, 20, color, 2)); // blue
     }
 
 
@@ -85,7 +85,7 @@ public class ColorScreen extends ParentItemScreen {
             return true;
         } else if (draggingHuePicker) {
             mouseX = MathHelper.clamp(mouseX, x, xEnd);
-            mouseY = MathHelper.clamp(mouseY, yEnd + 3, yEnd + 6);
+            //mouseY = MathHelper.clamp(mouseY, yEnd + 3, yEnd + 6);
             float hue = (float) ((mouseX - (double) x) / (double) width);
             // hue %= 1;
             color.setHSB(hue, color.getSaturation(), color.getBrightness());
@@ -130,6 +130,9 @@ public class ColorScreen extends ParentItemScreen {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double onX, double onY) {
         if (setMouseColor(mouseX, mouseY)) {
+            red.setColoredValue();
+            green.setColoredValue();
+            blue.setColoredValue();
             return true;
         }
         return super.mouseDragged(mouseX, mouseY, button, onX, onY);

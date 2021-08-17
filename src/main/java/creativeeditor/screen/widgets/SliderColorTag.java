@@ -18,8 +18,11 @@ public class SliderColorTag extends SliderTag {
 
     @Override
     public boolean mouseDragged(double p_231045_1_, double p_231045_3_, int p_231045_5_, double p_231045_6_, double p_231045_8_) {
-        updateColor();
-        return super.mouseDragged(p_231045_1_, p_231045_3_, p_231045_5_, p_231045_6_, p_231045_8_);
+        if(super.mouseDragged(p_231045_1_, p_231045_3_, p_231045_5_, p_231045_6_, p_231045_8_)){
+            updateColor();
+            return true;
+        }
+        return false;
     }
 
     public void setColoredValue() {
