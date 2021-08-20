@@ -37,6 +37,7 @@ public abstract class ParentScreen extends Screen {
 
     @Override
     protected void init() {
+        renderWidgets.clear();
         super.init();
     }
 

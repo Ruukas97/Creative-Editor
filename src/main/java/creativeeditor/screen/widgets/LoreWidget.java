@@ -32,7 +32,7 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
         System.out.println(this.width);
         children = new ArrayList<>();
         field = new StyledTextField(font, 0, 0, fieldWidth, this.height, "lore");
-        field.setMaxStringLength(100);
+        field.setMaxStringLength(9999);
         up = new StyledButton(0, 0, squareSize, this.height, "\u2191", t -> loreEditorScreen.moveUp(this));
         down = new StyledButton(0, 0, squareSize, this.height, "\u2193", t -> loreEditorScreen.moveDown(this));
         delete = new StyledButton(0, 0, squareSize, this.height, "\u2715", t -> loreEditorScreen.removeLine(this));

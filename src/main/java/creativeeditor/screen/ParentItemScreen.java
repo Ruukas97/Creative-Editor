@@ -20,7 +20,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class ParentItemScreen extends ParentScreen {
-    protected DataItem item;
+    protected static DataItem item;
 
     // Back, reset, drop, save button (has essential buttons)
     protected boolean hasEssButtons = true;
