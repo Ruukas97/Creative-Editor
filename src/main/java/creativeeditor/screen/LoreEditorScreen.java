@@ -104,6 +104,11 @@ public class LoreEditorScreen extends ParentItemScreen {
         super.save(w);
     }
 
+    @Override
+    public void reset(Widget w) {
+        item.getTag().getDisplay().getLore().clear();
+    }
+
     public void moveUp(LoreWidget w) {
         int i = loreLines.indexOf(w);
         loreLines.remove(w);

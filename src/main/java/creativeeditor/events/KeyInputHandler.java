@@ -3,7 +3,6 @@ package creativeeditor.events;
 import creativeeditor.CreativeEditor;
 import creativeeditor.data.DataItem;
 import creativeeditor.screen.HeadCollectionScreen;
-import creativeeditor.screen.LoreEditorScreen;
 import creativeeditor.screen.MainScreen;
 import creativeeditor.screen.ParentItemScreen;
 import net.minecraft.client.Minecraft;

@@ -3,7 +3,6 @@ package creativeeditor.screen;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import creativeeditor.data.DataItem;
-import creativeeditor.screen.widgets.ColorButton;
 import creativeeditor.screen.widgets.ColorHelperWidget;
 import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.styles.StyleManager;

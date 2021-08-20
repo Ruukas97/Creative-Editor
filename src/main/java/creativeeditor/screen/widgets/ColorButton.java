@@ -1,14 +1,10 @@
 package creativeeditor.screen.widgets;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
-import java.util.Objects;
 
 public class ColorButton extends StyledButton {
 
