@@ -156,6 +156,10 @@ public class MainScreen extends ParentItemScreen {
         StyledTextButton spawnerButton = addButton(new StyledTextButton(width / 6, 95, font.width(spawnerLocal), spawnerLocal, b -> minecraft.setScreen(new ItemSpawnerScreen(this))));
         toolsWidgets.add(spawnerButton);
 
+        String tagExplorer = I18n.get("gui.tagexplorer");
+        StyledTextButton tagExploreButton = addButton(new StyledTextButton(width / 6, 115, font.width(tagExplorer), tagExplorer, b -> minecraft.setScreen(new TagExplorerScreen(this, item))));
+        toolsWidgets.add(tagExploreButton);
+
         // Lore
         String resetLore = I18n.get("gui.main.resetlore");
         int resetWidth = font.width(resetLore);

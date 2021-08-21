@@ -14,13 +14,12 @@ public class AdvancedWidgets extends WidgetIteratorBase {
                 new StyledTextButton(info.withTrigger(button -> mc.setScreen(new FlagScreen(info.getParent(), item))))
         ));
 
-        add(new ClassSpecificWidget(I18n.get("gui.tagexplorer"), (item, info) ->
-                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new TagExplorerScreen(info.getParent(), item))))
-        ));
+
 
         add(new ClassSpecificWidget(I18n.get("gui.rawnbt"), (item, info) ->
                 new StyledTextButton(info.withTrigger(button -> mc.setScreen(new RawNBTEditorScreen(info.getParent(), item))))
         ));
+
 
 
     }

@@ -29,6 +29,14 @@ public class ItemWidgets extends WidgetIteratorBase {
                 new StyledTextButton(info.withTrigger(button -> mc.setScreen(new PotionEditorScreen(info.getParent(), item))))
         ));
 
+        add(new ClassSpecificWidget(I18n.get("gui.canplaceon"), dItem -> dItem.getItem().getItem() instanceof BlockItem, (item, info) ->
+                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new PlaceDestroyScreen(info.getParent(), item, "canplaceon", item.getTag().getCanPlaceOn()))))
+        ));
+        add(new ClassSpecificWidget(I18n.get("gui.candestroy"), dItem -> true, (item, info) ->
+                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new PlaceDestroyScreen(info.getParent(), item, "candestroy", item.getTag().getCanDestroy()))))
+        ));
+
+
         add(new ClassSpecificWidget(I18n.get("gui.color"), dItem -> getColorableItem(dItem) != null, (item, info) -> new StyledTextButton(info.withTrigger(button -> {
             if (item.getItem().getItem() instanceof IDyeableArmorItem) {
                 mc.setScreen(new ColorScreen(info.getParent(), item, getColorableItem(item), 10511680, false));
