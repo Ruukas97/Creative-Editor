@@ -20,16 +20,16 @@ public class ColorHelperWidget extends Widget {
         int colorAmount = 2 + formats.length;
         int butWidth = wWidth / 12;
         int butHeight = wHeight / 2;
-        
+
         colorButtons = new ColorButton[colorAmount];
-        colorButtons[0] = new ColorButton(children, width - 1 - 13 * ((colorAmount + 2) / 2) + (13), height - 30, butWidth, butHeight, formats[0].toString().substring(0, 1), "§");
-        colorButtons[1] = new ColorButton(children, width - 1 - 13 * ((colorAmount + 2) / 2) + (13 * 2), height - 30, butWidth, butHeight, TextFormatting.DARK_RED + "%", "clean");
+        colorButtons[0] = new ColorButton(children, width - 1 - 13 * ((colorAmount + 2) / 2) + (13), height - 30, butWidth, butHeight, TextFormatting.DARK_RED + "%", "", true);
+        colorButtons[1] = new ColorButton(children, width - 1 - 13 * ((colorAmount + 2) / 2) + (13 * 2), height - 30, butWidth, butHeight, "&", "\u00a7r");
         for (int i = 2; i < colorAmount; i++) {
             TextFormatting f = formats[i - 2];
             colorButtons[i] = new ColorButton(children, width - 1 - 13 * ((colorAmount + 2) / 2) + (13 * ((i % (colorAmount / 2)) + 1)), height - 30 + (15 * (i / (colorAmount / 2))), butWidth, butHeight, f.toString() + f.toString().substring(1), f.toString());
         }
 
-        for(int i = 0; i < colorAmount; i++) {
+        for (int i = 0; i < colorAmount; i++) {
             this.children.add(colorButtons[i]);
         }
     }
