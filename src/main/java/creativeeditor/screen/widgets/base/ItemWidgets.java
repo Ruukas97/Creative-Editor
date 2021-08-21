@@ -32,7 +32,7 @@ public class ItemWidgets extends WidgetIteratorBase {
         add(new ClassSpecificWidget(I18n.get("gui.canplaceon"), dItem -> dItem.getItem().getItem() instanceof BlockItem, (item, info) ->
                 new StyledTextButton(info.withTrigger(button -> mc.setScreen(new PlaceDestroyScreen(info.getParent(), item, "canplaceon", item.getTag().getCanPlaceOn()))))
         ));
-        add(new ClassSpecificWidget(I18n.get("gui.candestroy"), dItem -> true, (item, info) ->
+        add(new ClassSpecificWidget(I18n.get("gui.candestroy"), dItem -> dItem.getItem().getItem() != Items.AIR, (item, info) ->
                 new StyledTextButton(info.withTrigger(button -> mc.setScreen(new PlaceDestroyScreen(info.getParent(), item, "candestroy", item.getTag().getCanDestroy()))))
         ));
 

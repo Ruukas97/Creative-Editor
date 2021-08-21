@@ -17,19 +17,18 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
     private final int squareSize = 20;
     private int count = 0;
     private final int offset = 20;
-    private final int fieldWidth = width - (squareSize  * 3 + (offset * 2 + (offset / 2)));
+    private final int fieldWidth = width - (squareSize * 3 + (offset * 2 + (offset / 2)));
     private LoreEditorScreen loreEditorScreen;
     private FontRenderer font;
     private StyledButton up, down, delete;
     public StyledTextField field;
     private List<Widget> children;
 
-    public LoreWidget(int count, int width,  FontRenderer font, LoreEditorScreen loreEditorScreen) {
+    public LoreWidget(int count, int width, FontRenderer font, LoreEditorScreen loreEditorScreen) {
         super(0, 0, width, 20, StringTextComponent.EMPTY);
         this.loreEditorScreen = loreEditorScreen;
         this.count = count;
         this.font = font;
-        System.out.println(this.width);
         children = new ArrayList<>();
         field = new StyledTextField(font, 0, 0, fieldWidth, this.height, "lore");
         field.setMaxStringLength(9999);
@@ -88,6 +87,7 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
 
     int lastWidth;
     int lastSpacingCount;
+
     @Override
     public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partial) {
         lastWidth = 0;
@@ -101,7 +101,7 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
 
     }
 
-    public void renderChild(Widget child, int offsetX, int offsetY, MatrixStack matrix, int mouseX, int mouseY, float partial){
+    public void renderChild(Widget child, int offsetX, int offsetY, MatrixStack matrix, int mouseX, int mouseY, float partial) {
         child.x = this.x + offsetX + lastWidth + (lastSpacingCount * spacing);
         child.y = this.y + offsetY;
         lastWidth += offsetX;
@@ -111,18 +111,19 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
 
     @Override
     public boolean charTyped(char p_231042_1_, int p_231042_2_) {
-        children.forEach(t -> t.charTyped(p_231042_1_,p_231042_2_ ));
+        field.charTyped(p_231042_1_, p_231042_2_);
         return INestedGuiEventHandler.super.charTyped(p_231042_1_, p_231042_2_);
     }
 
     @Override
     public boolean keyPressed(int p_231046_1_, int p_231046_2_, int p_231046_3_) {
-        children.forEach(t -> t.keyPressed(p_231046_1_, p_231046_2_, p_231046_3_));
+        field.keyPressed(p_231046_1_, p_231046_2_, p_231046_3_);
         return INestedGuiEventHandler.super.keyPressed(p_231046_1_, p_231046_2_, p_231046_3_);
     }
 
     public void setFocusField(boolean bool) {
         field.setFocused(bool);
+        field.selectionEnd = field.cursorPosition;
     }
 
     public String getText() {

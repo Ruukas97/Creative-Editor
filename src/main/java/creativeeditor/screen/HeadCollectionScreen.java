@@ -300,7 +300,8 @@ public class HeadCollectionScreen extends ParentScreen {
         int searchW = font.width(searchString);
 
         if (hovered != null) {
-            GuiUtil.addToolTip(matrix, this, mouseX, mouseY, width, height, mouseX, mouseY, hovered.getDisplayName().getString(), "�7" + I18n.get("gui.headcollection.clickhead"), "�7" + I18n.get("gui.headcollection.clickheadshift"));
+            char section = "\u00a7r".charAt(0);
+            GuiUtil.addToolTip(matrix, this, mouseX, mouseY, width, height, mouseX, mouseY, hovered.getDisplayName().getString(), section + "7" + I18n.get("gui.headcollection.clickhead"),  section + "7" + I18n.get("gui.headcollection.clickheadshift"));
         } else if (!searchString.equals(filteredString) && GuiUtil.isMouseInRegion(mouseX, mouseY, (width / 2) - searchW / 2, 56, searchW, 8)) {
             GuiUtil.addToolTip(matrix, this, mouseX, mouseY, I18n.get("gui.headcollection.clicksearch"));
         } else {

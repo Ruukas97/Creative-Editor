@@ -3,14 +3,18 @@ package creativeeditor.screen;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataString;
+import creativeeditor.data.base.DataTextComponent;
 import creativeeditor.screen.widgets.LoreWidget;
 import creativeeditor.screen.widgets.ScrollableScissorWindow;
 import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.util.ColorUtils;
+import net.minecraft.client.MouseHelper;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.ArrayList;
@@ -31,7 +35,9 @@ public class LoreEditorScreen extends ParentItemScreen {
 
     @Override
     protected void init() {
+        renderColorHelper = true;
         super.init();
+        minecraft.keyboardHandler.setSendRepeatsToGui(true);
         setRenderItem(true, 1f, 10);
         scrollWidth = width / 6 * 4;
         int xScroll = (width - scrollWidth) / 2;
@@ -42,13 +48,13 @@ public class LoreEditorScreen extends ParentItemScreen {
         if (loreLines.isEmpty()) {
             List<DataString> l = item.getTag().getDisplay().getLore().get();
             for (int i = 0; i < l.size(); i++) {
-                loreLines.add(new LoreWidget(i + 1, scrollWidth, font, this, l.get(i).get()));
+                loreLines.add(new LoreWidget(i + 1, scrollWidth, font, this, ITextComponent.Serializer.fromJson(l.get(i).get()).getString()));
             }
         } else {
             ArrayList<LoreWidget> copy = new ArrayList<>(loreLines);
             loreLines.clear();
             for (int i = 0; i < copy.size(); i++) {
-                loreLines.add(new LoreWidget(i + 1, scrollWidth, font, this, copy.get(i).getText()));
+                loreLines.add(new LoreWidget(i + 1, scrollWidth, font, this, ITextComponent.Serializer.fromJson(copy.get(i).getText()).getString()));
             }
         }
         scrollWindow.getWidgets().addAll(loreLines);
@@ -94,19 +100,24 @@ public class LoreEditorScreen extends ParentItemScreen {
     }
 
     @Override
-    public void save(Widget w) {
+    public boolean keyReleased(int p_223281_1_, int p_223281_2_, int p_223281_3_) {
+        applyLoreToItem();
+        return super.keyReleased(p_223281_1_, p_223281_2_, p_223281_3_);
+    }
+
+    private void applyLoreToItem() {
         item.getTag().getDisplay().getLore().clear();
         for (LoreWidget widget : loreLines) {
             String text = widget.field.getText();
-            if (text.isEmpty()) text = " ";
-            item.getTag().getDisplay().getLore().add(new DataString(text));
+            if (text.isEmpty()) text = "";
+            item.getTag().getDisplay().getLore().add(new DataString(ITextComponent.Serializer.toJson(new StringTextComponent(text))));
         }
-        super.save(w);
     }
 
     @Override
     public void reset(Widget w) {
-        item.getTag().getDisplay().getLore().clear();
+        loreLines.clear();
+        init();
     }
 
     public void moveUp(LoreWidget w) {
@@ -126,14 +137,15 @@ public class LoreEditorScreen extends ParentItemScreen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-        loreLines.forEach(t -> t.setFocusField(false));
+        if(!(mouseX > (width - 156) && mouseY > (height - 30)))
+            loreLines.forEach(t -> t.setFocusField(false));
+        applyLoreToItem();
         return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
     public boolean keyPressed(int key1, int key2, int key3) {
         if (key1 == 258) {
-            System.out.println("258");
             for (int i = 0; i < loreLines.size(); i++) {
                 if (loreLines.get(i).isFocused()) {
                     loreLines.get(i).setFocusField(false);
@@ -143,5 +155,11 @@ public class LoreEditorScreen extends ParentItemScreen {
             }
         }
         return super.keyPressed(key1, key2, key3);
+    }
+
+    @Override
+    public void onClose() {
+        minecraft.keyboardHandler.setSendRepeatsToGui(false);
+        super.onClose();
     }
 }

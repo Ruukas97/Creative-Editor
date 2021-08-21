@@ -168,7 +168,7 @@ public class MainScreen extends ParentItemScreen {
 
         String lore = I18n.get("gui.loreeditor");
         int loreWidth = font.width(lore);
-        loreButton = addButton(new StyledTextButton(width * 2 / 3 + 16 + (width / 3 / 2 / 2), 95, loreWidth, lore, t -> minecraft.setScreen(new LoreEditorScreen(null, item))));
+        loreButton = addButton(new StyledTextButton(width * 2 / 3 + 16 + (width / 3 / 2 / 2), 95, loreWidth, lore, t -> minecraft.setScreen(new LoreEditorScreen(this, item))));
         nameField = new StyledDataTextField(font, nameX, 55, resetX - nameX - resetWidth / 2 - 7, 20, item.getDisplayNameTag());
         displayWidgets.add(nameField);
         displayWidgets.add(loreButton);
