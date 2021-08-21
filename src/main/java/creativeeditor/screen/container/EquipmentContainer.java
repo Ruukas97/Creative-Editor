@@ -63,13 +63,13 @@ public class EquipmentContainer extends Container {
         }).index += 5;
 
         // Equipment hands armor
-        this.addSlot(new Slot(equipmentInventory, 0, 83, 8) {
+        this.addSlot(new Slot(equipmentInventory, 4, 83, 8) {
             @OnlyIn(Dist.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(PlayerContainer.BLOCK_ATLAS, EMPTY_ARMOR_SLOT_SWORD);
             }
         });
-        this.addSlot(new Slot(equipmentInventory, 1, 83, 26) {
+        this.addSlot(new Slot(equipmentInventory, 5, 83, 26) {
             @OnlyIn(Dist.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
@@ -78,7 +78,7 @@ public class EquipmentContainer extends Container {
 
         for (int k = 0; k < 4; ++k) {
             final EquipmentSlotType equipmentslottype = SLOT_IDS[k];
-            this.addSlot(new Slot(equipmentInventory, 5 - k, 152, 8 + k * 18) {
+            this.addSlot(new Slot(equipmentInventory, 5 - k - 2, 152, 8 + k * 18) {
                 public boolean mayPickup(PlayerEntity player) {
                     return !getItem().isEmpty() && super.mayPickup(player);
                 }
