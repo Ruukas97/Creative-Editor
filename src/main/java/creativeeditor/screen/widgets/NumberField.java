@@ -63,7 +63,7 @@ public class NumberField extends Widget {
         this.fontRenderer = font;
 
         int d = 0;
-        int m = data.getMax();
+        int m = data.get() > data.getMax() ? data.get() : data.getMax();
         while (m > 0) {
             m = m / 10;
             d++;

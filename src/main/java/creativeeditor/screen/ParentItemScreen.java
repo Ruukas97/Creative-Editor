@@ -161,37 +161,41 @@ public class ParentItemScreen extends ParentScreen {
         // Item (Tooltip must render last or colors will be messed up)
         GuiUtil.addToolTip(matrix, this, dropButton, mouseX, mouseY, I18n.get("gui.main.copyclipboard"));
         if (renderItem) {
-            ItemStack stack = item.getItemStack();
+            renderItem(matrix, mouseX, mouseY, color, item);
+        }
+    }
 
-            Item ite = item.getItem().getItem();
-            int x = width / 2;
-            int y = 60;
-            int xFrameStart = x - 19 + correctX;
-            int xFrameEnd = x + 19;
-            int yFrameStart = 41;
-            if (ite == Items.AIR) {
-                drawCenteredString(matrix, font, ite.getName(stack).getString(), x, y - 3, color.getInt());
-            } else {
-                RenderSystem.pushMatrix();
-                RenderSystem.translatef(itemScale, itemScale, 1f);
-                RenderSystem.scalef(itemScale, itemScale, 1f);
-                drawItemStack(item.getItemStack(), (int) (xFrameStart / itemScale + 1), (int) (yFrameStart / itemScale + 1), itemRotX, 0, null);
-                RenderSystem.popMatrix();
-            }
+    protected void renderItem(MatrixStack matrix, int mouseX, int mouseY, Color color, DataItem item) {
+        ItemStack stack = item.getItemStack();
+
+        Item ite = item.getItem().getItem();
+        int x = width / 2;
+        int y = 60;
+        int xFrameStart = x - 19 + correctX;
+        int xFrameEnd = x + 19;
+        int yFrameStart = 41;
+        if (ite == Items.AIR) {
+            drawCenteredString(matrix, font, ite.getName(stack).getString(), x, y - 3, color.getInt());
+        } else {
+            RenderSystem.pushMatrix();
+            RenderSystem.translatef(itemScale, itemScale, 1f);
+            RenderSystem.scalef(itemScale, itemScale, 1f);
+            drawItemStack(item.getItemStack(), (int) (xFrameStart / itemScale + 1), (int) (yFrameStart / itemScale + 1), itemRotX, 0, null);
+            RenderSystem.popMatrix();
+        }
 
 
-            // TODO Item scale support
-            if (GuiUtil.isMouseIn(mouseX, mouseY, width / 2 - 17, 43, 36, 36)) {
-                itemRotX += 0.25;
-                if (itemScale == 2f)
-                    GuiUtil.drawFrame(matrix, xFrameStart, yFrameStart, xFrameEnd, 79, 1, StyleManager.getCurrentStyle().getFGColor(true, true));
+        // TODO Item scale support
+        if (GuiUtil.isMouseIn(mouseX, mouseY, width / 2 - 17, 43, 36, 36)) {
+            itemRotX += 0.25;
+            if (itemScale == 2f)
+                GuiUtil.drawFrame(matrix, xFrameStart, yFrameStart, xFrameEnd, 79, 1, StyleManager.getCurrentStyle().getFGColor(true, true));
 
-                renderTooltip(matrix, stack, mouseX, mouseY);
-            } else {
-                itemRotX = 0f;
-                if (itemScale == 2f)
-                    GuiUtil.drawFrame(matrix, xFrameStart, yFrameStart, xFrameEnd, 79, 1, color);
-            }
+            renderTooltip(matrix, stack, mouseX, mouseY);
+        } else {
+            itemRotX = 0f;
+            if (itemScale == 2f)
+                GuiUtil.drawFrame(matrix, xFrameStart, yFrameStart, xFrameEnd, 79, 1, color);
         }
     }
 }

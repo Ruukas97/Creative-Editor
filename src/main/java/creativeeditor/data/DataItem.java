@@ -150,4 +150,12 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
     public boolean isDefault() {
         return getItemStack().isEmpty();
     }
+
+    public DataItem copy() {
+        if (this == null) {
+            return null;
+        } else {
+            return new DataItem(this.getNBT());
+        }
+    }
 }

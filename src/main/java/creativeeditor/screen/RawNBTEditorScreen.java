@@ -4,12 +4,14 @@ import com.google.gson.JsonSyntaxException;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import creativeeditor.data.DataItem;
+import creativeeditor.data.NumberRangeInt;
 import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.screen.widgets.StyledTextField;
 import creativeeditor.util.ColorUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -17,7 +19,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class RawNBTEditorScreen extends ParentItemScreen {
 
     private StyledTextField nbtField;
-    private StyledButton applyButton;
     private String nbtText = "";
     private int fieldY;
     private int fieldHeight;
@@ -38,8 +39,6 @@ public class RawNBTEditorScreen extends ParentItemScreen {
         initFieldText();
         renderWidgets.add(nbtField);
 
-        int butWidth = 80;
-        applyButton = addButton(new StyledButton((this.width - butWidth) / 2, fieldY + fieldHeight + 10, butWidth, 20, I18n.get("gui.rawnbt.apply"), t -> applyNBT()));
     }
 
     private void initFieldText() {
@@ -53,6 +52,17 @@ public class RawNBTEditorScreen extends ParentItemScreen {
     }
 
     @Override
+    public boolean keyReleased(int p_223281_1_, int p_223281_2_, int p_223281_3_) {
+        CompoundNBT nbt = canApplyNBT();
+        if(nbt != null) {
+            item = new DataItem(nbt);
+            NumberRangeInt c = item.getCount();
+            if(c.get() > c.getMax()) c.set(c.getMax());
+        }
+        return super.keyReleased(p_223281_1_, p_223281_2_, p_223281_3_);
+    }
+
+    @Override
     public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
         super.mainRender(matrix, mouseX, mouseY, p3, color);
         drawCenteredString(matrix, font, statusText, this.width / 2, fieldY - fieldHeight + 5, TextFormatting.RED.getColor());
@@ -61,18 +71,18 @@ public class RawNBTEditorScreen extends ParentItemScreen {
     @Override
     public void reset(Widget w) {
         nbtText = "";
+        statusText = "";
         initFieldText();
     }
 
-    private void applyNBT() {
+    private CompoundNBT canApplyNBT() {
         try {
-            item = new DataItem(JsonToNBT.parseTag(nbtField.getText()));
             statusText = "";
-            System.out.println(item.getItemStack().getCount());
+            return JsonToNBT.parseTag(nbtField.getText());
         } catch (JsonSyntaxException | CommandSyntaxException e) {
             statusText = e.getMessage();
-            e.printStackTrace();
         }
+        return null;
     }
 
     @Override
