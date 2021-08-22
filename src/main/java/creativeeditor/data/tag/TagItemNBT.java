@@ -5,6 +5,7 @@ import creativeeditor.data.Data;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.NumberRangeInt;
 import creativeeditor.data.base.*;
+import creativeeditor.data.tag.block.TagBlockEntity;
 import creativeeditor.data.tag.entity.TagEntityArmorStand;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
@@ -63,6 +64,8 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
     // Block Tags
     @Getter
     private final TagList<TagItemID> canPlaceOn;
+    @Getter
+    private final TagBlockEntity blockEntityTag;
 
 
     // Specific Items
@@ -147,8 +150,9 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
 
         // Block tags
         canPlaceOn = add(keys.tagCanPlaceOn(), new TagList<>(nbt.getList(keys.tagCanPlaceOn(), NBT.TAG_STRING), TagItemID::new));
-
+        blockEntityTag = add(keys.tagBlockEntityTag(), new TagBlockEntity(item, nbt.getCompound(keys.tagBlockEntityTag())));
         // Specific Items/Blocks
+
 
         // Banners
         patterns = add(keys.tagPatterns(), new TagList<>(nbt.getList(keys.tagPatterns(), NBT.TAG_COMPOUND), TagBannerPattern::new));

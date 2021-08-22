@@ -3,11 +3,14 @@ package creativeeditor.screen.widgets.base;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.base.DataColor;
 import creativeeditor.screen.*;
+import creativeeditor.screen.blockentity.GenericBlockScreen;
 import creativeeditor.screen.widgets.ClassSpecificWidget;
 import creativeeditor.screen.widgets.StyledTextButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.item.*;
+import net.minecraft.tileentity.LockableLootTileEntity;
+import net.minecraft.tileentity.LockableTileEntity;
 
 import java.util.Spliterator;
 import java.util.function.Consumer;
@@ -36,6 +39,10 @@ public class ItemWidgets extends WidgetIteratorBase {
                 new StyledTextButton(info.withTrigger(button -> mc.setScreen(new PlaceDestroyScreen(info.getParent(), item, "candestroy", item.getTag().getCanDestroy()))))
         ));
 
+        add(new ClassSpecificWidget(I18n.get("gui.genericblock"), dItem -> isLockableItem(dItem.getItem().getItem()), (item, info) ->
+                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new GenericBlockScreen(info.getParent(), item))))
+        ));
+
 
         add(new ClassSpecificWidget(I18n.get("gui.color"), dItem -> getColorableItem(dItem) != null, (item, info) -> new StyledTextButton(info.withTrigger(button -> {
             if (item.getItem().getItem() instanceof IDyeableArmorItem) {
@@ -48,14 +55,21 @@ public class ItemWidgets extends WidgetIteratorBase {
 
     private DataColor getColorableItem(DataItem item) {
         Item stack = item.getItem().getItem();
-        if(stack instanceof PotionItem) {
+        if (stack instanceof PotionItem) {
             return item.getTag().getPotionColor();
-        } else if(stack instanceof IDyeableArmorItem) {
+        } else if (stack instanceof IDyeableArmorItem) {
             return item.getTag().getDisplay().getColor();
-        } else if(stack instanceof FilledMapItem) {
+        } else if (stack instanceof FilledMapItem) {
             return item.getTag().getDisplay().getMapColor();
         }
         return null;
+    }
+
+    private boolean isLockableItem(Item item) {
+        return item == Items.CHEST || item == Items.BEACON || item == Items.ENDER_CHEST ||
+                item == Items.TRAPPED_CHEST || item == Items.HOPPER || item == Items.BREWING_STAND ||
+                item == Items.FURNACE || item == Items.SHULKER_BOX || item == Items.BARREL ||
+                item == Items.DISPENSER || item == Items.DROPPER;
     }
 
     private boolean isEntityItem(Item item) {

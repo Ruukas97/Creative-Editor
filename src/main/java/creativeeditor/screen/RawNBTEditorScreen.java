@@ -5,14 +5,13 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.NumberRangeInt;
-import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.screen.widgets.StyledTextField;
 import creativeeditor.util.ColorUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.tileentity.HopperTileEntity;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
