@@ -77,11 +77,11 @@ public class ItemRendererUtils {
         RenderSystem.scalef(16.0F, 16.0F, 16.0F);
         RenderSystem.rotatef(xRotation, 0f, 1f, 0f);
         RenderSystem.rotatef(yRotation, 1f, 0f, 0f);
-        // GlStateManager.rotatef( 1.0f, xRotation, yRotation, 0f );
-//        if (isGui3d) {
-//            RenderSystem.enableLighting();
-//        } else {
-//            RenderSystem.disableLighting();
-//        }
+        GlStateManager._rotatef(1.0f, xRotation, yRotation, 0f);
+        if (isGui3d) {
+            RenderSystem.enableLighting();
+        } else {
+            RenderSystem.disableLighting();
+        }
     }
 }

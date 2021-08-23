@@ -104,6 +104,8 @@ public abstract class NBTKeys {
 
     public abstract String tagBlockEntityTag();
 
+    public abstract String locked();
+
     public abstract String tagBlockStateTag();
 
 

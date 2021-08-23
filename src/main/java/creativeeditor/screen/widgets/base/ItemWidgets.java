@@ -6,11 +6,10 @@ import creativeeditor.screen.*;
 import creativeeditor.screen.blockentity.GenericBlockScreen;
 import creativeeditor.screen.widgets.ClassSpecificWidget;
 import creativeeditor.screen.widgets.StyledTextButton;
+import net.minecraft.block.ContainerBlock;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.item.*;
-import net.minecraft.tileentity.LockableLootTileEntity;
-import net.minecraft.tileentity.LockableTileEntity;
 
 import java.util.Spliterator;
 import java.util.function.Consumer;
@@ -66,10 +65,11 @@ public class ItemWidgets extends WidgetIteratorBase {
     }
 
     private boolean isLockableItem(Item item) {
-        return item == Items.CHEST || item == Items.BEACON || item == Items.ENDER_CHEST ||
-                item == Items.TRAPPED_CHEST || item == Items.HOPPER || item == Items.BREWING_STAND ||
-                item == Items.FURNACE || item == Items.SHULKER_BOX || item == Items.BARREL ||
-                item == Items.DISPENSER || item == Items.DROPPER;
+        if (item instanceof BlockItem) {
+            BlockItem b = (BlockItem) item;
+            return b.getBlock() instanceof ContainerBlock;
+        }
+        return false;
     }
 
     private boolean isEntityItem(Item item) {

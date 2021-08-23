@@ -43,7 +43,6 @@ public class CreativeEditor {
 
         KeyInputHandler.init();
         CreativeTabs.init();
-//        ResourcePacks.init();
 
         // Register Events
         LOGGER.info("Registering events");
@@ -52,7 +51,7 @@ public class CreativeEditor {
         MinecraftForge.EVENT_BUS.register(new TooltipHandler());
         MinecraftForge.EVENT_BUS.register(new KeyInputHandler());
         FMLJavaModLoadingContext.get().getModEventBus().register( new TextureStitchHandler());
-        // MinecraftForge.EVENT_BUS.register( new NetworkHandler() );
+//         MinecraftForge.EVENT_BUS.register( new NetworkHandler() );
 
         if (Config.SPECTRUM_SHIELD_ENABLED.get())
             ReflectionUtils.setTeisr(Items.SHIELD, () -> ShieldRenderer::new);

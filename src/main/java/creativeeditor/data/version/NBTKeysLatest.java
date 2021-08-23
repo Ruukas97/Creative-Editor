@@ -88,6 +88,10 @@ public class NBTKeysLatest extends NBTKeys {
         return "BlockEntityTag";
     }
 
+    @Override
+    public String locked() {
+        return "lock";
+    }
 
     @Override
     public String tagBlockStateTag() {

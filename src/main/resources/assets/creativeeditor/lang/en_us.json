@@ -67,6 +67,7 @@
   "gui.color": "Color Editor",
   "gui.color.alpha": "Alpha: %s",
   "gui.color.dec": "Decimal: %s",
+  "gui.genericblock": "BlockEntityTag",
   "gui.color.hex": "Hex: %s",
   "gui.color.hsb": "HSB: %s, %s, %s",
   "gui.color.hsv": "HSV: %s, %s, %s",

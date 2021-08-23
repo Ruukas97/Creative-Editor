@@ -202,15 +202,7 @@ public class ColorScreen extends ParentItemScreen {
         Color color = this.color;
         int i = 0;
         drawCenteredString(matrix, font, I18n.get("gui.color.rgb", CEStringUtils.zeroPaddedInt(color.getRed(), 3), CEStringUtils.zeroPaddedInt(color.getGreen(), 3), CEStringUtils.zeroPaddedInt(color.getBlue(), 3)), halfWidth, yStart + (20 * i++), guiColor.getInt());
-//        float[] hsb = java.awt.Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
-//        drawCenteredString(matrix, font, I18n.get("gui.color.hsb", hsb[0], hsb[1], hsb[2]), halfWidth, 35 + (20 * i++), color.getInt());
-        // Color color2 = MathHelper.hsvToRGB( hue, saturation, value );
-//        drawCenteredString(matrix, font, I18n.get("gui.color.hsv", color.getHue(), color.getHSVSaturation(), color.getValue()), halfWidth, 35 + (20 * i++), color.getInt());
-//        if (useAlpha) {
-//            drawCenteredString(matrix, font, I18n.get("gui.color.alpha", color.getAlpha()), halfWidth, 35 + (20 * i++), color.getInt());
-//        }
         drawCenteredString(matrix, font, I18n.get("gui.color.hex", color.getHexString()), halfWidth, yStart + (20 * i++), guiColor.getInt());
-//        drawCenteredString(matrix, font, I18n.get("gui.color.dec", (color.getInt() & 0xFFFFFF)), halfWidth, 35 + (20 * i++), color.getInt());
     }
 
 
