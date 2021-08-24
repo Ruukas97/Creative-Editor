@@ -84,6 +84,7 @@
   "gui.enchantment.rarity.uncommon": "Uncommon",
   "gui.enchantment.rarity.very_rare": "Epic",
   "gui.enchantment.remove": "Remove",
+  "gui.enchantment.selected": "%s (Selected)",
   "gui.enchantment.tooltip.maxlevel": "Max level: %s",
   "gui.enchantment.tooltip.minlevel": "Min level: %s",
   "gui.enchantment.tooltip.rarity": "Rarity: %s",

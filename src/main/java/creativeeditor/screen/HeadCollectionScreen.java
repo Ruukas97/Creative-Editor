@@ -50,6 +50,9 @@ public class HeadCollectionScreen extends ParentScreen {
 
         super.init();
 
+        maxInRow = (width - 250) / 14;
+        amountInPage = maxInRow * 10;
+
         filteredString = null;
 
         if (!searchString.equals(filteredString)) {
@@ -90,6 +93,9 @@ public class HeadCollectionScreen extends ParentScreen {
         if (mouseButton != 0) {
             return false;
         }
+
+        maxInRow = (width - 250) / 14;
+        amountInPage = maxInRow * 10;
 
         int letterSpace = 80;
         int space = ((width - (maxInRow * 16)) - letterSpace) / 2;

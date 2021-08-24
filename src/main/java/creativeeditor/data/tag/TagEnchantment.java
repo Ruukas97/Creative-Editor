@@ -1,6 +1,7 @@
 package creativeeditor.data.tag;
 
 import creativeeditor.data.Data;
+import creativeeditor.data.NumberRangeInt;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.enchantment.Enchantment;
@@ -15,8 +16,7 @@ public class TagEnchantment implements Data<TagEnchantment, CompoundNBT> {
     private @Getter
     Enchantment enchantment;
     private @Getter
-    final
-    int level;
+    NumberRangeInt level;
 
 
     public TagEnchantment(INBT nbt) {
@@ -32,24 +32,27 @@ public class TagEnchantment implements Data<TagEnchantment, CompoundNBT> {
             enchantment = Enchantment.byId(0);
         }
 
-        level = nbt.getInt("lvl");
+        level = new NumberRangeInt(nbt.getInt( "lvl" ), 1, Integer.MAX_VALUE);
+    }
+
+    public TagEnchantment(Enchantment enchantment, int level) {
+        this.enchantment = enchantment;
+        this.level = new NumberRangeInt(level, 1, Integer.MAX_VALUE);
     }
 
 
-    @Override
+        @Override
     public boolean isDefault() {
-        return level == 0;
+        return level.get() == 0;
     }
-
 
     @Override
     public CompoundNBT getNBT() {
         CompoundNBT nbt = new CompoundNBT();
-        nbt.putString("id", enchantment.delegate.name().toString());
-        nbt.putInt("lvl", level);
+        nbt.putString( "id", enchantment.delegate.name().toString() );
+        nbt.putInt( "lvl", level.get() );
         return nbt;
     }
-
 
     @Override
     public TagEnchantment getData() {

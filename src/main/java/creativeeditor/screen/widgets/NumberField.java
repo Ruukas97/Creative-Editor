@@ -99,7 +99,7 @@ public class NumberField extends Widget {
             digits[i] = c;
         }
 
-        if (getDigitsValue() > data.getMax()) {
+        if (getDigitsValue() > data.getMax() || data.getMax() == Integer.MAX_VALUE && getDigitsValue() == Integer.MAX_VALUE) {
             String maxStr = (data.getMax() + "");
             int diff = digits.length - maxStr.length();
             char mC = maxStr.charAt(this.cursorPosition - diff);
@@ -173,7 +173,11 @@ public class NumberField extends Widget {
      * Returns the contents of the textbox
      */
     private int getDigitsValue() {
-        return Integer.parseInt(getValueAsString());
+        if(digits.length >= 10){
+            long value = Long.parseLong(getValueAsString());
+            return value >= Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) value;
+        }
+        return Integer.parseInt( getValueAsString() );
     }
 
 

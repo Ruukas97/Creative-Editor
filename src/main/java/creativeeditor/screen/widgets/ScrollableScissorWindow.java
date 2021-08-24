@@ -47,8 +47,11 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
 
     @Override
     public boolean mouseScrolled(double p_mouseScrolled_1_, double p_mouseScrolled_3_, double p_mouseScrolled_5_) {
-        if (isHovered) {
-            scrollOffset = (int) MathHelper.clamp(scrollOffset - p_mouseScrolled_5_ * 10, 0, getListHeight() - height);
+        if(isHovered){
+            int listHeight = getListHeight();
+            if(listHeight <= height)
+                return false;
+            scrollOffset = (int) MathHelper.clamp(scrollOffset - p_mouseScrolled_5_ * 10, 0, listHeight - height);
             return true;
         }
         return false;
