@@ -43,18 +43,6 @@ public class MainScreen extends ParentItemScreen {
     }
 
 
-    public void tick() {
-        if (nameField != null)
-            nameField.tick();
-        if(idField != null)
-            idField.tick();
-        if (countField != null)
-            countField.updateCursorCounter();
-        if (damageField != null)
-            damageField.updateCursorCounter();
-    }
-
-
     @Override
     protected void init() {
         renderColorHelper = true;
@@ -170,6 +158,7 @@ public class MainScreen extends ParentItemScreen {
         int loreWidth = font.width(lore);
         loreButton = addButton(new StyledTextButton(width * 2 / 3 + 16 + (width / 3 / 2 / 2), 95, loreWidth, lore, t -> minecraft.setScreen(new LoreEditorScreen(this, item))));
         nameField = new StyledDataTextField(font, nameX, 55, resetX - nameX - resetWidth / 2 - 7, 20, item.getDisplayNameTag());
+        renderWidgets.add(nameField);
         displayWidgets.add(nameField);
         displayWidgets.add(loreButton);
         children.add(nameField);
@@ -190,17 +179,20 @@ public class MainScreen extends ParentItemScreen {
 
         int x = width / 3 + 16 + Math.max(idWidth, Math.max(countWidth, damageWidth));
 
-        idField = addButton(new StyledDataTextField(font, x, 81, (width - width / 3 - 8) - x, 16, item.getItem()));
+        idField = new StyledDataTextField(font, x, 81, (width - width / 3 - 8) - x, 16, item.getItem());
         idField.setIsResourceLocationField(true);
+        renderWidgets.add(idField);
 
         int countX = x;
-        this.countField = addButton(new NumberField(font, countX, 101, 16, item.getCount()));
+        this.countField = new NumberField(font, countX, 101, 16, item.getCount());
+        renderWidgets.add(countField);
         countX += this.countField.getWidth() + 8;
         this.countSlider = addButton(new SliderTag(countX, 101, (width - width / 3 - 8) - countX, 16, item.getCount()));
 
         int dmgX = x;
-        this.damageField = addButton(new NumberField(font, dmgX, 121, 16, item.getTag().getDamage()));
+        this.damageField = new NumberField(font, dmgX, 121, 16, item.getTag().getDamage());
         dmgX += this.damageField.getWidth() + 8;
+        renderWidgets.add(damageField);
         this.damageSlider = addButton(new SliderTag(dmgX, 121, (width - width / 3 - 8) - dmgX, 16, item.getTag().getDamage()));
 
         this.unbreakable = addButton(new StyledToggle(width / 2 - 40, 141, 80, 16, I18n.get("item.tag.unbreakable.true"), I18n.get("item.tag.unbreakable.false"), item.getTag().getUnbreakable()));
@@ -227,7 +219,6 @@ public class MainScreen extends ParentItemScreen {
         super.onClose();
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
     }
-
 
     public void setLeftTab(int i, boolean updateConfig) {
         if (updateConfig && i >= 0 && i <= 3)
@@ -351,7 +342,6 @@ public class MainScreen extends ParentItemScreen {
         // Right horizontal line
         fill(matrix, width * 2 / 3 + 16, 40, width - 20, 41, color.getInt());
 
-        nameField.render(matrix, mouseY, mouseY, partialTicks);
     }
 
 

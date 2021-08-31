@@ -13,19 +13,25 @@ public class ColorHelperWidget extends Widget {
 
     private ArrayList<ColorButton> children = new ArrayList<>();
     private ColorButton[] colorButtons;
+    private final int xOffset = 8;
+    private final int yOffset = 40;
+    private int butWidth;
+    private int butHeight;
+    public int x;
+    public int y;
+
 
     public ColorHelperWidget(List<IGuiEventListener> children, int wWidth, int wHeight, int width, int height) {
         super(0, 0, wWidth, wHeight, StringTextComponent.EMPTY);
         TextFormatting[] formats = TextFormatting.values();
         int colorAmount = 2 + formats.length;
-        int butWidth = wWidth / 12;
-        int butHeight = wHeight / 2;
-
-        int xOffset = 8;
-        int yOffset = 40;
+        butWidth = wWidth / 12;
+        butHeight = wHeight / 2;
 
         colorButtons = new ColorButton[colorAmount];
-        colorButtons[0] = new ColorButton(children, width - xOffset - 13 * ((colorAmount + 2) / 2) + (13), height - yOffset, butWidth, butHeight, TextFormatting.DARK_RED + "%", "", true);
+        x = width - xOffset - 13 * ((colorAmount + 2) / 2) + (13);
+        y = height - yOffset;
+        colorButtons[0] = new ColorButton(children, x, y, butWidth, butHeight, TextFormatting.DARK_RED + "%", "", true);
         colorButtons[1] = new ColorButton(children, width - xOffset - 13 * ((colorAmount + 2) / 2) + (13 * 2), height - yOffset, butWidth, butHeight, "&", "\u00a7r");
         for (int i = 2; i < colorAmount; i++) {
             TextFormatting f = formats[i - 2];
@@ -37,6 +43,16 @@ public class ColorHelperWidget extends Widget {
         }
     }
 
+
+    @Override
+    public int getWidth() {
+        return butWidth * 12;
+    }
+
+    @Override
+    public int getHeight() {
+        return butHeight * 2;
+    }
 
     @Override
     public void renderButton(MatrixStack p_230431_1_, int p_230431_2_, int p_230431_3_, float p_230431_4_) {

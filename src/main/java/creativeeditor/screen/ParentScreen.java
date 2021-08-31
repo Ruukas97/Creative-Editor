@@ -113,8 +113,6 @@ public abstract class ParentScreen extends Screen {
                 if (mouseButton == 0) {
                     this.setDragging(true);
                 }
-
-                return true;
             }
         }
         return super.mouseClicked(mouseX, mouseY, mouseButton);

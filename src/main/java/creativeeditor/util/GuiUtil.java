@@ -5,6 +5,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import creativeeditor.data.DataItem;
 import creativeeditor.screen.ParentScreen;
+import creativeeditor.screen.widgets.ColorHelperWidget;
 import creativeeditor.util.ColorUtils.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
@@ -35,6 +36,10 @@ public class GuiUtil extends GuiUtils {
 
     public static boolean isMouseIn(int mouseX, int mouseY, int x, int y, int width, int height) {
         return x <= mouseX && mouseX < x + width && y <= mouseY && mouseY < y + height;
+    }
+
+    public static boolean isMouseInColorWidget(int mouseX, int mouseY, ColorHelperWidget w) {
+        return w.x <= mouseX && mouseX < w.x + w.getWidth() && w.y <= mouseY && mouseY < w.y + w.getHeight();
     }
 
 

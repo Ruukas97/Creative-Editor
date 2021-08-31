@@ -32,6 +32,7 @@ public class ParentItemScreen extends ParentScreen {
     // render item
     protected boolean renderItem = true;
     protected boolean renderColorHelper = false;
+    private ColorHelperWidget colorHelperWidget;
     protected float itemScale = 2.0f;
     protected float itemRotX = 0.0f;
     protected int correctX = 0;
@@ -68,12 +69,18 @@ public class ParentItemScreen extends ParentScreen {
 
             dropButton = addButton(new StyledButton(posX + bwidth + 1, posY, bwidth, 20, new TranslationTextComponent("gui.main.drop"), this::drop));
 
-            if(!minecraft.player.abilities.instabuild) {saveButton.active = false; dropButton.active = false;}
+            if (!minecraft.player.abilities.instabuild) {
+                saveButton.active = false;
+                dropButton.active = false;
+            }
 
         }
         int butWidth = 156;
         int butHeight = 30;
-        if(renderColorHelper) renderWidgets.add(new ColorHelperWidget(children, butWidth, butHeight, width, height));
+        if (renderColorHelper) {
+            colorHelperWidget = new ColorHelperWidget(children, butWidth, butHeight, width, height);
+            renderWidgets.add(colorHelperWidget);
+        }
     }
 
 
@@ -139,11 +146,15 @@ public class ParentItemScreen extends ParentScreen {
         this.correctX = correctX;
     }
 
+    protected boolean isInColorWidget(int mouseX, int mouseY) {
+        return colorHelperWidget != null && GuiUtil.isMouseInColorWidget(mouseX, mouseY, colorHelperWidget);
+    }
+
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-        if (super.mouseClicked(mouseX, mouseY, mouseButton)) {
-            return true;
-        }
+        if (isInColorWidget((int) mouseX, (int) mouseY))
+            return colorHelperWidget.mouseClicked(mouseX, mouseY, mouseButton);
+        if (super.mouseClicked(mouseX, mouseY, mouseButton)) return true;
         if (GuiUtil.isMouseIn((int) mouseX, (int) mouseY, width / 2 - 17, 43, 36, 36)) {
             minecraft.setScreen(new ItemInspectorScreen(this, item));
             return true;

@@ -135,8 +135,9 @@ public class LoreEditorScreen extends ParentItemScreen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-        if(!(mouseX > (width - 156) && mouseY > (height - 30)))
+        if (!isInColorWidget((int) mouseX, (int) mouseY)) {
             loreLines.forEach(t -> t.setFocusField(false));
+        }
         applyLoreToItem();
         return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
