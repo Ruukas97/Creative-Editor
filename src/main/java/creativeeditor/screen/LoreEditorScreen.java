@@ -11,6 +11,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -43,17 +44,15 @@ public class LoreEditorScreen extends ParentItemScreen {
         int scrollTop = height / 4;
         addButton(new StyledButton(xScroll - buttonWidth - distanceFromScroll, scrollTop, buttonWidth, 20, I18n.get("gui.loreeditor.addline"), t -> addLine(font)));
         addButton(new StyledButton(xScroll - buttonWidth - distanceFromScroll, scrollTop + 25, buttonWidth, 20, I18n.get("gui.loreeditor.copy"), t -> copyLoreToClipboard()));
-        if (loreLines.isEmpty()) {
-            List<DataString> l = item.getTag().getDisplay().getLore().get();
-            for (int i = 0; i < l.size(); i++) {
-                loreLines.add(new LoreWidget(i + 1, scrollWidth, font, this, ITextComponent.Serializer.fromJson(l.get(i).get()).getString()));
+        loreLines.clear();
+        List<DataString> l = item.getTag().getDisplay().getLore().get();
+        for (int i = 0; i < l.size(); i++) {
+            String loreText = "";
+            IFormattableTextComponent textFromJson = ITextComponent.Serializer.fromJson(l.get(i).get());
+            if (textFromJson != null) {
+                loreText = textFromJson.getString();
             }
-        } else {
-            ArrayList<LoreWidget> copy = new ArrayList<>(loreLines);
-            loreLines.clear();
-            for (int i = 0; i < copy.size(); i++) {
-                loreLines.add(new LoreWidget(i + 1, scrollWidth, font, this, ITextComponent.Serializer.fromJson(copy.get(i).getText()).getString()));
-            }
+            loreLines.add(new LoreWidget(i + 1, scrollWidth, font, this, loreText));
         }
         scrollWindow.getWidgets().addAll(loreLines);
 
@@ -70,6 +69,7 @@ public class LoreEditorScreen extends ParentItemScreen {
     }
 
     private void updateLines() {
+        applyLoreToItem();
         scrollWindow.getWidgets().clear();
         for (int i = 0; i < loreLines.size(); i++) {
             scrollWindow.getWidgets().add(loreLines.get(i).updateCount(i + 1));
@@ -114,7 +114,7 @@ public class LoreEditorScreen extends ParentItemScreen {
 
     @Override
     public void reset(Widget w) {
-        loreLines.clear();
+        item.getTag().getDisplay().getLore().clear();
         init();
     }
 
@@ -142,8 +142,28 @@ public class LoreEditorScreen extends ParentItemScreen {
         return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
+    private boolean hasFocusedTextField() {
+        for (LoreWidget w : loreLines) {
+            if (w.isFocused()) return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean keyPressed(int key1, int key2, int key3) {
+        if (key2 == 47 && key3 == 2) { // V + ctrl modifier
+            String clip = minecraft.keyboardHandler.getClipboard();
+            if (!clip.isEmpty() && clip.contains("\n") && !hasFocusedTextField()) {
+                String[] lines = clip.split("\n");
+                loreLines.clear();
+                for (int i = 0; i < lines.length; i++) {
+                    loreLines.add(new LoreWidget(i + 1, scrollWidth, font, this, lines[i]));
+                    updateLines();
+                }
+                return true;
+
+            }
+        }
         if (key1 == 258) {
             for (int i = 0; i < loreLines.size(); i++) {
                 if (loreLines.get(i).isFocused()) {

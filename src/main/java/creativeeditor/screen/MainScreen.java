@@ -1,8 +1,10 @@
 package creativeeditor.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import creativeeditor.config.Config;
 import creativeeditor.data.DataItem;
+import creativeeditor.data.NumberRangeInt;
 import creativeeditor.screen.widgets.*;
 import creativeeditor.screen.widgets.base.AdvancedWidgets;
 import creativeeditor.screen.widgets.base.ItemWidgets;
@@ -14,6 +16,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
@@ -325,6 +329,28 @@ public class MainScreen extends ParentItemScreen {
 
     @Override
     public boolean keyPressed(int key1, int key2, int key3) {
+        if (key3 == 2) {
+            if (key2 == 47) {
+                String clip = minecraft.keyboardHandler.getClipboard();
+                if (!clip.isEmpty()) {
+                    try {
+                        CompoundNBT nbt = JsonToNBT.parseTag(clip);
+                        if (nbt != null) {
+                            item = new DataItem(nbt);
+                            NumberRangeInt c = item.getCount();
+                            if (c.get() > c.getMax()) c.set(c.getMax());
+                        }
+                    } catch (CommandSyntaxException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else if (key2 == 46) {
+                if (!item.getNBT().isEmpty()) {
+                    minecraft.keyboardHandler.setClipboard(item.getNBT().getAsString());
+                }
+            }
+        }
+
         return super.keyPressed(key1, key2, key3);
     }
 

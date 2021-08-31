@@ -5,23 +5,27 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.NumberRangeInt;
+import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.screen.widgets.StyledTextField;
 import creativeeditor.util.ColorUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.tileentity.HopperTileEntity;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class RawNBTEditorScreen extends ParentItemScreen {
 
     private StyledTextField nbtField;
+    private StyledButton copyButton;
     private String nbtText = "";
     private int fieldY;
-    private int fieldHeight;
+    private final int fieldHeight = 20;
     private String statusText = "";
+    private final int bwidth = 50;
+    private final int butHeight = 20;
 
     public RawNBTEditorScreen(Screen lastScreen, DataItem item) {
         super(new TranslationTextComponent("gui.rawnbt"), lastScreen, item);
@@ -31,13 +35,17 @@ public class RawNBTEditorScreen extends ParentItemScreen {
     protected void init() {
         super.init();
         int fieldWidth = this.width / 6 * 4;
-        fieldHeight = 20;
         fieldY = (this.height - fieldHeight) / 2;
         nbtField = new StyledTextField(font, (this.width - fieldWidth) / 2, fieldY, fieldWidth, fieldHeight, "nbt");
         nbtField.setMaxStringLength(9999);
         initFieldText();
+        copyButton = new StyledButton((width - bwidth) / 2, nbtField.y + butHeight + 10, bwidth, butHeight, new TranslationTextComponent("gui.loreeditor.copy"), this::copy);
         renderWidgets.add(nbtField);
+        renderWidgets.add(copyButton);
+    }
 
+    private void copy(Button button) {
+        minecraft.keyboardHandler.setClipboard(nbtField.getText());
     }
 
     private void initFieldText() {
@@ -52,7 +60,7 @@ public class RawNBTEditorScreen extends ParentItemScreen {
 
     @Override
     public boolean keyReleased(int p_223281_1_, int p_223281_2_, int p_223281_3_) {
-        CompoundNBT nbt = canApplyNBT();
+        CompoundNBT nbt = canConvertStringToNBT(nbtField.getText());
         if(nbt != null) {
             item = new DataItem(nbt);
             NumberRangeInt c = item.getCount();
@@ -74,10 +82,10 @@ public class RawNBTEditorScreen extends ParentItemScreen {
         initFieldText();
     }
 
-    private CompoundNBT canApplyNBT() {
+    private CompoundNBT canConvertStringToNBT(String s) {
         try {
             statusText = "";
-            return JsonToNBT.parseTag(nbtField.getText());
+            return JsonToNBT.parseTag(s);
         } catch (JsonSyntaxException | CommandSyntaxException e) {
             statusText = e.getMessage();
         }
