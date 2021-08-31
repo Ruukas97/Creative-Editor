@@ -339,6 +339,7 @@ public class MainScreen extends ParentItemScreen {
                             item = new DataItem(nbt);
                             NumberRangeInt c = item.getCount();
                             if (c.get() > c.getMax()) c.set(c.getMax());
+                            init();
                         }
                     } catch (CommandSyntaxException e) {
                         e.printStackTrace();
