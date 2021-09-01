@@ -65,7 +65,7 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
 
     @Override
     public boolean isDefault() {
-        return noGravity.isDefault() && marker.isDefault() && invisible.isDefault() && noBasePlate.isDefault() && showArms.isDefault() && small.isDefault() && pose.isDefault() && disabledSlots.isDefault();
+        return noGravity.isDefault() && marker.isDefault() && invisible.isDefault() && noBasePlate.isDefault() && showArms.isDefault() && small.isDefault() && pose.isDefault() && disabledSlots.isDefault() && super.isDefault();
     }
 
 
@@ -88,6 +88,10 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
             nbt.put("Pose", pose.getNBT());
         if (!disabledSlots.isDefault())
             nbt.put("DisabledSlots", disabledSlots.getNBT());
+        if (!super.isDefault()) {
+            nbt.put("ArmorItems", super.getArmorItems().getNBT());
+            nbt.put("HandItems", super.getHandItems().getNBT());
+        }
         return nbt;
     }
 

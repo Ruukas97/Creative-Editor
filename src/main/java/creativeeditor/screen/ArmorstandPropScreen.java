@@ -25,8 +25,8 @@ public class ArmorstandPropScreen extends BaseArmorstandScreen {
     @Override
     public void postInit() {
         super.init();
-        buttonList = new ArrayList<StyledTFToggle>();
-        TagEntityArmorStand tagArmor = drawArmor.getStandData();
+        buttonList = new ArrayList<>();
+        TagEntityArmorStand tagArmor = item.getTag().getArmorStandTag();
         int x1 = 100;
         int y1 = 40;
         buttonList.add(new StyledTFToggle(x1, y1, 100, 20, I18n.get("gui.armorstandeditorproperties.showarms"), tagArmor.getShowArms()));
@@ -58,7 +58,7 @@ public class ArmorstandPropScreen extends BaseArmorstandScreen {
     public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
         super.mainRender(matrix, mouseX, mouseY, p3, color);
         if (armorstand != null) {
-            drawArmor.drawArmorStand(armorstand, (int) (this.width / 3 * 2.5),
+            drawArmor.drawArmorStand((int) (this.width / 3 * 2.5),
                     (int) (this.height / 5 * 3.8), 70);
         }
 

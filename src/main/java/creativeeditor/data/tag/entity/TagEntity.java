@@ -14,12 +14,19 @@ public abstract class TagEntity<E extends Entity> implements Data<E, CompoundNBT
     @Getter
     private TagItemList handItems;
 
-    public TagEntity(TagItemList armorItems, TagItemList handItems){
+    public TagEntity(TagItemList armorItems, TagItemList handItems) {
         this.armorItems = armorItems;
         this.handItems = handItems;
     }
 
-    public EquipmentInventory getInventory(){
+    public EquipmentInventory getInventory() {
         return new EquipmentInventory(armorItems, handItems);
     }
+
+    @Override
+    public boolean isDefault() {
+        return handItems.isDefault() && armorItems.isDefault();
+    }
+
+
 }

@@ -6,12 +6,10 @@ import creativeeditor.util.ColorUtils;
 import creativeeditor.util.EntityDrawUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.util.text.ITextComponent;
 
 public abstract class BaseArmorstandScreen extends ParentItemScreen {
 
-    private static ArmorStandEntity armorStand = null;
     protected static EntityDrawUtils drawArmor;
     private boolean isInRegion = false;
 
@@ -23,23 +21,19 @@ public abstract class BaseArmorstandScreen extends ParentItemScreen {
     @Override
     public void init(Minecraft p_231158_1_, int p_231158_2_, int p_231158_3_) {
         super.init(p_231158_1_, p_231158_2_, p_231158_3_);
-        if (armorStand == null) {
-            ArmorStandEntity entity = new ArmorStandEntity(minecraft.level, 0, 0, 0);
-            armorStand = entity;
-            drawArmor = new EntityDrawUtils(armorStand, item);
-        }
+        drawArmor = new EntityDrawUtils(item);
         postInit();
     }
 
 
-    protected void postInit() {}
+    protected void postInit() {
+    }
 
     @Override
     public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
         super.mainRender(matrix, mouseX, mouseY, p3, color);
-        if (armorStand != null) {
-            drawArmor.drawArmorStand(armorStand, (int) (this.width / 3 * 2.5), (int) (this.height / 5 * 3.8), 70);
-        }
+        drawArmor.drawArmorStand((int) (this.width / 3 * 2.5), (int) (this.height / 5 * 3.8), 70);
+
     }
 
 

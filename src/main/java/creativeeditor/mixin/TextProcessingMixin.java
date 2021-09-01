@@ -21,41 +21,39 @@ public class TextProcessingMixin {
 
         for (int j = p_238340_1_; j < i; ++j) {
             char c0 = p_238340_0_.charAt(j);
-            boolean r = true;
             if (c0 == 167) {
                 if (!(j + 1 >= i)) {
                     char c1 = p_238340_0_.charAt(j + 1);
                     TextFormatting textformatting = TextFormatting.getByCode(c1);
                     if (textformatting != null) {
                         style = textformatting == TextFormatting.RESET ? p_238340_3_ : style.applyLegacyFormat(textformatting);
+                        ++j;
+                        continue;
                     }
-                    ++j;
-                    r = false;
                 }
             }
-            if (r) {
-                if (Character.isHighSurrogate(c0)) {
-                    if (j + 1 >= i) {
-                        if (!p_238340_4_.accept(j, style, 65533)) {
-                            return false;
-                        }
-                        break;
-                    }
-
-                    char c2 = p_238340_0_.charAt(j + 1);
-                    if (Character.isLowSurrogate(c2)) {
-                        if (!p_238340_4_.accept(j, style, Character.toCodePoint(c0, c2))) {
-                            return false;
-                        }
-
-                        ++j;
-                    } else if (!p_238340_4_.accept(j, style, 65533)) {
+            if (Character.isHighSurrogate(c0)) {
+                if (j + 1 >= i) {
+                    if (!p_238340_4_.accept(j, style, 65533)) {
                         return false;
                     }
-                } else if (!feedChar(style, p_238340_4_, j, c0)) {
+                    break;
+                }
+
+                char c2 = p_238340_0_.charAt(j + 1);
+                if (Character.isLowSurrogate(c2)) {
+                    if (!p_238340_4_.accept(j, style, Character.toCodePoint(c0, c2))) {
+                        return false;
+                    }
+
+                    ++j;
+                } else if (!p_238340_4_.accept(j, style, 65533)) {
                     return false;
                 }
+            } else if (!feedChar(style, p_238340_4_, j, c0)) {
+                return false;
             }
+
         }
 
         return true;

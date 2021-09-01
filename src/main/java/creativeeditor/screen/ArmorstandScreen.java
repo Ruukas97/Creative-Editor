@@ -32,13 +32,13 @@ public class ArmorstandScreen extends BaseArmorstandScreen {
         super.init();
         int x1 = width / divideX;
         int y1 = height / divideY;
-        Pose pose = drawArmor.getStandData().getPose();
+        Pose pose = item.getTag().getArmorStandTag().getPose();
 
         addSliders(x1, y1, pose.getHead());
         y1 += (int) (buttonHeight * 1.5);
         addSliders(x1, y1, pose.getBody());
         y1 += (int) (buttonHeight * 1.5);
-        if (drawArmor.getStandData().getShowArms().get()) {
+        if (item.getTag().getArmorStandTag().getShowArms().get()) {
             addSliders(x1, y1, pose.getRightArm());
             y1 += (int) (buttonHeight * 1.5);
             addSliders(x1, y1, pose.getLeftArm());
@@ -70,7 +70,7 @@ public class ArmorstandScreen extends BaseArmorstandScreen {
 
     @Override
     public void reset(Widget w) {
-        drawArmor.getStandData().getPose().reset();
+        item.getTag().getArmorStandTag().getPose().reset();
     }
 
 
@@ -86,7 +86,7 @@ public class ArmorstandScreen extends BaseArmorstandScreen {
         int x1 = width / divideX;
         int y1 = height / divideY;
 
-        boolean arms = drawArmor.getStandData().getShowArms().get();
+        boolean arms = item.getTag().getArmorStandTag().getShowArms().get();
         for (BODY_PARTS s : (BODY_PARTS.values())) {
             if (!arms) {
                 if (s == BODY_PARTS.LEFTARM || s == BODY_PARTS.RIGHTARM) {
