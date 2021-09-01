@@ -2,6 +2,7 @@ package creativeeditor.screen.widgets;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.screen.LoreEditorScreen;
+import lombok.Getter;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.INestedGuiEventHandler;
@@ -15,7 +16,8 @@ import java.util.List;
 public class LoreWidget extends Widget implements INestedGuiEventHandler {
     private final int spacing = 4;
     private final int squareSize = 20;
-    private int count = 0;
+    @Getter
+    private int count;
     private final int offset = 20;
     private final int fieldWidth = width - (squareSize * 3 + (offset * 2 + (offset / 2)));
     private LoreEditorScreen loreEditorScreen;
@@ -62,16 +64,7 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
 
     }
 
-    @Nullable
-    @Override
-    public IGuiEventListener getFocused() {
-        return null;
-    }
 
-    @Override
-    public void setFocused(@Nullable IGuiEventListener iGuiEventListener) {
-
-    }
 
     public LoreWidget updateCount(int i) {
         this.count = i;
@@ -111,17 +104,26 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
 
     @Override
     public boolean charTyped(char p_231042_1_, int p_231042_2_) {
-        field.charTyped(p_231042_1_, p_231042_2_);
-        return INestedGuiEventHandler.super.charTyped(p_231042_1_, p_231042_2_);
+        return field.charTyped(p_231042_1_, p_231042_2_);
+    }
+
+    @Nullable
+    @Override
+    public IGuiEventListener getFocused() {
+        return this.field;
+    }
+
+    @Override
+    public void setFocused(@Nullable IGuiEventListener p_231035_1_) {
     }
 
     @Override
     public boolean keyPressed(int p_231046_1_, int p_231046_2_, int p_231046_3_) {
-        field.keyPressed(p_231046_1_, p_231046_2_, p_231046_3_);
-        return INestedGuiEventHandler.super.keyPressed(p_231046_1_, p_231046_2_, p_231046_3_);
+        return field.keyPressed(p_231046_1_, p_231046_2_, p_231046_3_);
     }
 
     public void setFocusField(boolean bool) {
+        this.setFocused(bool);
         field.setFocused(bool);
         field.selectionEnd = field.cursorPosition;
     }

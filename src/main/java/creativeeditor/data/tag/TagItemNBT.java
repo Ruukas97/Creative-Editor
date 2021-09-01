@@ -163,7 +163,7 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
         generation = add(keys.tagGeneration(), new NumberRangeInt(nbt.getInt(keys.tagGeneration()), 0, 3));
         author = add(keys.tagAuthor(), new DataString(nbt.getString(keys.tagAuthor())));
         title = add(keys.tagTitle(), new DataString(nbt.getString(keys.tagTitle())));
-        pages = add(keys.tagPages(), new DataListString(nbt.getList(keys.tagPages(), NBT.TAG_COMPOUND)));
+        pages = add(keys.tagPages(), new DataListString(nbt.getList(keys.tagPages(), NBT.TAG_STRING)));
 
 
         // Crossbows

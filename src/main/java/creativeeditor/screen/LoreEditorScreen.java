@@ -7,7 +7,6 @@ import creativeeditor.screen.widgets.LoreWidget;
 import creativeeditor.screen.widgets.ScrollableScissorWindow;
 import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.util.ColorUtils;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
@@ -42,7 +41,7 @@ public class LoreEditorScreen extends ParentItemScreen {
         int xScroll = (width - scrollWidth) / 2;
         scrollWindow = addButton(new ScrollableScissorWindow(xScroll, height / 4, scrollWidth, height / 4 * 2, "Scroll"));
         int scrollTop = height / 4;
-        addButton(new StyledButton(xScroll - buttonWidth - distanceFromScroll, scrollTop, buttonWidth, 20, I18n.get("gui.loreeditor.addline"), t -> addLine(font)));
+        addButton(new StyledButton(xScroll - buttonWidth - distanceFromScroll, scrollTop, buttonWidth, 20, I18n.get("gui.loreeditor.addline"), t -> addLine()));
         addButton(new StyledButton(xScroll - buttonWidth - distanceFromScroll, scrollTop + 25, buttonWidth, 20, I18n.get("gui.loreeditor.copy"), t -> copyLoreToClipboard()));
         loreLines.clear();
         List<DataString> l = item.getTag().getDisplay().getLore().get();
@@ -55,7 +54,7 @@ public class LoreEditorScreen extends ParentItemScreen {
             loreLines.add(new LoreWidget(i + 1, scrollWidth, font, this, loreText));
         }
         scrollWindow.getWidgets().addAll(loreLines);
-
+        setInitialFocus(scrollWindow);
     }
 
     private void copyLoreToClipboard() {
@@ -76,8 +75,12 @@ public class LoreEditorScreen extends ParentItemScreen {
         }
     }
 
-    private void addLine(FontRenderer font) {
-        loreLines.add(new LoreWidget(scrollWindow.getWidgets().size() + 1, scrollWidth, font, this));
+    private void addLine() {
+        addLine(loreLines.size());
+    }
+
+    private void addLine(int i) {
+        loreLines.add(i, new LoreWidget(scrollWindow.getWidgets().size() + 1, scrollWidth, minecraft.font, this));
         updateLines();
     }
 
@@ -142,18 +145,18 @@ public class LoreEditorScreen extends ParentItemScreen {
         return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
-    private boolean hasFocusedTextField() {
+    private LoreWidget getFocusedLoreWidget() {
         for (LoreWidget w : loreLines) {
-            if (w.isFocused()) return true;
+            if (w.isFocused()) return w;
         }
-        return false;
+        return null;
     }
 
     @Override
     public boolean keyPressed(int key1, int key2, int key3) {
         if (key2 == 47 && key3 == 2) { // V + ctrl modifier
             String clip = minecraft.keyboardHandler.getClipboard();
-            if (!clip.isEmpty() && clip.contains("\n") && !hasFocusedTextField()) {
+            if (!clip.isEmpty() && clip.contains("\n") && getFocusedLoreWidget() != null) {
                 String[] lines = clip.split("\n");
                 loreLines.clear();
                 for (int i = 0; i < lines.length; i++) {
@@ -164,21 +167,43 @@ public class LoreEditorScreen extends ParentItemScreen {
 
             }
         }
-        if (key1 == 258) {
-            for (int i = 0; i < loreLines.size(); i++) {
-                if (loreLines.get(i).isFocused()) {
-                    loreLines.get(i).setFocusField(false);
-                    loreLines.get(i + 1 < loreLines.size() ? i + 1 : 0).setFocusField(true);
-                    return true;
-                }
+        if (key1 == 258 || key1 == 264 || key1 == 265) { // tab or key down or key up
+            if (handleArrowsAndTab(key1 == 265)) return true;
+        }
+        if (key2 == 28) { // enter
+            if (getFocusedLoreWidget() != null) {
+                LoreWidget loreWidget = getFocusedLoreWidget();
+                addLine(loreWidget.getCount());
+                handleArrowsAndTab(false);
             }
+
         }
         return super.keyPressed(key1, key2, key3);
     }
+
+    private boolean handleArrowsAndTab(boolean goesDown) {
+        if (getFocusedLoreWidget() != null) {
+            LoreWidget focused = getFocusedLoreWidget();
+            focused.setFocusField(false);
+            int i = focused.getCount() - 1;
+            int get = goesDown ? i - 1 >= 0 ? i - 1 : loreLines.size() - 1 : i + 1 < loreLines.size() ? i + 1 : 0;
+            LoreWidget lw = loreLines.get(get);
+            lw.setFocusField(true);
+            scrollWindow.setFocused(lw);
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public void onClose() {
         minecraft.keyboardHandler.setSendRepeatsToGui(false);
         super.onClose();
+    }
+
+    @Override
+    public boolean changeFocus(boolean p_231049_1_) {
+        return false;
     }
 }

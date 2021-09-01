@@ -15,7 +15,7 @@ public class ScreenHandler {
 
     // Add ColorHelperWidget to GUI's
     @SubscribeEvent()
-    public void onInitGui(GuiScreenEvent.InitGuiEvent e) {
+    public void onInitGui(GuiScreenEvent.InitGuiEvent.Post e) {
         if (e.getGui() instanceof EditSignScreen || e.getGui() instanceof EditWorldScreen || e.getGui() instanceof EditBookScreen || e.getGui() instanceof AddServerScreen) {
             e.addWidget(new ColorHelperWidget(null, 156, 30, e.getGui().width, e.getGui().height));
         }

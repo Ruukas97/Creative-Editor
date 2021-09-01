@@ -43,7 +43,7 @@ public class ParentItemScreen extends ParentScreen {
 
     public ParentItemScreen(ITextComponent title, Screen lastScreen, DataItem editing) {
         super(title, lastScreen);
-        this.item = editing;
+        item = editing;
     }
 
 
@@ -70,7 +70,7 @@ public class ParentItemScreen extends ParentScreen {
             dropButton = addButton(new StyledButton(posX + bwidth + 1, posY, bwidth, 20, new TranslationTextComponent("gui.main.drop"), this::drop));
 
             if (!minecraft.player.abilities.instabuild) {
-                saveButton.active = false;
+                if (saveButton != null) saveButton.active = false;
                 dropButton.active = false;
             }
 

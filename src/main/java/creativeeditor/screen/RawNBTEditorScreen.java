@@ -42,6 +42,7 @@ public class RawNBTEditorScreen extends ParentItemScreen {
         copyButton = new StyledButton((width - bwidth) / 2, nbtField.y + butHeight + 10, bwidth, butHeight, new TranslationTextComponent("gui.loreeditor.copy"), this::copy);
         renderWidgets.add(nbtField);
         renderWidgets.add(copyButton);
+        minecraft.keyboardHandler.setSendRepeatsToGui(true);
     }
 
     private void copy(Button button) {
@@ -104,5 +105,9 @@ public class RawNBTEditorScreen extends ParentItemScreen {
         super.tick();
     }
 
-
+    @Override
+    public void onClose() {
+        minecraft.keyboardHandler.setSendRepeatsToGui(false);
+        super.onClose();
+    }
 }

@@ -50,7 +50,8 @@ public class CreativeEditor {
         MinecraftForge.EVENT_BUS.register(new PlayerNameplateHandler());
         MinecraftForge.EVENT_BUS.register(new TooltipHandler());
         MinecraftForge.EVENT_BUS.register(new KeyInputHandler());
-        FMLJavaModLoadingContext.get().getModEventBus().register( new TextureStitchHandler());
+        MinecraftForge.EVENT_BUS.register(new EntityHandler());
+        FMLJavaModLoadingContext.get().getModEventBus().register(new TextureStitchHandler());
 //         MinecraftForge.EVENT_BUS.register( new NetworkHandler() );
 
         if (Config.SPECTRUM_SHIELD_ENABLED.get())
