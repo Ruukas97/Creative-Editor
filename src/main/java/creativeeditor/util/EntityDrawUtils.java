@@ -23,7 +23,6 @@ public class EntityDrawUtils {
 
     public EntityDrawUtils(DataItem item) {
         this.armorstand = new ArmorStandEntity(Minecraft.getInstance().level, 0, 0, 0);
-        ;
         this.item = item;
     }
 

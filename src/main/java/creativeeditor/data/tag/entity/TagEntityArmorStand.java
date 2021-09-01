@@ -58,7 +58,7 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
     public ArmorStandEntity getData() {
         Minecraft mc = Minecraft.getInstance();
         ArmorStandEntity stand = new ArmorStandEntity(EntityType.ARMOR_STAND, mc.level);
-        pose.applyToArmorStand(stand);
+        stand.readAdditionalSaveData(getNBT());
         return stand;
     }
 

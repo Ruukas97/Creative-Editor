@@ -24,12 +24,12 @@ public class EquipmentInventory implements IInventory {
 
     @Override
     public boolean isEmpty() {
-        for(DataItem item : armor.get()) {
+        for (DataItem item : armor.get()) {
             if (!item.isDefault()) {
                 return false;
             }
         }
-        for(DataItem item : hands.get()) {
+        for (DataItem item : hands.get()) {
             if (!item.isDefault()) {
                 return false;
             }
@@ -41,7 +41,7 @@ public class EquipmentInventory implements IInventory {
     public ItemStack getItem(int index) {
         DataItem[] array = null;
 
-        for(TagItemList itemList : both) {
+        for (TagItemList itemList : both) {
             if (index < itemList.get().length) {
                 array = itemList.get();
                 break;
@@ -57,7 +57,7 @@ public class EquipmentInventory implements IInventory {
     public ItemStack removeItem(int index, int count) {
         DataItem[] array = null;
 
-        for(TagItemList itemList : both) {
+        for (TagItemList itemList : both) {
             if (index < itemList.get().length) {
                 array = itemList.get();
                 break;
@@ -65,19 +65,26 @@ public class EquipmentInventory implements IInventory {
 
             index -= itemList.get().length;
         }
-
-        return array != null && array[index] != null && !array[index].getItemStack().isEmpty() ? removeItem(array, index, count) : ItemStack.EMPTY;
+        if (array != null && array[index] != null && !array[index].getItemStack().isEmpty()) {
+            DataItem old = array[index];
+            ItemStack is = removeItem(array, index, count);
+            int i = old.getCount().get() - is.getCount();
+            array[index] = i > 0 ? new DataItem(is.getItem(), i, old.getItemStack().getTag(), 0) : new DataItem();
+            return is;
+        }
+        return ItemStack.EMPTY;
     }
 
+
     private static ItemStack removeItem(DataItem[] array, int index, int count) {
-        return index >= 0 && index < array.length && !array[index].getItemStack().isEmpty() && count > 0 ? array[index].getItemStack().split(count) : ItemStack.EMPTY;
+        return index >= 0 && index < array.length && !array[index].getItemStack().isEmpty() && count > 0 ? array[index].split(count).getItemStack() : ItemStack.EMPTY;
     }
 
     @Override
     public ItemStack removeItemNoUpdate(int index) {
         DataItem[] array = null;
 
-        for(TagItemList itemList : both) {
+        for (TagItemList itemList : both) {
             if (index < itemList.get().length) {
                 array = itemList.get();
                 break;
@@ -85,7 +92,7 @@ public class EquipmentInventory implements IInventory {
 
             index -= itemList.get().length;
         }
-        
+
         if (array != null && array[index] != null && !array[index].getItemStack().isEmpty()) {
             DataItem item = array[index];
             array[index] = new DataItem();
@@ -99,7 +106,7 @@ public class EquipmentInventory implements IInventory {
     public void setItem(int index, ItemStack stack) {
         DataItem[] array = null;
 
-        for(TagItemList itemList : both) {
+        for (TagItemList itemList : both) {
             if (index < itemList.get().length) {
                 array = itemList.get();
                 break;
@@ -125,8 +132,8 @@ public class EquipmentInventory implements IInventory {
 
     @Override
     public void clearContent() {
-        for(TagItemList list : both) {
-            for(int i = 0; i<list.get().length; i++){
+        for (TagItemList list : both) {
+            for (int i = 0; i < list.get().length; i++) {
                 list.get()[0] = null;
             }
         }
