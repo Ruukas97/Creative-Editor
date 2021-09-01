@@ -2,6 +2,7 @@ package creativeeditor.data.tag;
 
 import creativeeditor.data.DataItem;
 import creativeeditor.data.base.SingularData;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
@@ -40,12 +41,27 @@ public class TagItemList extends SingularData<DataItem[], ListNBT>{
     public ListNBT getNBT() {
         ListNBT nbt = new ListNBT();
         int slot = 0;
-        for(DataItem item : data){
-            if(item == null){
+        for (DataItem item : data) {
+            if (item == null) {
                 item = new DataItem();
             }
             item.getSlot().set(slot++);
             nbt.add(item.getNBT());
+        }
+        return nbt;
+    }
+
+    public ListNBT getNBTEmptyDefaults() {
+        ListNBT nbt = new ListNBT();
+        int slot = 0;
+        for (DataItem item : data) {
+            if (item == null || item.getCount().get() == 0 || item.getItem().getItem() == Items.AIR) {
+                nbt.add(new CompoundNBT());
+            } else {
+                item.getSlot().set(slot);
+                nbt.add(item.getNBT());
+            }
+            slot++;
         }
         return nbt;
     }

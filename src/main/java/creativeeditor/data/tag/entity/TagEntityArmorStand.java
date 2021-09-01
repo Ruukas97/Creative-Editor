@@ -89,8 +89,8 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
         if (!disabledSlots.isDefault())
             nbt.put("DisabledSlots", disabledSlots.getNBT());
         if (!super.isDefault()) {
-            nbt.put("ArmorItems", super.getArmorItems().getNBT());
-            nbt.put("HandItems", super.getHandItems().getNBT());
+            nbt.put("ArmorItems", super.getArmorItems().getNBTEmptyDefaults());
+            nbt.put("HandItems", super.getHandItems().getNBTEmptyDefaults());
         }
         return nbt;
     }
