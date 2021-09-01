@@ -20,9 +20,9 @@ public class DataRotation implements Data<Rotations, ListNBT> {
 
 
     public DataRotation(ListNBT nbt) {
-        x = new NumberRangeInt(nbt.getInt(0), 0, 360);
-        y = new NumberRangeInt(nbt.getInt(1), 0, 360);
-        z = new NumberRangeInt(nbt.getInt(2), 0, 360);
+        x = new NumberRangeInt((int) nbt.getFloat(0), 0, 360);
+        y = new NumberRangeInt((int) nbt.getFloat(1), 0, 360);
+        z = new NumberRangeInt((int) nbt.getFloat(2), 0, 360);
     }
 
 
