@@ -146,11 +146,6 @@ public class SliderTag extends Widget implements IStyledSlider<Integer> {
         isHovered = b;
     }
 
-    @Override
-    public void renderBackground(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY) {
-        super.renderBg(matrix, mc, mouseX, mouseY);
-    }
-
 
     @Override
     public Integer getValue() {

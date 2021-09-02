@@ -17,5 +17,5 @@ public interface IStyledWidget {
     void setHovered(boolean b);
 
 
-    void renderBackground(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY);
+    void renderBg(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY);
 }

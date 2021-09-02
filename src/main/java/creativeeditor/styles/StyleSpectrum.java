@@ -47,7 +47,7 @@ public class StyleSpectrum implements Style {
         FontRenderer font = mc.font;
         int j = getFGColor(button.getWidget()).getInt();
         GuiUtil.drawFrame(matrix, button.getWidget().x, button.getWidget().y, button.getWidget().x + button.getWidget().getWidth(), button.getWidget().y + button.getWidget().getHeight(), 1, new Color(j));
-        button.renderBackground(matrix, mc, mouseX, mouseY);
+        button.renderBg(matrix, mc, mouseX, mouseY);
 
         String buttonText = button.getWidget().getMessage().getString();
         int strWidth = mc.font.width(buttonText);
