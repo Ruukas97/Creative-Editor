@@ -144,6 +144,11 @@ public class SliderTagFloat extends Widget implements IStyledSlider<Float> {
         isHovered = b;
     }
 
+    @Override
+    public void renderBackground(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY) {
+        super.renderBg(matrix, mc, mouseX, mouseY);
+    }
+
 
     @Override
     public Float getValue() {

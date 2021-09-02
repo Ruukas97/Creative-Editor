@@ -53,7 +53,8 @@ public class StyledButton extends Button implements IStyledButton {
         isHovered = b;
     }
 
-    public void renderBg(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY) {
+    @Override
+    public void renderBackground(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY) {
         super.renderBg(matrix, mc, mouseX, mouseY);
     }
 }

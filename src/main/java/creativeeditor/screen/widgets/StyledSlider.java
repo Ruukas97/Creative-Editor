@@ -181,4 +181,9 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
     public void setHovered(boolean b) {
         isHovered = b;
     }
+
+    @Override
+    public void renderBackground(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY) {
+        super.renderBg(matrix, mc, mouseX, mouseY);
+    }
 }
