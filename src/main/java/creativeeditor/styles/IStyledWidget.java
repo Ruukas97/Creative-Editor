@@ -8,14 +8,14 @@ public interface IStyledWidget {
     Widget getWidget();
 
 
-    int getYImage(boolean b);
+    int getImageY(boolean b);
 
 
-    int getBlitOffset();
+    int getOffsetBlit();
 
 
     void setHovered(boolean b);
 
 
-    void renderBg(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY);
+    void renderBackground(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY);
 }

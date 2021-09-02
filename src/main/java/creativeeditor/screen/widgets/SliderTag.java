@@ -42,23 +42,9 @@ public class SliderTag extends Widget implements IStyledSlider<Integer> {
 
 
     @Override
-    public int getYImage(boolean b) {
-        return 0;
-    }
-
-
-    @Override
     public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float p3) {
         updateSlider();
         StyleManager.getCurrentStyle().renderButton(matrix, this, mouseX, mouseY, p3);
-    }
-
-    @Override
-    public void renderBg(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY) {
-        if (!this.visible)
-            return;
-
-        StyleManager.getCurrentStyle().renderSlider(matrix, this, mouseX, mouseY);
     }
 
 
@@ -140,10 +126,28 @@ public class SliderTag extends Widget implements IStyledSlider<Integer> {
         return this;
     }
 
+    @Override
+    public int getImageY(boolean b) {
+        return 0;
+    }
+
+    @Override
+    public int getOffsetBlit() {
+        return 0;
+    }
+
 
     @Override
     public void setHovered(boolean b) {
         isHovered = b;
+    }
+
+    @Override
+    public void renderBackground(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY) {
+        if (!this.visible)
+            return;
+
+        StyleManager.getCurrentStyle().renderSlider(matrix, this, mouseX, mouseY);
     }
 
 

@@ -31,12 +31,6 @@ public class StyledButton extends Button implements IStyledButton {
     }
 
     @Override
-    public int getYImage(boolean p_getYImage_1_) {
-        return super.getYImage(p_getYImage_1_);
-    }
-
-
-    @Override
     public int getFGColor() {
         return StyleManager.getCurrentStyle().getFGColor(this).getInt();
     }
@@ -47,13 +41,23 @@ public class StyledButton extends Button implements IStyledButton {
         return this;
     }
 
+    @Override
+    public int getImageY(boolean b) {
+        return super.getYImage(b);
+    }
+
+    @Override
+    public int getOffsetBlit() {
+        return super.getBlitOffset();
+    }
 
     @Override
     public void setHovered(boolean b) {
         isHovered = b;
     }
 
-    public void renderBg(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY) {
+    @Override
+    public void renderBackground(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY) {
         super.renderBg(matrix, mc, mouseX, mouseY);
     }
 }

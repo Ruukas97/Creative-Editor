@@ -36,9 +36,9 @@ public class StyleVanilla extends StyleBase {
 
         Minecraft mc = Minecraft.getInstance();
         button.setHovered(mouseX >= widget.x && mouseY >= widget.y && mouseX < widget.x + widget.getWidth() && mouseY < widget.y + widget.getHeight());
-        int k = button.getYImage(widget.isHovered());
-        GuiUtil.drawContinuousTexturedBox(Widget.WIDGETS_LOCATION, widget.x, widget.y, 0, 46 + k * 20, widget.getWidth(), widget.getHeight(), 200, 20, 2, 3, 2, 2, button.getBlitOffset());
-        button.renderBg(matrix, mc, mouseX, mouseY);
+        int k = button.getImageY(widget.isHovered());
+        GuiUtil.drawContinuousTexturedBox(Widget.WIDGETS_LOCATION, widget.x, widget.y, 0, 46 + k * 20, widget.getWidth(), widget.getHeight(), 200, 20, 2, 3, 2, 2, button.getOffsetBlit());
+        button.renderBackground(matrix, mc, mouseX, mouseY);
 
         int color = getFGColor(widget).getInt();
 
@@ -55,6 +55,6 @@ public class StyleVanilla extends StyleBase {
 
     @Override
     public void renderSlider(MatrixStack matrix, IStyledSlider<?> slider, int mouseX, int mouseY) {
-        GuiUtil.drawContinuousTexturedBox(matrix, Widget.WIDGETS_LOCATION, (int) (slider.getWidget().x + (slider.getWidget().getWidth() - 8) * ((slider.getValue().floatValue() - slider.getMin().floatValue()) / Math.max(1, (slider.getMax().floatValue() - slider.getMin().floatValue())))), slider.getWidget().y, 0, 66, 8, slider.getWidget().getHeight(), 200, 20, 2, 3, 2, 2, slider.getBlitOffset());
+        GuiUtil.drawContinuousTexturedBox(matrix, Widget.WIDGETS_LOCATION, (int) (slider.getWidget().x + (slider.getWidget().getWidth() - 8) * ((slider.getValue().floatValue() - slider.getMin().floatValue()) / Math.max(1, (slider.getMax().floatValue() - slider.getMin().floatValue())))), slider.getWidget().y, 0, 66, 8, slider.getWidget().getHeight(), 200, 20, 2, 3, 2, 2, slider.getOffsetBlit());
     }
 }

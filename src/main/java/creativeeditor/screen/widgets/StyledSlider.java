@@ -51,28 +51,11 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
         setMessage(new StringTextComponent(drawString ? display + value : ""));
     }
 
-
-    @Override
-    public int getYImage(boolean par1) {
-        return 0;
-    }
-
-
     @Override
     public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float p3) {
         StyleManager.getCurrentStyle().renderButton(matrix, this, mouseX, mouseY, p3);
         super.renderButton(matrix, mouseX, mouseY, p3);
     }
-
-
-    @Override
-    public void renderBg(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY) {
-        if (!this.visible)
-            return;
-
-        StyleManager.getCurrentStyle().renderSlider(matrix, this, mouseX, mouseY);
-    }
-
 
     private void setValueFromMouse(double mouseX) {
         double updateValue;
@@ -153,6 +136,16 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
         return this;
     }
 
+    @Override
+    public int getImageY(boolean b) {
+        return super.getYImage(b);
+    }
+
+    @Override
+    public int getOffsetBlit() {
+        return super.getBlitOffset();
+    }
+
 
     @Override
     public Integer getValue() {
@@ -180,5 +173,13 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
     @Override
     public void setHovered(boolean b) {
         isHovered = b;
+    }
+
+    @Override
+    public void renderBackground(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY) {
+        if (!this.visible)
+            return;
+
+        StyleManager.getCurrentStyle().renderSlider(matrix, this, mouseX, mouseY);
     }
 }
