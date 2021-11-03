@@ -55,7 +55,7 @@ public class ParentItemScreen extends ParentScreen {
         renderWidgets.clear();
 
         if (hasEssButtons) {
-            int bwidth = 50;
+            int bwidth = 68;
             int posX = width / 2 - (bwidth / 2);
             int posY = height - 42;
             boolean hasLastscreen = lastScreen != null;

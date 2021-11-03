@@ -10,6 +10,7 @@ import creativeeditor.util.ColorUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -53,7 +54,7 @@ public class PlaceDestroyScreen extends ParentItemScreen {
     }
 
     private StyledButton addToAddedButton(Block block) {
-        StyledButton button = new StyledButton(0, 0, 50, 20, block.getRegistryName().getPath(), b -> {
+        StyledButton button = new StyledButton(0, 0, 50, 20, block.getName(), b -> {
             addCanPlaceOn(block, null, true);
             list.getWidgets().remove(b);
         });
@@ -68,22 +69,17 @@ public class PlaceDestroyScreen extends ParentItemScreen {
     }
 
     private void addCanPlaceOn(Block block, TagItemID tagItemR, boolean shouldAdd) {
-        TagItemID tagItem = new TagItemID(getFullPathByBlock(block));
+        TagItemID tagItem = new TagItemID(Item.BY_BLOCK.get(block));
         if(tagItemR != null) {
             tagItem = tagItemR;
         }
         TagItemID finalTagItem = tagItem; // final temp for lambda
-        StyledButton button = new StyledButton(0, 0, 50, 20, block.getRegistryName().getPath(), t -> {
+        StyledButton button = new StyledButton(0, 0, 50, 20, block.getName(), t -> {
             added.getWidgets().remove(t);
             canPlaceOnList.remove(finalTagItem);
             list.getWidgets().add(addToAddedButton(block));
         });
         added.getWidgets().add(button);
         if(shouldAdd) canPlaceOnList.add(finalTagItem);
-
-    }
-
-    private String getFullPathByBlock(Block block) {
-        return block.getRegistryName().getNamespace() + ":" + block.getRegistryName().getPath();
     }
 }
