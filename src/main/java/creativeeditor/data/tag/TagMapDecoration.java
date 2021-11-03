@@ -9,6 +9,7 @@ import lombok.Setter;
 import net.minecraft.nbt.ByteNBT;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.storage.MapDecoration;
 
 public class TagMapDecoration implements Data<TagMapDecoration, CompoundNBT> {
@@ -61,5 +62,10 @@ public class TagMapDecoration implements Data<TagMapDecoration, CompoundNBT> {
         nbt.put("y", y.getNBT());
         nbt.put(keys.decorationRotation(), rotation.getNBT());
         return nbt;
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        return getNBT().getPrettyDisplay(space, indentation);
     }
 }

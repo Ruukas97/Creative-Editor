@@ -1,16 +1,24 @@
 package creativeeditor.data.base;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import creativeeditor.data.Data;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.StringNBT;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> {
+    public static final Pattern SIMPLE_VALUE = Pattern.compile("[A-Za-z0-9._+-]+");
 
     public DataMap() {
         this(Maps.newHashMap());
@@ -113,5 +121,48 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
                 nbt.put(key, value.getNBT());
         });
         return nbt;
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        if (data.isEmpty()) {
+            return new StringTextComponent("{}");
+        } else {
+            IFormattableTextComponent iformattabletextcomponent = new StringTextComponent("{");
+            List<String> collection = Lists.newArrayList(data.keySet());
+            Collections.sort(collection);
+
+
+            if (!space.isEmpty()) {
+                iformattabletextcomponent.append("\n");
+            }
+
+            IFormattableTextComponent iformattabletextcomponent1;
+            for (Iterator<String> iterator = collection.iterator(); iterator.hasNext(); iformattabletextcomponent.append(iformattabletextcomponent1)) {
+                String s = iterator.next();
+                iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(handleEscapePretty(s)).append(String.valueOf(':')).append(" ").append(data.get(s).getPrettyDisplay(space, indentation + 1));
+                if (iterator.hasNext()) {
+                    iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+                }
+            }
+
+            if (!space.isEmpty()) {
+                iformattabletextcomponent.append("\n").append(Strings.repeat(space, indentation));
+            }
+
+            iformattabletextcomponent.append("}");
+            return iformattabletextcomponent;
+        }
+    }
+
+    public static ITextComponent handleEscapePretty(String string) {
+        if (SIMPLE_VALUE.matcher(string).matches()) {
+            return (new StringTextComponent(string)).withStyle(SYNTAX_HIGHLIGHTING_KEY);
+        } else {
+            String s = StringNBT.quoteAndEscape(string);
+            String s1 = s.substring(0, 1);
+            ITextComponent itextcomponent = (new StringTextComponent(s.substring(1, s.length() - 1))).withStyle(SYNTAX_HIGHLIGHTING_KEY);
+            return (new StringTextComponent(s1)).append(itextcomponent).append(s1);
+        }
     }
 }

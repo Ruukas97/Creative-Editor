@@ -6,6 +6,7 @@ import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.BannerTileEntity;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class TagBanner extends TagTileEntity<BannerTileEntity> {
@@ -35,5 +36,10 @@ public class TagBanner extends TagTileEntity<BannerTileEntity> {
         CompoundNBT nbt = new CompoundNBT();
         nbt.put(NBTKeys.keys.tagPatterns(), patterns.getNBT());
         return nbt;
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        return getNBT().getPrettyDisplay(space, indentation);
     }
 }

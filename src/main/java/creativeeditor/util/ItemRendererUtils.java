@@ -17,14 +17,15 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextProperties;
+import net.minecraft.util.text.StringTextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @AllArgsConstructor
 public class ItemRendererUtils {
     private final ItemRenderer itemRenderer;
-
 
     public void renderItemIntoGUI(ItemStack stack, int x, int y, float xRot, float yRot) {
         this.renderItemModelIntoGUI(stack, x, y, xRot, yRot, itemRenderer.getModel(stack, null, null));
@@ -32,8 +33,13 @@ public class ItemRendererUtils {
 
     public static void renderFormattedItemNBT(MatrixStack matrix, DataItem item, int mouseX, int mouseY, int width, int height, int maxTextWidth, FontRenderer font) {
         List<ITextProperties> list = new ArrayList<>();
-        list.add((Minecraft.getInstance().options.advancedItemTooltips ? item.getNBT() : item.getTag().getNBT()).getPrettyDisplay(" ", 0));
-        GuiUtil.drawHoveringText( item.getItemStack(), matrix, list, mouseX, mouseY, width, height, maxTextWidth, font );
+        ITextProperties formatted = (Minecraft.getInstance().options.advancedItemTooltips ? item : item.getTag()).getPrettyDisplay(" ", 0);
+        list.add(formatted);
+        int w = font.width(formatted);
+        if (w < maxTextWidth) {
+            maxTextWidth = w - 5;
+        }
+        GuiUtil.drawHoveringText(item.getItemStack(), matrix, list, mouseX, mouseY, width, height, maxTextWidth, font);
     }
 
     public TextureManager getTextureManager() {

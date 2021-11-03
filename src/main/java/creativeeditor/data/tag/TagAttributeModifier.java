@@ -9,6 +9,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
+import net.minecraft.util.text.ITextComponent;
 
 import javax.annotation.Nullable;
 
@@ -31,6 +32,7 @@ public class TagAttributeModifier extends SingularData<AttributeModifier, Compou
 
     public TagAttributeModifier(String name, AttributeModifier mod, EquipmentSlotType slot) {
         super(mod);
+        this.name = name;
     }
 
     public TagAttributeModifier(INBT nbt) {
@@ -57,5 +59,10 @@ public class TagAttributeModifier extends SingularData<AttributeModifier, Compou
         if (slot != null)
             nbt.putInt(NBTKeys.keys.attributeSlot(), slot.ordinal());
         return nbt;
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        return getNBT().getPrettyDisplay(space, indentation);
     }
 }

@@ -1,6 +1,8 @@
 package creativeeditor.data.base;
 
 import net.minecraft.nbt.LongNBT;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 public class DataLong extends SingularData<Long, LongNBT> {
 
@@ -28,5 +30,11 @@ public class DataLong extends SingularData<Long, LongNBT> {
     @Override
     public LongNBT getNBT() {
         return LongNBT.valueOf(data);
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        ITextComponent itextcomponent = (new StringTextComponent("L")).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
+        return (new StringTextComponent(String.valueOf(this.data))).append(itextcomponent).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
     }
 }

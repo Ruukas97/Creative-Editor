@@ -9,6 +9,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.ResourceLocationException;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @AllArgsConstructor
@@ -52,6 +54,11 @@ public class TagEnchantment implements Data<TagEnchantment, CompoundNBT> {
         nbt.putString( "id", enchantment.delegate.name().toString() );
         nbt.putInt( "lvl", level.get() );
         return nbt;
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        return enchantment.getFullname(level.get());
     }
 
     @Override

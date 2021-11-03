@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.IntNBT;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 @SuppressWarnings("serial")
 public class DataColor extends Color implements Data<Color, IntNBT> {
@@ -50,6 +52,12 @@ public class DataColor extends Color implements Data<Color, IntNBT> {
     @Override
     public IntNBT getNBT() {
         return IntNBT.valueOf(argb);
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        ITextComponent itextcomponent = (new StringTextComponent(getHexString().substring(1))).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
+        return (new StringTextComponent("#").append(itextcomponent).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE));
     }
 
 

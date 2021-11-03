@@ -9,6 +9,8 @@ import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.tileentity.BannerPattern;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import org.apache.commons.lang3.tuple.Pair;
 
 @AllArgsConstructor
@@ -52,5 +54,10 @@ public class TagBannerPattern implements Data<Pair<BannerPattern, DyeColor>, Com
         nbt.putInt(keys.patternColor(), color.getId());
         nbt.putString(keys.patternPattern(), pattern.getHashname());
         return nbt;
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        return new StringTextComponent(color.getName()).append(" ").append(pattern.getFilename());
     }
 }

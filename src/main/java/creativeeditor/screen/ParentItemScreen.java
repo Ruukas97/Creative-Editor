@@ -112,12 +112,10 @@ public class ParentItemScreen extends ParentScreen {
     public void drop(Widget w) {
         if (item.getItem().getItem() != Items.AIR) {
             if(hasShiftDown()) {
-
                 minecraft.keyboardHandler.setClipboard(generateGiveCommand(item));
             } else {
                 minecraft.getConnection().send(new CCreativeInventoryActionPacket(-1, item.getItemStack()));
             }
-
         }
     }
 

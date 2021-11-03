@@ -1,6 +1,8 @@
 package creativeeditor.data;
 
+import com.google.common.base.Strings;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import creativeeditor.data.base.DataMap;
 import creativeeditor.data.tag.TagDamage;
 import creativeeditor.data.tag.TagDisplayName;
 import creativeeditor.data.tag.TagItemID;
@@ -14,14 +16,19 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IItemProvider;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 public class DataItem implements Data<ItemStack, CompoundNBT> {
-    private @Getter
-    TagItemID item;
-    private @Getter
-    NumberRangeInt count, slot;
-    private @Getter
-    TagItemNBT tag;
+    @Getter
+    private final TagItemID item;
+    @Getter
+    private final NumberRangeInt count;
+    @Getter
+    private final NumberRangeInt slot;
+    @Getter
+    private final TagItemNBT tag;
 
 
     public DataItem(TagItemID item, NumberRangeInt count, TagItemNBT tag, NumberRangeInt slot) {
@@ -128,7 +135,7 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
         int i = Math.min(count, this.count.get());
         DataItem item = new DataItem(getNBT());
         item.count.set(i);
-        this.count.set(this.count.get()-count);
+        this.count.set(this.count.get() - count);
         return item;
     }
 
@@ -145,6 +152,60 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
         return nbt;
     }
 
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        IFormattableTextComponent iformattabletextcomponent = new StringTextComponent("{");
+
+        if (!space.isEmpty()) {
+            iformattabletextcomponent.append("\n");
+        }
+
+        IFormattableTextComponent iformattabletextcomponent1;
+        NBTKeys keys = NBTKeys.keys;
+        String count = keys.stackCount();
+        String slot = keys.stackSlot();
+        String id = keys.stackID();
+        String tag = keys.stackTag();
+
+        boolean showCount = !getCount().isDefault();
+        boolean showSlot = !getSlot().isDefault();
+        boolean showId = !getItem().isDefault();
+        boolean showTag = !getTag().isDefault();
+
+        if (showCount) {
+            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(count)).append(String.valueOf(':')).append(" ").append(this.count.getPrettyDisplay(space, indentation + 1));
+            if (showSlot || showId || showTag)
+                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+            iformattabletextcomponent.append(iformattabletextcomponent1);
+        }
+
+        if (showSlot) {
+            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(slot)).append(String.valueOf(':')).append(" ").append(this.slot.getPrettyDisplay(space, indentation + 1));
+            if (showId || showTag)
+                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+            iformattabletextcomponent.append(iformattabletextcomponent1);
+        }
+
+        if (showId) {
+            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(id)).append(String.valueOf(':')).append(" ").append(this.item.getPrettyDisplay(space, indentation + 1));
+            if (showTag)
+                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+            iformattabletextcomponent.append(iformattabletextcomponent1);
+        }
+
+        if (showTag) {
+            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(tag)).append(String.valueOf(':')).append(" ").append(this.tag.getPrettyDisplay(space, indentation + 1));
+            iformattabletextcomponent.append(iformattabletextcomponent1);
+        }
+
+        if (!space.isEmpty()) {
+            iformattabletextcomponent.append("\n").append(Strings.repeat(space, indentation));
+        }
+
+        iformattabletextcomponent.append("}");
+        return iformattabletextcomponent;
+    }
+
 
     @Override
     public boolean isDefault() {
@@ -152,10 +213,6 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
     }
 
     public DataItem copy() {
-        if (this == null) {
-            return null;
-        } else {
-            return new DataItem(this.getNBT());
-        }
+        return new DataItem(this.getNBT());
     }
 }

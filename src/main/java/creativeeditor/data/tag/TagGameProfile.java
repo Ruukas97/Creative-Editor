@@ -6,6 +6,9 @@ import creativeeditor.data.base.SingularData;
 import creativeeditor.json.MinecraftHeadsResponse;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 public class TagGameProfile extends SingularData<GameProfile, CompoundNBT> {
     public TagGameProfile(String username) {
@@ -47,5 +50,14 @@ public class TagGameProfile extends SingularData<GameProfile, CompoundNBT> {
     @Override
     public CompoundNBT getNBT() {
         return NBTUtil.writeGameProfile(new CompoundNBT(), data);
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        IFormattableTextComponent text = new StringTextComponent(data.getName() == null ? "Player" : data.getName());
+        if(data.getId() != null){
+            text.append(data.getId().toString());
+        }
+        return text;
     }
 }

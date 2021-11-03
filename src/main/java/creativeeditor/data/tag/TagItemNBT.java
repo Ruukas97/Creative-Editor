@@ -1,5 +1,7 @@
 package creativeeditor.data.tag;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
 import creativeeditor.data.Data;
 import creativeeditor.data.DataItem;
@@ -10,11 +12,13 @@ import creativeeditor.data.tag.entity.TagEntityArmorStand;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.util.Constants.NBT;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
     @Getter
@@ -219,6 +223,46 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
                 nbt.put(key, data.getNBT());
         }
         return nbt;
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        if (map.isEmpty() || isDefault()) {
+            return new StringTextComponent("{}");
+        } else {
+            IFormattableTextComponent iformattabletextcomponent = new StringTextComponent("{");
+            List<String> collection = Lists.newArrayList(map.keySet());
+            List<String> list = Lists.newArrayList();
+            for(String s : collection){
+                Data<?, ?> d = map.get(s);
+                if(!d.isDefault()){
+                    list.add(s);
+                }
+            }
+
+            Collections.sort(list);
+            collection = list;
+
+            if (!space.isEmpty()) {
+                iformattabletextcomponent.append("\n");
+            }
+
+            IFormattableTextComponent iformattabletextcomponent1;
+            for (Iterator<String> iterator = collection.iterator(); iterator.hasNext(); iformattabletextcomponent.append(iformattabletextcomponent1)) {
+                String s = iterator.next();
+                iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(s)).append(String.valueOf(':')).append(" ").append(map.get(s).getPrettyDisplay(space, indentation + 1));
+                if (iterator.hasNext()) {
+                    iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+                }
+            }
+
+            if (!space.isEmpty()) {
+                iformattabletextcomponent.append("\n").append(Strings.repeat(space, indentation));
+            }
+
+            iformattabletextcomponent.append("}");
+            return iformattabletextcomponent;
+        }
     }
 
 

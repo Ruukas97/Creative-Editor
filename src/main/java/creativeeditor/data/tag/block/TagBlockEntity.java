@@ -6,6 +6,7 @@ import creativeeditor.data.base.DataString;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.ITextComponent;
 
 public class TagBlockEntity implements Data<TagBlockEntity, CompoundNBT> {
 
@@ -35,5 +36,10 @@ public class TagBlockEntity implements Data<TagBlockEntity, CompoundNBT> {
         if (!locked.isDefault())
             nbt.put(keys.locked(), locked.getNBT());
         return nbt;
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        return getNBT().getPrettyDisplay(space, indentation);
     }
 }

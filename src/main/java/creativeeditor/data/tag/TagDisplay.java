@@ -7,6 +7,7 @@ import creativeeditor.data.base.DataListString;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class TagDisplay implements Data<TagDisplay, CompoundNBT> {
@@ -51,6 +52,11 @@ public class TagDisplay implements Data<TagDisplay, CompoundNBT> {
         if (!lore.isDefault())
             nbt.put(keys.displayLore(), lore.getNBT());
         return nbt;
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        return getNBT().getPrettyDisplay(space, indentation);
     }
 
 

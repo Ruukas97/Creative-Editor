@@ -4,6 +4,8 @@ import creativeeditor.data.base.SingularData;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 public class TagEffect extends SingularData<EffectInstance, CompoundNBT> {
     /*
@@ -33,5 +35,10 @@ public class TagEffect extends SingularData<EffectInstance, CompoundNBT> {
     @Override
     public CompoundNBT getNBT() {
         return data.save(new CompoundNBT());
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        return new StringTextComponent(data.toString());
     }
 }

@@ -1,44 +1,42 @@
 package creativeeditor.data.tag.entity;
 
+import com.google.common.base.Strings;
 import creativeeditor.data.Data;
 import creativeeditor.data.base.DataBitField;
 import creativeeditor.data.base.DataBoolean;
+import creativeeditor.data.base.DataMap;
 import creativeeditor.data.base.DataRotation;
 import creativeeditor.data.tag.TagItemList;
+import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.Rotations;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
 
-    private @Getter
-    final
-    DataBoolean marker;
-    private @Getter
-    final
-    DataBoolean invisible;
-    private @Getter
-    final
-    DataBoolean noBasePlate;
-    private @Getter
-    final
-    DataBoolean noGravity;
-    private @Getter
-    final
-    DataBoolean showArms;
-    private @Getter
-    final
-    DataBoolean small;
-    private @Getter
-    final
-    Pose pose;
-    private @Getter
-    final
-    DataBitField disabledSlots;
+    @Getter
+    private final DataBoolean marker;
+    @Getter
+    private final DataBoolean invisible;
+    @Getter
+    private final DataBoolean noBasePlate;
+    @Getter
+    private final DataBoolean noGravity;
+    @Getter
+    private final DataBoolean showArms;
+    @Getter
+    private final DataBoolean small;
+    @Getter
+    private final Pose pose;
+    @Getter
+    private final DataBitField disabledSlots;
 
 
     public TagEntityArmorStand(CompoundNBT nbt) {
@@ -89,10 +87,118 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
         if (!disabledSlots.isDefault())
             nbt.put("DisabledSlots", disabledSlots.getNBT());
         if (!super.isDefault()) {
-            nbt.put("ArmorItems", super.getArmorItems().getNBTEmptyDefaults());
-            nbt.put("HandItems", super.getHandItems().getNBTEmptyDefaults());
+            CompoundNBT sup = super.getNBT();
+            nbt.merge(sup);
         }
         return nbt;
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        IFormattableTextComponent iformattabletextcomponent = new StringTextComponent("{");
+
+        if (!space.isEmpty()) {
+            iformattabletextcomponent.append("\n");
+        }
+
+        IFormattableTextComponent iformattabletextcomponent1;
+        String marker = "Marker";
+        String invisible = "Invisible";
+        String noBasePlate = "NoBasePlate";
+        String showArmsString = "ShowArms";
+        String small = "Small";
+        String noGravity = "NoGravity";
+        String pose = "Pose";
+        String disabledSlots = "DisabledSlots";
+        String armorItems = "ArmorItems";
+        String handItems = "HandItems";
+
+        boolean showMarker = !getMarker().isDefault();
+        boolean showInvisible = !getInvisible().isDefault();
+        boolean showBasePlate = !getNoBasePlate().isDefault();
+        boolean showArms = !getArmorItems().isDefault();
+        boolean showSmall = !getSmall().isDefault();
+        boolean showGravity = !getNoGravity().isDefault();
+        boolean showPose = !getPose().isDefault();
+        boolean showDisabledSlots = !getDisabledSlots().isDefault();
+        boolean showArmorItems = !getArmorItems().isDefault();
+        boolean showHandItems = !getHandItems().isDefault();
+
+
+        if (showMarker) {
+            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(marker)).append(String.valueOf(':')).append(" ").append(getMarker().getPrettyDisplay(space, indentation + 1));
+            if (showInvisible || showBasePlate || showArms || showSmall || showGravity || showPose || showDisabledSlots || showArmorItems || showHandItems)
+                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+            iformattabletextcomponent.append(iformattabletextcomponent1);
+        }
+
+        if (showInvisible) {
+            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(invisible)).append(String.valueOf(':')).append(" ").append(getInvisible().getPrettyDisplay(space, indentation + 1));
+            if (showBasePlate || showArms || showSmall || showGravity || showPose || showDisabledSlots || showArmorItems || showHandItems)
+                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+            iformattabletextcomponent.append(iformattabletextcomponent1);
+        }
+
+        if (showBasePlate) {
+            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(noBasePlate)).append(String.valueOf(':')).append(" ").append(getNoBasePlate().getPrettyDisplay(space, indentation + 1));
+            if (showArms || showSmall || showGravity || showPose || showDisabledSlots || showArmorItems || showHandItems)
+                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+            iformattabletextcomponent.append(iformattabletextcomponent1);
+        }
+
+        if (showArms) {
+            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(showArmsString)).append(String.valueOf(':')).append(" ").append(getShowArms().getPrettyDisplay(space, indentation + 1));
+            if (showSmall || showGravity || showPose || showDisabledSlots || showArmorItems || showHandItems)
+                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+            iformattabletextcomponent.append(iformattabletextcomponent1);
+        }
+
+        if (showSmall) {
+            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(small)).append(String.valueOf(':')).append(" ").append(getSmall().getPrettyDisplay(space, indentation + 1));
+            if (showGravity || showPose || showDisabledSlots || showArmorItems || showHandItems)
+                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+            iformattabletextcomponent.append(iformattabletextcomponent1);
+        }
+
+        if (showGravity) {
+            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(noGravity)).append(String.valueOf(':')).append(" ").append(getNoGravity().getPrettyDisplay(space, indentation + 1));
+            if (showPose || showDisabledSlots || showArmorItems || showHandItems)
+                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+            iformattabletextcomponent.append(iformattabletextcomponent1);
+        }
+
+        if (showPose) {
+            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(pose)).append(String.valueOf(':')).append(" ").append(getPose().getPrettyDisplay(space, indentation + 1));
+            if (showDisabledSlots || showArmorItems || showHandItems)
+                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+            iformattabletextcomponent.append(iformattabletextcomponent1);
+        }
+
+        if (showDisabledSlots) {
+            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(disabledSlots)).append(String.valueOf(':')).append(" ").append(getDisabledSlots().getPrettyDisplay(space, indentation + 1));
+            if (showArmorItems || showHandItems)
+                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+            iformattabletextcomponent.append(iformattabletextcomponent1);
+        }
+
+        if (showArmorItems) {
+            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(armorItems)).append(String.valueOf(':')).append(" ").append(getArmorItems().getPrettyDisplay(space, indentation + 1));
+            if (showHandItems)
+                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+            iformattabletextcomponent.append(iformattabletextcomponent1);
+        }
+
+        if (showHandItems) {
+            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(handItems)).append(String.valueOf(':')).append(" ").append(getHandItems().getPrettyDisplay(space, indentation + 1));
+            iformattabletextcomponent.append(iformattabletextcomponent1);
+        }
+
+        if (!space.isEmpty()) {
+            iformattabletextcomponent.append("\n").append(Strings.repeat(space, indentation));
+        }
+
+        iformattabletextcomponent.append("}");
+        return iformattabletextcomponent;
     }
 
 
@@ -165,6 +271,77 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
                 nbt.put("RightLeg", rightLeg.getNBT());
             }
             return nbt;
+        }
+
+        @Override
+        public ITextComponent getPrettyDisplay(String space, int indentation) {
+            IFormattableTextComponent iformattabletextcomponent = new StringTextComponent("{");
+
+            if (!space.isEmpty()) {
+                iformattabletextcomponent.append("\n");
+            }
+
+            IFormattableTextComponent iformattabletextcomponent1;
+            String head = "Head";
+            String body = "Body";
+            String leftArm = "LeftArm";
+            String rightArm = "RightArm";
+            String leftLeg = "LeftLeg";
+            String rightLeg = "RightLeg";
+
+            boolean showHead = !getHead().isDefault();
+            boolean showBody = !getBody().isDefault();
+            boolean showLeftArm = !getLeftArm().isDefault();
+            boolean showRightArm = !getRightArm().isDefault();
+            boolean showLeftLeg = !getLeftLeg().isDefault();
+            boolean showRightLeg = !getRightLeg().isDefault();
+
+            if (showHead) {
+                iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(head)).append(String.valueOf(':')).append(" ").append(getHead().getPrettyDisplay(space, indentation + 1));
+                if (showBody || showLeftArm || showRightArm || showLeftLeg || showRightLeg)
+                    iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+                iformattabletextcomponent.append(iformattabletextcomponent1);
+            }
+
+            if (showBody) {
+                iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(body)).append(String.valueOf(':')).append(" ").append(getBody().getPrettyDisplay(space, indentation + 1));
+                if (showLeftArm || showRightArm || showLeftLeg || showRightLeg)
+                    iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+                iformattabletextcomponent.append(iformattabletextcomponent1);
+            }
+
+            if (showLeftArm) {
+                iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(leftArm)).append(String.valueOf(':')).append(" ").append(getLeftArm().getPrettyDisplay(space, indentation + 1));
+                if (showRightArm || showLeftLeg || showRightLeg)
+                    iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+                iformattabletextcomponent.append(iformattabletextcomponent1);
+            }
+
+            if (showRightArm) {
+                iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(rightArm)).append(String.valueOf(':')).append(" ").append(getRightArm().getPrettyDisplay(space, indentation + 1));
+                if (showLeftLeg || showRightLeg)
+                    iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+                iformattabletextcomponent.append(iformattabletextcomponent1);
+            }
+
+            if (showLeftLeg) {
+                iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(leftLeg)).append(String.valueOf(':')).append(" ").append(getLeftLeg().getPrettyDisplay(space, indentation + 1));
+                if (showRightLeg)
+                    iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+                iformattabletextcomponent.append(iformattabletextcomponent1);
+            }
+
+            if (showRightLeg) {
+                iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(rightLeg)).append(String.valueOf(':')).append(" ").append(getRightLeg().getPrettyDisplay(space, indentation + 1));
+                iformattabletextcomponent.append(iformattabletextcomponent1);
+            }
+
+            if (!space.isEmpty()) {
+                iformattabletextcomponent.append("\n").append(Strings.repeat(space, indentation));
+            }
+
+            iformattabletextcomponent.append("}");
+            return iformattabletextcomponent;
         }
 
 

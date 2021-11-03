@@ -1,6 +1,8 @@
 package creativeeditor.data.base;
 
 import net.minecraft.nbt.ShortNBT;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 public class DataShort extends SingularData<Short, ShortNBT> {
     public DataShort() {
@@ -27,5 +29,11 @@ public class DataShort extends SingularData<Short, ShortNBT> {
     @Override
     public ShortNBT getNBT() {
         return ShortNBT.valueOf(data);
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        ITextComponent itextcomponent = (new StringTextComponent("s")).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
+        return (new StringTextComponent(String.valueOf((int) this.data))).append(itextcomponent).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
     }
 }

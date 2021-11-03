@@ -3,6 +3,7 @@ package creativeeditor.data.base;
 import creativeeditor.screen.widgets.StyledBitToggle;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.nbt.IntNBT;
+import net.minecraft.util.text.*;
 
 public class DataBitField extends SingularData<boolean[], IntNBT> implements Button.IPressable {
     private final boolean keepSize;
@@ -71,9 +72,18 @@ public class DataBitField extends SingularData<boolean[], IntNBT> implements But
     }
 
     @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        IFormattableTextComponent text = new StringTextComponent("0b").withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
+        for (int i = 0; i < data.length; i++) {
+            text.append(new StringTextComponent(data[i] ? "1" : "0").withStyle(SYNTAX_HIGHLIGHTING_NUMBER));
+        }
+        return text;
+    }
+
+    @Override
     public void onPress(Button button) {
-        if(button instanceof StyledBitToggle){
-            StyledBitToggle but = (StyledBitToggle)button;
+        if (button instanceof StyledBitToggle) {
+            StyledBitToggle but = (StyledBitToggle) button;
             data[but.index] = !data[but.index];
             but.updateMessage(data[but.index]);
         }

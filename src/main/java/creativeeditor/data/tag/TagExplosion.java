@@ -1,8 +1,10 @@
 package creativeeditor.data.tag;
 
+import com.google.common.base.Strings;
 import creativeeditor.data.Data;
 import creativeeditor.data.base.DataBoolean;
 import creativeeditor.data.base.DataColor;
+import creativeeditor.data.base.DataMap;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +12,9 @@ import net.minecraft.item.FireworkRocketItem.Shape;
 import net.minecraft.nbt.ByteNBT;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class TagExplosion implements Data<TagExplosion, CompoundNBT> {
@@ -68,5 +73,14 @@ public class TagExplosion implements Data<TagExplosion, CompoundNBT> {
         if (!getFadeColors().isDefault())
             nbt.put(keys.explosionFadeColor(), fadeColors.getNBT());
         return nbt;
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        if (isDefault() || shape == null) {
+            return new StringTextComponent("{}");
+        } else {
+            return new StringTextComponent(shape.getName()).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
+        }
     }
 }

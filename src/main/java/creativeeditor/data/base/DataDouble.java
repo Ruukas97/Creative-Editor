@@ -1,6 +1,8 @@
 package creativeeditor.data.base;
 
 import net.minecraft.nbt.DoubleNBT;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 public class DataDouble extends SingularData<Double, DoubleNBT> {
     public DataDouble(double value) {
@@ -22,5 +24,11 @@ public class DataDouble extends SingularData<Double, DoubleNBT> {
     @Override
     public DoubleNBT getNBT() {
         return DoubleNBT.valueOf(data);
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        ITextComponent itextcomponent = (new StringTextComponent("d")).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
+        return (new StringTextComponent(String.valueOf(this.data))).append(itextcomponent).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
     }
 }

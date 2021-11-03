@@ -9,10 +9,10 @@ import net.minecraft.nbt.CompoundNBT;
 
 public abstract class TagEntity<E extends Entity> implements Data<E, CompoundNBT> {
     @Getter
-    private TagItemList armorItems;
+    protected TagItemList armorItems;
 
     @Getter
-    private TagItemList handItems;
+    protected TagItemList handItems;
 
     public TagEntity(TagItemList armorItems, TagItemList handItems) {
         this.armorItems = armorItems;
@@ -28,5 +28,13 @@ public abstract class TagEntity<E extends Entity> implements Data<E, CompoundNBT
         return handItems.isDefault() && armorItems.isDefault();
     }
 
-
+    @Override
+    public CompoundNBT getNBT() {
+        CompoundNBT nbt = new CompoundNBT();
+        if(!armorItems.isDefault())
+            nbt.put("ArmorItems", armorItems.getNBT());
+        if(!handItems.isDefault())
+            nbt.put("HandItems", handItems.getNBT());
+        return nbt;
+    }
 }

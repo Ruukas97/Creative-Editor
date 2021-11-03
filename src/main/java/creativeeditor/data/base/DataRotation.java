@@ -6,6 +6,9 @@ import lombok.Getter;
 import net.minecraft.nbt.FloatNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.math.Rotations;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 public class DataRotation implements Data<Rotations, ListNBT> {
     private @Getter
@@ -46,6 +49,14 @@ public class DataRotation implements Data<Rotations, ListNBT> {
         nbt.add(FloatNBT.valueOf(y.get()));
         nbt.add(FloatNBT.valueOf(z.get()));
         return nbt;
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        IFormattableTextComponent x = new StringTextComponent("X").withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE).append(":").append(String.valueOf(this.x)).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
+        IFormattableTextComponent y = new StringTextComponent("Y").withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE).append(":").append(String.valueOf(this.y)).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
+        IFormattableTextComponent z = new StringTextComponent("Z").withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE).append(":").append(String.valueOf(this.z)).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
+        return x.append(", ").append(y).append(", ").append(z);
     }
 
 

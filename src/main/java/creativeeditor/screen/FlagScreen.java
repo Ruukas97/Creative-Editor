@@ -57,7 +57,7 @@ public class FlagScreen extends ParentItemScreen {
         super.mainRender(matrix, mouseX, mouseY, p3, color);
         matrix.pushPose();
         matrix.scale(0.9F, 0.9F, 0.9F);
-        ItemRendererUtils.renderFormattedItemNBT(matrix, item, 10, 50, width / 3 - 1, height, -1, font );
+        ItemRendererUtils.renderFormattedItemNBT(matrix, item, 10, 50, width / 3 - 1, height, width / 3 - 1, font );
         matrix.popPose();
     }
 

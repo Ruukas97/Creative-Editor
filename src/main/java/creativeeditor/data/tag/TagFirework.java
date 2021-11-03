@@ -1,11 +1,21 @@
 package creativeeditor.data.tag;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import creativeeditor.data.base.DataByte;
+import creativeeditor.data.base.DataMap;
 import creativeeditor.data.base.SingularData;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.util.Constants.NBT;
+
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 public class TagFirework extends SingularData<TagList<TagExplosion>, CompoundNBT> {
     @Getter
@@ -36,5 +46,34 @@ public class TagFirework extends SingularData<TagList<TagExplosion>, CompoundNBT
         nbt.put(keys.fireworksFlight(), flight.getNBT());
         nbt.put(keys.fireworksExplosions(), data.getNBT());
         return nbt;
+    }
+
+    @Override
+    public ITextComponent getPrettyDisplay(String space, int indentation) {
+        if (isDefault()) {
+            return new StringTextComponent("{}");
+        } else {
+            IFormattableTextComponent iformattabletextcomponent = new StringTextComponent("{");
+
+            if (!space.isEmpty()) {
+                iformattabletextcomponent.append("\n");
+            }
+
+            IFormattableTextComponent iformattabletextcomponent1;
+            NBTKeys keys = NBTKeys.keys;
+            String explosions = keys.fireworksExplosions();
+            String flight = keys.fireworksFlight();
+
+            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(explosions)).append(String.valueOf(':')).append(" ").append(this.data.getPrettyDisplay(space, indentation + 1));
+            iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+            iformattabletextcomponent1.append(Strings.repeat(space, indentation + 1)).append(DataMap.handleEscapePretty(flight)).append(String.valueOf(':')).append(" ").append(this.flight.getPrettyDisplay(space, indentation + 1));
+
+            if (!space.isEmpty()) {
+                iformattabletextcomponent.append("\n").append(Strings.repeat(space, indentation));
+            }
+
+            iformattabletextcomponent.append("}");
+            return iformattabletextcomponent;
+        }
     }
 }

@@ -2,11 +2,18 @@ package creativeeditor.data;
 
 import creativeeditor.data.base.*;
 import net.minecraft.nbt.*;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.util.Constants.NBT;
 
 import javax.annotation.Nullable;
 
 public interface Data<E, T extends INBT> {
+    TextFormatting SYNTAX_HIGHLIGHTING_KEY = TextFormatting.AQUA;
+    TextFormatting SYNTAX_HIGHLIGHTING_STRING = TextFormatting.GREEN;
+    TextFormatting SYNTAX_HIGHLIGHTING_NUMBER = TextFormatting.GOLD;
+    TextFormatting SYNTAX_HIGHLIGHTING_NUMBER_TYPE = TextFormatting.RED;
+
     E getData();
 
 
@@ -85,4 +92,6 @@ public interface Data<E, T extends INBT> {
         int id = nbt.getId();
         return id == NBT.TAG_ANY_NUMERIC || (NBT.TAG_BYTE <= id && id <= NBT.TAG_DOUBLE);
     }
+
+    ITextComponent getPrettyDisplay(String space, int indentation);
 }

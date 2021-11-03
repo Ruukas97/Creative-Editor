@@ -83,6 +83,8 @@ public class MainScreen extends ParentItemScreen {
         int loreX = 2 * width / 3 + 17 + displayWidth / 2;
         int editX = ((loreX + displayWidth / 2) + (advancedX - advancedWidth / 2)) / 2;
 
+        int buttonY = 35;
+
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
         toolsWidgets.clear();
@@ -90,15 +92,15 @@ public class MainScreen extends ParentItemScreen {
         editWidgets.clear();
         advancedWidgets.clear();
 
-        nbtButton = addButton(new StyledTextButton(nbtX, 35, nbtWidth, nbtLocal, b -> {
+        nbtButton = addButton(new StyledTextButton(nbtX, buttonY, nbtWidth, nbtLocal, b -> {
             setLeftTab(0, true);
         }));
 
-        tooltipButton = addButton(new StyledTextButton(tooltipX, 35, tooltipWidth, tooltipLocal, b -> {
+        tooltipButton = addButton(new StyledTextButton(tooltipX, buttonY, tooltipWidth, tooltipLocal, b -> {
             setLeftTab(1, true);
         }));
 
-        toolsButton = addButton(new StyledTextButton(toolsX, 35, toolsWidth, toolsLocal, b -> {
+        toolsButton = addButton(new StyledTextButton(toolsX, buttonY, toolsWidth, toolsLocal, b -> {
             setLeftTab(2, true);
 
             for (Widget tool : toolsWidgets) {
@@ -106,7 +108,7 @@ public class MainScreen extends ParentItemScreen {
             }
         }));
 
-        displayButton = addButton(new StyledTextButton(loreX, 35, displayWidth, displayLocal, b -> {
+        displayButton = addButton(new StyledTextButton(loreX, buttonY, displayWidth, displayLocal, b -> {
             setRightTab(0, true);
 
             for (Widget lore : displayWidgets) {
@@ -114,7 +116,7 @@ public class MainScreen extends ParentItemScreen {
             }
         }));
 
-        editButton = addButton(new StyledTextButton(editX, 35, editWidth, editLocal, b -> {
+        editButton = addButton(new StyledTextButton(editX, buttonY, editWidth, editLocal, b -> {
             setRightTab(1, true);
 
             for (Widget lore : displayWidgets) {
@@ -122,7 +124,7 @@ public class MainScreen extends ParentItemScreen {
             }
         }));
 
-        advancedButton = addButton(new StyledTextButton(advancedX, 35, advancedWidth, advancedLocal, b -> {
+        advancedButton = addButton(new StyledTextButton(advancedX, buttonY, advancedWidth, advancedLocal, b -> {
             setRightTab(2, true);
 
             for (Widget lore : displayWidgets) {
@@ -136,20 +138,26 @@ public class MainScreen extends ParentItemScreen {
 
 
         // Tools
+        int toolIndex = 0;
+
+        toolIndex++;
         String styleLocal = I18n.get("gui.main.style");
-        styleButton = addButton(new StyledTextButton(width / 6, 55, font.width(styleLocal), styleLocal, b -> StyleManager.setNext()));
+        styleButton = addButton(new StyledTextButton(width / 6, buttonY + 20 * toolIndex, font.width(styleLocal), styleLocal, b -> StyleManager.setNext()));
         toolsWidgets.add(styleButton);
 
+        toolIndex++;
         String headsLocal = I18n.get("gui.headcollection");
-        StyledTextButton headsButton = addButton(new StyledTextButton(width / 6, 75, font.width(headsLocal), headsLocal, b -> minecraft.setScreen(new HeadCollectionScreen(this))));
+        StyledTextButton headsButton = addButton(new StyledTextButton(width / 6, buttonY + 20 * toolIndex, font.width(headsLocal), headsLocal, b -> minecraft.setScreen(new HeadCollectionScreen(this))));
         toolsWidgets.add(headsButton);
 
+        toolIndex++;
         String spawnerLocal = I18n.get("gui.itemspawner");
-        StyledTextButton spawnerButton = addButton(new StyledTextButton(width / 6, 95, font.width(spawnerLocal), spawnerLocal, b -> minecraft.setScreen(new ItemSpawnerScreen(this))));
+        StyledTextButton spawnerButton = addButton(new StyledTextButton(width / 6, buttonY + 20 * toolIndex, font.width(spawnerLocal), spawnerLocal, b -> minecraft.setScreen(new ItemSpawnerScreen(this))));
         toolsWidgets.add(spawnerButton);
 
+        toolIndex++;
         String tagExplorer = I18n.get("gui.tagexplorer");
-        StyledTextButton tagExploreButton = addButton(new StyledTextButton(width / 6, 115, font.width(tagExplorer), tagExplorer, b -> minecraft.setScreen(new TagExplorerScreen(this, item))));
+        StyledTextButton tagExploreButton = addButton(new StyledTextButton(width / 6, buttonY + 20 * toolIndex, font.width(tagExplorer), tagExplorer, b -> minecraft.setScreen(new TagExplorerScreen(this, item))));
         toolsWidgets.add(tagExploreButton);
 
         // Lore
@@ -428,7 +436,8 @@ public class MainScreen extends ParentItemScreen {
             // NBT
             assert minecraft != null;
             matrix.scale(0.75F, 0.75F, 0.75F);
-            ItemRendererUtils.renderFormattedItemNBT(matrix, item, 5, 80, width / 3 - 1, height, -1, font );
+
+            ItemRendererUtils.renderFormattedItemNBT(matrix, item, 5, 80, width, height, width / 3 - 1, font );
         } else if (Config.MAIN_LEFT_TAB.get() == 1) {
 
             matrix.scale(0.9F, 0.9F, 0.9F);
