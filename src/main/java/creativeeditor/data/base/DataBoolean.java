@@ -11,7 +11,8 @@ import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
-public class DataBoolean extends SingularData<Boolean, ByteNBT> implements IPressable {
+public class
+DataBoolean extends SingularData<Boolean, ByteNBT> implements IPressable {
     TextFormatting SYNTAX_HIGHLIGHTING_TRUE = TextFormatting.GREEN;
     TextFormatting SYNTAX_HIGHLIGHTING_FALSE = TextFormatting.RED;
 

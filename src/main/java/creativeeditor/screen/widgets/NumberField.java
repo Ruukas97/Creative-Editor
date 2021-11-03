@@ -35,6 +35,9 @@ public class NumberField extends Widget {
 
     private int cursorPosition;
 
+    public NumberField(WidgetInfo info, NumberRangeInt data) {
+        this(info.getFont(), info.getPosX(), info.getPosY(), info.getHeight(), data);
+    }
 
     public NumberField(FontRenderer font, int x, int y, int width, int height, NumberRangeInt data) {
         super(x, y, width, height, new StringTextComponent(""));
@@ -173,11 +176,11 @@ public class NumberField extends Widget {
      * Returns the contents of the textbox
      */
     private int getDigitsValue() {
-        if(digits.length >= 10){
+        if (digits.length >= 10) {
             long value = Long.parseLong(getValueAsString());
             return value >= Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) value;
         }
-        return Integer.parseInt( getValueAsString() );
+        return Integer.parseInt(getValueAsString());
     }
 
 
@@ -235,10 +238,15 @@ public class NumberField extends Widget {
             case GLFW.GLFW_KEY_RIGHT:
                 moveCursor(true);
                 return true;
+            case GLFW.GLFW_KEY_UP:
+                setValue(getDigitsValue()+1);
+                return true;
+            case GLFW.GLFW_KEY_DOWN:
+                setValue(getDigitsValue()-1);
+                return true;
             default:
                 return super.keyPressed(keyCode, scanCode, modifier);
         }
-
     }
 
 
@@ -254,71 +262,28 @@ public class NumberField extends Widget {
             if (this.active) {
                 try {
                     setValue(Integer.decode(mc.keyboardHandler.getClipboard()));
-                } catch (NumberFormatException e) {
+                } catch (NumberFormatException ignored) {
                 }
             }
-
             return true;
         } else if (Screen.isCut(keyCode)) {
             mc.keyboardHandler.setClipboard(String.valueOf(digits));
-
             if (this.active) {
                 resetDigits();
             }
-
             return true;
-        } else {
-            switch (keyCode) {
-                case 14:
-
-                    if (this.active) {
-                        setDigit('0');
-                    }
-
-                    return true;
-                case 199:
-
-                    setCursorPositionZero();
-
-                    return true;
-                case 203:
-
-                    this.moveCursor(false);
-
-                    return true;
-                case 205:
-
-                    this.moveCursor(true);
-
-                    return true;
-                case 207:
-
-                    this.setCursorPositionEnd();
-
-                    return true;
-                case 211:
-
-                    if (this.active) {
-                        setDigit('0');
-                    }
-
-                    return true;
-                default:
-                    if (active) {
-                        if (typedChar == '-' && data.getMin() < 0) {
-                            isNegative = true;
-                        } else if (typedChar == '+' && data.getMax() > -1) {
-                            isNegative = false;
-                        } else if (isAllowed(typedChar)) {
-                            setDigit(typedChar);
-                            moveCursor(true);
-                        }
-
-                        return true;
-                    }
-                    return false;
+        } else if (active) {
+            if (typedChar == '-' && data.getMin() < 0) {
+                isNegative = true;
+            } else if (typedChar == '+' && data.getMax() > -1) {
+                isNegative = false;
+            } else if (isAllowed(typedChar)) {
+                setDigit(typedChar);
+                moveCursor(true);
             }
+            return true;
         }
+        return false;
     }
 
 

@@ -4,6 +4,7 @@ import creativeeditor.data.Data;
 import creativeeditor.data.NumberRangeInt;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -15,11 +16,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @AllArgsConstructor
 public class TagEnchantment implements Data<TagEnchantment, CompoundNBT> {
-    private @Getter
-    Enchantment enchantment;
-    private @Getter
-    NumberRangeInt level;
-
+    @Getter @Setter
+    private Enchantment enchantment;
+    @Getter
+    private final NumberRangeInt level;
 
     public TagEnchantment(INBT nbt) {
         this(nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT());

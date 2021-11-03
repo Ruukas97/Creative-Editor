@@ -46,6 +46,13 @@ public class MainScreen extends ParentItemScreen {
         super(new TranslationTextComponent("gui.main"), lastScreen, editing);
     }
 
+    protected void loadWidgets(){
+        editWidgets.clear();
+        advancedWidgets.clear();
+        loadWidgets(new ItemWidgets(), editWidgets);
+        loadWidgets(new AdvancedWidgets(), advancedWidgets);
+    }
+
 
     @Override
     protected void init() {
@@ -56,8 +63,6 @@ public class MainScreen extends ParentItemScreen {
         if (item.getCount().get() < 1) {
             item.getCount().set(1);
         }
-
-
 
         assert minecraft != null;
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
@@ -89,8 +94,6 @@ public class MainScreen extends ParentItemScreen {
 
         toolsWidgets.clear();
         displayWidgets.clear();
-        editWidgets.clear();
-        advancedWidgets.clear();
 
         nbtButton = addButton(new StyledTextButton(nbtX, buttonY, nbtWidth, nbtLocal, b -> {
             setLeftTab(0, true);
@@ -133,9 +136,7 @@ public class MainScreen extends ParentItemScreen {
         }));
 
         // Widgets
-        loadWidgets(new ItemWidgets(), editWidgets);
-        loadWidgets(new AdvancedWidgets(), advancedWidgets);
-
+        loadWidgets();
 
         // Tools
         int toolIndex = 0;
@@ -155,31 +156,38 @@ public class MainScreen extends ParentItemScreen {
         StyledTextButton spawnerButton = addButton(new StyledTextButton(width / 6, buttonY + 20 * toolIndex, font.width(spawnerLocal), spawnerLocal, b -> minecraft.setScreen(new ItemSpawnerScreen(this))));
         toolsWidgets.add(spawnerButton);
 
-        toolIndex++;
+        /*toolIndex++;
         String tagExplorer = I18n.get("gui.tagexplorer");
         StyledTextButton tagExploreButton = addButton(new StyledTextButton(width / 6, buttonY + 20 * toolIndex, font.width(tagExplorer), tagExplorer, b -> minecraft.setScreen(new TagExplorerScreen(this, item))));
-        toolsWidgets.add(tagExploreButton);
+        toolsWidgets.add(tagExploreButton);*/
 
         // Lore
+        int nameX = 2 * width / 3 + 16;
         String resetLore = I18n.get("gui.main.resetlore");
         int resetWidth = font.width(resetLore);
         int resetX = width - 22 - resetWidth / 2;
-        int nameX = 2 * width / 3 + 16;
-
         String lore = I18n.get("gui.loreeditor");
         int loreWidth = font.width(lore);
-        loreButton = addButton(new StyledTextButton(width * 2 / 3 + 16 + (width / 3 / 2 / 2), 95, loreWidth, lore, t -> minecraft.setScreen(new LoreEditorScreen(this, item))));
+        String itemFlag = I18n.get("gui.itemflag");
+        int itemFlagWidth = font.width(itemFlag);
+
         nameField = new StyledDataTextField(font, nameX, 55, resetX - nameX - resetWidth / 2 - 7, 20, item.getDisplayNameTag());
         renderWidgets.add(nameField);
         displayWidgets.add(nameField);
-        displayWidgets.add(loreButton);
         children.add(nameField);
+
         clearButton = addButton(new StyledTextButton(resetX, 67, resetWidth, resetLore, b -> {
             nameField.setText(item.getDisplayNameTag().getDefault().getString());
             nameField.setCursorPos(0);
             nameField.setSelectionPos(0);
         }));
         displayWidgets.add(clearButton);
+
+        loreButton = addButton(new StyledTextButton(nameX + loreWidth/2, 95, loreWidth, lore, t -> minecraft.setScreen(new LoreEditorScreen(this, item))));
+        displayWidgets.add(loreButton);
+
+        StyledButton flagsButton = addButton(new StyledTextButton(nameX + itemFlagWidth/2, 115, itemFlagWidth, itemFlag, t -> minecraft.setScreen(new FlagScreen(this, item))));
+        displayWidgets.add(flagsButton);
 
         // General Item
         String id = I18n.get("gui.main.id");
@@ -216,7 +224,7 @@ public class MainScreen extends ParentItemScreen {
     private void loadWidgets(Iterable<ClassSpecificWidget> widgets, ArrayList<Widget> widgetList) {
         int y = 55;
         for (ClassSpecificWidget w : widgets) {
-            WidgetInfo info = new WidgetInfo(width - width / 6, y, font.width(w.text), 10, w.text, null, this);
+            WidgetInfo info = new WidgetInfo(width - width / 6, y, font.width(w.text), 10, w.text, null, this, font);
             Widget widget = w.get(info, item);
             if (widget != null) {
                 addButton(widget);

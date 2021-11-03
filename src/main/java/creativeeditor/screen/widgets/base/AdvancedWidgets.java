@@ -11,16 +11,8 @@ import net.minecraft.item.Items;
 public class AdvancedWidgets extends WidgetIteratorBase {
 
     public AdvancedWidgets() {
-        add(new ClassSpecificWidget(I18n.get("gui.itemflag"),dItem -> dItem.getItem().getItem() != Items.AIR, (item, info) ->
-                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new FlagScreen(info.getParent(), item))))
-        ));
-
         add(new ClassSpecificWidget(I18n.get("gui.rawnbt"), (item, info) ->
                 new StyledTextButton(info.withTrigger(button -> mc.setScreen(new RawNBTEditorScreen(info.getParent(), item))))
         ));
-
-
-
     }
-
 }

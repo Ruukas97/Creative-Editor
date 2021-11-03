@@ -16,6 +16,10 @@ public class StyledButton extends Button implements IStyledButton {
     @Setter
     private String tooltip;
 
+    public StyledButton(WidgetInfo info) {
+        this(info.getPosX(), info.getPosY(), info.getWidth(), info.getHeight(), info.getText(), info.getTrigger());
+    }
+
     public StyledButton(int x, int y, int width, int height, ITextComponent text, IPressable onPress) {
         super(x, y, width, height, text, onPress);
     }

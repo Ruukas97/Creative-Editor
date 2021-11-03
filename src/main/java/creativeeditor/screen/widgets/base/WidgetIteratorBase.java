@@ -33,11 +33,9 @@ public class WidgetIteratorBase implements Iterable<ClassSpecificWidget> {
         list.add(widget);
     }
 
-
     protected void add(String text, Function<DataItem, Boolean> requirement, BiFunction<DataItem, WidgetInfo, Widget> widgetCreator) {
         add(new ClassSpecificWidget(text, requirement, widgetCreator));
     }
-
 
     protected void add(String text, Class<? extends Item> itemClass, BiFunction<DataItem, WidgetInfo, Widget> widgetCreator) {
         add(new ClassSpecificWidget(text, itemClass::isInstance, widgetCreator));
@@ -46,5 +44,4 @@ public class WidgetIteratorBase implements Iterable<ClassSpecificWidget> {
     public WidgetInfoSupport<?> modifiedTriggerSupport(WidgetInfoSupport<?> sup, Button.IPressable trigger) {
         return inf -> sup.fromWidgetInfo(inf.withTrigger(trigger));
     }
-
 }

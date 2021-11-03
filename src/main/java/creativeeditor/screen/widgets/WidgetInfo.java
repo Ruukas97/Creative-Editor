@@ -3,6 +3,7 @@ package creativeeditor.screen.widgets;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button.IPressable;
 
@@ -20,6 +21,9 @@ public class WidgetInfo {
     @Getter
     @Setter
     private Screen parent;
+    @Getter
+    @Setter
+    private FontRenderer font;
 
 
     public WidgetInfo withTrigger(IPressable trigger) {
