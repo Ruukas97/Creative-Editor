@@ -8,9 +8,7 @@ import creativeeditor.screen.blockentity.GenericBlockScreen;
 import creativeeditor.screen.models.AttributeTagModifier;
 import creativeeditor.screen.widgets.ClassSpecificWidget;
 import creativeeditor.screen.widgets.StyledTextButton;
-import net.minecraft.block.ContainerBlock;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.item.*;
 import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -21,11 +19,11 @@ import java.util.function.Consumer;
 public class ItemWidgets extends WidgetIteratorBase {
 
     public ItemWidgets() {
-        add(new ClassSpecificWidget(I18n.get("gui.attributemodifiers"), dItem -> true, (item, info) ->
+        add(new ClassSpecificWidget(I18n.get("gui.attributemodifiers"), (item, info) ->
                 new StyledTextButton(info.withTrigger(button -> mc.setScreen(new WheelScreen<TagAttributeModifier>(info.getParent(), new TranslationTextComponent("gui.attributemodifiers"), new AttributeTagModifier(item), item))))
         ));
 
-        add(new ClassSpecificWidget(I18n.get("gui.enchanting"), dItem -> EnchantmentType.BREAKABLE.canEnchant(dItem.getItem().getItem()), (item, info) ->
+        add(new ClassSpecificWidget(I18n.get("gui.enchanting"), (item, info) ->
                 new StyledTextButton(info.withTrigger(button -> mc.setScreen(new EnchantmentScreen(info.getParent(), item.getTag().getEnchantments()))))
         ));
 
