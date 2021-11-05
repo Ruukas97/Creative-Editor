@@ -151,10 +151,10 @@ public class MainScreen extends ParentItemScreen {
         StyledTextButton headsButton = addButton(new StyledTextButton(width / 6, buttonY + 20 * toolIndex, font.width(headsLocal), headsLocal, b -> minecraft.setScreen(new HeadCollectionScreen(this))));
         toolsWidgets.add(headsButton);
 
-        toolIndex++;
+        /*toolIndex++;
         String spawnerLocal = I18n.get("gui.itemspawner");
         StyledTextButton spawnerButton = addButton(new StyledTextButton(width / 6, buttonY + 20 * toolIndex, font.width(spawnerLocal), spawnerLocal, b -> minecraft.setScreen(new ItemSpawnerScreen(this))));
-        toolsWidgets.add(spawnerButton);
+        toolsWidgets.add(spawnerButton);*/
 
         /*toolIndex++;
         String tagExplorer = I18n.get("gui.tagexplorer");

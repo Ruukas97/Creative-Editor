@@ -16,6 +16,8 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
@@ -80,18 +82,21 @@ public abstract class ParentScreen extends Screen {
      * The z index is increased by 32 (and not decreased afterwards), and the item
      * is then rendered at z=200.
      */
-    public void drawItemStack(ItemStack stack, int x, int y, float rotX, float rotY, String altText) {
-        RenderSystem.translatef(0.0F, 0.0F, 32.0F);
+    public void drawItemStack(MatrixStack matrix, ItemStack stack, int x, int y, float scale, float rotX, float rotY, float rotZ, String altText) {
+        matrix.pushPose();
+        matrix.translate(x, y, 32d);
+        matrix.scale(scale, scale, 1.f);
         this.setBlitOffset(200);
         this.itemRenderer.blitOffset = 10.0F;
         net.minecraft.client.gui.FontRenderer font = stack.getItem().getFontRenderer(stack);
         if (font == null)
             font = this.font;
+        matrix.mulPose(new Quaternion(rotZ, 0, 0, 1));
         new ItemRendererUtils(itemRenderer).renderItemIntoGUI(stack, x, y, rotX, rotY);
         this.itemRenderer.renderGuiItemDecorations(font, stack, x, y, altText);
         this.setBlitOffset(0);
         this.itemRenderer.blitOffset = 0.0F;
-        RenderSystem.translatef(0.0F, 0.0F, -32.0F);
+        matrix.popPose();
     }
 
 

@@ -60,7 +60,7 @@ public class ParentItemScreen extends ParentScreen {
             int posY = height - 42;
             boolean hasLastscreen = lastScreen != null;
             String butCloseBack = hasLastscreen ? "gui.main.back" : "gui.main.close";
-            if(!hasLastscreen){
+            if(hasLastscreen){
                 posY += 10;
             }
 
@@ -132,7 +132,7 @@ public class ParentItemScreen extends ParentScreen {
 
 
     public DataItem getItem() {
-        return this.item;
+        return item;
     }
 
 
@@ -191,11 +191,7 @@ public class ParentItemScreen extends ParentScreen {
         if (ite == Items.AIR) {
             drawCenteredString(matrix, font, ite.getName(stack).getString(), x, y - 3, color.getInt());
         } else {
-            RenderSystem.pushMatrix();
-            RenderSystem.translatef(itemScale, itemScale, 1f);
-            RenderSystem.scalef(itemScale, itemScale, 1f);
-            drawItemStack(item.getItemStack(), (int) (xFrameStart / itemScale + 1), (int) (yFrameStart / itemScale + 1), itemRotX, 0, null);
-            RenderSystem.popMatrix();
+            drawItemStack(matrix, item.getItemStack(), xFrameStart + 1, yFrameStart + 1, 1f, itemRotX, 0, 0, null);
         }
 
 

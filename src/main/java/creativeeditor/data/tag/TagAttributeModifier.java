@@ -82,11 +82,15 @@ public class TagAttributeModifier implements Data<TagAttributeModifier, Compound
         if(attribute == null){
             return new CompoundNBT();
         }
-        CompoundNBT nbt = new AttributeModifier(name.get(), amount.get(), operation).save();
+        CompoundNBT nbt = createAttributeModifier().save();
         nbt.putString(NBTKeys.keys.attributeName(), AttributeUtils.getName(attribute));
         if (slot != null)
             nbt.putInt(NBTKeys.keys.attributeSlot(), slot.ordinal());
         return nbt;
+    }
+
+    public AttributeModifier createAttributeModifier(){
+        return new AttributeModifier(name.get(), amount.get(), operation);
     }
 
     @Override

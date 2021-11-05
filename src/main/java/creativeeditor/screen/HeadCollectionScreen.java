@@ -291,7 +291,7 @@ public class HeadCollectionScreen extends ParentScreen {
                 CachedHead cached = filteredHeads.get(i);
                 // cached.loadTexture();
                 ItemStack stack = cached.getItemStack();
-                drawItemStack(stack, x, y, 0, 0, null);
+                drawItemStack(matrix, stack, x, y, 1, 0, 0, 0, null);
                 if (hovered == null && mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16) {
                     fill(matrix, x, y, x + 16, y + 16, GuiUtil.getColorFromRGB(150, 150, 150, 150));
                     hovered = stack;

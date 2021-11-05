@@ -3,6 +3,7 @@ package creativeeditor.screen.models;
 import creativeeditor.data.Data;
 import creativeeditor.data.DataItem;
 import lombok.Getter;
+import net.minecraft.util.text.TextComponent;
 
 import java.util.Arrays;
 
@@ -21,6 +22,8 @@ public abstract class WheelType<T extends Data<?, ?>> {
     public abstract TagModifier<T> getTagModifier();
     public abstract T[] newArray(int size);
     public abstract T[] getAll();
+    public abstract void addTag(T tag);
+    public abstract TextComponent displayTag(T tag);
 
     public T[] getFiltered(TagFilter<T> filter){
         return Arrays.stream(getAll()).filter(filter::shouldShow).toArray(this::newArray);

@@ -6,6 +6,8 @@ import creativeeditor.util.AttributeUtils;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Arrays;
@@ -62,5 +64,15 @@ public class AttributeWheelType extends WheelType<TagAttributeModifier> {
     @Override
     public TagAttributeModifier[] getAll() {
         return GameRegistry.findRegistry(Attribute.class).getEntries().stream().map(TagAttributeModifier::new).toArray(this::newArray);
+    }
+
+    @Override
+    public void addTag(TagAttributeModifier tag) {
+        dataItem.getTag().getAttributes().add(tag);
+    }
+
+    @Override
+    public TextComponent displayTag(TagAttributeModifier tag) {
+        return new TranslationTextComponent(tag.getAttribute().getDescriptionId());
     }
 }

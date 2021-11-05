@@ -1,15 +1,11 @@
 package creativeeditor.screen.models;
 
-import com.google.common.collect.Lists;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.NumberRangeInt;
 import creativeeditor.data.base.DataBoolean;
-import creativeeditor.data.base.DataDouble;
 import creativeeditor.data.base.DataEnum;
-import creativeeditor.data.base.DataInteger;
 import creativeeditor.data.tag.TagAttributeModifier;
 import creativeeditor.screen.widgets.NumberField;
-import creativeeditor.screen.widgets.StyledButton;
 import creativeeditor.screen.widgets.StyledEnumSwitcher;
 import creativeeditor.screen.widgets.StyledToggle;
 import net.minecraft.client.gui.FontRenderer;
@@ -51,11 +47,11 @@ public class AttributeTagModifier implements TagModifier<TagAttributeModifier> {
     }
 
     private void initWidgets(FontRenderer font, int width, int height) {
-        infinityToggle = new StyledToggle(15, height - 123, 80, 20, I18n.get("gui.attributes.infinity"), infinity);
+        infinityToggle = new StyledToggle(15, height - 123, 80, 20, I18n.get("gui.attributemodifiers.infinity"), infinity);
         operationSwitcher = new StyledEnumSwitcher(15, height - 93, 80, 20, operation);
         slotSwitcher = new StyledEnumSwitcher(15, height - 63, 80, 20, slot);
-        levelField = new NumberField(font, 15, height - 32, 55, 20, level);
-        fractionalField = new NumberField(font, 100, height - 32, 25, 20, levelFractional);
+        levelField = new NumberField(font, 15, height - 32, 20, level);
+        fractionalField = new NumberField(font, 100, height - 32, 20, levelFractional);
     }
 
     @Override
