@@ -14,8 +14,6 @@ import lombok.Setter;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.FilledMapItem;
-import net.minecraft.item.Item;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -153,9 +151,9 @@ public class ColorScreen extends ParentItemScreen {
         super.backRender(matrix, mouseX, mouseY, p3, guiColor);
 
         // First vertical line
-        fill(matrix, width / 3, 20, width / 3 + 1, height - 20, guiColor.getInt());
+        fill(matrix, width / 3, 20, width / 3 + 1, height / 5 * 4, guiColor.getInt());
         // Second vertical line
-        fill(matrix, width * 2 / 3, 20, width * 2 / 3 + 1, height - 20, guiColor.getInt());
+        fill(matrix, width * 2 / 3, 20, width * 2 / 3 + 1, height / 5 * 4, guiColor.getInt());
         // Left horizontal line
         fill(matrix, 20, 40, width / 3 - 15, 41, guiColor.getInt());
         // Right horizontal line

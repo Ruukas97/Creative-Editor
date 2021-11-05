@@ -78,10 +78,8 @@ public class ParentItemScreen extends ParentScreen {
             }
 
         }
-        int butWidth = 156;
-        int butHeight = 30;
         if (renderColorHelper) {
-            colorHelperWidget = new ColorHelperWidget(children, butWidth, butHeight, width, height);
+            colorHelperWidget = new ColorHelperWidget(children, (width - dropButton.x - dropButton.getWidth() - 10), 30, width, height);
             renderWidgets.add(colorHelperWidget);
         }
     }
