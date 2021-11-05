@@ -53,9 +53,9 @@ public class DataRotation implements Data<Rotations, ListNBT> {
 
     @Override
     public ITextComponent getPrettyDisplay(String space, int indentation) {
-        IFormattableTextComponent x = new StringTextComponent("X").withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE).append(":").append(String.valueOf(this.x)).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
-        IFormattableTextComponent y = new StringTextComponent("Y").withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE).append(":").append(String.valueOf(this.y)).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
-        IFormattableTextComponent z = new StringTextComponent("Z").withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE).append(":").append(String.valueOf(this.z)).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
+        IFormattableTextComponent x = new StringTextComponent("X").withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE).append(":").append(String.valueOf(this.x.get())).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
+        IFormattableTextComponent y = new StringTextComponent("Y").withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE).append(":").append(String.valueOf(this.y.get())).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
+        IFormattableTextComponent z = new StringTextComponent("Z").withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE).append(":").append(String.valueOf(this.z.get())).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
         return x.append(", ").append(y).append(", ").append(z);
     }
 
