@@ -5,9 +5,8 @@ import lombok.Getter;
 import net.minecraft.nbt.INBT;
 
 public abstract class SingularData<E, T extends INBT> implements Data<E, T> {
-    protected @Getter
-    E data;
-
+    @Getter
+    protected E data;
 
     public SingularData(E data) {
         this.data = data;

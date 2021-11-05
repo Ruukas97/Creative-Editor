@@ -8,11 +8,14 @@ import creativeeditor.screen.widgets.SliderColorTag;
 import creativeeditor.util.CEStringUtils;
 import creativeeditor.util.ColorUtils.Color;
 import creativeeditor.util.GuiUtil;
+import creativeeditor.util.ItemUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.item.FilledMapItem;
+import net.minecraft.item.Item;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -29,6 +32,12 @@ public class ColorScreen extends ParentItemScreen {
     private boolean draggingSatBrightPicker = false;
     private boolean draggingHuePicker = false;
 
+    public ColorScreen(Screen lastScreen, DataItem editing) {
+        super(new TranslationTextComponent("gui.color"), lastScreen, editing);
+        setRenderItem(true, 2f);
+        this.color = ItemUtils.getColorTag(editing);
+        this.useAlpha = false;
+    }
 
     public ColorScreen(Screen lastScreen, DataItem editing, DataColor color, boolean useAlpha) {
         super(new TranslationTextComponent("gui.color"), lastScreen, editing);
@@ -44,7 +53,6 @@ public class ColorScreen extends ParentItemScreen {
         if (defaultColor != 0 && color.getInt() == 0)
             color.setInt(defaultColor);
     }
-
 
     @Override
     protected void init() {

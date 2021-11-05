@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class ClassSpecificWidget {
+public class ClassSpecificWidget implements Comparable<ClassSpecificWidget> {
     public final String text;
     public final Function<DataItem, Boolean> requirement;
     public final BiFunction<DataItem, WidgetInfo, Widget> widgetCreator;
@@ -29,5 +29,10 @@ public class ClassSpecificWidget {
     @Nullable
     public Widget get(WidgetInfo info, DataItem item) {
         return requirement.apply(item) ? widgetCreator.apply(item, info) : null;
+    }
+
+    @Override
+    public int compareTo(ClassSpecificWidget o) {
+        return this.text.compareTo(o.text);
     }
 }

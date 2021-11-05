@@ -60,6 +60,9 @@ public class ParentItemScreen extends ParentScreen {
             int posY = height - 42;
             boolean hasLastscreen = lastScreen != null;
             String butCloseBack = hasLastscreen ? "gui.main.back" : "gui.main.close";
+            if(!hasLastscreen){
+                posY += 10;
+            }
 
             backButton = addButton(new StyledButton(posX - bwidth - 1, posY, bwidth, 20, new TranslationTextComponent(butCloseBack), this::back));
 

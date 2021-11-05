@@ -170,6 +170,8 @@ public class MainScreen extends ParentItemScreen {
         int loreWidth = font.width(lore);
         String itemFlag = I18n.get("gui.itemflag");
         int itemFlagWidth = font.width(itemFlag);
+        String color = I18n.get("gui.color");
+        int colorWidth = font.width(color);
 
         nameField = new StyledDataTextField(font, nameX, 55, resetX - nameX - resetWidth / 2 - 7, 20, item.getDisplayNameTag());
         renderWidgets.add(nameField);
@@ -188,6 +190,9 @@ public class MainScreen extends ParentItemScreen {
 
         StyledButton flagsButton = addButton(new StyledTextButton(nameX + itemFlagWidth/2, 115, itemFlagWidth, itemFlag, t -> minecraft.setScreen(new FlagScreen(this, item))));
         displayWidgets.add(flagsButton);
+
+        StyledButton colorButton = addButton(new StyledTextButton(nameX + colorWidth/2, 135, colorWidth, color, t -> minecraft.setScreen(new ColorScreen(this, item))));
+        displayWidgets.add(colorButton);
 
         // General Item
         String id = I18n.get("gui.main.id");

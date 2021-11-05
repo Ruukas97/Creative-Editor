@@ -10,6 +10,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.item.Item;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -43,5 +44,9 @@ public class WidgetIteratorBase implements Iterable<ClassSpecificWidget> {
 
     public WidgetInfoSupport<?> modifiedTriggerSupport(WidgetInfoSupport<?> sup, Button.IPressable trigger) {
         return inf -> sup.fromWidgetInfo(inf.withTrigger(trigger));
+    }
+
+    void sort(){
+        Collections.sort(list);
     }
 }

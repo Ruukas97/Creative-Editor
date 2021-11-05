@@ -1,38 +1,45 @@
 package creativeeditor.data.tag;
 
-import creativeeditor.data.base.SingularData;
+import creativeeditor.data.Data;
 import creativeeditor.data.version.NBTKeys;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.text.ITextComponent;
 
-import javax.annotation.Nullable;
+import java.util.Map.Entry;
 
-public class TagAttributeModifier extends SingularData<AttributeModifier, CompoundNBT> {
+public class TagAttributeModifier implements Data<TagAttributeModifier, CompoundNBT> {
     /**
      * See: {@link }
-     * {@link ItemStack#(String, AttributeModifier, EquipmentSlotType)}
+     * {@link ItemStack#addAttributeModifier(Attribute, AttributeModifier, EquipmentSlotType)}
      * {@link }
      */
 
     @Getter
     @Setter
-    private String name;
+    private Attribute attribute;
 
-    @Nullable
+    @Getter
+    @Setter
+    private AttributeModifier modifier;
+
     @Getter
     @Setter
     private EquipmentSlotType slot;
 
+    public TagAttributeModifier(Entry<RegistryKey<Attribute>, Attribute> attributeRegistryEntry) {
+        this(new AttributeModifier(attributeRegistryEntry.getKey().toString(), attributeRegistryEntry.getValue().getDefaultValue(), AttributeModifier.Operation.ADDITION), ;
+    }
 
-    public TagAttributeModifier(String name, AttributeModifier mod, EquipmentSlotType slot) {
+    public TagAttributeModifier(AttributeModifier mod, EquipmentSlotType slot) {
         super(mod);
-        this.name = name;
     }
 
     public TagAttributeModifier(INBT nbt) {
@@ -44,6 +51,10 @@ public class TagAttributeModifier extends SingularData<AttributeModifier, Compou
         this(nbt.getString(NBTKeys.keys.attributeName()), AttributeModifier.load(nbt), EquipmentSlotType.byName(nbt.getString(NBTKeys.keys.attributeSlot())));
     }
 
+    @Override
+    public TagAttributeModifier getData() {
+        return this;
+    }
 
     @Override
     public boolean isDefault() {

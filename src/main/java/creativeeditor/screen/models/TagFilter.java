@@ -8,5 +8,5 @@ import java.util.List;
 public interface TagFilter<T extends Data<?, ?>> {
     ITextComponent getName();
     boolean shouldShow(T tag);
-    List<T> filter(List<T> tagList);
+    T[] filter(T[] tags);
 }
