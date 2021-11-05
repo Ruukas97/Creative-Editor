@@ -382,9 +382,9 @@ public class MainScreen extends ParentItemScreen {
         super.backRender(matrix, mouseX, mouseY, partialTicks, color);
 
         // First vertical line
-        fill(matrix, width / 3, 20, width / 3 + 1, height - 20, color.getInt());
+        fill(matrix, width / 3, 20, width / 3 + 1, height / 5 * 4, color.getInt());
         // Second vertical line
-        fill(matrix, width * 2 / 3, 20, width * 2 / 3 + 1, height - 20, color.getInt());
+        fill(matrix, width * 2 / 3, 20, width * 2 / 3 + 1, height / 5 * 4, color.getInt());
         // Left horizontal line
         fill(matrix, 20, 40, width / 3 - 15, 41, color.getInt());
         // Right horizontal line
