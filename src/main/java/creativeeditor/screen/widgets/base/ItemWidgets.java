@@ -2,7 +2,7 @@ package creativeeditor.screen.widgets.base;
 
 import creativeeditor.screen.*;
 import creativeeditor.screen.blockentity.GenericBlockScreen;
-import creativeeditor.screen.models.AttributeTagModifier;
+import creativeeditor.screen.models.AttributeWheelType;
 import creativeeditor.screen.widgets.ClassSpecificWidget;
 import creativeeditor.screen.widgets.StyledTextButton;
 import creativeeditor.util.ItemUtils;
@@ -18,8 +18,8 @@ import java.util.function.Consumer;
 public class ItemWidgets extends WidgetIteratorBase {
 
     public ItemWidgets() {
-        add(new ClassSpecificWidget(I18n.get("gui.attributemodifiers"), dItem -> true, (item, info) ->
-                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new WheelScreen<>(info.getParent(), new TranslationTextComponent("gui.attributemodifiers"), new AttributeTagModifier(item), item))))
+        add(new ClassSpecificWidget(I18n.get("gui.attributemodifiers"), (item, info) ->
+                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new WheelScreen<>(info.getParent(), new TranslationTextComponent("gui.attributemodifiers"), new AttributeWheelType(item), item))))
         ));
 
         add(new ClassSpecificWidget(I18n.get("gui.enchanting"), ItemUtils::isEnchantable, (item, info) ->

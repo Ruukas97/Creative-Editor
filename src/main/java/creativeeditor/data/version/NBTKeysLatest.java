@@ -134,7 +134,6 @@ public class NBTKeysLatest extends NBTKeys {
         return "AttributeModifiers";
     }
 
-
     @Override
     public String attributeName() {
         return "AttributeName";

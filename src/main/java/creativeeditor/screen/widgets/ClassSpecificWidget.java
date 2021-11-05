@@ -21,7 +21,7 @@ public class ClassSpecificWidget implements Comparable<ClassSpecificWidget> {
 
     public ClassSpecificWidget(String text, BiFunction<DataItem, WidgetInfo, Widget> widgetCreator) {
         this.text = text;
-        this.requirement =  dItem -> true;
+        this.requirement = dItem -> true;
         this.widgetCreator = widgetCreator;
     }
 
