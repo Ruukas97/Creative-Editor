@@ -33,6 +33,10 @@ public class ClassSpecificWidget implements Comparable<ClassSpecificWidget> {
         return requirement.apply(item) ? widgetCreator.apply(item, info) : null;
     }
 
+    public Widget getRaw(WidgetInfo info, DataItem item) {
+        return widgetCreator.apply(item, info);
+    }
+
     @Override
     public int compareTo(ClassSpecificWidget o) {
         return this.text.compareTo(o.text);

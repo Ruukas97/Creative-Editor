@@ -2,6 +2,7 @@ package creativeeditor.screen.widgets;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import creativeeditor.screen.LoreEditorScreen;
+import creativeeditor.styles.StyleManager;
 import lombok.Getter;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.IGuiEventListener;
@@ -86,7 +87,7 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
         lastWidth = 0;
         lastSpacingCount = 0;
         FontRenderer font = loreEditorScreen.getFontRenderer();
-        drawCenteredString(matrix, font, count + ".", this.x + squareSize / 2, this.y + (squareSize - font.lineHeight) / 2, getFGColor());
+        drawCenteredString(matrix, font, count + ".", this.x + squareSize / 2, this.y + (squareSize - font.lineHeight) / 2, StyleManager.getCurrentStyle().getMainColor().getInt());
         renderChild(field, offset, 0, matrix, mouseX, mouseY, partial);
         renderChild(up, fieldWidth, 0, matrix, mouseX, mouseY, partial);
         renderChild(down, offset, 0, matrix, mouseX, mouseY, partial);

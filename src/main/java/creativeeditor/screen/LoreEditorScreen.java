@@ -156,9 +156,12 @@ public class LoreEditorScreen extends ParentItemScreen {
     public boolean keyPressed(int key1, int key2, int key3) {
         if (key2 == 47 && key3 == 2) { // V + ctrl modifier
             String clip = minecraft.keyboardHandler.getClipboard();
-            if (!clip.isEmpty() && clip.contains("\n") && getFocusedLoreWidget() != null) {
-                String[] lines = clip.split("\n");
-                loreLines.clear();
+            if (!clip.isEmpty() && getFocusedLoreWidget() == null) {
+                String[] lines = new String[1];
+                lines[0] = clip;
+                if (clip.contains("\n")) {
+                    lines = clip.split("\n");
+                }
                 for (int i = 0; i < lines.length; i++) {
                     loreLines.add(new LoreWidget(i + 1, scrollWidth, font, this, lines[i]));
                     updateLines();

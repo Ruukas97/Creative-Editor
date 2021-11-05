@@ -178,5 +178,6 @@
   "key.debug": "Debug Key",
   "key.editor": "Edit Selected Item",
   "key.headcollection": "Open Head Collection",
-  "key.offhandswing": "Swing Offhand"
+  "key.offhandswing": "Swing Offhand",
+  "gui.allwidgets": "All Widgets"
 }
