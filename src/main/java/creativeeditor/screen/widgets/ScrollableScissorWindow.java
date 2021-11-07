@@ -11,6 +11,7 @@ import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.INestedGuiEventHandler;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.opengl.GL11;
 
@@ -31,9 +32,8 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
     @Getter
     protected final List<Widget> widgets = Lists.newArrayList();
 
-    //TODO scrollwheel
-    public ScrollableScissorWindow(int x, int y, int width, int height, String msg) {
-        super(x, y, width, height, new StringTextComponent(msg));
+    public ScrollableScissorWindow(int x, int y, int width, int height, ITextComponent msg) {
+        super(x, y, width, height, msg);
     }
 
 

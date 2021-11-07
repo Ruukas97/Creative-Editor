@@ -27,7 +27,7 @@ public class AllWidgetsScreen extends ParentItemScreen {
     protected void init() {
         renderItem = false;
         super.init();
-        scissorWindow = addButton(new ScrollableScissorWindow(width / 5, height / 10, width / 5 * 3, resetButton.y - height / 10 - 10, I18n.get("gui.allwidgets")));
+        scissorWindow = addButton(new ScrollableScissorWindow(width / 5, height / 10, width / 5 * 3, resetButton.y - height / 10 - 10, new TranslationTextComponent("gui.allwidgets")));
         ArrayList<ClassSpecificWidget> list = new ArrayList<>();
         list.addAll(new ItemWidgets().list);
         list.addAll(new AdvancedWidgets().list);

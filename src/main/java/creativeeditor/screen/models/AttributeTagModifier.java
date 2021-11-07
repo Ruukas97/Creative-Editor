@@ -56,11 +56,10 @@ public class AttributeTagModifier implements TagModifier<TagAttributeModifier> {
 
     @Override
     public void modify(TagAttributeModifier tag) {
-        if(infinity.get()){
+        if (infinity.get()) {
             tag.getAmount().set(Double.POSITIVE_INFINITY);
-        }
-        else {
-            tag.getAmount().set(level.get() + (double)levelFractional.get() / 1000);
+        } else {
+            tag.getAmount().set(level.get() + (double) levelFractional.get() / 1000);
         }
         tag.setOperation(operation.get());
         tag.setSlot(slot.get());

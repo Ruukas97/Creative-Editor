@@ -79,7 +79,7 @@ public class EnchantmentScreen extends ParentScreen {
             minecraft.setScreen(lastScreen);
         }));
 
-        list = addButton(new ScrollableScissorWindow(10, yStart, containerWidth, yEnd, I18n.get("gui.enchantment.all")));
+        list = addButton(new ScrollableScissorWindow(10, yStart, containerWidth, yEnd, new TranslationTextComponent("gui.enchantment.all")));
         for (Enchantment ench : sortedEnchants) {
             StyledButton button = new StyledButton(0, 0, 50, 20, ench.getFullname(getLevel(ench)).getString(), b -> {
                 TagEnchantment tag = new TagEnchantment(ench, getLevel(ench));
@@ -91,7 +91,7 @@ public class EnchantmentScreen extends ParentScreen {
             list.getWidgets().add(button);
         }
 
-        added = addButton(new ScrollableScissorWindow(width / 3 + 5, yStart, containerWidth, yEnd, I18n.get("gui.enchantment.applied")));
+        added = addButton(new ScrollableScissorWindow(width / 3 + 5, yStart, containerWidth, yEnd, new TranslationTextComponent("gui.enchantment.applied")));
         for (TagEnchantment tag : enchantmentsTag) {
             addEnchantment(tag);
         }
@@ -245,7 +245,6 @@ public class EnchantmentScreen extends ParentScreen {
         String maxLevel = I18n.get("gui.enchantment.tooltip.maxlevel", ench.getMaxLevel());
         String typeLine = I18n.get("gui.enchantment.tooltip.type", ench.category != null ? ench.category.toString().toLowerCase() : "N/A");
         String descKey = ench.getDescriptionId() + ".desc";
-        System.out.println(descKey);
         if (!I18n.exists(descKey))
             GuiUtil.addToolTip(matrix, this, x, y, name, rarityLine, minLevel, maxLevel, typeLine);
         else {

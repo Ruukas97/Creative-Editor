@@ -110,7 +110,7 @@ public class ItemSpawnerScreen extends ParentScreen {
             }
 
             ItemStack stack = collection.getIcon();
-            drawItemStack(matrix, stack, x, y, 1f, 0, 0, 0, null);
+            drawItemStack(stack, (int) x, (int) y, 0f, 0, null);
 
 
             drawString(matrix, font, name, x + 20, y + 5, in || selected ? StyleManager.getCurrentStyle().getFGColor(true, true).getInt() : color.getInt());
@@ -165,7 +165,7 @@ public class ItemSpawnerScreen extends ParentScreen {
 
             x = 30 + widest + 20 * column;
             y = 25 + 20 * row;
-            drawItemStack(matrix, stack, x, y, 1f, 0, 0, 0, null);
+            drawItemStack(stack, x, y, 1f, 0, null);
             i++;
         }
     }

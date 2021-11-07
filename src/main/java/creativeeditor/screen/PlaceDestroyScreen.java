@@ -37,12 +37,13 @@ public class PlaceDestroyScreen extends ParentItemScreen {
         int spacing = 10;
         int xStart = (width - (containerWidth * 2 + spacing)) / 2;
 
-        added = addButton(new ScrollableScissorWindow(xStart, yStart, containerWidth, yEnd, I18n.get("gui.placedestroy.applied")));
-        list = addButton(new ScrollableScissorWindow(xStart + spacing + containerWidth, yStart, containerWidth, yEnd, I18n.get("gui.placedestroy.all")));
-        outerLoop: for (Block block : ForgeRegistries.BLOCKS.getValues()) {
+        added = addButton(new ScrollableScissorWindow(xStart, yStart, containerWidth, yEnd, new TranslationTextComponent("gui.placedestroy.applied")));
+        list = addButton(new ScrollableScissorWindow(xStart + spacing + containerWidth, yStart, containerWidth, yEnd, new TranslationTextComponent("gui.placedestroy.all")));
+        outerLoop:
+        for (Block block : ForgeRegistries.BLOCKS.getValues()) {
             if (block.asItem() != Items.AIR) {
-                for(TagItemID id : canPlaceOnList) {
-                    if(block.asItem() == id.getItem()) {
+                for (TagItemID id : canPlaceOnList) {
+                    if (block.asItem() == id.getItem()) {
                         addCanPlaceOn(block, id, false);
                         continue outerLoop;
                     }
@@ -70,7 +71,7 @@ public class PlaceDestroyScreen extends ParentItemScreen {
 
     private void addCanPlaceOn(Block block, TagItemID tagItemR, boolean shouldAdd) {
         TagItemID tagItem = new TagItemID(Item.BY_BLOCK.get(block));
-        if(tagItemR != null) {
+        if (tagItemR != null) {
             tagItem = tagItemR;
         }
         TagItemID finalTagItem = tagItem; // final temp for lambda
@@ -80,6 +81,6 @@ public class PlaceDestroyScreen extends ParentItemScreen {
             list.getWidgets().add(addToAddedButton(block));
         });
         added.getWidgets().add(button);
-        if(shouldAdd) canPlaceOnList.add(finalTagItem);
+        if (shouldAdd) canPlaceOnList.add(finalTagItem);
     }
 }

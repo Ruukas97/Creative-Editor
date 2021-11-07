@@ -8,11 +8,14 @@ import lombok.Setter;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.ResourceLocationException;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.Map;
 
 @AllArgsConstructor
 public class TagEnchantment implements Data<TagEnchantment, CompoundNBT> {
@@ -42,8 +45,12 @@ public class TagEnchantment implements Data<TagEnchantment, CompoundNBT> {
         this.level = new NumberRangeInt(level, 1, Integer.MAX_VALUE);
     }
 
+    public TagEnchantment(Map.Entry<RegistryKey<Enchantment>, Enchantment> registryEntry) {
+        this(registryEntry.getValue(), new NumberRangeInt(1, Integer.MAX_VALUE));
+    }
 
-        @Override
+
+    @Override
     public boolean isDefault() {
         return level.get() == 0;
     }

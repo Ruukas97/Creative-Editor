@@ -5,8 +5,6 @@ import creativeeditor.data.DataItem;
 import lombok.Getter;
 import net.minecraft.util.text.TextComponent;
 
-import java.util.Arrays;
-
 public abstract class WheelType<T extends Data<?, ?>> {
     protected DataItem dataItem;
 
@@ -14,18 +12,16 @@ public abstract class WheelType<T extends Data<?, ?>> {
     TagFilter<T>[] tagFilters;
 
     @SafeVarargs
-    public WheelType(DataItem dataItem, TagFilter<T>... tagFilters){
+    public WheelType(DataItem dataItem, TagFilter<T>... tagFilters) {
         this.dataItem = dataItem;
         this.tagFilters = tagFilters;
     }
 
     public abstract TagModifier<T> getTagModifier();
-    public abstract T[] newArray(int size);
-    public abstract T[] getAll();
-    public abstract void addTag(T tag);
-    public abstract TextComponent displayTag(T tag);
 
-    public T[] getFiltered(TagFilter<T> filter){
-        return Arrays.stream(getAll()).filter(filter::shouldShow).toArray(this::newArray);
-    }
+    public abstract T[] newArray(int size);
+
+    public abstract T[] getAll();
+
+    public abstract TextComponent displayTag(T tag);
 }

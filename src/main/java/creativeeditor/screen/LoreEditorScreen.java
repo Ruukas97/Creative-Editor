@@ -39,7 +39,7 @@ public class LoreEditorScreen extends ParentItemScreen {
         setRenderItem(true, 1f, 10);
         scrollWidth = width / 6 * 4;
         int xScroll = (width - scrollWidth) / 2;
-        scrollWindow = addButton(new ScrollableScissorWindow(xScroll, height / 4, scrollWidth, height / 4 * 2, "Scroll"));
+        scrollWindow = addButton(new ScrollableScissorWindow(xScroll, height / 4, scrollWidth, height / 4 * 2, new StringTextComponent("Lores")));
         int scrollTop = height / 4;
         addButton(new StyledButton(xScroll - buttonWidth - distanceFromScroll, scrollTop, buttonWidth, 20, I18n.get("gui.loreeditor.addline"), t -> addLine()));
         addButton(new StyledButton(xScroll - buttonWidth - distanceFromScroll, scrollTop + 25, buttonWidth, 20, I18n.get("gui.loreeditor.copy"), t -> copyLoreToClipboard()));

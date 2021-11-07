@@ -65,7 +65,6 @@ public class KeyInputHandler {
         } else if (event.getKey() == BARRIER_TOGGLE.getKey().getValue()) {
             CreativeEditor.BARRIER_VISIBLE = !CreativeEditor.BARRIER_VISIBLE;
             mc.levelRenderer.allChanged(); // reload chunks
-            System.out.println("Set barrier visibility: " + CreativeEditor.BARRIER_VISIBLE);
         } else if (CreativeEditor.DEBUG && event.getKey() == DEBUG_KEY.getKey().getValue()) {
              mc.setScreen( new ParentItemScreen(new StringTextComponent(""), null, new DataItem(new ItemStack(Items.DIAMOND))) {
                  @Override

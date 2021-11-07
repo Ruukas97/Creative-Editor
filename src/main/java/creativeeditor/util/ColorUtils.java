@@ -1,6 +1,7 @@
 package creativeeditor.util;
 
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.Color;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -288,6 +289,10 @@ public class ColorUtils {
         @Override
         public String toString() {
             return "Color[A:" + getAlpha() + ",R:" + getRed() + ",G:" + getGreen() + ",B:" + getBlue() + "]";
+        }
+
+        public net.minecraft.util.text.Color toMcColor() {
+            return net.minecraft.util.text.Color.fromRgb(argb);
         }
     }
 }

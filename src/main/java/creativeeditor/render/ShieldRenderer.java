@@ -33,7 +33,7 @@ public class ShieldRenderer extends ItemStackTileEntityRenderer {
         if (item == Items.SHIELD) {
             String displayName = TextComponentUtils.getPlainText(itemStackIn.getDisplayName());
             boolean use = displayName.contains("Spectrum") || displayName.contains("Creative") || displayName.contains("Chroma");
-            System.out.println(displayName);
+
             if (!use) {
                 super.renderByItem(itemStackIn, transformType, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
                 return;

@@ -291,7 +291,7 @@ public class HeadCollectionScreen extends ParentScreen {
                 CachedHead cached = filteredHeads.get(i);
                 // cached.loadTexture();
                 ItemStack stack = cached.getItemStack();
-                drawItemStack(matrix, stack, x, y, 1, 0, 0, 0, null);
+                drawItemStack(stack, x, y, 1, 0, null);
                 if (hovered == null && mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16) {
                     fill(matrix, x, y, x + 16, y + 16, GuiUtil.getColorFromRGB(150, 150, 150, 150));
                     hovered = stack;
@@ -307,7 +307,7 @@ public class HeadCollectionScreen extends ParentScreen {
 
         if (hovered != null) {
             char section = "\u00a7r".charAt(0);
-            GuiUtil.addToolTip(matrix, this, mouseX, mouseY, width, height, mouseX, mouseY, hovered.getDisplayName().getString(), section + "7" + I18n.get("gui.headcollection.clickhead"),  section + "7" + I18n.get("gui.headcollection.clickheadshift"));
+            GuiUtil.addToolTip(matrix, this, mouseX, mouseY, width, height, mouseX, mouseY, hovered.getDisplayName().getString(), section + "7" + I18n.get("gui.headcollection.clickhead"), section + "7" + I18n.get("gui.headcollection.clickheadshift"));
         } else if (!searchString.equals(filteredString) && GuiUtil.isMouseInRegion(mouseX, mouseY, (width / 2) - searchW / 2, 56, searchW, 8)) {
             GuiUtil.addToolTip(matrix, this, mouseX, mouseY, I18n.get("gui.headcollection.clicksearch"));
         } else {

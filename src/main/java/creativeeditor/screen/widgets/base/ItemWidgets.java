@@ -19,7 +19,7 @@ public class ItemWidgets extends WidgetIteratorBase {
 
     public ItemWidgets() {
         add(new ClassSpecificWidget(I18n.get("gui.attributemodifiers"), (item, info) ->
-                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new WheelScreen<>(info.getParent(), new TranslationTextComponent("gui.attributemodifiers"), new AttributeWheelType(item), item))))
+                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new WheelScreen<>(info.getParent(), new TranslationTextComponent("gui.attributemodifiers"), new AttributeWheelType(item), item, item.getTag().getAttributes()))))
         ));
 
         add(new ClassSpecificWidget(I18n.get("gui.enchanting"), ItemUtils::isEnchantable, (item, info) ->

@@ -1,7 +1,13 @@
 package creativeeditor.util;
 
 import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -32,5 +38,44 @@ public class AttributeUtils {
 
     public static boolean belongToNameSpace(Attribute attribute, String namespace){
         return getNameSpace(attribute).equals(namespace);
+    }
+
+    public static TextComponent getText(Attribute attribute, AttributeModifier modifier){
+        double d0 = modifier.getAmount();
+        //boolean flag = false;
+        /*if (p_82840_1_ != null) {
+            if (modifier.getId() == Item.BASE_ATTACK_DAMAGE_UUID) {
+                d0 = d0 + p_82840_1_.getAttributeBaseValue(Attributes.ATTACK_DAMAGE);
+                d0 = d0 + (double) EnchantmentHelper.getDamageBonus(this, CreatureAttribute.UNDEFINED);
+                flag = true;
+            } else if (modifier.getId() == Item.BASE_ATTACK_SPEED_UUID) {
+                d0 += p_82840_1_.getAttributeBaseValue(Attributes.ATTACK_SPEED);
+                flag = true;
+            }
+        }*/
+
+        double d1;
+        if (modifier.getOperation() != AttributeModifier.Operation.MULTIPLY_BASE && modifier.getOperation() != AttributeModifier.Operation.MULTIPLY_TOTAL) {
+            if (attribute.equals(Attributes.KNOCKBACK_RESISTANCE)) {
+                d1 = d0 * 10.0D;
+            } else {
+                d1 = d0;
+            }
+        } else {
+            d1 = d0 * 100.0D;
+        }
+
+
+
+        /*if (flag) {
+            return new StringTextComponent(" ").append(new TranslationTextComponent("attribute.modifier.equals." + modifier.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), new TranslationTextComponent(attribute.getDescriptionId()))).withStyle(TextFormatting.DARK_GREEN);
+        } else */
+        if (d0 < 0.0D) {
+            d1 = d1 * -1.0D;
+            return (TextComponent) new TranslationTextComponent("attribute.modifier.take." + modifier.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), new TranslationTextComponent(attribute.getDescriptionId())).withStyle(TextFormatting.RED);
+        }
+        else{
+            return (TextComponent) (new TranslationTextComponent("attribute.modifier.plus." + modifier.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), new TranslationTextComponent(attribute.getDescriptionId()))).withStyle(TextFormatting.BLUE);
+        }
     }
 }
