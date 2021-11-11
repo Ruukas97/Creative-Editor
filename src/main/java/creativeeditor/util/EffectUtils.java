@@ -3,6 +3,7 @@ package creativeeditor.util;
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import creativeeditor.data.tag.TagEffect;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.ItemStack;
@@ -14,7 +15,6 @@ import net.minecraft.util.text.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class EffectUtils {
     private static final IFormattableTextComponent NO_EFFECT = (new TranslationTextComponent("effect.none")).withStyle(TextFormatting.GRAY);
@@ -25,7 +25,7 @@ public class EffectUtils {
         TranslationTextComponent component = new TranslationTextComponent(effect.getDescriptionId());
 
         if (tag.getAmplifier().get() > 0) {
-            component = new TranslationTextComponent("potion.withAmplifier", component, new TranslationTextComponent("potion.potency." + tag.getAmplifier().get()));
+            component = new TranslationTextComponent("potion.withAmplifier", component, I18n.exists("potion.potency." + tag.getAmplifier().get()) ? new TranslationTextComponent("potion.potency." + tag.getAmplifier().get()) : new StringTextComponent(String.valueOf(tag.getAmplifier().get() + 1)));
         }
 
         if (tag.getDuration().get() > 20) {
@@ -74,7 +74,7 @@ public class EffectUtils {
                     d1 = attributemodifier2.getAmount() * 100.0D;
                 }
 
-                if (d0 > 0.0D) {
+                if (d0 >= 0.0D) {
                     list.add((new TranslationTextComponent("attribute.modifier.plus." + attributemodifier2.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), new TranslationTextComponent(pair.getKey().getDescriptionId()))).withStyle(TextFormatting.BLUE));
                 } else if (d0 < 0.0D) {
                     d1 = d1 * -1.0D;

@@ -117,12 +117,6 @@ public class EffectWheelType extends WheelType<TagEffect> {
 
     @Override
     public ITextComponent[] tooltip(TagEffect tag) {
-        ArrayList<ITextComponent> list = Lists.newArrayList();
-        PotionUtils.addPotionTooltip(dataItem.getItemStack(), list, 1f);
-        ITextComponent[] array = new ITextComponent[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            array[i] = list.get(i);
-        }
-        return array;
+        return EffectUtils.getTooltip(tag);
     }
 }

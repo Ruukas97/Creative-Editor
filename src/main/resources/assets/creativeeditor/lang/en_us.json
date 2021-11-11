@@ -202,7 +202,7 @@
   "filter.effect.beneficial": "Beneficial",
   "filter.effect.neutral": "Neutral",
   "gui.effectwheel.ambient": "Ambient",
-  "gui.effectwheel.showparticles": "Show Particles",
-  "gui.effectwheel.showicon": "Show Icon",
+  "gui.effectwheel.showparticles": "Particles",
+  "gui.effectwheel.showicon": "Icon",
   "gui.effectwheel": "Potion Effects Wheel"
 }
