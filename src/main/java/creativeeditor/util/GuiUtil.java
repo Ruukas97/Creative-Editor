@@ -25,7 +25,9 @@ import net.minecraftforge.fml.client.gui.GuiUtils;
 import javax.annotation.Nullable;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GuiUtil extends GuiUtils {
     @SuppressWarnings("resource")
@@ -222,11 +224,11 @@ public class GuiUtil extends GuiUtils {
 
 
     public static void addToolTip(MatrixStack matrix, Screen screen, int xPos, int yPos, String... str) {
-        List<ITextProperties> list = new ArrayList<>();
-        for(String s : str) {
-            list.add(new StringTextComponent(s));
-        }
-        drawHoveringText(null, matrix, list, xPos, yPos, screen.width, screen.height, -1, getFontRenderer());
+        drawHoveringText(null, matrix, Arrays.stream(str).map(StringTextComponent::new).collect(Collectors.toList()), xPos, yPos, screen.width, screen.height, -1, getFontRenderer());
+    }
+
+    public static void addToolTip(MatrixStack matrix, Screen screen, int xPos, int yPos, ITextProperties... str) {
+        drawHoveringText(null, matrix, Lists.newArrayList(str), xPos, yPos, screen.width, screen.height, -1, getFontRenderer());
     }
 
 

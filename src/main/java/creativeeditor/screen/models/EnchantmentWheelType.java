@@ -1,8 +1,8 @@
 package creativeeditor.screen.models;
 
 import creativeeditor.data.DataItem;
-import creativeeditor.data.tag.TagAttributeModifier;
 import creativeeditor.data.tag.TagEnchantment;
+import creativeeditor.util.EnchantmentUtils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -11,37 +11,48 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Arrays;
 
-public class EnchantmentWheelType extends WheelType<TagEnchantment>{
+public class EnchantmentWheelType extends WheelType<TagEnchantment>  {
+    private static final EnchantmentFilter SUPPORTED = new EnchantmentFilter("supported", pair -> pair.getSecond().getEnchantment().canEnchant(pair.getFirst().getItemStack()));
+    private static final EnchantmentFilter ENCHANTING_TABLE = new EnchantmentFilter("enchantingtable", pair -> pair.getSecond().getEnchantment().canApplyAtEnchantingTable(pair.getFirst().getItemStack()));
+    private static final EnchantmentFilter STOREABLE = new EnchantmentFilter("storeable", pair -> pair.getSecond().getEnchantment().isAllowedOnBooks());
+    private static final EnchantmentFilter TREASURE = new EnchantmentFilter("treasure", pair -> pair.getSecond().getEnchantment().isTreasureOnly());
+    private static final EnchantmentFilter CURSE = new EnchantmentFilter("curse", pair -> pair.getSecond().getEnchantment().isCurse());
+    private static final EnchantmentFilter DISCOVERABLE = new EnchantmentFilter("discoverable", pair -> pair.getSecond().getEnchantment().isCurse());
+
     private static final TagFilter<TagEnchantment> MINECRAFT = new TagFilter<TagEnchantment>() {
         @Override
-        public ITextComponent getName() {
-            return new StringTextComponent("minecraft");
+        public TextComponent getName() {
+            return new StringTextComponent("Minecraft");
         }
 
         @Override
-        public boolean shouldShow(TagEnchantment tag) {
+        public boolean shouldShow(DataItem item, TagEnchantment tag) {
             return tag.getEnchantment().getRegistryName().getNamespace().equals("minecraft");
         }
 
         @Override
-        public TagEnchantment[] filter(TagEnchantment[] tags) {
-            return Arrays.stream(tags).filter(this::shouldShow).toArray(TagEnchantment[]::new);
+        public TagEnchantment[] filter(DataItem item, TagEnchantment[] tags) {
+            return Arrays.stream(tags).filter(tagAttributeModifier -> shouldShow(item, tagAttributeModifier)).toArray(TagEnchantment[]::new);
         }
     };
 
     public EnchantmentWheelType(DataItem dataItem) {
-        super(dataItem, MINECRAFT);
+        super(dataItem, SUPPORTED, ENCHANTING_TABLE, STOREABLE, TREASURE, CURSE, DISCOVERABLE, MINECRAFT);
     }
-
 
     @Override
     public TagModifier<TagEnchantment> getTagModifier() {
-        return null;
+        return new EnchantmentTagModifier();
     }
 
     @Override
     public TagEnchantment[] newArray(int size) {
         return new TagEnchantment[size];
+    }
+
+    @Override
+    public TagEnchantment clone(TagEnchantment tag) {
+        return new TagEnchantment(tag.getNBT());
     }
 
     @Override
@@ -51,6 +62,20 @@ public class EnchantmentWheelType extends WheelType<TagEnchantment>{
 
     @Override
     public TextComponent displayTag(TagEnchantment tag) {
-        return null;
+        return (TextComponent) tag.getPrettyDisplay("", 0);
+    }
+
+    @Override
+    public ITextComponent[] tooltip(TagEnchantment tag) {
+        return EnchantmentUtils.getTooltip(tag);
+    }
+
+    @Override
+    public int compare(TagEnchantment o1, TagEnchantment o2) {
+        int curse = Boolean.compare(o1.getEnchantment().isCurse(), o2.getEnchantment().isCurse());
+        if(curse != 0){
+            return curse;
+        }
+        return super.compare(o1, o2);
     }
 }

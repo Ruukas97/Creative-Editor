@@ -1,19 +1,24 @@
-package creativeeditor.data.base;
+package creativeeditor.data.tag;
 
+import creativeeditor.data.base.SingularData;
 import lombok.Getter;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.nbt.IntNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class DataEnum<E extends Enum<E>> extends SingularData<E, IntNBT> implements Button.IPressable {
+public class TagEnum<E extends Enum<E>> extends SingularData<E, IntNBT> implements Button.IPressable {
     @Getter
     private final E[] options;
 
-    public DataEnum(E value) {
+    public TagEnum(Class<E> clazz, E value) {
         super(value);
-        options = value.getDeclaringClass().getEnumConstants();
+        options = clazz.getEnumConstants();
+        if(this.data == null){
+            this.data = options[0];
+        }
     }
 
     public void next() {
@@ -26,7 +31,7 @@ public class DataEnum<E extends Enum<E>> extends SingularData<E, IntNBT> impleme
 
     @Override
     public boolean isDefault() {
-        return data.ordinal() == 0;
+        return data == null;
     }
 
     @Override
@@ -47,5 +52,9 @@ public class DataEnum<E extends Enum<E>> extends SingularData<E, IntNBT> impleme
 
     public TextComponent getName(){
         return new TranslationTextComponent("enum." + (data.getDeclaringClass().getSimpleName() + '.' + data.name()).toLowerCase());
+    }
+
+    public TextComponent getKeyValue(){
+        return (TextComponent) new TranslationTextComponent("enum." + data.getDeclaringClass().getSimpleName().toLowerCase() + "._", getPrettyDisplay("", 0)).withStyle(TextFormatting.AQUA);
     }
 }

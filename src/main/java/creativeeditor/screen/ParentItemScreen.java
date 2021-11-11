@@ -154,7 +154,7 @@ public class ParentItemScreen extends ParentScreen {
         if (isInColorWidget((int) mouseX, (int) mouseY))
             return colorHelperWidget.mouseClicked(mouseX, mouseY, mouseButton);
         if (super.mouseClicked(mouseX, mouseY, mouseButton)) return true;
-        if (GuiUtil.isMouseIn((int) mouseX, (int) mouseY, width / 2 - 17, 43, 36, 36)) {
+        if (renderItem && GuiUtil.isMouseIn((int) mouseX, (int) mouseY, width / 2 - 17, 43, 36, 36)) {
             minecraft.setScreen(new ItemInspectorScreen(this, item));
             return true;
         }

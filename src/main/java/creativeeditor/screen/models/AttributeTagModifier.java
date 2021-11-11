@@ -3,7 +3,7 @@ package creativeeditor.screen.models;
 import creativeeditor.data.DataItem;
 import creativeeditor.data.NumberRangeInt;
 import creativeeditor.data.base.DataBoolean;
-import creativeeditor.data.base.DataEnum;
+import creativeeditor.data.tag.TagEnum;
 import creativeeditor.data.tag.TagAttributeModifier;
 import creativeeditor.screen.widgets.NumberField;
 import creativeeditor.screen.widgets.StyledEnumSwitcher;
@@ -19,10 +19,10 @@ public class AttributeTagModifier implements TagModifier<TagAttributeModifier> {
     private final DataBoolean infinity;
     private StyledToggle infinityToggle;
 
-    private final DataEnum<Operation> operation;
+    private final TagEnum<Operation> operation;
     private StyledEnumSwitcher operationSwitcher;
 
-    private final DataEnum<EquipmentSlotType> slot;
+    private final TagEnum<EquipmentSlotType> slot;
     private StyledEnumSwitcher slotSwitcher;
 
     private final NumberRangeInt level;
@@ -34,24 +34,24 @@ public class AttributeTagModifier implements TagModifier<TagAttributeModifier> {
         Item item = dataItem.getItem().getItem();
         if (item instanceof ArmorItem) {
             ArmorItem armor = (ArmorItem) item;
-            slot = new DataEnum<>(armor.getSlot());
+            slot = new TagEnum<>(EquipmentSlotType.class, armor.getSlot());
         } else if (item instanceof ShieldItem || item instanceof ArrowItem || item == Items.TOTEM_OF_UNDYING) {
-            slot = new DataEnum<>(EquipmentSlotType.OFFHAND);
+            slot = new TagEnum<>(EquipmentSlotType.class, EquipmentSlotType.OFFHAND);
         } else {
-            slot = new DataEnum<>(EquipmentSlotType.MAINHAND);
+            slot = new TagEnum<>(EquipmentSlotType.class, EquipmentSlotType.MAINHAND);
         }
         infinity = new DataBoolean();
-        operation = new DataEnum<>(Operation.ADDITION);
+        operation = new TagEnum<>(Operation.class, Operation.ADDITION);
         level = new NumberRangeInt(1, 0, 99999999);
         levelFractional = new NumberRangeInt(0, 999);
     }
 
     private void initWidgets(FontRenderer font, int width, int height) {
-        infinityToggle = new StyledToggle(15, height - 123, 80, 20, I18n.get("gui.attributemodifiers.infinity"), infinity);
-        operationSwitcher = new StyledEnumSwitcher(15, height - 93, 80, 20, operation);
-        slotSwitcher = new StyledEnumSwitcher(15, height - 63, 80, 20, slot);
-        levelField = new NumberField(font, 15, height - 32, 20, level);
-        fractionalField = new NumberField(font, 100, height - 32, 20, levelFractional);
+        infinityToggle = new StyledToggle(10, height - 105, 80, 20, I18n.get("gui.attributewheel.infinity"), infinity);
+        operationSwitcher = new StyledEnumSwitcher(10, height - 80, 80, 20, operation);
+        slotSwitcher = new StyledEnumSwitcher(10, height - 55, 80, 20, slot);
+        levelField = new NumberField(font, 10, height - 30, 20, level);
+        fractionalField = new NumberField(font, 15 + levelField.getWidth(), height - 30, 20, levelFractional);
     }
 
     @Override
@@ -61,8 +61,8 @@ public class AttributeTagModifier implements TagModifier<TagAttributeModifier> {
         } else {
             tag.getAmount().set(level.get() + (double) levelFractional.get() / 1000);
         }
-        tag.setOperation(operation.get());
-        tag.setSlot(slot.get());
+        tag.getOperation().set(operation.get());
+        tag.getSlot().set(slot.get());
     }
 
     @Override

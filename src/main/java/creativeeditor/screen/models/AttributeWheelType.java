@@ -12,35 +12,35 @@ import java.util.Arrays;
 public class AttributeWheelType extends WheelType<TagAttributeModifier> {
     private static final TagFilter<TagAttributeModifier> VANILLA = new TagFilter<TagAttributeModifier>() {
         @Override
-        public ITextComponent getName() {
+        public TextComponent getName() {
             return new StringTextComponent("minecraft");
         }
 
         @Override
-        public boolean shouldShow(TagAttributeModifier tag) {
-            return AttributeUtils.belongToNameSpace(tag.getAttribute(), "minecraft");
+        public boolean shouldShow(DataItem item, TagAttributeModifier tag) {
+            return AttributeUtils.belongsToNameSpace(tag.getAttribute(), "minecraft");
         }
 
         @Override
-        public TagAttributeModifier[] filter(TagAttributeModifier[] tags) {
-            return Arrays.stream(tags).filter(this::shouldShow).toArray(TagAttributeModifier[]::new);
+        public TagAttributeModifier[] filter(DataItem item, TagAttributeModifier[] tags) {
+            return Arrays.stream(tags).filter(tagAttributeModifier -> shouldShow(item, tagAttributeModifier)).toArray(TagAttributeModifier[]::new);
         }
     };
 
     private static final TagFilter<TagAttributeModifier> FORGE = new TagFilter<TagAttributeModifier>() {
         @Override
-        public ITextComponent getName() {
+        public TextComponent getName() {
             return new StringTextComponent("forge");
         }
 
         @Override
-        public boolean shouldShow(TagAttributeModifier tag) {
-            return AttributeUtils.belongToNameSpace(tag.getAttribute(), "forge");
+        public boolean shouldShow(DataItem item, TagAttributeModifier tag) {
+            return AttributeUtils.belongsToNameSpace(tag.getAttribute(), "forge");
         }
 
         @Override
-        public TagAttributeModifier[] filter(TagAttributeModifier[] tags) {
-            return Arrays.stream(tags).filter(this::shouldShow).toArray(TagAttributeModifier[]::new);
+        public TagAttributeModifier[] filter(DataItem item, TagAttributeModifier[] tags) {
+            return Arrays.stream(tags).filter(tagAttributeModifier -> shouldShow(item, tagAttributeModifier)).toArray(TagAttributeModifier[]::new);
         }
     };
 
@@ -59,6 +59,11 @@ public class AttributeWheelType extends WheelType<TagAttributeModifier> {
     }
 
     @Override
+    public TagAttributeModifier clone(TagAttributeModifier tag) {
+        return new TagAttributeModifier(tag.getNBT());
+    }
+
+    @Override
     public TagAttributeModifier[] getAll() {
         return GameRegistry.findRegistry(Attribute.class).getEntries().stream().map(TagAttributeModifier::new).toArray(this::newArray);
     }
@@ -66,5 +71,10 @@ public class AttributeWheelType extends WheelType<TagAttributeModifier> {
     @Override
     public TextComponent displayTag(TagAttributeModifier tag) {
         return AttributeUtils.getText(tag.getAttribute(), tag.createAttributeModifier());
+    }
+
+    @Override
+    public ITextComponent[] tooltip(TagAttributeModifier tag) {
+        return AttributeUtils.getTooltip(tag);
     }
 }

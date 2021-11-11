@@ -1,83 +1,76 @@
 package creativeeditor.data.tag;
 
 import creativeeditor.data.base.DataBitField;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.IntNBT;
 
 public class TagHideFlags extends DataBitField {
-    public static final int
-    ENCHANTS = 0,
-    ATTRIBUTES = 1,
-    UNBREAKABLE = 2,
-    CAN_DESTROY = 3,
-    CAN_PLACE = 4,
-    ITEM_INFO = 5,
-    DYED = 6;
-
     public TagHideFlags(IntNBT value) {
         super(7, value);
     }
+
     public TagHideFlags(int value) {
         super(7, value);
     }
 
     public boolean getEnchantsHidden() {
-        return data[ENCHANTS];
+        return data[ItemStack.TooltipDisplayFlags.ENCHANTMENTS.getMask()];
     }
 
     public void setEnchantsHidden(boolean value) {
-        data[ENCHANTS] = value;
+        data[ItemStack.TooltipDisplayFlags.ENCHANTMENTS.getMask()] = value;
     }
 
     public boolean getAttributesHidden() {
-        return data[ATTRIBUTES];
+        return data[ItemStack.TooltipDisplayFlags.MODIFIERS.getMask()];
     }
 
 
     public void setAttributesHidden(boolean value) {
-        data[ATTRIBUTES] = value;
+        data[ItemStack.TooltipDisplayFlags.MODIFIERS.getMask()] = value;
     }
 
     public boolean getUnbreakableHidden() {
-        return data[UNBREAKABLE];
+        return data[ItemStack.TooltipDisplayFlags.UNBREAKABLE.getMask()];
     }
 
 
     public void setUnbreakableHidden(boolean value) {
-        data[UNBREAKABLE] = value;
+        data[ItemStack.TooltipDisplayFlags.UNBREAKABLE.getMask()] = value;
     }
 
     public boolean getCanDestroyHidden() {
-        return data[CAN_DESTROY];
+        return data[ItemStack.TooltipDisplayFlags.CAN_DESTROY.getMask()];
     }
 
     public void setCanDestroyHidden(boolean value) {
-        data[CAN_DESTROY] = value;
+        data[ItemStack.TooltipDisplayFlags.CAN_DESTROY.getMask()] = value;
     }
 
 
     public boolean getCanPlaceOnHidden() {
-        return data[CAN_PLACE];
+        return data[ItemStack.TooltipDisplayFlags.CAN_PLACE.getMask()];
     }
 
     public void setCanPlaceOnHidden(boolean value) {
-        data[CAN_PLACE] = value;
+        data[ItemStack.TooltipDisplayFlags.CAN_PLACE.getMask()] = value;
     }
 
     public boolean getItemInfoHidden() {
-        return data[ITEM_INFO];
+        return data[ItemStack.TooltipDisplayFlags.ADDITIONAL.getMask()];
     }
 
     public void setItemInfoHidden(boolean value) {
-        data[ITEM_INFO] = value;
+        data[ItemStack.TooltipDisplayFlags.ADDITIONAL.getMask()] = value;
     }
 
     public boolean getDyedHidden() {
-        return data[DYED];
+        return data[ItemStack.TooltipDisplayFlags.DYE.getMask()];
     }
 
 
     public void getDyedHidden(boolean value) {
-        data[DYED] = value;
+        data[ItemStack.TooltipDisplayFlags.DYE.getMask()] = value;
     }
 
     @Override

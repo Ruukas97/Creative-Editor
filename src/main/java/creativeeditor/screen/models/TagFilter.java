@@ -1,14 +1,14 @@
 package creativeeditor.screen.models;
 
 import creativeeditor.data.Data;
-import net.minecraft.util.text.ITextComponent;
+import creativeeditor.data.DataItem;
+import creativeeditor.screen.widgets.StyledOptionSwitcher;
+import net.minecraft.util.text.TextComponent;
 
-import java.util.List;
+public interface TagFilter<T extends Data<?, ?>> extends StyledOptionSwitcher.Option {
+    TextComponent getName();
 
-public interface TagFilter<T extends Data<?, ?>> {
-    ITextComponent getName();
+    boolean shouldShow(DataItem item, T tag);
 
-    boolean shouldShow(T tag);
-
-    T[] filter(T[] tags);
+    T[] filter(DataItem item, T[] tags);
 }

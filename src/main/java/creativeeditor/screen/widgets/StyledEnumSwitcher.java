@@ -1,14 +1,14 @@
 package creativeeditor.screen.widgets;
 
-import creativeeditor.data.base.DataEnum;
+import creativeeditor.data.tag.TagEnum;
 
 public class StyledEnumSwitcher extends StyledButton {
-    public StyledEnumSwitcher(WidgetInfo info, DataEnum<?> data) {
+    public StyledEnumSwitcher(WidgetInfo info, TagEnum<?> data) {
         super(info.withTrigger(data));
         setMessage(data.getName());
     }
 
-    public StyledEnumSwitcher(int x, int y, int width, int height, DataEnum<?> data) {
+    public StyledEnumSwitcher(int x, int y, int width, int height, TagEnum<?> data) {
         super(x, y, width, height, data.get().name(), data);
         setMessage(data.getName());
     }

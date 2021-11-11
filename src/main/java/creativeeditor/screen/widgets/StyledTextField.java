@@ -6,6 +6,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import creativeeditor.styles.StyleManager;
 import creativeeditor.styles.StyleVanilla;
 import creativeeditor.util.GuiUtil;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
@@ -32,6 +34,9 @@ import java.util.function.Predicate;
 public class StyledTextField extends Widget implements IRenderable, IGuiEventListener {
     private final FontRenderer fontRenderer;
     protected String text = "";
+    @Getter
+    @Setter
+    protected String hint = null;
     protected int maxStringLength = 32;
     private int cursorCounter;
     private boolean canLoseFocus = true;
@@ -463,22 +468,22 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
                 }
             }
 
-            int i = StyleManager.getCurrentStyle().getFGColor(this).getInt();
+            int color = StyleManager.getCurrentStyle().getFGColor(this).getInt();
             int j = this.cursorPosition - this.lineScrollOffset;
             int k = this.selectionEnd - this.lineScrollOffset;
-            String s = this.fontRenderer.plainSubstrByWidth(this.text.substring(this.lineScrollOffset), this.getAdjustedWidth());
-            boolean flag = j >= 0 && j <= s.length();
+            String renderString = this.fontRenderer.plainSubstrByWidth(this.text.substring(this.lineScrollOffset), this.getAdjustedWidth());
+            boolean flag = j >= 0 && j <= renderString.length();
             boolean flag1 = this.isFocused() && this.cursorCounter / 6 % 2 == 0 && flag;
             int l = this.getEnableBackgroundDrawing() ? this.x + 4 : this.x;
             int i1 = this.getEnableBackgroundDrawing() ? this.y + (this.height - 8) / 2 : this.y;
             int j1 = l;
-            if (k > s.length()) {
-                k = s.length();
+            if (k > renderString.length()) {
+                k = renderString.length();
             }
 
-            if (!s.isEmpty()) {
-                String s1 = flag ? s.substring(0, j) : s;
-                j1 = this.fontRenderer.drawShadow(matrix, this.textFormatter.apply(s1, this.lineScrollOffset), (float) l, (float) i1, i);
+            if (!renderString.isEmpty()) {
+                String s1 = flag ? renderString.substring(0, j) : renderString;
+                j1 = this.fontRenderer.drawShadow(matrix, this.textFormatter.apply(s1, this.lineScrollOffset), (float) l, (float) i1, color);
             }
 
             boolean flag2 = this.cursorPosition < this.text.length() || this.text.length() >= this.getMaxStringLength();
@@ -490,8 +495,8 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
                 --j1;
             }
 
-            if (!s.isEmpty() && flag && j < s.length()) {
-                this.fontRenderer.drawShadow(matrix, this.textFormatter.apply(s.substring(j), this.cursorPosition), (float) j1, (float) i1, i);
+            if (!renderString.isEmpty() && flag && j < renderString.length()) {
+                this.fontRenderer.drawShadow(matrix, this.textFormatter.apply(renderString.substring(j), this.cursorPosition), (float) j1, (float) i1, color);
             }
 
             if (!flag2 && this.suggestion != null) {
@@ -502,15 +507,18 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
                 if (flag2) {
                     AbstractGui.fill(matrix, k1, i1 - 1, k1 + 1, i1 + 1 + 9, -3092272);
                 } else {
-                    this.fontRenderer.drawShadow(matrix, "_", (float) k1, (float) i1, i);
+                    this.fontRenderer.drawShadow(matrix, "_", (float) k1, (float) i1, color);
                 }
             }
 
             if (k != j) {
-                int l1 = l + this.fontRenderer.width(s.substring(0, k));
+                int l1 = l + this.fontRenderer.width(renderString.substring(0, k));
                 this.drawSelectionBox(k1, i1 - 1, l1 - 1, i1 + 1 + 9);
             }
 
+            if(text.length() == 0 && hint != null){
+                this.fontRenderer.drawShadow(matrix, hint, (float) j1, (float) i1, color);
+            }
         }
     }
 

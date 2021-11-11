@@ -3,6 +3,8 @@ package creativeeditor.screen.widgets.base;
 import creativeeditor.screen.*;
 import creativeeditor.screen.blockentity.GenericBlockScreen;
 import creativeeditor.screen.models.AttributeWheelType;
+import creativeeditor.screen.models.EffectWheelType;
+import creativeeditor.screen.models.EnchantmentWheelType;
 import creativeeditor.screen.widgets.ClassSpecificWidget;
 import creativeeditor.screen.widgets.StyledTextButton;
 import creativeeditor.util.ItemUtils;
@@ -10,7 +12,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ArmorStandItem;
-import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.Spliterator;
 import java.util.function.Consumer;
@@ -18,12 +19,24 @@ import java.util.function.Consumer;
 public class ItemWidgets extends WidgetIteratorBase {
 
     public ItemWidgets() {
-        add(new ClassSpecificWidget(I18n.get("gui.attributemodifiers"), (item, info) ->
-                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new WheelScreen<>(info.getParent(), new TranslationTextComponent("gui.attributemodifiers"), new AttributeWheelType(item), item, item.getTag().getAttributes()))))
+        add(new ClassSpecificWidget(I18n.get("gui.attributewheel"), (item, info) ->
+                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new WheelScreen<>(info.getParent(), "attributewheel", new AttributeWheelType(item), item, item.getTag().getAttributes()))))
         ));
 
-        add(new ClassSpecificWidget(I18n.get("gui.enchanting"), ItemUtils::isEnchantable, (item, info) ->
+        add(new ClassSpecificWidget(I18n.get("gui.enchanting"), (item, info) ->
                 new StyledTextButton(info.withTrigger(button -> mc.setScreen(new EnchantmentScreen(info.getParent(), item.getTag().getEnchantments()))))
+        ));
+
+        add(new ClassSpecificWidget(I18n.get("gui.effectwheel"), (item, info) ->
+                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new WheelScreen<>(info.getParent(), "effectwheel", new EffectWheelType(item), item, item.getTag().getEffects()))))
+        ));
+
+        add(new ClassSpecificWidget(I18n.get("gui.enchantmentwheel"), (item, info) ->
+                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new WheelScreen<>(info.getParent(), "enchantmentwheel", new EnchantmentWheelType(item), item, item.getTag().getEnchantments()))))
+        ));
+
+        add(new ClassSpecificWidget(I18n.get("gui.bookenchantmentwheel"), ItemUtils::isEnchantmentStorage, (item, info) ->
+                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new WheelScreen<>(info.getParent(), "bookenchantmentwheel", new EnchantmentWheelType(item), item, item.getTag().getEnchantments()))))
         ));
 
         add(new ClassSpecificWidget(I18n.get("gui.bookenchanting"), ItemUtils::isEnchantmentStorage, (item, info) ->
