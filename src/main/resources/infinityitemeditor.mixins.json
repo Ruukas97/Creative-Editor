@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "infinityitemeditor.mixin",
+  "refmap": "infinityitemeditor.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "SharedConstantsMixin",
+    "TextProcessingMixin",
+    "TextFormattingMixin"
+  ]
+}
