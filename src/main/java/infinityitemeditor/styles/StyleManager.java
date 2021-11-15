@@ -24,7 +24,7 @@ public class StyleManager {
 
     public static void setCurrentStyle(int id) {
         if (currentID == -1 || currentID != id) {
-            setCurrentStyle(id == 0 ? new StyleSpectrum() : new StyleVanilla());
+            setCurrentStyle(id == 0 ? new StyleVanilla() : new StyleSpectrum());
             currentID = id;
         }
     }
