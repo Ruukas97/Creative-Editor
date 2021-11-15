@@ -61,13 +61,19 @@ public class RawNBTEditorScreen extends ParentItemScreen {
 
     @Override
     public boolean keyReleased(int p_223281_1_, int p_223281_2_, int p_223281_3_) {
-        CompoundNBT nbt = canConvertStringToNBT(nbtField.getText());
-        if(nbt != null) {
-            item = new DataItem(nbt);
-            NumberRangeInt c = item.getCount();
-            if(c.get() > c.getMax()) c.set(c.getMax());
-        }
+        tryUpdateDataItem();
         return super.keyReleased(p_223281_1_, p_223281_2_, p_223281_3_);
+    }
+
+    private void tryUpdateDataItem() {
+        CompoundNBT nbt = canConvertStringToNBT(nbtField.getText());
+        try {
+            if (nbt != null) {
+                item = new DataItem(nbt);
+                NumberRangeInt c = item.getCount();
+                if (c.get() > c.getMax()) c.set(c.getMax());
+            }
+        } catch(JsonSyntaxException ignored) {}
     }
 
     @Override
