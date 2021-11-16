@@ -24,12 +24,7 @@ public class PlayerInteractHandler {
         Item heldItem = e.getPlayer().getMainHandItem().getItem();
         if (e.getPlayer().isCreative() && e.getTarget().getType() == EntityType.PLAYER && e.getPlayer().isShiftKeyDown() && (heldItem == Items.PLAYER_HEAD) && heldItemStack.getTag().getSkullOwner().get() == null) {
             heldItemStack.getTag().getSkullOwner().set(((PlayerEntity) e.getTarget()).getGameProfile());
-            int slotId = 36 + minecraft.player.inventory.selected;
-            if (minecraft.hasSingleplayerServer()) {
-                minecraft.getSingleplayerServer().getPlayerList().getPlayer(minecraft.player.getUUID()).inventoryMenu.setItem(slotId, heldItemStack.getItemStack());
-            } else {
-                minecraft.getConnection().send(new CCreativeInventoryActionPacket(slotId, heldItemStack.getItemStack()));
-            }
+            minecraft.getConnection().send(new CCreativeInventoryActionPacket(36 + minecraft.player.inventory.selected, heldItemStack.getItemStack()));
         }
     }
 
