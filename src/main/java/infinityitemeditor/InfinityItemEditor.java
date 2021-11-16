@@ -51,6 +51,7 @@ public class InfinityItemEditor {
         MinecraftForge.EVENT_BUS.register(new TooltipHandler());
         MinecraftForge.EVENT_BUS.register(new KeyInputHandler());
         MinecraftForge.EVENT_BUS.register(new EntityHandler());
+        MinecraftForge.EVENT_BUS.register(new PlayerInteractHandler());
         FMLJavaModLoadingContext.get().getModEventBus().register(new TextureStitchHandler());
 //         MinecraftForge.EVENT_BUS.register( new NetworkHandler() );
 
