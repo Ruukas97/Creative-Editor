@@ -20,17 +20,15 @@ public class PlayerInteractHandler {
 
     @SubscribeEvent
     public void onInteract(PlayerInteractEvent.EntityInteractSpecific e) {
+        DataItem heldItemStack = new DataItem(e.getPlayer().getMainHandItem());
         Item heldItem = e.getPlayer().getMainHandItem().getItem();
-        if (e.getPlayer().isCreative() && e.getTarget().getType() == EntityType.PLAYER && e.getPlayer().isShiftKeyDown() && (heldItem == Items.PLAYER_HEAD)) {
-            DataItem heldItemStack = new DataItem(e.getPlayer().getMainHandItem());
-            if (heldItemStack.getTag().getSkullOwner().get() == null) {
-                heldItemStack.getTag().getSkullOwner().set(((PlayerEntity) e.getTarget()).getGameProfile());
-                int slotId = 36 + minecraft.player.inventory.selected;
-                if (minecraft.hasSingleplayerServer()) {
-                    minecraft.getSingleplayerServer().getPlayerList().getPlayer(minecraft.player.getUUID()).inventoryMenu.setItem(slotId, heldItemStack.getItemStack());
-                } else {
-                    minecraft.getConnection().send(new CCreativeInventoryActionPacket(slotId, heldItemStack.getItemStack()));
-                }
+        if (e.getPlayer().isCreative() && e.getTarget().getType() == EntityType.PLAYER && e.getPlayer().isShiftKeyDown() && (heldItem == Items.PLAYER_HEAD) && heldItemStack.getTag().getSkullOwner().get() == null) {
+            heldItemStack.getTag().getSkullOwner().set(((PlayerEntity) e.getTarget()).getGameProfile());
+            int slotId = 36 + minecraft.player.inventory.selected;
+            if (minecraft.hasSingleplayerServer()) {
+                minecraft.getSingleplayerServer().getPlayerList().getPlayer(minecraft.player.getUUID()).inventoryMenu.setItem(slotId, heldItemStack.getItemStack());
+            } else {
+                minecraft.getConnection().send(new CCreativeInventoryActionPacket(slotId, heldItemStack.getItemStack()));
             }
         }
     }
