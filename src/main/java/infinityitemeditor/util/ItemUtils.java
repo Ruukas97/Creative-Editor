@@ -26,11 +26,19 @@ public class ItemUtils {
      */
     public static boolean isColorable(DataItem dataItem){
         Item item = dataItem.getItem().getItem();
-        return item instanceof IDyeableArmorItem || isPotion(dataItem) || item == Items.TIPPED_ARROW || item == Items.FILLED_MAP;
+        return item instanceof IDyeableArmorItem || hasCustomPotionEffects(dataItem) || item == Items.FILLED_MAP;
     }
 
     public static boolean isPotion(DataItem dataItem){
         return dataItem.getItem().getItem() instanceof PotionItem;
+    }
+
+    public static boolean hasCustomPotionEffects(DataItem dataItem){
+        return isPotion(dataItem) || dataItem.getItem().getItem() instanceof TippedArrowItem;
+    }
+
+    public static boolean hasEffects(DataItem dataItem){
+        return dataItem.getItem().getItem() instanceof SuspiciousStewItem;
     }
 
     public static boolean isLockableItem(DataItem dataItem) {

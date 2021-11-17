@@ -18,7 +18,7 @@ public class EnchantmentTagModifier implements TagModifier<TagEnchantment> {
 
     public EnchantmentTagModifier() {
         vanillaMax = new DataBoolean();
-        level = new NumberRangeInt(1, 1, 256);
+        level = new NumberRangeInt(1, 256);
     }
 
     private void initWidgets(FontRenderer font, int width, int height) {

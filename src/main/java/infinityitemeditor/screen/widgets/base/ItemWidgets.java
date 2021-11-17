@@ -27,7 +27,11 @@ public class ItemWidgets extends WidgetIteratorBase {
                 new StyledTextButton(info.withTrigger(button -> mc.setScreen(new EnchantmentScreen(info.getParent(), item.getTag().getEnchantments()))))
         ));
 
-        add(new ClassSpecificWidget(I18n.get("gui.effectwheel"), (item, info) ->
+        add(new ClassSpecificWidget(I18n.get("gui.potioneffectwheel"), ItemUtils::hasCustomPotionEffects,(item, info) ->
+                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new WheelScreen<>(info.getParent(), "potioneffectwheel", new EffectWheelType(item), item, item.getTag().getPotionEffects()))))
+        ));
+
+        add(new ClassSpecificWidget(I18n.get("gui.effectwheel"), ItemUtils::hasEffects, (item, info) ->
                 new StyledTextButton(info.withTrigger(button -> mc.setScreen(new WheelScreen<>(info.getParent(), "effectwheel", new EffectWheelType(item), item, item.getTag().getEffects()))))
         ));
 

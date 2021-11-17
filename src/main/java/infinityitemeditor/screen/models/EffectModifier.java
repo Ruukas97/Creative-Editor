@@ -28,7 +28,7 @@ public class EffectModifier implements TagModifier<TagEffect> {
 
     public EffectModifier() {
         amplifier = new NumberRangeInt(1, 128);
-        duration = new NumberRangeInt(1, 9999999);
+        duration = new NumberRangeInt(600, 1, 9999999);
         ambient = new DataBoolean(false);
         showParticles = new DataBoolean(true);
         showIcon = new DataBoolean(true);

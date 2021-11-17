@@ -148,7 +148,7 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
 
         // Effecs
         potionEffects = add(keys.tagCustomPotionEffects(), new TagList<>(nbt.getList(keys.tagCustomPotionEffects(), NBT.TAG_COMPOUND), TagEffect::new));
-        potion = add(keys.tagPotion(), new DataString(nbt.getString(keys.tagPotion()))); // TODO Potion tag
+        potion = add(keys.tagPotion(), new DataString(nbt.getString(keys.tagPotion())));
         potionColor = add(keys.tagCustomPotionColor(), new DataColor(nbt.getInt(keys.tagCustomPotionColor())));
         effects = add(keys.tagEffects(), new TagList<>(nbt.getList(keys.tagCustomPotionEffects(), NBT.TAG_COMPOUND), TagEffect::new));
 
