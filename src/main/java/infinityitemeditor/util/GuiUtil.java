@@ -223,11 +223,11 @@ public class GuiUtil extends GuiUtils {
 
 
     public static void addToolTip(MatrixStack matrix, Screen screen, int xPos, int yPos, String... str) {
-        drawHoveringText(null, matrix, Arrays.stream(str).map(StringTextComponent::new).collect(Collectors.toList()), xPos, yPos, screen.width, screen.height, -1, getFontRenderer());
+        drawHoveringText(ItemStack.EMPTY, matrix, Arrays.stream(str).map(StringTextComponent::new).collect(Collectors.toList()), xPos, yPos, screen.width, screen.height, -1, getFontRenderer());
     }
 
     public static void addToolTip(MatrixStack matrix, Screen screen, int xPos, int yPos, ITextProperties... str) {
-        drawHoveringText(null, matrix, Lists.newArrayList(str), xPos, yPos, screen.width, screen.height, -1, getFontRenderer());
+        drawHoveringText(ItemStack.EMPTY, matrix, Lists.newArrayList(str), xPos, yPos, screen.width, screen.height, -1, getFontRenderer());
     }
 
 
