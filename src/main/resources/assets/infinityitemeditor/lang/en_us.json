@@ -125,6 +125,7 @@
   "gui.enchantment.tooltip.type": "Type: %s",
   "gui.enchantmentwheel": "Enchantment Wheel",
   "gui.enchantmentwheel.added": "Added Enchantments",
+  "gui.enchantmentwheel.vanillamax": "Vanilla Max",
   "gui.entityspecific": "Entity Specific",
   "gui.genericblock": "BlockEntityTag",
   "gui.headcollection": "Head Collection",

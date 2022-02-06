@@ -22,13 +22,18 @@ public class EnchantmentTagModifier implements TagModifier<TagEnchantment> {
     }
 
     private void initWidgets(FontRenderer font, int width, int height) {
-        vanillaMaxToggle = new StyledToggle(10, height - 55, 80, 20, I18n.get("gui.enchantmentwheel.vanillamax"), vanillaMax);
+        vanillaMaxToggle = new StyledToggle(10, height - 55, 100, 20, I18n.get("gui.enchantmentwheel.vanillamax"), vanillaMax);
         levelField = new NumberField(font, 10, height - 30, 20, level);
     }
 
     @Override
     public void modify(TagEnchantment tag) {
-        tag.getLevel().set(level.get());
+        if(vanillaMax.get()){
+            tag.getLevel().set(tag.getEnchantment().getMaxLevel());
+        }
+        else{
+            tag.getLevel().set(level.get());
+        }
     }
 
     @Override
