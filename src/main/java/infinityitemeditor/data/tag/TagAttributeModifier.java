@@ -82,7 +82,7 @@ public class TagAttributeModifier implements Data<TagAttributeModifier, Compound
         }
         CompoundNBT nbt = createAttributeModifier().save();
         nbt.putString(NBTKeys.keys.attributeName(), AttributeUtils.getName(attribute));
-        nbt.putInt(NBTKeys.keys.attributeSlot(), slot.get().ordinal());
+        nbt.putString(NBTKeys.keys.attributeSlot(), slot.get().getName());
         return nbt;
     }
 
