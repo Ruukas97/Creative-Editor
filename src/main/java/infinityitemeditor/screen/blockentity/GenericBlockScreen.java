@@ -1,18 +1,17 @@
 package infinityitemeditor.screen.blockentity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import infinityitemeditor.data.DataItem;
-import infinityitemeditor.data.base.DataBoolean;
 import infinityitemeditor.screen.ParentItemScreen;
-import infinityitemeditor.screen.widgets.StyledTFToggle;
+import infinityitemeditor.screen.widgets.StyledDataTextField;
 import infinityitemeditor.screen.widgets.StyledTextField;
+import infinityitemeditor.util.ColorUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class GenericBlockScreen extends ParentItemScreen {
 
-    private StyledTextField nbtField;
-    private StyledTFToggle nbtLockToggle;
-    private DataBoolean locked;
+    private StyledDataTextField lockField;
 
 
     public GenericBlockScreen(Screen lastScreen, DataItem editing) {
@@ -23,15 +22,17 @@ public class GenericBlockScreen extends ParentItemScreen {
     @Override
     protected void init() {
         super.init();
-        int fieldWidth = this.width / 3 * 1;
+        int fieldWidth = this.width / 3;
         int fieldHeight = 20;
         int fieldY = (this.height - fieldHeight) / 2;
-        locked = new DataBoolean(false);
-        nbtField = new StyledTextField(font, (this.width - fieldWidth) / 2, fieldY, fieldWidth, fieldHeight, "nbt");
-        nbtLockToggle = new StyledTFToggle(10, 10, fieldHeight, fieldHeight, "", locked);
-        nbtField.setMaxStringLength(9999);
-        renderWidgets.add(nbtField);
+        lockField = new StyledDataTextField(font, (this.width - fieldWidth) / 2, fieldY, fieldWidth, fieldHeight, item.getTag().getBlockEntityTag().getLocked());
+        lockField.setMaxStringLength(9999);
+        renderWidgets.add(lockField);
     }
 
-
+    @Override
+    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
+        super.mainRender(matrix, mouseX, mouseY, p3, color);
+        drawCenteredString(matrix, font, new TranslationTextComponent("block.tag.lock"), width / 2, this.height / 2 - 30, color.getInt());
+    }
 }

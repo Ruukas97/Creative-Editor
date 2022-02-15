@@ -1,5 +1,6 @@
 {
   "attribute.amount._": "Amount: %s",
+  "block.tag.lock": "Lock",
   "enchantment.minecraft.aqua_affinity.desc": "Increases underwater mining speed.",
   "enchantment.minecraft.bane_of_arthropods.desc": "Increases damage and slows down anthropod mobs.",
   "enchantment.minecraft.binding_curse.desc": "Cannot be removed from equipment slots.",
@@ -181,6 +182,7 @@
   "gui.playerinspector": "Player Inspector",
   "gui.potion": "Potion Editor",
   "gui.potion.color": "Color Editor",
+  "gui.potioneffectwheel": "Potion Effect Wheel",
   "gui.rawnbt": "Raw NBT Editor",
   "gui.rawnbt.apply": "Apply",
   "gui.storedenchants": "Stored enchantments",
