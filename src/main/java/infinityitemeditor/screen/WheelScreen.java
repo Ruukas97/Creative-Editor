@@ -45,6 +45,7 @@ public class WheelScreen<T extends Data<?, ?>> extends ParentItemScreen {
     private StyledTextField searchField;
     private TagFilter<?> filteredFilter = WheelType.ALL;
     private String filteredString = "";
+    private StyledButton addAll;
 
     private ScrollableScissorWindow addedWidgets;
     private Map<Widget, T> widgetTags;
@@ -102,6 +103,11 @@ public class WheelScreen<T extends Data<?, ?>> extends ParentItemScreen {
         filter = addButton(new StyledOptionSwitcher(10, 10, 100, 20, tagFilters, filteredFilter));
         searchField = addButton(new StyledTextField(font, 10, 35, 100, 20, filteredString));
         searchField.setHint(I18n.get("gui.wheel.search"));
+        addAll = addButton(new StyledButton(10, 60, 100, 20, new TranslationTextComponent("gui.wheel.addall"), b -> {
+            for (T tag : filteredTags) {
+                addTag(tag);
+            }
+        }));
 
         addedWidgets = addButton(new ScrollableScissorWindow(width - 130, 50, 120, height - 60, new TranslationTextComponent(name + ".added")));
         widgetTags = new HashMap<>();
