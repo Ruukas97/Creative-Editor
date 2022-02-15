@@ -1,11 +1,10 @@
 package infinityitemeditor.data.base;
 
 import infinityitemeditor.screen.widgets.StyledBitToggle;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.nbt.IntNBT;
-import net.minecraft.util.text.*;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.nbt.IntTag;
 
-public class DataBitField extends SingularData<boolean[], IntNBT> implements Button.IPressable {
+public class DataBitField extends SingularData<boolean[], IntTag> implements Button.OnPress {
     private final boolean keepSize;
 
 
@@ -15,7 +14,7 @@ public class DataBitField extends SingularData<boolean[], IntNBT> implements But
     }
 
 
-    public DataBitField(int size, IntNBT data) {
+    public DataBitField(int size, IntTag data) {
         this(size, data.getAsInt());
     }
 
@@ -67,18 +66,18 @@ public class DataBitField extends SingularData<boolean[], IntNBT> implements But
 
 
     @Override
-    public IntNBT getNBT() {
-        return IntNBT.valueOf(getInt());
+    public IntTag getTag() {
+        return IntTag.valueOf(getInt());
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        IFormattableTextComponent text = new StringTextComponent("0b").withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
-        for (int i = 0; i < data.length; i++) {
-            text.append(new StringTextComponent(data[i] ? "1" : "0").withStyle(SYNTAX_HIGHLIGHTING_NUMBER));
-        }
-        return text;
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        IFormattableTextComponent text = new TextComponent("0b").withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
+//        for (int i = 0; i < data.length; i++) {
+//            text.append(new TextComponent(data[i] ? "1" : "0").withStyle(SYNTAX_HIGHLIGHTING_NUMBER));
+//        }
+//        return text;
+//    }
 
     @Override
     public void onPress(Button button) {

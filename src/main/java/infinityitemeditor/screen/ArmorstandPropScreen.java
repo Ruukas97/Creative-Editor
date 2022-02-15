@@ -1,24 +1,24 @@
 package infinityitemeditor.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.data.tag.entity.TagEntityArmorStand;
 import infinityitemeditor.screen.widgets.StyledTFToggle;
 import infinityitemeditor.util.ColorUtils.Color;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.item.ArmorStandEntity;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.decoration.ArmorStand;
 
 import java.util.ArrayList;
 
 public class ArmorstandPropScreen extends BaseArmorstandScreen {
 
-    ArmorStandEntity armorstand;
+    ArmorStand armorstand;
     ArrayList<StyledTFToggle> buttonList;
 
     public ArmorstandPropScreen(Screen lastScreen, DataItem item) {
-        super(new TranslationTextComponent("gui.armorstandeditorproperties"), lastScreen, item);
+        super(new TranslatableComponent("gui.armorstandeditorproperties"), lastScreen, item);
         this.renderItem = false;
     }
 
@@ -43,20 +43,20 @@ public class ArmorstandPropScreen extends BaseArmorstandScreen {
             }
             but.y += sideY;
             but.x += sideX;
-            addButton(but);
+            addRenderableWidget(but);
 
         }
 
     }
 
     @Override
-    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
-        super.overlayRender(matrix, mouseX, mouseY, p3, color);
+    public void overlayRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color color) {
+        super.overlayRender(poseStack,mouseX, mouseY, p3, color);
     }
 
     @Override
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
-        super.mainRender(matrix, mouseX, mouseY, p3, color);
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color color) {
+        super.mainRender(poseStack,mouseX, mouseY, p3, color);
         if (armorstand != null) {
             drawArmor.drawArmorStand((int) (this.width / 3 * 2.5),
                     (int) (this.height / 5 * 3.8), 70);
@@ -65,8 +65,8 @@ public class ArmorstandPropScreen extends BaseArmorstandScreen {
     }
 
     @Override
-    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
-        super.backRender(matrix, mouseX, mouseY, p3, color);
+    public void backRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color color) {
+        super.backRender(poseStack,mouseX, mouseY, p3, color);
         drawArmor.updateArmorStand();
     }
 }

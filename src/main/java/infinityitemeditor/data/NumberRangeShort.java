@@ -3,7 +3,7 @@ package infinityitemeditor.data;
 import infinityitemeditor.data.base.DataShort;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 public class NumberRangeShort extends DataShort {
     @Getter
@@ -24,6 +24,6 @@ public class NumberRangeShort extends DataShort {
 
     @Override
     public void set(Short value) {
-        super.set((short) MathHelper.clamp(data, getMin(), getMax()));
+        super.set((short) Mth.clamp(data, getMin(), getMax()));
     }
 }

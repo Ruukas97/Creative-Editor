@@ -2,9 +2,9 @@ package infinityitemeditor.data.base;
 
 import infinityitemeditor.data.Data;
 import lombok.Getter;
-import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.Tag;
 
-public abstract class SingularData<E, T extends INBT> implements Data<E, T> {
+public abstract class SingularData<E, T extends Tag> implements Data<E, T> {
     @Getter
     protected E data;
 
@@ -36,7 +36,7 @@ public abstract class SingularData<E, T extends INBT> implements Data<E, T> {
     @Override
     public boolean equals(Object obj) {
         @SuppressWarnings("unchecked")
-        SingularData<E, INBT> d = Data.convertInstanceOfObject(obj, this.getClass());
+        SingularData<E, Tag> d = Data.convertInstanceOfObject(obj, this.getClass());
         return (d != null && d.data == this.data) || super.equals(obj);
     }
 }

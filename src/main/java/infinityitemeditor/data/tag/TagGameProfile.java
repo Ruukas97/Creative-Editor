@@ -4,20 +4,17 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.yggdrasil.response.MinecraftProfilePropertiesResponse;
 import infinityitemeditor.data.base.SingularData;
 import infinityitemeditor.json.MinecraftHeadsResponse;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 
-public class TagGameProfile extends SingularData<GameProfile, CompoundNBT> {
+public class TagGameProfile extends SingularData<GameProfile, CompoundTag> {
     public TagGameProfile(String username) {
         this(new GameProfile(null, username));
     }
 
 
-    public TagGameProfile(CompoundNBT nbt) {
-        this(NBTUtil.readGameProfile(nbt));
+    public TagGameProfile(CompoundTag nbt) {
+        this(NbtUtils.readGameProfile(nbt));
     }
 
 
@@ -48,16 +45,16 @@ public class TagGameProfile extends SingularData<GameProfile, CompoundNBT> {
 
 
     @Override
-    public CompoundNBT getNBT() {
-        return NBTUtil.writeGameProfile(new CompoundNBT(), data);
+    public CompoundTag getTag() {
+        return NbtUtils.writeGameProfile(new CompoundTag(), data);
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        IFormattableTextComponent text = new StringTextComponent(data.getName() == null ? "Player" : data.getName());
-        if(data.getId() != null){
-            text.append(data.getId().toString());
-        }
-        return text;
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        IFormattableTextComponent text = new TextComponent(data.getName() == null ? "Player" : data.getName());
+//        if(data.getId() != null){
+//            text.append(data.getId().toString());
+//        }
+//        return text;
+//    }
 }

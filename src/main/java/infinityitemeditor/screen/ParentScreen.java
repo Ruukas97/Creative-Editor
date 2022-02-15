@@ -1,8 +1,8 @@
 package infinityitemeditor.screen;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.screen.widgets.StyledTextField;
 import infinityitemeditor.styles.StyleManager;
 import infinityitemeditor.util.ColorUtils.Color;
@@ -12,11 +12,11 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public abstract class ParentScreen extends Screen {
     private int topLineWidth = -1;
 
 
-    public ParentScreen(ITextComponent title, Screen lastScreen) {
+    public ParentScreen(MutableComponent title, Screen lastScreen) {
         super(title);
         this.lastScreen = lastScreen;
     }
@@ -66,7 +66,7 @@ public abstract class ParentScreen extends Screen {
     }
 
 
-    public FontRenderer getFontRenderer() {
+    public Font getFont() {
         return font;
     }
 
@@ -84,7 +84,7 @@ public abstract class ParentScreen extends Screen {
         RenderSystem.translatef(0.0F, 0.0F, 32.0F);
         this.setBlitOffset(200);
         this.itemRenderer.blitOffset = 10.0F;
-        net.minecraft.client.gui.FontRenderer font = stack.getItem().getFontRenderer(stack);
+        net.minecraft.client.gui.Font font = stack.getItem().getFont(stack);
         if (font == null)
             font = this.font;
         new ItemRendererUtils(itemRenderer).renderItemIntoGUI(stack, x, y, rotX, rotY);
@@ -121,46 +121,46 @@ public abstract class ParentScreen extends Screen {
 
     @Override
     @Deprecated
-    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         Color color = StyleManager.getCurrentStyle().getMainColor();
-        backRender(matrix, mouseX, mouseY, partialTicks, color);
-        mainRender(matrix, mouseX, mouseY, partialTicks, color);
-        overlayRender(matrix, mouseX, mouseY, partialTicks, color);
+        backRender(poseStack,mouseX, mouseY, partialTicks, color);
+        mainRender(poseStack,mouseX, mouseY, partialTicks, color);
+        overlayRender(poseStack,mouseX, mouseY, partialTicks, color);
         StyleManager.getCurrentStyle().update();
     }
 
 
-    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
-        StyleManager.getCurrentStyle().renderBackground(matrix, this);
+    public void backRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color color) {
+        StyleManager.getCurrentStyle().renderBackground(poseStack,this);
 
         // Frame
-        GuiUtil.drawFrame(matrix, 5, 5, width - 5, height - 5, 1, color);
+        GuiUtil.drawFrame(poseStack,5, 5, width - 5, height - 5, 1, color);
 
         // GUI Title
-        drawCenteredString(matrix, font, getTitle().getString(), width / 2, 9, color.getInt());
+        drawCenteredString(poseStack,font, getTitle().getString(), width / 2, 9, color.getInt());
 
         // Title underline
         int midX = width / 2;
         if (getTopLineWidth() == -1) {
             int sWidthHalf = font.width(getTitle().getString()) / 2 + 3;
-            AbstractGui.fill(matrix, midX - sWidthHalf, 20, midX + sWidthHalf, 21, color.getInt());
+            AbstractGui.fill(poseStack,midX - sWidthHalf, 20, midX + sWidthHalf, 21, color.getInt());
 
         } else if (getTopLineWidth() > 1) {
             int halfLineW = topLineWidth / 2;
-            AbstractGui.fill(matrix, midX - halfLineW, 20, midX + halfLineW, 21, color.getInt());
+            AbstractGui.fill(poseStack,midX - halfLineW, 20, midX + halfLineW, 21, color.getInt());
         }
     }
 
 
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
-        buttons.forEach(b -> b.render(matrix, mouseX, mouseY, p3));
-        renderWidgets.forEach(w -> w.render(matrix, mouseX, mouseY, p3));
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color color) {
+        buttons.forEach(b -> b.render(poseStack,mouseX, mouseY, p3));
+        renderWidgets.forEach(w -> w.render(poseStack,mouseX, mouseY, p3));
     }
 
 
     /**
      * Should always be called last in render, but only once.
      */
-    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
+    public void overlayRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color color) {
     }
 }

@@ -1,18 +1,18 @@
 package infinityitemeditor.data.base;
 
-import net.minecraft.nbt.StringNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextComponent;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
 
-public class DataTextComponent extends SingularData<ITextComponent, StringNBT> {
-    public DataTextComponent(ITextComponent data) {
+public class DataTextComponent extends SingularData<Component, StringTag> {
+    public DataTextComponent(MutableComponent data) {
         super(data);
     }
 
 
     public DataTextComponent(String data) {
-        this(new StringTextComponent(data));
+        this(new TextComponent(data));
     }
 
 
@@ -28,7 +28,7 @@ public class DataTextComponent extends SingularData<ITextComponent, StringNBT> {
 
 
     public void set(String s) {
-        set(new StringTextComponent(s));
+        set(new TextComponent(s));
     }
 
 
@@ -39,15 +39,15 @@ public class DataTextComponent extends SingularData<ITextComponent, StringNBT> {
 
 
     @Override
-    public StringNBT getNBT() {
-        return StringNBT.valueOf(ITextComponent.Serializer.toJson(data));
+    public StringTag getTag() {
+        return StringTag.valueOf(MutableComponent.Serializer.toJson(data));
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        String s = DataString.quoteAndEscape(TextComponent.Serializer.toJson(data));
-        String s1 = s.substring(0, 1);
-        ITextComponent itextcomponent = (new StringTextComponent(s.substring(1, s.length() - 1))).withStyle(SYNTAX_HIGHLIGHTING_STRING);
-        return (new StringTextComponent(s1)).append(itextcomponent).append(s1);
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        String s = DataString.quoteAndEscape(TextComponent.Serializer.toJson(data));
+//        String s1 = s.substring(0, 1);
+//        MutableComponent itextcomponent = (new TextComponent(s.substring(1, s.length() - 1))).withStyle(SYNTAX_HIGHLIGHTING_STRING);
+//        return (new TextComponent(s1)).append(itextcomponent).append(s1);
+//    }
 }

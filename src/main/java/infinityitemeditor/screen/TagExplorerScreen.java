@@ -1,13 +1,13 @@
 package infinityitemeditor.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.screen.widgets.StyledButton;
 import infinityitemeditor.screen.widgets.StyledTextField;
 import infinityitemeditor.util.ColorUtils;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class TagExplorerScreen extends ParentScreen {
 
@@ -19,7 +19,7 @@ public class TagExplorerScreen extends ParentScreen {
     int yField;
 
     public TagExplorerScreen(Screen lastScreen, DataItem item) {
-        super(new TranslationTextComponent("gui.tagexplorer"), lastScreen);
+        super(new TranslatableComponent("gui.tagexplorer"), lastScreen);
         this.item = item;
     }
 
@@ -30,15 +30,15 @@ public class TagExplorerScreen extends ParentScreen {
         textField = addWidget(new StyledTextField(minecraft.font, width / 2 - fieldWidth / 2, yField, fieldWidth, fieldHeight, ""));
         textField.setText("{Damage:%d}");
         int buttonWidth = 100;
-        button = addButton(new StyledButton(width / 2 - buttonWidth / 2, yField + (fieldHeight * 2), buttonWidth, fieldHeight, I18n.get("gui.tagexplorer.explore"), t -> minecraft.setScreen(null)));
+        button = addRenderableWidget(new StyledButton(width / 2 - buttonWidth / 2, yField + (fieldHeight * 2), buttonWidth, fieldHeight, I18n.get("gui.tagexplorer.explore"), t -> minecraft.setScreen(null)));
 
     }
 
     @Override
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
-        super.mainRender(matrix, mouseX, mouseY, p3, color);
-        textField.render(matrix, mouseY, mouseY, p3);
-        drawCenteredString(matrix, font, I18n.get("gui.tagexplorer.help"), width / 2, yField - fieldHeight, color.getInt());
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
+        super.mainRender(poseStack,mouseX, mouseY, p3, color);
+        textField.render(poseStack,mouseY, mouseY, p3);
+        drawCenteredString(poseStack,font, I18n.get("gui.tagexplorer.help"), width / 2, yField - fieldHeight, color.getInt());
     }
 
     @Override

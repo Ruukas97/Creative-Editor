@@ -5,16 +5,14 @@ import infinityitemeditor.data.version.NBTKeys;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.item.DyeColor;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.tileentity.BannerPattern;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import org.apache.commons.lang3.tuple.Pair;
 
 @AllArgsConstructor
-public class TagBannerPattern implements Data<Pair<BannerPattern, DyeColor>, CompoundNBT> {
+public class TagBannerPattern implements Data<Pair<BannerPattern, DyeColor>, CompoundTag> {
     @Getter
     @Setter
     private BannerPattern pattern;
@@ -23,12 +21,12 @@ public class TagBannerPattern implements Data<Pair<BannerPattern, DyeColor>, Com
     private DyeColor color;
 
 
-    public TagBannerPattern(INBT nbt) {
-        this(nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT());
+    public TagBannerPattern(Tag nbt) {
+        this(nbt instanceof CompoundTag ? (CompoundTag) nbt : new CompoundTag());
     }
 
 
-    public TagBannerPattern(CompoundNBT nbt) {
+    public TagBannerPattern(CompoundTag nbt) {
         NBTKeys keys = NBTKeys.keys;
         color = DyeColor.byId(nbt.getInt(keys.patternColor()));
         pattern = BannerPattern.byHash(nbt.getString(keys.patternPattern()));
@@ -48,16 +46,16 @@ public class TagBannerPattern implements Data<Pair<BannerPattern, DyeColor>, Com
 
 
     @Override
-    public CompoundNBT getNBT() {
+    public CompoundTag getTag() {
         NBTKeys keys = NBTKeys.keys;
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
         nbt.putInt(keys.patternColor(), color.getId());
         nbt.putString(keys.patternPattern(), pattern.getHashname());
         return nbt;
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        return new StringTextComponent(color.getName()).append(" ").append(pattern.getFilename());
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        return new TextComponent(color.getName()).append(" ").append(pattern.getFilename());
+//    }
 }

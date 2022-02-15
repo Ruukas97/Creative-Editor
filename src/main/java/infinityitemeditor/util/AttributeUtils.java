@@ -4,9 +4,9 @@ import infinityitemeditor.data.tag.TagAttributeModifier;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.*;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -67,23 +67,23 @@ public class AttributeUtils {
 
 
         /*if (flag) {
-            return new StringTextComponent(" ").append(new TranslationTextComponent("attribute.modifier.equals." + modifier.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), new TranslationTextComponent(attribute.getDescriptionId()))).withStyle(TextFormatting.DARK_GREEN);
+            return new TextComponent(" ").append(new TranslatableComponent("attribute.modifier.equals." + modifier.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), new TranslatableComponent(attribute.getDescriptionId()))).withStyle(ChatFormatting.DARK_GREEN);
         } else */
         if (d0 < 0.0D) {
             d1 = d1 * -1.0D;
-            return (TextComponent) new TranslationTextComponent("attribute.modifier.take." + modifier.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), new TranslationTextComponent(attribute.getDescriptionId())).withStyle(TextFormatting.RED);
+            return (TextComponent) new TranslatableComponent("attribute.modifier.take." + modifier.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), new TranslatableComponent(attribute.getDescriptionId())).withStyle(ChatFormatting.RED);
         } else {
-            return (TextComponent) (new TranslationTextComponent("attribute.modifier.plus." + modifier.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), new TranslationTextComponent(attribute.getDescriptionId()))).withStyle(TextFormatting.BLUE);
+            return (TextComponent) (new TranslatableComponent("attribute.modifier.plus." + modifier.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), new TranslatableComponent(attribute.getDescriptionId()))).withStyle(ChatFormatting.BLUE);
         }
     }
 
-    public static ITextComponent[] getTooltip(TagAttributeModifier tag) {
-        return new ITextComponent[]{
+    public static MutableComponent[] getTooltip(TagAttributeModifier tag) {
+        return new MutableComponent[]{
                 getText(tag.getAttribute(), tag.createAttributeModifier()),
                 tag.getSlot().getKeyValue(),
                 tag.getOperation().getKeyValue(),
-                new TranslationTextComponent("attribute.amount._", tag.getAmount().getPrettyDisplay("", 0)).withStyle(TextFormatting.AQUA),
-                new StringTextComponent(getNameSpace(tag.getAttribute())).withStyle(TextFormatting.BLUE),
+                new TranslatableComponent("attribute.amount._", tag.getAmount().getPrettyDisplay("", 0)).withStyle(ChatFormatting.AQUA),
+                new TextComponent(getNameSpace(tag.getAttribute())).withStyle(ChatFormatting.BLUE),
         };
     }
 }

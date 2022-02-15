@@ -1,23 +1,23 @@
 package infinityitemeditor.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.screen.widgets.ColorHelperWidget;
 import infinityitemeditor.screen.widgets.StyledButton;
 import infinityitemeditor.styles.StyleManager;
 import infinityitemeditor.util.ColorUtils.Color;
 import infinityitemeditor.util.GuiUtil;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.play.client.CCreativeInventoryActionPacket;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class ParentItemScreen extends ParentScreen {
     protected static DataItem item;
@@ -41,7 +41,7 @@ public class ParentItemScreen extends ParentScreen {
     protected boolean renderToolTip = false;
 
 
-    public ParentItemScreen(ITextComponent title, Screen lastScreen, DataItem editing) {
+    public ParentItemScreen(MutableComponent title, Screen lastScreen, DataItem editing) {
         super(title, lastScreen);
         item = editing;
     }
@@ -50,7 +50,7 @@ public class ParentItemScreen extends ParentScreen {
     @Override
     protected void init() {
         super.init();
-        buttons.clear();
+        renderables.clear();
         children().clear();
         renderWidgets.clear();
 
@@ -64,13 +64,13 @@ public class ParentItemScreen extends ParentScreen {
                 posY += 10;
             }
 
-            backButton = addButton(new StyledButton(posX - bwidth - 1, posY, bwidth, 20, new TranslationTextComponent(butCloseBack), this::back));
+            backButton = addRenderableWidget(new StyledButton(posX - bwidth - 1, posY, bwidth, 20, new TranslatableComponent(butCloseBack), this::back));
 
-            resetButton = addButton(new StyledButton(posX, (hasLastscreen ? posY : posY - 11), bwidth, 20, new TranslationTextComponent("gui.main.reset"), this::reset));
+            resetButton = addRenderableWidget(new StyledButton(posX, (hasLastscreen ? posY : posY - 11), bwidth, 20, new TranslatableComponent("gui.main.reset"), this::reset));
 
-            saveButton = hasLastscreen ? null : addButton(new StyledButton(posX, posY + 10, bwidth, 20, new TranslationTextComponent("gui.main.save"), this::save));
+            saveButton = hasLastscreen ? null : addRenderableWidget(new StyledButton(posX, posY + 10, bwidth, 20, new TranslatableComponent("gui.main.save"), this::save));
 
-            dropButton = addButton(new StyledButton(posX + bwidth + 1, posY, bwidth, 20, new TranslationTextComponent("gui.main.drop"), this::drop));
+            dropButton = addRenderableWidget(new StyledButton(posX + bwidth + 1, posY, bwidth, 20, new TranslatableComponent("gui.main.drop"), this::drop));
 
             //if (!minecraft.player.abilities.instabuild) {
             //im not sure why it was checking instabuild instead of creative...
@@ -81,7 +81,7 @@ public class ParentItemScreen extends ParentScreen {
 
         }
         if (renderColorHelper) {
-            colorHelperWidget = new ColorHelperWidget(children, (width - dropButton.x - dropButton.getWidth() - 10), 30, width, height);
+            colorHelperWidget = new ColorHelperWidget(renderables, (width - dropButton.x - dropButton.getWidth() - 10), 30, width, height);
             renderWidgets.add(colorHelperWidget);
         }
     }
@@ -93,7 +93,7 @@ public class ParentItemScreen extends ParentScreen {
 
 
     public void reset(Widget w) {
-        DataItem dItem = new DataItem(item.getItem().getItem(), 1, new CompoundNBT(), item.getSlot().get());
+        DataItem dItem = new DataItem(item.getItem().getItem(), 1, new CompoundTag(), item.getSlot().get());
         item = dItem;
         Screen last = lastScreen;
         while (last instanceof ParentItemScreen) {
@@ -127,7 +127,7 @@ public class ParentItemScreen extends ParentScreen {
     }
 
     private String generateGiveCommand(DataItem item) {
-        String nbt = item.getTag().getNBT().toString();
+        String nbt = item.getTag().getTag().toString();
         nbt = (nbt.length() > 2) ? nbt : "";
         String resource_location = item.getItem().getItem().getRegistryName().toString();
         String amount = item.getCount().get() > 1 ? " " + item.getCount().get() : "";
@@ -168,22 +168,22 @@ public class ParentItemScreen extends ParentScreen {
     }
 
     @Override
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
-        super.mainRender(matrix, mouseX, mouseY, p3, color);
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color color) {
+        super.mainRender(poseStack,mouseX, mouseY, p3, color);
     }
 
 
     @Override
-    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
-        super.overlayRender(matrix, mouseX, mouseY, p3, color);
+    public void overlayRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color color) {
+        super.overlayRender(poseStack,mouseX, mouseY, p3, color);
         // Item (Tooltip must render last or colors will be messed up)
-        GuiUtil.addToolTip(matrix, this, dropButton, mouseX, mouseY, I18n.get("gui.main.copyclipboard"));
+        GuiUtil.addToolTip(poseStack,this, dropButton, mouseX, mouseY, I18n.get("gui.main.copyclipboard"));
         if (renderItem) {
-            renderItem(matrix, mouseX, mouseY, color, item);
+            renderItem(poseStack,mouseX, mouseY, color, item);
         }
     }
 
-    protected void renderItem(MatrixStack matrix, int mouseX, int mouseY, Color color, DataItem item) {
+    protected void renderItem(PoseStack poseStack, int mouseX, int mouseY, Color color, DataItem item) {
         ItemStack stack = item.getItemStack();
 
         Item ite = item.getItem().getItem();
@@ -193,7 +193,7 @@ public class ParentItemScreen extends ParentScreen {
         int xFrameEnd = x + 19;
         int yFrameStart = 41;
         if (ite == Items.AIR) {
-            drawCenteredString(matrix, font, ite.getName(stack).getString(), x, y - 3, color.getInt());
+            drawCenteredString(poseStack,font, ite.getName(stack).getString(), x, y - 3, color.getInt());
         } else {
             RenderSystem.pushMatrix();
             RenderSystem.translatef(itemScale, itemScale, 1f);
@@ -207,13 +207,13 @@ public class ParentItemScreen extends ParentScreen {
         if (GuiUtil.isMouseIn(mouseX, mouseY, width / 2 - 17, 43, 36, 36)) {
             itemRotX += 0.25;
             if (itemScale == 2f)
-                GuiUtil.drawFrame(matrix, xFrameStart, yFrameStart, xFrameEnd, 79, 1, StyleManager.getCurrentStyle().getFGColor(true, true));
+                GuiUtil.drawFrame(poseStack,xFrameStart, yFrameStart, xFrameEnd, 79, 1, StyleManager.getCurrentStyle().getFGColor(true, true));
 
-            renderTooltip(matrix, stack, mouseX, mouseY);
+            renderTooltip(poseStack,stack, mouseX, mouseY);
         } else {
             itemRotX = 0f;
             if (itemScale == 2f)
-                GuiUtil.drawFrame(matrix, xFrameStart, yFrameStart, xFrameEnd, 79, 1, color);
+                GuiUtil.drawFrame(poseStack,xFrameStart, yFrameStart, xFrameEnd, 79, 1, color);
         }
     }
 }

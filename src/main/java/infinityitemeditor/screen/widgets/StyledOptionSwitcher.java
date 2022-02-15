@@ -32,7 +32,7 @@ public class StyledOptionSwitcher extends StyledButton {
         TextComponent getName();
     }
 
-    private static final IPressable onPressed = button -> {
+    private static final Button.OnPress onPressed = button -> {
         if (button instanceof StyledOptionSwitcher) {
             StyledOptionSwitcher switcher = (StyledOptionSwitcher) button;
             switcher.next();

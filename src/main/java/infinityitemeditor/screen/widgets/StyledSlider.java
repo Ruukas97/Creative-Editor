@@ -1,14 +1,14 @@
 package infinityitemeditor.screen.widgets;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.styles.IStyledSlider;
 import infinityitemeditor.styles.StyleManager;
 import infinityitemeditor.styles.StyleSpectrum;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.math.Mth;
+import net.minecraft.util.text.TextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.glfw.GLFW;
@@ -40,7 +40,7 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
 
 
     protected StyledSlider(int x, int y, int width, int height, String display, boolean drawString, int value, int min, int max, SliderHandler handler) {
-        super(x, y, width, height, new StringTextComponent(display));
+        super(x, y, width, height, new TextComponent(display));
         this.value = value;
         this.display = display;
         this.drawString = drawString;
@@ -48,13 +48,13 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
         this.max = max;
         this.handler = handler;
 
-        setMessage(new StringTextComponent(drawString ? display + value : ""));
+        setMessage(new TextComponent(drawString ? display + value : ""));
     }
 
     @Override
-    public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float p3) {
-        StyleManager.getCurrentStyle().renderButton(matrix, this, mouseX, mouseY, p3);
-        super.renderButton(matrix, mouseX, mouseY, p3);
+    public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float p3) {
+        StyleManager.getCurrentStyle().renderButton(poseStack,this, mouseX, mouseY, p3);
+        super.renderButton(poseStack,mouseX, mouseY, p3);
     }
 
     private void setValueFromMouse(double mouseX) {
@@ -92,7 +92,7 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
 
 
     public void setValue(int value) {
-        int clamped = MathHelper.clamp(value, min, max);
+        int clamped = Mth.clamp(value, min, max);
         if (this.value != clamped) {
             this.value = clamped;
             updateSlider();
@@ -101,7 +101,7 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
 
 
     public void updateSlider() {
-        setMessage(new StringTextComponent(drawString ? display + value : ""));
+        setMessage(new TextComponent(drawString ? display + value : ""));
         if (handler != null)
             handler.onSlideValue(this);
     }
@@ -176,10 +176,10 @@ public class StyledSlider extends Widget implements IStyledSlider<Integer> {
     }
 
     @Override
-    public void renderBackground(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY) {
+    public void renderBackground(PoseStack poseStack, Minecraft mc, int mouseX, int mouseY) {
         if (!this.visible)
             return;
 
-        StyleManager.getCurrentStyle().renderSlider(matrix, this, mouseX, mouseY);
+        StyleManager.getCurrentStyle().renderSlider(poseStack,this, mouseX, mouseY);
     }
 }

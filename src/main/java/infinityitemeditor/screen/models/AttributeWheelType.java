@@ -13,7 +13,7 @@ public class AttributeWheelType extends WheelType<TagAttributeModifier> {
     private static final TagFilter<TagAttributeModifier> VANILLA = new TagFilter<TagAttributeModifier>() {
         @Override
         public TextComponent getName() {
-            return new StringTextComponent("minecraft");
+            return new TextComponent("minecraft");
         }
 
         @Override
@@ -30,7 +30,7 @@ public class AttributeWheelType extends WheelType<TagAttributeModifier> {
     private static final TagFilter<TagAttributeModifier> FORGE = new TagFilter<TagAttributeModifier>() {
         @Override
         public TextComponent getName() {
-            return new StringTextComponent("forge");
+            return new TextComponent("forge");
         }
 
         @Override
@@ -60,7 +60,7 @@ public class AttributeWheelType extends WheelType<TagAttributeModifier> {
 
     @Override
     public TagAttributeModifier clone(TagAttributeModifier tag) {
-        return new TagAttributeModifier(tag.getNBT());
+        return new TagAttributeModifier(tag.getTag());
     }
 
     @Override
@@ -74,7 +74,7 @@ public class AttributeWheelType extends WheelType<TagAttributeModifier> {
     }
 
     @Override
-    public ITextComponent[] tooltip(TagAttributeModifier tag) {
+    public MutableComponent[] tooltip(TagAttributeModifier tag) {
         return AttributeUtils.getTooltip(tag);
     }
 }

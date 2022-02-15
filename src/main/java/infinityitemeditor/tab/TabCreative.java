@@ -1,9 +1,9 @@
 package infinityitemeditor.tab;
 
-import net.minecraft.item.ItemGroup;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
 
-public abstract class TabCreative extends ItemGroup {
+public abstract class TabCreative extends CreativeModeTab {
     boolean hasSearchBar = true;
     private final String path = "textures/gui/container/creative_inventory/tab_";
     private final String searchTabPath = path + "item_search.png";

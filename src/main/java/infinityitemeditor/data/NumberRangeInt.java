@@ -3,7 +3,7 @@ package infinityitemeditor.data;
 import infinityitemeditor.data.base.DataInteger;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 public class NumberRangeInt extends DataInteger {
     protected @Getter
@@ -25,6 +25,6 @@ public class NumberRangeInt extends DataInteger {
 
     @Override
     public void set(Integer number) {
-        super.set(MathHelper.clamp(number, getMin(), getMax()));
+        super.set(Mth.clamp(number, getMin(), getMax()));
     }
 }

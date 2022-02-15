@@ -1,22 +1,22 @@
 package infinityitemeditor.util;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.DataItem;
 import lombok.AllArgsConstructor;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextProperties;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class ItemRendererUtils {
         this.renderItemModelIntoGUI(stack, x, y, xRot, yRot, itemRenderer.getModel(stack, null, null));
     }
 
-    public static void renderFormattedItemNBT(MatrixStack matrix, DataItem item, int mouseX, int mouseY, int width, int height, int maxTextWidth, FontRenderer font) {
+    public static void renderFormattedItemNBT(PoseStack poseStack, DataItem item, int mouseX, int mouseY, int width, int height, int maxTextWidth, Font font) {
         List<ITextProperties> list = new ArrayList<>();
         ITextProperties formatted = (Minecraft.getInstance().options.advancedItemTooltips ? item : item.getTag()).getPrettyDisplay(" ", 0);
         list.add(formatted);
@@ -37,7 +37,7 @@ public class ItemRendererUtils {
         if (w < maxTextWidth) {
             maxTextWidth = w - 5;
         }
-        GuiUtil.drawHoveringText(item.getItemStack(), matrix, list, mouseX, mouseY, width, height, maxTextWidth, font);
+        GuiUtil.drawHoveringText(item.getItemStack(), poseStack,list, mouseX, mouseY, width, height, maxTextWidth, font);
     }
 
     public TextureManager getTextureManager() {
@@ -55,7 +55,7 @@ public class ItemRendererUtils {
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         setupGuiTransform(x, y, xRot, yRot, bakedmodel.isGui3d());
-        MatrixStack matrixstack = new MatrixStack();
+        PoseStack poseStack = new PoseStack();
         IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().renderBuffers().bufferSource();
         boolean flag = !bakedmodel.usesBlockLight();
         if (flag) {

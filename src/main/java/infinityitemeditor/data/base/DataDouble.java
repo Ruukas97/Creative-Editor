@@ -1,16 +1,14 @@
 package infinityitemeditor.data.base;
 
-import net.minecraft.nbt.DoubleNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.nbt.DoubleTag;
 
-public class DataDouble extends SingularData<Double, DoubleNBT> {
+public class DataDouble extends SingularData<Double, DoubleTag> {
     public DataDouble(double value) {
         super(value);
     }
 
 
-    public DataDouble(DoubleNBT nbt) {
+    public DataDouble(DoubleTag nbt) {
         this(nbt.getAsDouble());
     }
 
@@ -22,13 +20,13 @@ public class DataDouble extends SingularData<Double, DoubleNBT> {
 
 
     @Override
-    public DoubleNBT getNBT() {
-        return DoubleNBT.valueOf(data);
+    public DoubleTag getTag() {
+        return DoubleTag.valueOf(data);
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        ITextComponent itextcomponent = (new StringTextComponent("d")).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
-        return (new StringTextComponent(String.valueOf(this.data))).append(itextcomponent).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        MutableComponent itextcomponent = (new TextComponent("d")).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
+//        return (new TextComponent(String.valueOf(this.data))).append(itextcomponent).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
+//    }
 }

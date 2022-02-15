@@ -3,12 +3,12 @@ package infinityitemeditor.collections;
 import com.mojang.serialization.Lifecycle;
 import infinityitemeditor.tab.TabHead;
 import lombok.Getter;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.GameData;
 
 import java.util.ArrayList;
@@ -55,10 +55,10 @@ public class ItemCollections implements Iterable<ItemCollection> {
             }
         });
 
-        for (int i = 0; i < ItemGroup.getGroupCountSafe(); i++) {
-            ItemGroup group = ItemGroup.TABS[i];
-            if (group != null && group != ItemGroup.TAB_SEARCH && group != ItemGroup.TAB_INVENTORY && group != ItemGroup.TAB_HOTBAR && !(group instanceof TabHead)) {
-                collections.add( new ItemGroupCollection( group ) );
+        for (int i = 0; i < CreativeModeTab.getGroupCountSafe(); i++) {
+            CreativeModeTab group = CreativeModeTab.TABS[i];
+            if (group != null && group != CreativeModeTab.TAB_SEARCH && group != CreativeModeTab.TAB_INVENTORY && group != CreativeModeTab.TAB_HOTBAR && !(group instanceof TabHead)) {
+                collections.add( new CreativeModeTabCollection( group ) );
             }
         }
     }

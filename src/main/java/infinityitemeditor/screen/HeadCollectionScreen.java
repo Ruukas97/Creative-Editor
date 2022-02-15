@@ -2,8 +2,8 @@ package infinityitemeditor.screen;
 
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.json.CachedHead;
 import infinityitemeditor.json.MinecraftHeads;
 import infinityitemeditor.json.MinecraftHeadsCategory;
@@ -13,13 +13,13 @@ import infinityitemeditor.styles.StyleManager;
 import infinityitemeditor.util.ColorUtils.Color;
 import infinityitemeditor.util.GuiUtil;
 import infinityitemeditor.util.InventoryUtils;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.play.client.CCreativeInventoryActionPacket;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.LinkedList;
@@ -40,7 +40,7 @@ public class HeadCollectionScreen extends ParentScreen {
 
 
     public HeadCollectionScreen(Screen lastScreen) {
-        super(new TranslationTextComponent("gui.headcollection"), lastScreen);
+        super(new TranslatableComponent("gui.headcollection"), lastScreen);
     }
 
 
@@ -154,7 +154,7 @@ public class HeadCollectionScreen extends ParentScreen {
                         if (slot <= 0) {
                             minecraft.getConnection().send(new CCreativeInventoryActionPacket(-1, is));
                         } else {
-                            int emptySlot = InventoryUtils.getEmptySlot(minecraft.player.inventory);
+                            int emptySlot = InventoryUtils.getEmptySlot(minecraft.player.getInventory());
                             minecraft.getConnection().send(new CCreativeInventoryActionPacket(emptySlot, is));
                             minecraft.player.playSound(SoundEvents.ITEM_PICKUP, 0.1F, 1.01F);
                         }
@@ -208,7 +208,7 @@ public class HeadCollectionScreen extends ParentScreen {
 
 
     @Override
-    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
+    public void backRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color color) {
         // super.backRender( mouseX, mouseY, p3, color );
 
         maxInRow = (width - 250) / 14;
@@ -226,22 +226,22 @@ public class HeadCollectionScreen extends ParentScreen {
         int mainColor = color.getInt();
 
         // Background
-        fill(matrix, space, heightOffset + topbar, space + letterSpace + (maxInRow * 16) + 3, heightOffset + topbar * 2 + 163, GuiUtil.getColorFromRGB(110, 0, 0, 0));
+        fill(poseStack,space, heightOffset + topbar, space + letterSpace + (maxInRow * 16) + 3, heightOffset + topbar * 2 + 163, GuiUtil.getColorFromRGB(110, 0, 0, 0));
 
         // Letterspace
-        fill(matrix, space + 2, heightOffset + topbar, space + letterSpace - 2, heightOffset + topbar + 161, GuiUtil.getColorFromRGB(100, 50, 50, 50));
+        fill(poseStack,space + 2, heightOffset + topbar, space + letterSpace - 2, heightOffset + topbar + 161, GuiUtil.getColorFromRGB(100, 50, 50, 50));
 
         // Topbar
-        fill(matrix, space, heightOffset, space + letterSpace + (maxInRow * 16) + 3, heightOffset + topbar, mainColor);
+        fill(poseStack,space, heightOffset, space + letterSpace + (maxInRow * 16) + 3, heightOffset + topbar, mainColor);
 
         // Outlines
-        fill(matrix, space, heightOffset + topbar, space + 2, heightOffset + topbar + 161 + topbar, mainColor);
-        fill(matrix, space + letterSpace + maxInRow * 16 + 1, heightOffset + topbar, space + letterSpace + maxInRow * 16 + 3, heightOffset + topbar + 161 + topbar, mainColor);
-        fill(matrix, space + 2, heightOffset + topbar + 161, space + letterSpace + (maxInRow * 16) + 1, heightOffset + topbar + 163, mainColor);
-        fill(matrix, space, heightOffset + topbar * 2 + 161, space + letterSpace + (maxInRow * 16) + 3, heightOffset + topbar * 2 + 163, mainColor);
+        fill(poseStack,space, heightOffset + topbar, space + 2, heightOffset + topbar + 161 + topbar, mainColor);
+        fill(poseStack,space + letterSpace + maxInRow * 16 + 1, heightOffset + topbar, space + letterSpace + maxInRow * 16 + 3, heightOffset + topbar + 161 + topbar, mainColor);
+        fill(poseStack,space + 2, heightOffset + topbar + 161, space + letterSpace + (maxInRow * 16) + 1, heightOffset + topbar + 163, mainColor);
+        fill(poseStack,space, heightOffset + topbar * 2 + 161, space + letterSpace + (maxInRow * 16) + 3, heightOffset + topbar * 2 + 163, mainColor);
 
         // Split bar
-        fill(matrix, space + letterSpace, heightOffset + topbar, space + letterSpace - 2, heightOffset + topbar + 161, mainColor);
+        fill(poseStack,space + letterSpace, heightOffset + topbar, space + letterSpace - 2, heightOffset + topbar + 161, mainColor);
 
         for (MinecraftHeadsCategory category : MinecraftHeadsCategory.values()) {
             int x = space + letterSpace / 2;
@@ -249,37 +249,37 @@ public class HeadCollectionScreen extends ParentScreen {
             int sW = font.width(category.getName());
             int sWH = sW / 2;
 
-            drawCenteredString(matrix, font, I18n.get("gui.headcollection.category." + category.getName()), x, y, (style.getFGColor(true, category == selCat || GuiUtil.isMouseInRegion(mouseX, mouseY, x - sWH, y - 1, sW, 10)).getInt()));
+            drawCenteredString(poseStack,font, I18n.get("gui.headcollection.category." + category.getName()), x, y, (style.getFGColor(true, category == selCat || GuiUtil.isMouseInRegion(mouseX, mouseY, x - sWH, y - 1, sW, 10)).getInt()));
         }
 
-        drawString(matrix, font, I18n.get("gui.headcollection") + " (" + filteredHeads.size() + ")", space + 7, heightOffset + 6, blandColor);
+        drawString(poseStack,font, I18n.get("gui.headcollection") + " (" + filteredHeads.size() + ")", space + 7, heightOffset + 6, blandColor);
 
-        drawCenteredString(matrix, font, searchString.length() > 0 ? searchString : I18n.get("gui.headcollection.typesearch"), width / 2, heightOffset + 6, blandColor);
+        drawCenteredString(poseStack,font, searchString.length() > 0 ? searchString : I18n.get("gui.headcollection.typesearch"), width / 2, heightOffset + 6, blandColor);
 
         String pageString = I18n.get("gui.headcollection.currentpage", currentPage + 1, amountPages);
-        drawString(matrix, font, pageString, space + letterSpace + maxInRow * 16 - font.width(pageString), heightOffset + 6, blandColor);
+        drawString(poseStack,font, pageString, space + letterSpace + maxInRow * 16 - font.width(pageString), heightOffset + 6, blandColor);
 
         String nextPage = "-->";
         int nextPageW = font.width(nextPage);
         if (currentPage + 1 < amountPages) {
             boolean selectedN = GuiUtil.isMouseInRegion(mouseX, mouseY, space + letterSpace + maxInRow * 16 - 3 - nextPageW, heightOffset + topbar + 168, nextPageW, 8);
-            drawString(matrix, font, nextPage, space + letterSpace + maxInRow * 16 - 3 - nextPageW, heightOffset + topbar + 168, style.getFGColor(true, selectedN).getInt());
+            drawString(poseStack,font, nextPage, space + letterSpace + maxInRow * 16 - 3 - nextPageW, heightOffset + topbar + 168, style.getFGColor(true, selectedN).getInt());
         }
 
-        drawCenteredString(matrix, font, "" + (currentPage + 1), space + letterSpace + maxInRow * 16 - 13 - nextPageW, heightOffset + topbar + 168, blandColor);
+        drawCenteredString(poseStack,font, "" + (currentPage + 1), space + letterSpace + maxInRow * 16 - 13 - nextPageW, heightOffset + topbar + 168, blandColor);
 
         if (currentPage > 0) {
             String previousPage = "<--";
             boolean selectedP = GuiUtil.isMouseInRegion(mouseX, mouseY, space + letterSpace + maxInRow * 16 - 25 - nextPageW * 2, heightOffset + topbar + 168, nextPageW, 8);
-            drawString(matrix, font, previousPage, space + letterSpace + maxInRow * 16 - 25 - nextPageW * 2, heightOffset + topbar + 168, style.getFGColor(true, selectedP).getInt());
+            drawString(poseStack,font, previousPage, space + letterSpace + maxInRow * 16 - 25 - nextPageW * 2, heightOffset + topbar + 168, style.getFGColor(true, selectedP).getInt());
         }
 
-        drawString(matrix, font, I18n.get("gui.headcollection.credit"), space + 7, heightOffset + topbar + 168, blandColor);
+        drawString(poseStack,font, I18n.get("gui.headcollection.credit"), space + 7, heightOffset + topbar + 168, blandColor);
 
         // Has to be before tooltip cause of skull hover
-        drawCenteredString(matrix, font, I18n.get("gui.headcollection.freeslots") + ": " + InventoryUtils.getEmptySlotsCount(minecraft.player.inventory), width / 2, height - 45, blandColor);
+        drawCenteredString(poseStack,font, I18n.get("gui.headcollection.freeslots") + ": " + InventoryUtils.getEmptySlotsCount(minecraft.player.inventory), width / 2, height - 45, blandColor);
 
-        drawCenteredString(matrix, font, I18n.get("gui.headcollection.headsininventory") + ": " + InventoryUtils.countItem(minecraft.player.inventory, Items.PLAYER_HEAD), width / 2, height - 35, blandColor);
+        drawCenteredString(poseStack,font, I18n.get("gui.headcollection.headsininventory") + ": " + InventoryUtils.countItem(minecraft.player.inventory, Items.PLAYER_HEAD), width / 2, height - 35, blandColor);
 
 
         ItemStack hovered = null;
@@ -293,7 +293,7 @@ public class HeadCollectionScreen extends ParentScreen {
                 ItemStack stack = cached.getItemStack();
                 drawItemStack(stack, x, y, 1, 0, null);
                 if (hovered == null && mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16) {
-                    fill(matrix, x, y, x + 16, y + 16, GuiUtil.getColorFromRGB(150, 150, 150, 150));
+                    fill(poseStack,x, y, x + 16, y + 16, GuiUtil.getColorFromRGB(150, 150, 150, 150));
                     hovered = stack;
                 }
             }
@@ -307,11 +307,11 @@ public class HeadCollectionScreen extends ParentScreen {
 
         if (hovered != null) {
             char section = "\u00a7r".charAt(0);
-            GuiUtil.addToolTip(matrix, this, mouseX, mouseY, width, height, mouseX, mouseY, hovered.getDisplayName().getString(), section + "7" + I18n.get("gui.headcollection.clickhead"), section + "7" + I18n.get("gui.headcollection.clickheadshift"));
+            GuiUtil.addToolTip(poseStack,this, mouseX, mouseY, width, height, mouseX, mouseY, hovered.getDisplayName().getString(), section + "7" + I18n.get("gui.headcollection.clickhead"), section + "7" + I18n.get("gui.headcollection.clickheadshift"));
         } else if (!searchString.equals(filteredString) && GuiUtil.isMouseInRegion(mouseX, mouseY, (width / 2) - searchW / 2, 56, searchW, 8)) {
-            GuiUtil.addToolTip(matrix, this, mouseX, mouseY, I18n.get("gui.headcollection.clicksearch"));
+            GuiUtil.addToolTip(poseStack,this, mouseX, mouseY, I18n.get("gui.headcollection.clicksearch"));
         } else {
-            GuiUtil.addToolTip(matrix, this, space + 2, heightOffset + topbar, letterSpace - 4, 161, mouseX, mouseY, I18n.get("gui.headcollection.changecategory"));
+            GuiUtil.addToolTip(poseStack,this, space + 2, heightOffset + topbar, letterSpace - 4, 161, mouseX, mouseY, I18n.get("gui.headcollection.changecategory"));
         }
 
         RenderSystem.translatef(0.0F, 0.0F, -100.0F);

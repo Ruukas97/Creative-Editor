@@ -6,11 +6,10 @@ import infinityitemeditor.data.base.DataColor;
 import infinityitemeditor.data.base.DataListString;
 import infinityitemeditor.data.version.NBTKeys;
 import lombok.Getter;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 
-public class TagDisplay implements Data<TagDisplay, CompoundNBT> {
+public class TagDisplay implements Data<TagDisplay, CompoundTag> {
     private final DataItem item;
 
     private final @Getter
@@ -23,13 +22,13 @@ public class TagDisplay implements Data<TagDisplay, CompoundNBT> {
     DataListString lore;
 
 
-    public TagDisplay(DataItem item, CompoundNBT nbt) {
+    public TagDisplay(DataItem item, CompoundTag nbt) {
         this.item = item;
         NBTKeys keys = NBTKeys.keys;
         color = new DataColor(nbt.getInt(keys.displayColor()));
         mapColor = new DataColor(nbt.getInt(keys.displayMapColor()));
         name = new TagDisplayName(nbt.getString(keys.displayName()), this.item);
-        lore = new DataListString(nbt.getList(keys.displayLore(), NBT.TAG_STRING));
+        lore = new DataListString(nbt.getList(keys.displayLore(), Tag.TAG_STRING));
     }
 
 
@@ -40,24 +39,24 @@ public class TagDisplay implements Data<TagDisplay, CompoundNBT> {
 
 
     @Override
-    public CompoundNBT getNBT() {
+    public CompoundTag getTag() {
         NBTKeys keys = NBTKeys.keys;
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
         if (!color.isDefault())
-            nbt.put(keys.displayColor(), color.getNBT());
+            nbt.put(keys.displayColor(), color.getTag());
         if (!mapColor.isDefault())
-            nbt.put(keys.displayMapColor(), mapColor.getNBT());
+            nbt.put(keys.displayMapColor(), mapColor.getTag());
         if (!name.isDefault())
-            nbt.put(keys.displayName(), name.getNBT());
+            nbt.put(keys.displayName(), name.getTag());
         if (!lore.isDefault())
-            nbt.put(keys.displayLore(), lore.getNBT());
+            nbt.put(keys.displayLore(), lore.getTag());
         return nbt;
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        return getNBT().getPrettyDisplay(space, indentation);
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        return getTag().getPrettyDisplay(space, indentation);
+//    }
 
 
     @Override

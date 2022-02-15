@@ -4,7 +4,7 @@ import infinityitemeditor.screen.AllWidgetsScreen;
 import infinityitemeditor.screen.RawNBTEditorScreen;
 import infinityitemeditor.screen.widgets.ClassSpecificWidget;
 import infinityitemeditor.screen.widgets.StyledTextButton;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resources.language.I18n;
 
 public class AdvancedWidgets extends WidgetIteratorBase {
 

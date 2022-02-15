@@ -4,8 +4,8 @@
   "refmap": "infinityitemeditor.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "ChatFormattingMixin",
     "SharedConstantsMixin",
-    "TextProcessingMixin",
-    "TextFormattingMixin"
+    "TextProcessingMixin"
   ]
 }

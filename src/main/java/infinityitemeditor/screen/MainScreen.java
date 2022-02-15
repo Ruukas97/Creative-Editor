@@ -1,6 +1,6 @@
 package infinityitemeditor.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import infinityitemeditor.config.Config;
 import infinityitemeditor.data.DataItem;
@@ -13,12 +13,12 @@ import infinityitemeditor.util.ColorUtils.Color;
 import infinityitemeditor.util.ItemRendererUtils;
 import infinityitemeditor.util.RenderUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class MainScreen extends ParentItemScreen {
 
 
     public MainScreen(Screen lastScreen, DataItem editing) {
-        super(new TranslationTextComponent("gui.main"), lastScreen, editing);
+        super(new TranslatableComponent("gui.main"), lastScreen, editing);
     }
 
     protected void loadWidgets(){
@@ -95,15 +95,15 @@ public class MainScreen extends ParentItemScreen {
         toolsWidgets.clear();
         displayWidgets.clear();
 
-        nbtButton = addButton(new StyledTextButton(nbtX, buttonY, nbtWidth, nbtLocal, b -> {
+        nbtButton = addRenderableWidget(new StyledTextButton(nbtX, buttonY, nbtWidth, nbtLocal, b -> {
             setLeftTab(0, true);
         }));
 
-        tooltipButton = addButton(new StyledTextButton(tooltipX, buttonY, tooltipWidth, tooltipLocal, b -> {
+        tooltipButton = addRenderableWidget(new StyledTextButton(tooltipX, buttonY, tooltipWidth, tooltipLocal, b -> {
             setLeftTab(1, true);
         }));
 
-        toolsButton = addButton(new StyledTextButton(toolsX, buttonY, toolsWidth, toolsLocal, b -> {
+        toolsButton = addRenderableWidget(new StyledTextButton(toolsX, buttonY, toolsWidth, toolsLocal, b -> {
             setLeftTab(2, true);
 
             for (Widget tool : toolsWidgets) {
@@ -111,7 +111,7 @@ public class MainScreen extends ParentItemScreen {
             }
         }));
 
-        displayButton = addButton(new StyledTextButton(loreX, buttonY, displayWidth, displayLocal, b -> {
+        displayButton = addRenderableWidget(new StyledTextButton(loreX, buttonY, displayWidth, displayLocal, b -> {
             setRightTab(0, true);
 
             for (Widget lore : displayWidgets) {
@@ -119,7 +119,7 @@ public class MainScreen extends ParentItemScreen {
             }
         }));
 
-        editButton = addButton(new StyledTextButton(editX, buttonY, editWidth, editLocal, b -> {
+        editButton = addRenderableWidget(new StyledTextButton(editX, buttonY, editWidth, editLocal, b -> {
             setRightTab(1, true);
 
             for (Widget lore : displayWidgets) {
@@ -127,7 +127,7 @@ public class MainScreen extends ParentItemScreen {
             }
         }));
 
-        advancedButton = addButton(new StyledTextButton(advancedX, buttonY, advancedWidth, advancedLocal, b -> {
+        advancedButton = addRenderableWidget(new StyledTextButton(advancedX, buttonY, advancedWidth, advancedLocal, b -> {
             setRightTab(2, true);
 
             for (Widget lore : displayWidgets) {
@@ -143,22 +143,22 @@ public class MainScreen extends ParentItemScreen {
 
         toolIndex++;
         String styleLocal = I18n.get("gui.main.style");
-        styleButton = addButton(new StyledTextButton(width / 6, buttonY + 20 * toolIndex, font.width(styleLocal), styleLocal, b -> StyleManager.setNext()));
+        styleButton = addRenderableWidget(new StyledTextButton(width / 6, buttonY + 20 * toolIndex, font.width(styleLocal), styleLocal, b -> StyleManager.setNext()));
         toolsWidgets.add(styleButton);
 
         toolIndex++;
         String headsLocal = I18n.get("gui.headcollection");
-        StyledTextButton headsButton = addButton(new StyledTextButton(width / 6, buttonY + 20 * toolIndex, font.width(headsLocal), headsLocal, b -> minecraft.setScreen(new HeadCollectionScreen(this))));
+        StyledTextButton headsButton = addRenderableWidget(new StyledTextButton(width / 6, buttonY + 20 * toolIndex, font.width(headsLocal), headsLocal, b -> minecraft.setScreen(new HeadCollectionScreen(this))));
         toolsWidgets.add(headsButton);
 
         /*toolIndex++;
         String spawnerLocal = I18n.get("gui.itemspawner");
-        StyledTextButton spawnerButton = addButton(new StyledTextButton(width / 6, buttonY + 20 * toolIndex, font.width(spawnerLocal), spawnerLocal, b -> minecraft.setScreen(new ItemSpawnerScreen(this))));
+        StyledTextButton spawnerButton = addRenderableWidget(new StyledTextButton(width / 6, buttonY + 20 * toolIndex, font.width(spawnerLocal), spawnerLocal, b -> minecraft.setScreen(new ItemSpawnerScreen(this))));
         toolsWidgets.add(spawnerButton);*/
 
         /*toolIndex++;
         String tagExplorer = I18n.get("gui.tagexplorer");
-        StyledTextButton tagExploreButton = addButton(new StyledTextButton(width / 6, buttonY + 20 * toolIndex, font.width(tagExplorer), tagExplorer, b -> minecraft.setScreen(new TagExplorerScreen(this, item))));
+        StyledTextButton tagExploreButton = addRenderableWidget(new StyledTextButton(width / 6, buttonY + 20 * toolIndex, font.width(tagExplorer), tagExplorer, b -> minecraft.setScreen(new TagExplorerScreen(this, item))));
         toolsWidgets.add(tagExploreButton);*/
 
         // Lore
@@ -178,20 +178,20 @@ public class MainScreen extends ParentItemScreen {
         displayWidgets.add(nameField);
         children.add(nameField);
 
-        clearButton = addButton(new StyledTextButton(resetX, 67, resetWidth, resetLore, b -> {
+        clearButton = addRenderableWidget(new StyledTextButton(resetX, 67, resetWidth, resetLore, b -> {
             nameField.setText(item.getDisplayNameTag().getDefault().getString());
             nameField.setCursorPos(0);
             nameField.setSelectionPos(0);
         }));
         displayWidgets.add(clearButton);
 
-        loreButton = addButton(new StyledTextButton(nameX + loreWidth/2, 95, loreWidth, lore, t -> minecraft.setScreen(new LoreEditorScreen(this, item))));
+        loreButton = addRenderableWidget(new StyledTextButton(nameX + loreWidth/2, 95, loreWidth, lore, t -> minecraft.setScreen(new LoreEditorScreen(this, item))));
         displayWidgets.add(loreButton);
 
-        StyledButton flagsButton = addButton(new StyledTextButton(nameX + itemFlagWidth/2, 115, itemFlagWidth, itemFlag, t -> minecraft.setScreen(new FlagScreen(this, item))));
+        StyledButton flagsButton = addRenderableWidget(new StyledTextButton(nameX + itemFlagWidth/2, 115, itemFlagWidth, itemFlag, t -> minecraft.setScreen(new FlagScreen(this, item))));
         displayWidgets.add(flagsButton);
 
-        StyledButton colorButton = addButton(new StyledTextButton(nameX + colorWidth/2, 135, colorWidth, color, t -> minecraft.setScreen(new ColorScreen(this, item))));
+        StyledButton colorButton = addRenderableWidget(new StyledTextButton(nameX + colorWidth/2, 135, colorWidth, color, t -> minecraft.setScreen(new ColorScreen(this, item))));
         displayWidgets.add(colorButton);
 
         // General Item
@@ -212,15 +212,15 @@ public class MainScreen extends ParentItemScreen {
         this.countField = new NumberField(font, countX, 101, 16, item.getCount());
         renderWidgets.add(countField);
         countX += this.countField.getWidth() + 8;
-        this.countSlider = addButton(new SliderTag(countX, 101, (width - width / 3 - 8) - countX, 16, item.getCount()));
+        this.countSlider = addRenderableWidget(new SliderTag(countX, 101, (width - width / 3 - 8) - countX, 16, item.getCount()));
 
         int dmgX = x;
         this.damageField = new NumberField(font, dmgX, 121, 16, item.getTag().getDamage());
         dmgX += this.damageField.getWidth() + 8;
         renderWidgets.add(damageField);
-        this.damageSlider = addButton(new SliderTag(dmgX, 121, (width - width / 3 - 8) - dmgX, 16, item.getTag().getDamage()));
+        this.damageSlider = addRenderableWidget(new SliderTag(dmgX, 121, (width - width / 3 - 8) - dmgX, 16, item.getTag().getDamage()));
 
-        this.unbreakable = addButton(new StyledToggle(width / 2 - 40, 141, 80, 16, I18n.get("item.tag.unbreakable.true"), I18n.get("item.tag.unbreakable.false"), item.getTag().getUnbreakable()));
+        this.unbreakable = addRenderableWidget(new StyledToggle(width / 2 - 40, 141, 80, 16, I18n.get("item.tag.unbreakable.true"), I18n.get("item.tag.unbreakable.false"), item.getTag().getUnbreakable()));
 
         setLeftTab(Config.MAIN_LEFT_TAB.get(), false);
         setRightTab(Config.MAIN_RIGHT_TAB.get(), false);
@@ -232,7 +232,7 @@ public class MainScreen extends ParentItemScreen {
             WidgetInfo info = new WidgetInfo(width - width / 6, y, font.width(w.text), 10, w.text, null, this, font);
             Widget widget = w.get(info, item);
             if (widget != null) {
-                addButton(widget);
+                addRenderableWidget(widget);
                 widgetList.add(widget);
                 y += 20;
             }
@@ -355,7 +355,7 @@ public class MainScreen extends ParentItemScreen {
                 String clip = minecraft.keyboardHandler.getClipboard();
                 if (!clip.isEmpty()) {
                     try {
-                        CompoundNBT nbt = JsonToNBT.parseTag(clip);
+                        CompoundTag nbt = JsonToNBT.parseTag(clip);
                         if (nbt != null) {
                             item = new DataItem(nbt);
                             NumberRangeInt c = item.getCount();
@@ -367,8 +367,8 @@ public class MainScreen extends ParentItemScreen {
                     }
                 }
             } else if (key2 == 46) {
-                if (!item.getNBT().isEmpty()) {
-                    minecraft.keyboardHandler.setClipboard(item.getNBT().getAsString());
+                if (!item.getTag().isEmpty()) {
+                    minecraft.keyboardHandler.setClipboard(item.getTag().getAsString());
                 }
             }
         }
@@ -378,31 +378,31 @@ public class MainScreen extends ParentItemScreen {
 
 
     @Override
-    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float partialTicks, Color color) {
-        super.backRender(matrix, mouseX, mouseY, partialTicks, color);
+    public void backRender(PoseStack poseStack, int mouseX, int mouseY, float partialTicks, Color color) {
+        super.backRender(poseStack,mouseX, mouseY, partialTicks, color);
 
         // First vertical line
-        fill(matrix, width / 3, 20, width / 3 + 1, height / 5 * 4, color.getInt());
+        fill(poseStack,width / 3, 20, width / 3 + 1, height / 5 * 4, color.getInt());
         // Second vertical line
-        fill(matrix, width * 2 / 3, 20, width * 2 / 3 + 1, height / 5 * 4, color.getInt());
+        fill(poseStack,width * 2 / 3, 20, width * 2 / 3 + 1, height / 5 * 4, color.getInt());
         // Left horizontal line
-        fill(matrix, 20, 40, width / 3 - 15, 41, color.getInt());
+        fill(poseStack,20, 40, width / 3 - 15, 41, color.getInt());
         // Right horizontal line
-        fill(matrix, width * 2 / 3 + 16, 40, width - 20, 41, color.getInt());
+        fill(poseStack,width * 2 / 3 + 16, 40, width - 20, 41, color.getInt());
 
     }
 
 
     @Override
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float partialTicks, Color color) {
-        super.mainRender(matrix, mouseX, mouseY, partialTicks, color);
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float partialTicks, Color color) {
+        super.mainRender(poseStack,mouseX, mouseY, partialTicks, color);
 
         // Item Name
         String itemCount = item.getCount().get() > 1 ? item.getCount().get() + "x " : "";
         String displayName = item.getItemStack().getDisplayName().getString();
         String itemOverview = itemCount + addChar(displayName, "\u00a7r", displayName.length() - 1);
         String overviewTrimmed = font.plainSubstrByWidth(itemOverview, width / 3 - 15);
-        drawCenteredString(matrix, font, overviewTrimmed.equals(itemOverview) ? overviewTrimmed : overviewTrimmed + "...", width / 2, 27, color.getInt());
+        drawCenteredString(poseStack,font, overviewTrimmed.equals(itemOverview) ? overviewTrimmed : overviewTrimmed + "...", width / 2, 27, color.getInt());
 
 
         int x = width / 3 + 10;
@@ -416,7 +416,7 @@ public class MainScreen extends ParentItemScreen {
         if (dmgEnabled) {
             damageField.visible = true;
             damageSlider.visible = true;
-            drawString(matrix, font, dmgString, x, 125, color.getInt());
+            drawString(poseStack,font, dmgString, x, 125, color.getInt());
             unbreakable.y = 141;
         } else {
             damageField.visible = false;
@@ -426,11 +426,11 @@ public class MainScreen extends ParentItemScreen {
 
         String id = I18n.get("gui.main.id");
         // int idWidth = font.width( id );
-        drawString(matrix, font, id, x, 85, color.getInt());
+        drawString(poseStack,font, id, x, 85, color.getInt());
 
         //drawString( font, item.getItem().getIDExcludingMC(), x + 6 + idoffset, 85, color.getInt() );
 
-        drawString(matrix, font, count, x, 105, color.getInt());
+        drawString(poseStack,font, count, x, 105, color.getInt());
     }
 
     private String addChar(String str, String ch, int position) {
@@ -439,26 +439,26 @@ public class MainScreen extends ParentItemScreen {
 
 
     @Override
-    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float partialTicks, Color color) {
-        super.overlayRender(matrix, mouseX, mouseY, partialTicks, color);
+    public void overlayRender(PoseStack poseStack, int mouseX, int mouseY, float partialTicks, Color color) {
+        super.overlayRender(poseStack,mouseX, mouseY, partialTicks, color);
 
         RenderUtil.glScissorBox(6, 41, width / 3, height - 6);
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        matrix.pushPose();
+        poseStack.pushPose();
         if (Config.MAIN_LEFT_TAB.get() == 0) {
             // NBT
             assert minecraft != null;
-            matrix.scale(0.75F, 0.75F, 0.75F);
+            poseStack.scale(0.75F, 0.75F, 0.75F);
 
-            ItemRendererUtils.renderFormattedItemNBT(matrix, item, 5, 80, width, height, width / 3 - 1, font );
+            ItemRendererUtils.renderFormattedItemNBT(poseStack,item, 5, 80, width, height, width / 3 - 1, font );
         } else if (Config.MAIN_LEFT_TAB.get() == 1) {
 
-            matrix.scale(0.9F, 0.9F, 0.9F);
-            renderTooltip(matrix, item.getItemStack(), 3, 68);
-//          GuiUtil.drawHoveringText(item.getItemStack(), matrix, getTooltipFromItem(item.getItemStack()), 0, 60, width / 3 - 1, height, -1, font);
+            poseStack.scale(0.9F, 0.9F, 0.9F);
+            renderTooltip(poseStack,item.getItemStack(), 3, 68);
+//          GuiUtil.drawHoveringText(item.getItemStack(), poseStack,getTooltipFromItem(item.getItemStack()), 0, 60, width / 3 - 1, height, -1, font);
 
         }
-        matrix.popPose();
+        poseStack.popPose();
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
     }
 }

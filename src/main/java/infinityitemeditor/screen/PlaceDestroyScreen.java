@@ -1,6 +1,6 @@
 package infinityitemeditor.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.data.tag.TagItemID;
 import infinityitemeditor.data.tag.TagList;
@@ -8,10 +8,10 @@ import infinityitemeditor.screen.widgets.ScrollableScissorWindow;
 import infinityitemeditor.screen.widgets.StyledButton;
 import infinityitemeditor.util.ColorUtils;
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class PlaceDestroyScreen extends ParentItemScreen {
@@ -22,7 +22,7 @@ public class PlaceDestroyScreen extends ParentItemScreen {
 
 
     public PlaceDestroyScreen(Screen lastScreen, DataItem editing, String guiName, TagList<TagItemID> tagList) {
-        super(new TranslationTextComponent("gui." + guiName), lastScreen, editing);
+        super(new TranslatableComponent("gui." + guiName), lastScreen, editing);
         canPlaceOnList = tagList;
     }
 
@@ -36,8 +36,8 @@ public class PlaceDestroyScreen extends ParentItemScreen {
         int spacing = 10;
         int xStart = (width - (containerWidth * 2 + spacing)) / 2;
 
-        added = addButton(new ScrollableScissorWindow(xStart, yStart, containerWidth, yEnd, new TranslationTextComponent("gui.placedestroy.applied")));
-        list = addButton(new ScrollableScissorWindow(xStart + spacing + containerWidth, yStart, containerWidth, yEnd, new TranslationTextComponent("gui.placedestroy.all")));
+        added = addRenderableWidget(new ScrollableScissorWindow(xStart, yStart, containerWidth, yEnd, new TranslatableComponent("gui.placedestroy.applied")));
+        list = addRenderableWidget(new ScrollableScissorWindow(xStart + spacing + containerWidth, yStart, containerWidth, yEnd, new TranslatableComponent("gui.placedestroy.all")));
         outerLoop:
         for (Block block : ForgeRegistries.BLOCKS.getValues()) {
             if (block.asItem() != Items.AIR) {
@@ -62,10 +62,10 @@ public class PlaceDestroyScreen extends ParentItemScreen {
     }
 
     @Override
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
-        drawString(matrix, font, added.getMessage(), added.x, added.y - 10, color.getInt());
-        drawString(matrix, font, list.getMessage(), list.x, list.y - 10, color.getInt());
-        super.mainRender(matrix, mouseX, mouseY, p3, color);
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
+        drawString(poseStack,font, added.getMessage(), added.x, added.y - 10, color.getInt());
+        drawString(poseStack,font, list.getMessage(), list.x, list.y - 10, color.getInt());
+        super.mainRender(poseStack,mouseX, mouseY, p3, color);
     }
 
     private void addCanPlaceOn(Block block, TagItemID tagItemR, boolean shouldAdd) {

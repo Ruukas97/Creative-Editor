@@ -1,7 +1,7 @@
 package infinityitemeditor.styles;
 
 import infinityitemeditor.util.ColorUtils.Color;
-import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.components.AbstractWidget;
 
 public abstract class StyleBase implements Style {
     protected ButtonColor buttonColor;
@@ -24,8 +24,8 @@ public abstract class StyleBase implements Style {
 
 
     @Override
-    public Color getFGColor(Widget widget) {
-        return getFGColor(widget.active, widget.isHovered());
+    public Color getFGColor(AbstractWidget widget) {
+        return getFGColor(widget.active, widget.isHoveredOrFocused());
     }
 
 

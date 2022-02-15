@@ -8,11 +8,11 @@ public class PlayerNameplateHandler {
     @SubscribeEvent
     public void onPreRenderPlayerSpecial(RenderNameplateEvent e) {
         /*Minecraft mc = Minecraft.getInstance();
-        if (!(e.getRenderer() instanceof PlayerRenderer && e.getEntity() instanceof AbstractClientPlayerEntity) || mc.screen != null && mc.screen instanceof ContainerScreen<?>)
+        if (!(e.getRenderer() instanceof PlayerRenderer && e.getEntity() instanceof AbstractClientPlayer) || mc.screen != null && mc.screen instanceof ContainerScreen<?>)
             return;
 
         PlayerRenderer renderer = (PlayerRenderer) e.getRenderer();
-        AbstractClientPlayerEntity player = (AbstractClientPlayerEntity) e.getEntity();
+        AbstractClientPlayer player = (AbstractClientPlayer) e.getEntity();
 
         if (!canRenderName( renderer, player ))
             return;

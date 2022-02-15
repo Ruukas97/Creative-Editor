@@ -7,8 +7,8 @@ import infinityitemeditor.data.tag.TagItemList;
 import infinityitemeditor.data.tag.TagList;
 import infinityitemeditor.data.version.NBTKeys;
 import lombok.Getter;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 
 public class TagBlockEntity extends DataUnserializedCompound {
     @Getter
@@ -22,17 +22,17 @@ public class TagBlockEntity extends DataUnserializedCompound {
     @Getter
     private final TagList<TagBannerPattern> patterns;
 
-    public TagBlockEntity(CompoundNBT nbt) {
+    public TagBlockEntity(CompoundTag nbt) {
         super(nbt);
         if(nbt == null){
-            nbt = new CompoundNBT();
+            nbt = new CompoundTag();
         }
         NBTKeys keys = NBTKeys.keys;
         customName = add(keys.blockEntityCustomName(), new DataString(nbt.getString(keys.blockEntityCustomName())));
         locked = add(keys.blockEntityLock(), new DataString(nbt.getString(keys.blockEntityLock())));
-        items = add(keys.blockEntityItems(), new TagItemList(nbt.getList(keys.blockEntityItems(), Constants.NBT.TAG_COMPOUND)));
+        items = add(keys.blockEntityItems(), new TagItemList(nbt.getList(keys.blockEntityItems(), Tag.TAG_COMPOUND)));
 
-        patterns = add(keys.tagPatterns(), new TagList<>(nbt.getList(keys.tagPatterns(), Constants.NBT.TAG_COMPOUND), TagBannerPattern::new));
+        patterns = add(keys.tagPatterns(), new TagList<>(nbt.getList(keys.tagPatterns(), Tag.TAG_COMPOUND), TagBannerPattern::new));
     }
 
     @Override

@@ -3,9 +3,9 @@ package infinityitemeditor.screen.widgets;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.button.Button.IPressable;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
 
 @AllArgsConstructor
 public class WidgetInfo {
@@ -17,16 +17,16 @@ public class WidgetInfo {
     private String text;
     @Getter
     @Setter
-    private IPressable trigger;
+    private Button.OnPress trigger;
     @Getter
     @Setter
     private Screen parent;
     @Getter
     @Setter
-    private FontRenderer font;
+    private Font font;
 
 
-    public WidgetInfo withTrigger(IPressable trigger) {
+    public WidgetInfo withTrigger(Button.OnPress trigger) {
         setTrigger(trigger);
         return this;
     }

@@ -1,22 +1,17 @@
 package infinityitemeditor.data;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import infinityitemeditor.data.base.DataMap;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.nbt.CompoundTag;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public class DataUnserializedCompound implements Data<DataUnserializedCompound, CompoundNBT> {
+public class DataUnserializedCompound implements Data<DataUnserializedCompound, CompoundTag> {
     private final Map<String, Data<?, ?>> serialized = new HashMap<>();
-    private final CompoundNBT unserializedNBT;
+    private final CompoundTag unserializedNBT;
 
-    public DataUnserializedCompound(CompoundNBT nbt) {
+    public DataUnserializedCompound(CompoundTag nbt) {
         if (nbt == null) {
-            nbt = new CompoundNBT();
+            nbt = new CompoundTag();
         }
         unserializedNBT = nbt.copy();
     }
@@ -29,55 +24,55 @@ public class DataUnserializedCompound implements Data<DataUnserializedCompound, 
 
 
     @Override
-    public CompoundNBT getNBT() {
-        CompoundNBT nbt = unserializedNBT.copy();
+    public CompoundTag getTag() {
+        CompoundTag nbt = unserializedNBT.copy();
         for (String key : serialized.keySet()) {
             Data<?, ?> data = serialized.get(key);
             if (!data.isDefault())
-                nbt.put(key, data.getNBT());
+                nbt.put(key, data.getTag());
         }
         return nbt;
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        if (serialized.isEmpty() || isDefault()) {
-            return new StringTextComponent("{}");
-        } else {
-            IFormattableTextComponent iformattabletextcomponent = new StringTextComponent("{");
-            List<String> collection = Lists.newArrayList(serialized.keySet());
-            List<String> list = Lists.newArrayList();
-            for (String s : collection) {
-                Data<?, ?> d = serialized.get(s);
-                if (!d.isDefault()) {
-                    list.add(s);
-                }
-            }
-
-            Collections.sort(list);
-            collection = list;
-
-            if (!space.isEmpty()) {
-                iformattabletextcomponent.append("\n");
-            }
-
-            IFormattableTextComponent iformattabletextcomponent1;
-            for (Iterator<String> iterator = collection.iterator(); iterator.hasNext(); iformattabletextcomponent.append(iformattabletextcomponent1)) {
-                String s = iterator.next();
-                iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(s)).append(String.valueOf(':')).append(" ").append(serialized.get(s).getPrettyDisplay(space, indentation + 1));
-                if (iterator.hasNext()) {
-                    iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
-                }
-            }
-
-            if (!space.isEmpty()) {
-                iformattabletextcomponent.append("\n").append(Strings.repeat(space, indentation));
-            }
-
-            iformattabletextcomponent.append("}");
-            return iformattabletextcomponent;
-        }
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        if (serialized.isEmpty() || isDefault()) {
+//            return new TextComponent("{}");
+//        } else {
+//            IFormattableTextComponent iformattabletextcomponent = new TextComponent("{");
+//            List<String> collection = Lists.newArrayList(serialized.keySet());
+//            List<String> list = Lists.newArrayList();
+//            for (String s : collection) {
+//                Data<?, ?> d = serialized.get(s);
+//                if (!d.isDefault()) {
+//                    list.add(s);
+//                }
+//            }
+//
+//            Collections.sort(list);
+//            collection = list;
+//
+//            if (!space.isEmpty()) {
+//                iformattabletextcomponent.append("\n");
+//            }
+//
+//            IFormattableTextComponent iformattabletextcomponent1;
+//            for (Iterator<String> iterator = collection.iterator(); iterator.hasNext(); iformattabletextcomponent.append(iformattabletextcomponent1)) {
+//                String s = iterator.next();
+//                iformattabletextcomponent1 = (new TextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(s)).append(String.valueOf(':')).append(" ").append(serialized.get(s).getPrettyDisplay(space, indentation + 1));
+//                if (iterator.hasNext()) {
+//                    iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+//                }
+//            }
+//
+//            if (!space.isEmpty()) {
+//                iformattabletextcomponent.append("\n").append(Strings.repeat(space, indentation));
+//            }
+//
+//            iformattabletextcomponent.append("}");
+//            return iformattabletextcomponent;
+//        }
+//    }
 
     @Override
     public boolean isDefault() {

@@ -1,7 +1,7 @@
 package infinityitemeditor.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.Data;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.data.tag.TagEffect;
@@ -17,18 +17,21 @@ import infinityitemeditor.styles.StyleManager;
 import infinityitemeditor.util.ColorUtils;
 import infinityitemeditor.util.GuiUtil;
 import infinityitemeditor.util.TextComponentUtils;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.renderer.texture.PotionSpriteUploader;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.Items;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.potion.Effect;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.item.Items;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WheelScreen<T extends Data<?, ?>> extends ParentItemScreen {
     protected final String name;
@@ -56,7 +59,7 @@ public class WheelScreen<T extends Data<?, ?>> extends ParentItemScreen {
     private int mouseDistSquared = 0;
 
     public WheelScreen(Screen lastScreen, String name, WheelType<T> wheelType, DataItem item, TagList<T> list) {
-        super(new TranslationTextComponent("gui." + name), lastScreen, item);
+        super(new TranslatableComponent("gui." + name), lastScreen, item);
         this.name = "gui." + name;
         this.wheelType = wheelType;
         tagFilters = wheelType.getTagFilters();
@@ -97,13 +100,13 @@ public class WheelScreen<T extends Data<?, ?>> extends ParentItemScreen {
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
         for (Widget w : tagModifier.widgets(font, width, height)) {
-            addButton(w);
+            addRenderableWidget(w);
         }
 
-        filter = addButton(new StyledOptionSwitcher(10, 10, 100, 20, tagFilters, filteredFilter));
-        searchField = addButton(new StyledTextField(font, 10, 35, 100, 20, filteredString));
+        filter = addRenderableWidget(new StyledOptionSwitcher(10, 10, 100, 20, tagFilters, filteredFilter));
+        searchField = addRenderableWidget(new StyledTextField(font, 10, 35, 100, 20, filteredString));
         searchField.setHint(I18n.get("gui.wheel.search"));
-        addAll = addButton(new StyledButton(10, 60, 100, 20, new TranslationTextComponent("gui.wheel.addall"), b -> {
+        addAll = addRenderableWidget(new StyledButton(10, 60, 100, 20, new TranslatableComponent("gui.wheel.addall"), b -> {
             for (T tag : filteredTags) {
                 T cloned = wheelType.clone(tag);
                 tagModifier.modify(cloned);
@@ -112,7 +115,7 @@ public class WheelScreen<T extends Data<?, ?>> extends ParentItemScreen {
             }
         }));
 
-        addedWidgets = addButton(new ScrollableScissorWindow(width - 130, 50, 120, height - 60, new TranslationTextComponent(name + ".added")));
+        addedWidgets = addRenderableWidget(new ScrollableScissorWindow(width - 130, 50, 120, height - 60, new TranslatableComponent(name + ".added")));
         widgetTags = new HashMap<>();
 
         for (T tag : added) {
@@ -172,13 +175,13 @@ public class WheelScreen<T extends Data<?, ?>> extends ParentItemScreen {
     }
 
     @Override
-    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
-        super.backRender(matrix, mouseX, mouseY, p3, color);
+    public void backRender(PoseStack poseStack, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
+        super.backRender(poseStack,mouseX, mouseY, p3, color);
     }
 
     @Override
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
-        super.mainRender(matrix, mouseX, mouseY, p3, color);
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
+        super.mainRender(poseStack,mouseX, mouseY, p3, color);
         hovered = null;
         addedWidgets.visible = !addedWidgets.children().isEmpty();
 
@@ -191,11 +194,11 @@ public class WheelScreen<T extends Data<?, ?>> extends ParentItemScreen {
         boolean hovering = Math.abs(mouseDistSquared - radiusSquared) < 3000;
 
         if (addedWidgets.visible) {
-            drawString(matrix, font, addedWidgets.getMessage(), addedWidgets.x, addedWidgets.y - 10, color.getInt());
+            drawString(poseStack,font, addedWidgets.getMessage(), addedWidgets.x, addedWidgets.y - 10, color.getInt());
         }
 
 
-        //drawItemStack(matrix, item.getItemStack(), midX, midY, 5f, 0f, 0f, -rotOff * 3, null);
+        //drawItemStack(poseStack,item.getItemStack(), midX, midY, 5f, 0f, 0f, -rotOff * 3, null);
 
         for (int i = 0; i < filteredTags.size(); i++) {
             T tag = filteredTags.get(i);
@@ -224,13 +227,13 @@ public class WheelScreen<T extends Data<?, ?>> extends ParentItemScreen {
                 TextureAtlasSprite textureatlassprite = potionspriteuploader.get(effect);
                 this.minecraft.getTextureManager().bind(textureatlassprite.atlas().location());
 
-                blit(matrix, -9, -9, this.getBlitOffset(), 18, 18, textureatlassprite);
-                //fill(matrix, (int) x - 1, (int) y - 1, (int) x + 1, (int) y + 1, 0xFFFFFFFF);
+                blit(poseStack,-9, -9, this.getBlitOffset(), 18, 18, textureatlassprite);
+                //fill(poseStack,(int) x - 1, (int) y - 1, (int) x + 1, (int) y + 1, 0xFFFFFFFF);
 
             } else if (item.getItem().getItem() != Items.AIR) {
                 drawItemStack(item.getItemStack(), -8, -8, 0f, 0f, null);
             } else {
-                fill(matrix, -1, -1, 1, 1, color.getInt());
+                fill(poseStack,-1, -1, 1, 1, color.getInt());
             }
             RenderSystem.popMatrix();
         }
@@ -238,8 +241,8 @@ public class WheelScreen<T extends Data<?, ?>> extends ParentItemScreen {
 
 
     @Override
-    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
-        super.overlayRender(matrix, mouseX, mouseY, p3, color);
+    public void overlayRender(PoseStack poseStack, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
+        super.overlayRender(poseStack,mouseX, mouseY, p3, color);
 
         double angle = 2 * Math.PI / filteredTags.size();
         double closestDistanceSquared = Integer.MAX_VALUE;
@@ -270,19 +273,19 @@ public class WheelScreen<T extends Data<?, ?>> extends ParentItemScreen {
             IFormattableTextComponent component = wheelType.displayTag(tag).withStyle(Style.EMPTY.withColor(StyleManager.getCurrentStyle().getFGColor(true, tag == hovered).toMcColor()));
             if (0.1d * Math.abs(relY) > Math.abs(relX)) {
                 int textYOffset = relY < 0 ? -17 : 7;
-                drawCenteredString(matrix, font, component, 0, textYOffset, color.getInt());
+                drawCenteredString(poseStack,font, component, 0, textYOffset, color.getInt());
             }/* else if (0.2d * Math.abs(relY) > Math.abs(relX)) {
                 int textYOffset = relY < 0 ? -12 : 2;
                 if (relX < 0) {
-                    drawString(matrix, font, component, -10 - font.width(component), textYOffset, color.getInt());
+                    drawString(poseStack,font, component, -10 - font.width(component), textYOffset, color.getInt());
                 } else {
-                    drawString(matrix, font, component, 10, textYOffset, color.getInt());
+                    drawString(poseStack,font, component, 10, textYOffset, color.getInt());
                 }
             }*/ else {
                 if (relX < 0) {
-                    drawString(matrix, font, component, -10 - font.width(component), -5, color.getInt());
+                    drawString(poseStack,font, component, -10 - font.width(component), -5, color.getInt());
                 } else {
-                    drawString(matrix, font, component, 10, -5, color.getInt());
+                    drawString(poseStack,font, component, 10, -5, color.getInt());
                 }
             }
 
@@ -290,10 +293,10 @@ public class WheelScreen<T extends Data<?, ?>> extends ParentItemScreen {
         }
 
         if (hovered != null) {
-            GuiUtil.addToolTip(matrix, this, mouseX, mouseY, wheelType.tooltip(hovered));
+            GuiUtil.addToolTip(poseStack,this, mouseX, mouseY, wheelType.tooltip(hovered));
         } else for (Widget w : addedWidgets.getWidgets()) {
             if (w.isHovered() && widgetTags.containsKey(w)) {
-                GuiUtil.addToolTip(matrix, this, mouseX, mouseY, wheelType.tooltip(widgetTags.get(w)));
+                GuiUtil.addToolTip(poseStack,this, mouseX, mouseY, wheelType.tooltip(widgetTags.get(w)));
                 return;
             }
         }

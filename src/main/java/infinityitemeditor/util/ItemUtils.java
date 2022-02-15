@@ -3,8 +3,8 @@ package infinityitemeditor.util;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.data.base.DataColor;
 import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.item.*;
 import net.minecraft.tileentity.LockableLootTileEntity;
+import net.minecraft.world.item.*;
 
 import java.util.Arrays;
 

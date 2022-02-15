@@ -1,13 +1,13 @@
 package infinityitemeditor.mixin;
 
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.ChatFormatting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 import javax.annotation.Nullable;
 
-@Mixin({TextFormatting.class})
-public class TextFormattingMixin {
+@Mixin({ChatFormatting.class})
+public class ChatFormattingMixin {
 
     /**
      * @author ThiemeH

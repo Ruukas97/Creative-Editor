@@ -1,8 +1,8 @@
 package infinityitemeditor.screen.widgets;
 
 import infinityitemeditor.data.base.DataBitField;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.util.text.TextComponent;
 
 public class StyledBitToggle extends StyledButton {
     public int index;
@@ -28,6 +28,6 @@ public class StyledBitToggle extends StyledButton {
 
 
     public void updateMessage(boolean b) {
-        setMessage(new StringTextComponent(b ? onText : offText));
+        setMessage(new TextComponent(b ? onText : offText));
     }
 }

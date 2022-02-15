@@ -1,11 +1,11 @@
 package infinityitemeditor.data.tag;
 
 import infinityitemeditor.data.base.DataByte;
-import net.minecraft.nbt.ByteNBT;
+import net.minecraft.nbt.ByteTag;
 import net.minecraft.potion.Effect;
 
 public class TagEffectId extends DataByte {
-    public TagEffectId(ByteNBT value) {
+    public TagEffectId(ByteTag value) {
         super(value);
     }
 

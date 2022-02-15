@@ -1,15 +1,15 @@
 package infinityitemeditor.styles;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.screen.ParentScreen;
 import infinityitemeditor.util.ColorUtils.Color;
-import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.components.AbstractWidget;
 
 public interface Style {
     Color getMainColor();
 
 
-    Color getFGColor(Widget widget);
+    Color getFGColor(AbstractWidget widget);
 
 
     Color getFGColor(boolean active, boolean hovered);
@@ -18,11 +18,11 @@ public interface Style {
     void update();
 
 
-    void renderBackground(MatrixStack matrix, ParentScreen screen);
+    void renderBackground(PoseStack poseStack, ParentScreen screen);
 
 
-    void renderButton(MatrixStack matrix, IStyledWidget button, int mouseX, int mouseY, float alpha);
+    void renderButton(PoseStack poseStack, IStyledWidget button, int mouseX, int mouseY, float alpha);
 
 
-    void renderSlider(MatrixStack matrix, IStyledSlider<?> slider, int mouseX, int mouseY);
+    void renderSlider(PoseStack poseStack, IStyledSlider<?> slider, int mouseX, int mouseY);
 }

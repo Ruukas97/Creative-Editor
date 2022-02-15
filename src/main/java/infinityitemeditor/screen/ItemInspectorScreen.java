@@ -1,14 +1,13 @@
 package infinityitemeditor.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.util.ColorUtils.Color;
 import infinityitemeditor.util.ItemRendererUtils;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.ItemStack;
 
 public class ItemInspectorScreen extends ParentScreen {
     private final DataItem item;
@@ -18,7 +17,7 @@ public class ItemInspectorScreen extends ParentScreen {
 
 
     public ItemInspectorScreen(Screen lastScreen, DataItem item) {
-        super(new TranslationTextComponent("gui.iteminspector"), lastScreen);
+        super(new TranslatableComponent("gui.iteminspector"), lastScreen);
         this.item = item;
         this.isScrolling = false;
     }
@@ -40,18 +39,18 @@ public class ItemInspectorScreen extends ParentScreen {
 
 
     @Override
-    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
-        super.overlayRender(matrix, mouseX, mouseY, p3, color);
+    public void overlayRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color color) {
+        super.overlayRender(poseStack,mouseX, mouseY, p3, color);
         ItemRendererUtils itemRenderUtils = new ItemRendererUtils(this.itemRenderer);
 
         ItemStack stack = item.getItemStack();
-        RenderSystem.pushMatrix();
+        poseStack.pushPose();
         RenderHelper.setupForFlatItems(); // front gui lighting
-        RenderSystem.scalef(itemScale, itemScale, 1f);
+        poseStack.scale(itemScale, itemScale, 1f);
         int x = (int) (width / (2 * itemScale) - 8);
         int y = (int) (30 / itemScale + height / (2 * itemScale) - 11);
         itemRenderUtils.renderItemIntoGUI(stack, x, y, rotX, rotY);
-        RenderSystem.popMatrix();
+        poseStack.popPose();
     }
 
 }

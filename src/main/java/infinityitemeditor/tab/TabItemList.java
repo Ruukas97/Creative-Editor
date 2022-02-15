@@ -1,7 +1,7 @@
 package infinityitemeditor.tab;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.item.ItemStack;
 
 public class TabItemList extends TabCreative {
     private final ItemStack[] items;

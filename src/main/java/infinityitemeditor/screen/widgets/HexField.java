@@ -1,6 +1,6 @@
 package infinityitemeditor.screen.widgets;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.base.DataColor;
 import infinityitemeditor.styles.Style;
 import infinityitemeditor.styles.StyleManager;
@@ -8,15 +8,15 @@ import infinityitemeditor.util.ColorUtils.Color;
 import infinityitemeditor.util.GuiUtil;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.math.Mth;
+import net.minecraft.util.text.TextComponent;
 import org.lwjgl.glfw.GLFW;
 
 public class HexField extends Widget {
-    private final FontRenderer fontRenderer;
+    private final Font fontRenderer;
 
     @Getter
     DataColor dataColor;
@@ -38,8 +38,8 @@ public class HexField extends Widget {
     private int cursorPosition;
 
 
-    public HexField(FontRenderer font, int x, int y, int height, DataColor color) {
-        super(x, y, font.width("#FFFFFF") + 8, height, new StringTextComponent(""));
+    public HexField(Font font, int x, int y, int height, DataColor color) {
+        super(x, y, font.width("#FFFFFF") + 8, height, new TextComponent(""));
         this.dataColor = color;
         this.fontRenderer = font;
 
@@ -161,7 +161,7 @@ public class HexField extends Widget {
     public void setCursorPosition(int pos) {
         this.cursorPosition = pos;
         int i = digits.length - 1;
-        this.cursorPosition = MathHelper.clamp(this.cursorPosition, 0, i);
+        this.cursorPosition = Mth.clamp(this.cursorPosition, 0, i);
     }
 
 
@@ -278,7 +278,7 @@ public class HexField extends Widget {
 
 
     @Override
-    public void renderButton(MatrixStack matrix, int p_renderButton_1_, int p_renderButton_2_, float p_renderButton_3_) {
+    public void renderButton(PoseStack poseStack, int p_renderButton_1_, int p_renderButton_2_, float p_renderButton_3_) {
         Style style = StyleManager.getCurrentStyle();
         Color color = style.getFGColor(this);
 
@@ -287,7 +287,7 @@ public class HexField extends Widget {
         }
 
         if (this.getEnableBackgroundDrawing()) {
-            GuiUtil.drawFrame(matrix, x, y, x + width, y + height, 1, color);
+            GuiUtil.drawFrame(poseStack,x, y, x + width, y + height, 1, color);
         }
 
         int cursorPos = this.cursorPosition;
@@ -300,7 +300,7 @@ public class HexField extends Widget {
 
         if (!string.isEmpty()) {
             String halfString = cursorFine ? string.substring(0, cursorPos) : string;
-            halfX = this.fontRenderer.drawShadow(matrix, halfString, (float) textX, (float) textY, dataColor.getInt()) - 1;
+            halfX = this.fontRenderer.drawShadow(poseStack,halfString, (float) textX, (float) textY, dataColor.getInt()) - 1;
         }
 
         int cursorX = halfX + (int) Math.ceil(fontRenderer.width("#"));
@@ -310,11 +310,11 @@ public class HexField extends Widget {
         }
 
         if (!string.isEmpty() && cursorFine && cursorPos < string.length()) {
-            halfX = this.fontRenderer.drawShadow(matrix, string.substring(cursorPos), (float) halfX, (float) textY, dataColor.getInt());
+            halfX = this.fontRenderer.drawShadow(poseStack,string.substring(cursorPos), (float) halfX, (float) textY, dataColor.getInt());
         }
 
         if (displayCursor) {
-            this.fontRenderer.drawShadow(matrix, "_", (float) cursorX, (float) textY, color.getInt());
+            this.fontRenderer.drawShadow(poseStack,"_", (float) cursorX, (float) textY, color.getInt());
         }
     }
 

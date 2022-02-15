@@ -1,11 +1,11 @@
 package infinityitemeditor.util;
 
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public class InventoryUtils {
-    public static int countItem(PlayerInventory inventory, Item item) {
+    public static int countItem(Inventory inventory, Item item) {
         int count = 0;
         for (ItemStack stack : inventory.items) {
             if (stack.getItem() == item) {
@@ -16,7 +16,7 @@ public class InventoryUtils {
     }
 
 
-    public static int getEmptySlotsCount(PlayerInventory inventory) {
+    public static int getEmptySlotsCount(Inventory inventory) {
         int count = 0;
         for (ItemStack stack : inventory.items) {
             if (stack.isEmpty())
@@ -26,7 +26,7 @@ public class InventoryUtils {
     }
 
 
-    public static int getEmptySlot(PlayerInventory inventory) {
+    public static int getEmptySlot(Inventory inventory) {
         int count = 0;
         for (ItemStack stack : inventory.items) {
             if (stack.isEmpty())

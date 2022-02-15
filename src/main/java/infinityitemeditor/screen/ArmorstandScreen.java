@@ -1,6 +1,6 @@
 package infinityitemeditor.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.data.base.DataRotation;
 import infinityitemeditor.data.tag.entity.TagEntityArmorStand.Pose;
@@ -8,10 +8,9 @@ import infinityitemeditor.screen.widgets.SliderTag;
 import infinityitemeditor.screen.widgets.StyledButton;
 import infinityitemeditor.util.ColorUtils.Color;
 import infinityitemeditor.util.GuiUtil;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.resources.language.I18n;
 
 public class ArmorstandScreen extends BaseArmorstandScreen {
 
@@ -22,7 +21,7 @@ public class ArmorstandScreen extends BaseArmorstandScreen {
 
 
     public ArmorstandScreen(Screen lastScreen, DataItem item) {
-        super(new TranslationTextComponent("gui.armorstandeditor"), lastScreen, item);
+        super(new TranslationComponent("gui.armorstandeditor"), lastScreen, item);
         this.renderItem = false;
     }
 
@@ -50,10 +49,10 @@ public class ArmorstandScreen extends BaseArmorstandScreen {
         y1 += buttonHeight * 2;
 
         int butWidth = 130;
-        addButton(new StyledButton(x1 + (buttonWidth / 3), y1, butWidth, 18, I18n.get("gui.armorstandeditor.properties"), t -> {
+        addRenderableWidget(new StyledButton(x1 + (buttonWidth / 3), y1, butWidth, 18, I18n.get("gui.armorstandeditor.properties"), t -> {
             minecraft.setScreen(new ArmorstandPropScreen(this, item));
         }));
-        addButton(new StyledButton(x1 + (buttonWidth / 3) + butWidth + 5, y1, butWidth, 18, I18n.get("gui.armorstandeditor.equipment"), t -> {
+        addRenderableWidget(new StyledButton(x1 + (buttonWidth / 3) + butWidth + 5, y1, butWidth, 18, I18n.get("gui.armorstandeditor.equipment"), t -> {
             minecraft.setScreen(new ArmorStandEquipScreen(this, item.getTag().getArmorStandTag()));
         }));
 
@@ -62,9 +61,9 @@ public class ArmorstandScreen extends BaseArmorstandScreen {
 
 
     public void addSliders(int posX, int posY, DataRotation rot) {
-        addButton(new SliderTag(posX + ((buttonWidth + 5) * 1), posY, buttonWidth, buttonHeight, rot.getX()));
-        addButton(new SliderTag(posX + ((buttonWidth + 5) * 2), posY, buttonWidth, buttonHeight, rot.getY()));
-        addButton(new SliderTag(posX + ((buttonWidth + 5) * 3), posY, buttonWidth, buttonHeight, rot.getZ()));
+        addRenderableWidget(new SliderTag(posX + ((buttonWidth + 5) * 1), posY, buttonWidth, buttonHeight, rot.getX()));
+        addRenderableWidget(new SliderTag(posX + ((buttonWidth + 5) * 2), posY, buttonWidth, buttonHeight, rot.getY()));
+        addRenderableWidget(new SliderTag(posX + ((buttonWidth + 5) * 3), posY, buttonWidth, buttonHeight, rot.getZ()));
     }
 
 
@@ -75,14 +74,14 @@ public class ArmorstandScreen extends BaseArmorstandScreen {
 
 
     @Override
-    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
+    public void backRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color color) {
         drawArmor.updateArmorStand();
-        super.backRender(matrix, mouseX, mouseY, p3, color);
+        super.backRender(poseStack,mouseX, mouseY, p3, color);
     }
 
 
     @Override
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color color) {
         int x1 = width / divideX;
         int y1 = height / divideY;
 
@@ -93,20 +92,20 @@ public class ArmorstandScreen extends BaseArmorstandScreen {
                     continue;
                 }
             }
-            drawCenteredString(matrix, font, I18n.get("gui.armorstandeditor." + s.toString().toLowerCase()), x1 + (buttonWidth / 3 * 2), y1 + (buttonHeight / 4), color.getInt());
+            drawCenteredString(poseStack,font, I18n.get("gui.armorstandeditor." + s.toString().toLowerCase()), x1 + (buttonWidth / 3 * 2), y1 + (buttonHeight / 4), color.getInt());
             y1 += (int) (buttonHeight * 1.5);
 
         }
 
-        super.mainRender(matrix, mouseX, mouseY, p3, color);
+        super.mainRender(poseStack,mouseX, mouseY, p3, color);
     }
 
 
 
     @Override
-    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
-        super.overlayRender(matrix, mouseX, mouseY, p3, color);
-        GuiUtil.addToolTip(matrix, this, resetButton, mouseX, mouseY, I18n.get("gui.armorstandeditor.reset"));
+    public void overlayRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color color) {
+        super.overlayRender(poseStack,mouseX, mouseY, p3, color);
+        GuiUtil.addToolTip(poseStack,this, resetButton, mouseX, mouseY, I18n.get("gui.armorstandeditor.reset"));
     }
 
 

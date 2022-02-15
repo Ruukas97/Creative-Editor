@@ -1,17 +1,14 @@
 package infinityitemeditor.data.base;
 
-import net.minecraft.nbt.IntArrayNBT;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.nbt.IntArrayTag;
 
-public class DataIntegerArray extends SingularData<int[], IntArrayNBT> {
+public class DataIntegerArray extends SingularData<int[], IntArrayTag> {
     public DataIntegerArray(int... values) {
         super(values);
     }
 
 
-    public DataIntegerArray(IntArrayNBT nbt) {
+    public DataIntegerArray(IntArrayTag nbt) {
         this(nbt.getAsIntArray());
     }
 
@@ -23,23 +20,23 @@ public class DataIntegerArray extends SingularData<int[], IntArrayNBT> {
 
 
     @Override
-    public IntArrayNBT getNBT() {
-        return new IntArrayNBT(data);
+    public IntArrayTag getTag() {
+        return new IntArrayTag(data);
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        ITextComponent itextcomponent = (new StringTextComponent("I")).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
-        IFormattableTextComponent iformattabletextcomponent = (new StringTextComponent("[")).append(itextcomponent).append(";");
-
-        for (int i = 0; i < this.data.length; ++i) {
-            iformattabletextcomponent.append(" ").append((new StringTextComponent(String.valueOf(this.data[i]))).withStyle(SYNTAX_HIGHLIGHTING_NUMBER));
-            if (i != this.data.length - 1) {
-                iformattabletextcomponent.append(",");
-            }
-        }
-
-        iformattabletextcomponent.append("]");
-        return iformattabletextcomponent;
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        MutableComponent itextcomponent = (new TextComponent("I")).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
+//        IFormattableTextComponent iformattabletextcomponent = (new TextComponent("[")).append(itextcomponent).append(";");
+//
+//        for (int i = 0; i < this.data.length; ++i) {
+//            iformattabletextcomponent.append(" ").append((new TextComponent(String.valueOf(this.data[i]))).withStyle(SYNTAX_HIGHLIGHTING_NUMBER));
+//            if (i != this.data.length - 1) {
+//                iformattabletextcomponent.append(",");
+//            }
+//        }
+//
+//        iformattabletextcomponent.append("]");
+//        return iformattabletextcomponent;
+//    }
 }

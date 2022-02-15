@@ -1,20 +1,20 @@
 package infinityitemeditor.screen;
 
 import com.google.gson.JsonSyntaxException;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.data.NumberRangeInt;
 import infinityitemeditor.screen.widgets.StyledButton;
 import infinityitemeditor.screen.widgets.StyledTextField;
 import infinityitemeditor.util.ColorUtils;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.text.ChatFormatting;
 
 public class RawNBTEditorScreen extends ParentItemScreen {
 
@@ -28,7 +28,7 @@ public class RawNBTEditorScreen extends ParentItemScreen {
     private final int butHeight = 20;
 
     public RawNBTEditorScreen(Screen lastScreen, DataItem item) {
-        super(new TranslationTextComponent("gui.rawnbt"), lastScreen, item);
+        super(new TranslatableComponent("gui.rawnbt"), lastScreen, item);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class RawNBTEditorScreen extends ParentItemScreen {
         nbtField = new StyledTextField(font, (this.width - fieldWidth) / 2, fieldY, fieldWidth, fieldHeight, "nbt");
         nbtField.setMaxStringLength(9999);
         initFieldText();
-        copyButton = new StyledButton((width - bwidth) / 2, nbtField.y + butHeight + 10, bwidth, butHeight, new TranslationTextComponent("gui.loreeditor.copy"), this::copy);
+        copyButton = new StyledButton((width - bwidth) / 2, nbtField.y + butHeight + 10, bwidth, butHeight, new TranslatableComponent("gui.loreeditor.copy"), this::copy);
         renderWidgets.add(nbtField);
         renderWidgets.add(copyButton);
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
@@ -53,8 +53,8 @@ public class RawNBTEditorScreen extends ParentItemScreen {
         String tag = "{}";
         if (!nbtText.isEmpty()) {
             tag = nbtText;
-        } else if (!item.getNBT().isEmpty()) {
-            tag = item.getNBT().getAsString();
+        } else if (!item.getTag().isEmpty()) {
+            tag = item.getTag().getAsString();
         }
         nbtField.setText(tag);
     }
@@ -66,7 +66,7 @@ public class RawNBTEditorScreen extends ParentItemScreen {
     }
 
     private void tryUpdateDataItem() {
-        CompoundNBT nbt = canConvertStringToNBT(nbtField.getText());
+        CompoundTag nbt = canConvertStringToNBT(nbtField.getText());
         try {
             if (nbt != null) {
                 item = new DataItem(nbt);
@@ -77,9 +77,9 @@ public class RawNBTEditorScreen extends ParentItemScreen {
     }
 
     @Override
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
-        super.mainRender(matrix, mouseX, mouseY, p3, color);
-        drawCenteredString(matrix, font, statusText, this.width / 2, fieldY - fieldHeight + 5, TextFormatting.RED.getColor());
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
+        super.mainRender(poseStack,mouseX, mouseY, p3, color);
+        drawCenteredString(poseStack,font, statusText, this.width / 2, fieldY - fieldHeight + 5, ChatFormatting.RED.getColor());
     }
 
     @Override
@@ -89,7 +89,7 @@ public class RawNBTEditorScreen extends ParentItemScreen {
         initFieldText();
     }
 
-    private CompoundNBT canConvertStringToNBT(String s) {
+    private CompoundTag canConvertStringToNBT(String s) {
         try {
             statusText = "";
             return JsonToNBT.parseTag(s);

@@ -1,10 +1,8 @@
 package infinityitemeditor.data.base;
 
-import net.minecraft.nbt.StringNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.nbt.StringTag;
 
-public class DataString extends SingularData<String, StringNBT> {
+public class DataString extends SingularData<String, StringTag> {
 
     public DataString() {
         this("");
@@ -16,7 +14,7 @@ public class DataString extends SingularData<String, StringNBT> {
     }
 
 
-    public DataString(StringNBT nbt) {
+    public DataString(StringTag nbt) {
         this(nbt.getAsString());
     }
 
@@ -33,17 +31,17 @@ public class DataString extends SingularData<String, StringNBT> {
 
 
     @Override
-    public StringNBT getNBT() {
-        return StringNBT.valueOf(data);
+    public StringTag getTag() {
+        return StringTag.valueOf(data);
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        String s = quoteAndEscape(this.data);
-        String s1 = s.substring(0, 1);
-        ITextComponent itextcomponent = (new StringTextComponent(s.substring(1, s.length() - 1))).withStyle(SYNTAX_HIGHLIGHTING_STRING);
-        return (new StringTextComponent(s1)).append(itextcomponent).append(s1);
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        String s = quoteAndEscape(this.data);
+//        String s1 = s.substring(0, 1);
+//        MutableComponent itextcomponent = (new TextComponent(s.substring(1, s.length() - 1))).withStyle(SYNTAX_HIGHLIGHTING_STRING);
+//        return (new TextComponent(s1)).append(itextcomponent).append(s1);
+//    }
 
     public static String quoteAndEscape(String string) {
         StringBuilder stringbuilder = new StringBuilder(" ");

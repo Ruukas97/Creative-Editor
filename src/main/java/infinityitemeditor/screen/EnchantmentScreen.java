@@ -1,7 +1,7 @@
 package infinityitemeditor.screen;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.tag.TagEnchantment;
 import infinityitemeditor.data.tag.TagList;
 import infinityitemeditor.screen.widgets.NumberField;
@@ -10,12 +10,13 @@ import infinityitemeditor.screen.widgets.StyledButton;
 import infinityitemeditor.screen.widgets.StyledTextButton;
 import infinityitemeditor.util.ColorUtils.Color;
 import infinityitemeditor.util.GuiUtil;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.enchantment.Enchantment;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -35,7 +36,7 @@ public class EnchantmentScreen extends ParentScreen {
     private NumberField level;
     private TagEnchantment selected = null;
     private StyledButton selectedButton = null;
-    protected List<Widget> selectedWidgets = Lists.newArrayList();
+    protected List<AbstractWidget> selectedWidgets = Lists.newArrayList();
 
     private enum LevelLimit {
         SURVIVAL,
@@ -49,7 +50,7 @@ public class EnchantmentScreen extends ParentScreen {
     }
 
     public EnchantmentScreen(Screen lastScreen, TagList<TagEnchantment> enchantmentsTag) {
-        super(new TranslationTextComponent("gui.enchantment"), lastScreen);
+        super(new TranslatableComponent("gui.enchantment"), lastScreen);
         this.enchantmentsTag = enchantmentsTag;
     }
 
@@ -75,11 +76,11 @@ public class EnchantmentScreen extends ParentScreen {
 
         String backString = I18n.get("gui.main.back");
         int backWidth = font.width(backString);
-        addButton(new StyledTextButton(10 + backWidth / 2, 15, backWidth, backString, b -> {
+        addRenderableWidget(new StyledTextButton(10 + backWidth / 2, 15, backWidth, backString, b -> {
             minecraft.setScreen(lastScreen);
         }));
 
-        list = addButton(new ScrollableScissorWindow(10, yStart, containerWidth, yEnd, new TranslationTextComponent("gui.enchantment.all")));
+        list = addRenderableWidget(new ScrollableScissorWindow(10, yStart, containerWidth, yEnd, new TranslatableComponent("gui.enchantment.all")));
         for (Enchantment ench : sortedEnchants) {
             StyledButton button = new StyledButton(0, 0, 50, 20, ench.getFullname(getLevel(ench)).getString(), b -> {
                 TagEnchantment tag = new TagEnchantment(ench, getLevel(ench));
@@ -91,7 +92,7 @@ public class EnchantmentScreen extends ParentScreen {
             list.getWidgets().add(button);
         }
 
-        added = addButton(new ScrollableScissorWindow(width / 3 + 5, yStart, containerWidth, yEnd, new TranslationTextComponent("gui.enchantment.applied")));
+        added = addRenderableWidget(new ScrollableScissorWindow(width / 3 + 5, yStart, containerWidth, yEnd, new TranslatableComponent("gui.enchantment.applied")));
         for (TagEnchantment tag : enchantmentsTag) {
             addEnchantment(tag);
         }
@@ -111,15 +112,15 @@ public class EnchantmentScreen extends ParentScreen {
         this.selectedButton = selectedButton;
 
         if (selected != null && selectedButton != null) {
-            this.selectedButton.setMessage(new TranslationTextComponent("gui.enchantment.selected", selected.getEnchantment().getFullname(selected.getLevel().get())));
+            this.selectedButton.setMessage(new TranslatableComponent("gui.enchantment.selected", selected.getEnchantment().getFullname(selected.getLevel().get())));
         }
 
         initSelectedWidgets();
     }
 
     public void initSelectedWidgets() {
-        for (Widget w : selectedWidgets) {
-            buttons.remove(w);
+        for (AbstractWidget w : selectedWidgets) {
+            renderables.remove(w);
             children.remove(w);
         }
         selectedWidgets.clear();
@@ -131,10 +132,10 @@ public class EnchantmentScreen extends ParentScreen {
         int yStart = 85;
         int eWidth = width / 3 - 10;
 
-        selectedWidgets.add(addButton(new StyledButton(xStart, yStart, eWidth, 20, I18n.get("gui.enchantment.duplicate"), b -> duplicateSelected())));
-        selectedWidgets.add(addButton(new StyledButton(xStart, yStart + 25, eWidth, 20, I18n.get("gui.enchantment.remove"), b -> removeSelected())));
-//        selectedWidgets.add(addButton(new (font, xStart, yStart + 40, 20, selected.getLevel())));
-        selectedWidgets.add(addButton(new NumberField(font, xStart + eWidth / 2, yStart + 50, 20, selected.getLevel())));
+        selectedWidgets.add(addRenderableWidget(new StyledButton(xStart, yStart, eWidth, 20, I18n.get("gui.enchantment.duplicate"), b -> duplicateSelected())));
+        selectedWidgets.add(addRenderableWidget(new StyledButton(xStart, yStart + 25, eWidth, 20, I18n.get("gui.enchantment.remove"), b -> removeSelected())));
+//        selectedWidgets.add(addRenderableWidget(new (font, xStart, yStart + 40, 20, selected.getLevel())));
+        selectedWidgets.add(addRenderableWidget(new NumberField(font, xStart + eWidth / 2, yStart + 50, 20, selected.getLevel())));
         //selectedWidgets.add(levelNumberField);
     }
 
@@ -180,23 +181,23 @@ public class EnchantmentScreen extends ParentScreen {
 
 
     @Override
-    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float partialTicks, Color color) {
-        super.backRender(matrix, mouseX, mouseY, partialTicks, color);
+    public void backRender(PoseStack poseStack, int mouseX, int mouseY, float partialTicks, Color color) {
+        super.backRender(poseStack,mouseX, mouseY, partialTicks, color);
     }
 
 
     @Override
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float partialTicks, Color color) {
-        super.mainRender(matrix, mouseX, mouseY, partialTicks, color);
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float partialTicks, Color color) {
+        super.mainRender(poseStack,mouseX, mouseY, partialTicks, color);
 
-        drawString(matrix, font, list.getMessage(), list.x, list.y - 10, color.getInt());
-        drawString(matrix, font, added.getMessage(), added.x, added.y - 10, color.getInt());
+        drawString(poseStack,font, list.getMessage(), list.x, list.y - 10, color.getInt());
+        drawString(poseStack,font, added.getMessage(), added.x, added.y - 10, color.getInt());
     }
 
 
     @Override
-    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float partialTicks, Color color) {
-        super.overlayRender(matrix, mouseX, mouseY, partialTicks, color);
+    public void overlayRender(PoseStack poseStack, int mouseX, int mouseY, float partialTicks, Color color) {
+        super.overlayRender(poseStack,mouseX, mouseY, partialTicks, color);
 
         if (!list.isScrolling() && GuiUtil.isMouseIn(mouseX, mouseY, list.x, list.y, list.getWidth(), list.getHeight())) {
             for (Widget w : list.getWidgets()) {
@@ -208,7 +209,7 @@ public class EnchantmentScreen extends ParentScreen {
                     continue;
                 Enchantment ench = getEnchantmentFromResourceString(tooltip);
                 if (ench != null && w.isHovered()) {
-                    drawTooltip(matrix, mouseX, mouseY, ench);
+                    drawTooltip(poseStack,mouseX, mouseY, ench);
                 }
             }
         }
@@ -224,7 +225,7 @@ public class EnchantmentScreen extends ParentScreen {
                 ResourceLocation loc = new ResourceLocation(tooltip);
                 Enchantment ench = GameRegistry.findRegistry(Enchantment.class).getValue(loc);
                 if (ench != null && w.isHovered()) {
-                    drawTooltip(matrix, mouseX, mouseY, ench);
+                    drawTooltip(poseStack,mouseX, mouseY, ench);
                 }
             }
         }
@@ -233,11 +234,11 @@ public class EnchantmentScreen extends ParentScreen {
             int xStart = (width / 3 - 10) * 2 + 20;
             int eWidth = width / 3 - 10;
             int textWidth = font.width(I18n.get("gui.enchantment.level"));
-            drawString(matrix, font, new TranslationTextComponent("gui.enchantment.level"), xStart + eWidth/2 - 3 - textWidth,141, color.getInt());
+            drawString(poseStack,font, new TranslatableComponent("gui.enchantment.level"), xStart + eWidth/2 - 3 - textWidth,141, color.getInt());
         }
     }
 
-    void drawTooltip(MatrixStack matrix, int x, int y, Enchantment ench) {
+    void drawTooltip(PoseStack poseStack, int x, int y, Enchantment ench) {
         String name = I18n.get(ench.getDescriptionId());
         String rarity = I18n.get("gui.enchantment.rarity." + ench.getRarity().toString().toLowerCase());
         String rarityLine = I18n.get("gui.enchantment.tooltip.rarity", rarity);
@@ -246,10 +247,10 @@ public class EnchantmentScreen extends ParentScreen {
         String typeLine = I18n.get("gui.enchantment.tooltip.type", ench.category != null ? ench.category.toString().toLowerCase() : "N/A");
         String descKey = ench.getDescriptionId() + ".desc";
         if (!I18n.exists(descKey))
-            GuiUtil.addToolTip(matrix, this, x, y, name, rarityLine, minLevel, maxLevel, typeLine);
+            GuiUtil.addToolTip(poseStack,this, x, y, name, rarityLine, minLevel, maxLevel, typeLine);
         else {
             String descLine = I18n.get(descKey);
-            GuiUtil.addToolTip(matrix, this, x, y, name, rarityLine, minLevel, maxLevel, typeLine, descLine);
+            GuiUtil.addToolTip(poseStack,this, x, y, name, rarityLine, minLevel, maxLevel, typeLine, descLine);
         }
     }
 

@@ -1,6 +1,6 @@
 package infinityitemeditor.screen.widgets;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.NumberRangeInt;
 import infinityitemeditor.styles.Style;
 import infinityitemeditor.styles.StyleManager;
@@ -8,15 +8,15 @@ import infinityitemeditor.util.ColorUtils.Color;
 import infinityitemeditor.util.GuiUtil;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.math.Mth;
+import net.minecraft.util.text.TextComponent;
 import org.lwjgl.glfw.GLFW;
 
 public class NumberField extends Widget {
-    private final FontRenderer fontRenderer;
+    private final Font fontRenderer;
 
     @Getter
     NumberRangeInt data;
@@ -39,8 +39,8 @@ public class NumberField extends Widget {
         this(info.getFont(), info.getPosX(), info.getPosY(), info.getHeight(), data);
     }
 
-    public NumberField(FontRenderer font, int x, int y, int width, int height, NumberRangeInt data) {
-        super(x, y, width, height, new StringTextComponent(""));
+    public NumberField(Font font, int x, int y, int width, int height, NumberRangeInt data) {
+        super(x, y, width, height, new TextComponent(""));
         this.data = data;
         this.fontRenderer = font;
 
@@ -60,8 +60,8 @@ public class NumberField extends Widget {
     }
 
 
-    public NumberField(FontRenderer font, int x, int y, int height, NumberRangeInt data) {
-        super(x, y, 1000, height, new StringTextComponent(""));
+    public NumberField(Font font, int x, int y, int height, NumberRangeInt data) {
+        super(x, y, 1000, height, new TextComponent(""));
         this.data = data;
         this.fontRenderer = font;
 
@@ -209,7 +209,7 @@ public class NumberField extends Widget {
     public void setCursorPosition(int pos) {
         this.cursorPosition = pos;
         int i = digits.length - 1;
-        this.cursorPosition = MathHelper.clamp(this.cursorPosition, 0, i);
+        this.cursorPosition = Mth.clamp(this.cursorPosition, 0, i);
     }
 
 
@@ -312,7 +312,7 @@ public class NumberField extends Widget {
 
 
     @Override
-    public void renderButton(MatrixStack matrix, int p_renderButton_1_, int p_renderButton_2_, float p_renderButton_3_) {
+    public void renderButton(PoseStack poseStack, int p_renderButton_1_, int p_renderButton_2_, float p_renderButton_3_) {
         Style style = StyleManager.getCurrentStyle();
         Color color = style.getFGColor(this);
         String s = getValueAsString();
@@ -322,7 +322,7 @@ public class NumberField extends Widget {
         }
 
         if (this.getEnableBackgroundDrawing()) {
-            GuiUtil.drawFrame(matrix, x, y, x + width, y + height, 1, color);
+            GuiUtil.drawFrame(poseStack,x, y, x + width, y + height, 1, color);
         }
 
         int cursorPos = this.cursorPosition;
@@ -335,7 +335,7 @@ public class NumberField extends Widget {
 
         if (!string.isEmpty()) {
             String halfString = cursorFine ? string.substring(0, cursorPos) : string;
-            halfX = this.fontRenderer.drawShadow(matrix, halfString, (float) textX, (float) textY, color.getInt()) - 1;
+            halfX = this.fontRenderer.drawShadow(poseStack,halfString, (float) textX, (float) textY, color.getInt()) - 1;
         }
 
         int cursorX = halfX;
@@ -345,11 +345,11 @@ public class NumberField extends Widget {
         }
 
         if (!string.isEmpty() && cursorFine && cursorPos < string.length()) {
-            halfX = this.fontRenderer.drawShadow(matrix, string.substring(cursorPos), (float) halfX, (float) textY, color.getInt());
+            halfX = this.fontRenderer.drawShadow(poseStack,string.substring(cursorPos), (float) halfX, (float) textY, color.getInt());
         }
 
         if (displayCursor) {
-            this.fontRenderer.drawShadow(matrix, "_", (float) cursorX, (float) textY, color.getInt());
+            this.fontRenderer.drawShadow(poseStack,"_", (float) cursorX, (float) textY, color.getInt());
         }
     }
 

@@ -1,11 +1,11 @@
 package infinityitemeditor.styles;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.components.AbstractWidget;
 
 public interface IStyledWidget {
-    Widget getWidget();
+    AbstractWidget getWidget();
 
 
     int getImageY(boolean b);
@@ -17,5 +17,5 @@ public interface IStyledWidget {
     void setHovered(boolean b);
 
 
-    void renderBackground(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY);
+    void renderBackground(PoseStack poseStack, Minecraft mc, int mouseX, int mouseY);
 }

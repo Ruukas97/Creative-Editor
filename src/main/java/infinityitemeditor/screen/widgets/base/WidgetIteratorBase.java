@@ -7,7 +7,7 @@ import infinityitemeditor.screen.widgets.WidgetInfoSupport;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +42,7 @@ public class WidgetIteratorBase implements Iterable<ClassSpecificWidget> {
         add(new ClassSpecificWidget(text, itemClass::isInstance, widgetCreator));
     }
 
-    public WidgetInfoSupport<?> modifiedTriggerSupport(WidgetInfoSupport<?> sup, Button.IPressable trigger) {
+    public WidgetInfoSupport<?> modifiedTriggerSupport(WidgetInfoSupport<?> sup, Button.Button.OnPress trigger) {
         return inf -> sup.fromWidgetInfo(inf.withTrigger(trigger));
     }
 

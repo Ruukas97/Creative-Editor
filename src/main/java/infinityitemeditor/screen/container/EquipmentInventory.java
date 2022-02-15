@@ -2,11 +2,10 @@ package infinityitemeditor.screen.container;
 
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.data.tag.TagItemList;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
-public class EquipmentInventory implements IInventory {
+public class EquipmentInventory implements Container {
     private TagItemList armor;
     private TagItemList hands;
     private TagItemList[] both;
@@ -126,7 +125,7 @@ public class EquipmentInventory implements IInventory {
     }
 
     @Override
-    public boolean stillValid(PlayerEntity player) {
+    public boolean stillValid(Player player) {
         return false;
     }
 

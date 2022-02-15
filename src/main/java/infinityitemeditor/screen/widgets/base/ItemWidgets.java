@@ -8,10 +8,10 @@ import infinityitemeditor.screen.models.EnchantmentWheelType;
 import infinityitemeditor.screen.widgets.ClassSpecificWidget;
 import infinityitemeditor.screen.widgets.StyledTextButton;
 import infinityitemeditor.util.ItemUtils;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.ArmorStandItem;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ArmorStandItem;
 
 import java.util.Spliterator;
 import java.util.function.Consumer;

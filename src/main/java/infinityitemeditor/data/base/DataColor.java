@@ -4,13 +4,11 @@ import infinityitemeditor.data.Data;
 import infinityitemeditor.util.ColorUtils.Color;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.IntNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.nbt.IntTag;
+import net.minecraft.nbt.Tag;
 
 @SuppressWarnings("serial")
-public class DataColor extends Color implements Data<Color, IntNBT> {
+public class DataColor extends Color implements Data<Color, IntTag> {
     @Getter
     @Setter
     private int defColor = 0;
@@ -22,12 +20,12 @@ public class DataColor extends Color implements Data<Color, IntNBT> {
     private float brightness = 0;
 
 
-    public DataColor(INBT nbt) {
-        this(nbt instanceof IntNBT ? (IntNBT) nbt : IntNBT.valueOf(0));
+    public DataColor(Tag nbt) {
+        this(nbt instanceof IntTag ? (IntTag) nbt : IntTag.valueOf(0));
     }
 
 
-    public DataColor(IntNBT nbt) {
+    public DataColor(IntTag nbt) {
         this(nbt.getAsInt());
     }
 
@@ -50,15 +48,15 @@ public class DataColor extends Color implements Data<Color, IntNBT> {
 
 
     @Override
-    public IntNBT getNBT() {
-        return IntNBT.valueOf(argb);
+    public IntTag getTag() {
+        return IntTag.valueOf(argb);
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        ITextComponent itextcomponent = (new StringTextComponent(getHexString().substring(1))).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
-        return (new StringTextComponent("#").append(itextcomponent).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE));
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        MutableComponent itextcomponent = (new TextComponent(getHexString().substring(1))).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
+//        return (new TextComponent("#").append(itextcomponent).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE));
+//    }
 
 
     private void updateHSB() {

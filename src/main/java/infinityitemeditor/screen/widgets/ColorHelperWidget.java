@@ -1,15 +1,15 @@
 package infinityitemeditor.screen.widgets;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.gui.IGuiEventListener;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.util.text.ChatFormatting;
+import net.minecraft.util.text.TextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ColorHelperWidget extends Widget {
+public class ColorHelperWidget extends AbstractWidget {
 
     private ArrayList<ColorButton> children = new ArrayList<>();
     private ColorButton[] colorButtons;
@@ -21,9 +21,9 @@ public class ColorHelperWidget extends Widget {
     public int y;
 
 
-    public ColorHelperWidget(List<IGuiEventListener> children, int wWidth, int wHeight, int width, int height) {
-        super(0, 0, wWidth, wHeight, StringTextComponent.EMPTY);
-        TextFormatting[] formats = TextFormatting.values();
+    public ColorHelperWidget(List<GuiEventListener> children, int wWidth, int wHeight, int width, int height) {
+        super(0, 0, wWidth, wHeight, TextComponent.EMPTY);
+        ChatFormatting[] formats = ChatFormatting.values();
         int colorAmount = 2 + formats.length;
         butWidth = wWidth / 12;
         butHeight = wHeight / 2;
@@ -31,10 +31,10 @@ public class ColorHelperWidget extends Widget {
         colorButtons = new ColorButton[colorAmount];
         x = width - xOffset - butWidth * ((colorAmount + 2) / 2) + (butWidth);
         y = height - yOffset;
-        colorButtons[0] = new ColorButton(children, x, y, butWidth, butHeight, TextFormatting.DARK_RED + "%", "", true);
+        colorButtons[0] = new ColorButton(children, x, y, butWidth, butHeight, ChatFormatting.DARK_RED + "%", "", true);
         colorButtons[1] = new ColorButton(children, width - xOffset - butWidth * ((colorAmount + 2) / 2) + (butWidth * 2), height - yOffset, butWidth, butHeight, "&", "\u00a7r");
         for (int i = 2; i < colorAmount; i++) {
-            TextFormatting f = formats[i - 2];
+            ChatFormatting f = formats[i - 2];
             colorButtons[i] = new ColorButton(children, width - xOffset - butWidth * ((colorAmount + 2) / 2) + (butWidth * ((i % (colorAmount / 2)) + 1)), height - yOffset + (15 * (i / (colorAmount / 2))), butWidth, butHeight, f.toString() + f.toString().substring(1), f.toString());
         }
 
@@ -55,7 +55,7 @@ public class ColorHelperWidget extends Widget {
     }
 
     @Override
-    public void renderButton(MatrixStack p_230431_1_, int p_230431_2_, int p_230431_3_, float p_230431_4_) {
+    public void renderButton(PoseStack p_230431_1_, int p_230431_2_, int p_230431_3_, float p_230431_4_) {
         children.forEach(t -> t.render(p_230431_1_, p_230431_2_, p_230431_3_, p_230431_4_));
     }
 

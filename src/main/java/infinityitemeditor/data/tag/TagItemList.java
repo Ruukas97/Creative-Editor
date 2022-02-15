@@ -2,31 +2,28 @@ package infinityitemeditor.data.tag;
 
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.data.base.SingularData;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.Items;
 
-public class TagItemList extends SingularData<DataItem[], ListNBT>{
+public class TagItemList extends SingularData<DataItem[], ListTag>{
     public TagItemList(int size) {
         super(new DataItem[size]);
     }
 
-    public TagItemList(ListNBT items, int size) {
+    public TagItemList(ListTag items, int size) {
         this(size);
         int i = 0;
-        for(INBT nbt : items){
-            if(nbt instanceof CompoundNBT){
-                data[i] = new DataItem((CompoundNBT) nbt);
+        for(Tag nbt : items){
+            if(nbt instanceof CompoundTag){
+                data[i] = new DataItem((CompoundTag) nbt);
             }
             i++;
         }
     }
 
-    public TagItemList(ListNBT items) {
+    public TagItemList(ListTag items) {
         this(items, items.size());
     }
 
@@ -41,44 +38,44 @@ public class TagItemList extends SingularData<DataItem[], ListNBT>{
     }
 
     @Override
-    public ListNBT getNBT() {
-        ListNBT nbt = new ListNBT();
+    public ListTag getTag() {
+        ListTag nbt = new ListTag();
         int slot = 0;
         for (DataItem item : data) {
             if (item == null) {
                 item = new DataItem();
             }
             item.getSlot().set(slot++);
-            nbt.add(item.getNBT());
+            nbt.add(item.getTag());
         }
         return nbt;
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        IFormattableTextComponent iformattabletextcomponent = (new StringTextComponent("["));
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        IFormattableTextComponent iformattabletextcomponent = (new TextComponent("["));
+//
+//        for(int i = 0; i < this.data.length; i++) {
+//            IFormattableTextComponent iformattabletextcomponent1 = (new TextComponent(data[i].getItem().getIDExcludingMC())).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
+//            iformattabletextcomponent.append(" ").append(iformattabletextcomponent1);
+//            if (i != this.data.length - 1) {
+//                iformattabletextcomponent.append(",");
+//            }
+//        }
+//
+//        iformattabletextcomponent.append("]");
+//        return iformattabletextcomponent;
+//    }
 
-        for(int i = 0; i < this.data.length; i++) {
-            IFormattableTextComponent iformattabletextcomponent1 = (new StringTextComponent(data[i].getItem().getIDExcludingMC())).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
-            iformattabletextcomponent.append(" ").append(iformattabletextcomponent1);
-            if (i != this.data.length - 1) {
-                iformattabletextcomponent.append(",");
-            }
-        }
-
-        iformattabletextcomponent.append("]");
-        return iformattabletextcomponent;
-    }
-
-    public ListNBT getNBTEmptyDefaults() {
-        ListNBT nbt = new ListNBT();
+    public ListTag getNBTEmptyDefaults() {
+        ListTag nbt = new ListTag();
         int slot = 0;
         for (DataItem item : data) {
             if (item == null || item.getCount().get() == 0 || item.getItem().getItem() == Items.AIR) {
-                nbt.add(new CompoundNBT());
+                nbt.add(new CompoundTag());
             } else {
                 item.getSlot().set(slot);
-                nbt.add(item.getNBT());
+                nbt.add(item.getTag());
             }
             slot++;
         }

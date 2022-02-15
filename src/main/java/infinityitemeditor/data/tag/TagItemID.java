@@ -1,19 +1,19 @@
 package infinityitemeditor.data.tag;
 
 import infinityitemeditor.data.base.DataString;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.StringNBT;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nonnull;
 
 public class TagItemID extends DataString {
-    public TagItemID(INBT value) {
-        this(value instanceof StringNBT ? value.getAsString() : "air");
+    public TagItemID(Tag value) {
+        this(value instanceof StringTag ? value.getAsString() : "air");
     }
 
     public TagItemID(String value) {

@@ -1,10 +1,10 @@
 package infinityitemeditor.screen.widgets;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.IGuiEventListener;
+import net.minecraft.client.gui.GuiEventListener;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.StringUtils;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +12,11 @@ import java.util.List;
 public class ColorButton extends StyledButton {
 
     private String c;
-    private List<IGuiEventListener> children;
+    private List<GuiEventListener> children;
     private boolean clean;
 
-    public ColorButton(List<IGuiEventListener> children, int x, int y, int width, int height, String s, String c, boolean clean) {
-        super(x, y, width, height, new StringTextComponent(s), t -> t.onPress());
+    public ColorButton(List<GuiEventListener> children, int x, int y, int width, int height, String s, String c, boolean clean) {
+        super(x, y, width, height, new TextComponent(s), t -> t.onPress());
         this.children = children;
         this.c = c;
         this.clean = clean;
@@ -24,15 +24,15 @@ public class ColorButton extends StyledButton {
         if (clean && children == null) active = false;
     }
 
-    public ColorButton(List<IGuiEventListener> children, int x, int y, int width, int height, String s, String c) {
+    public ColorButton(List<GuiEventListener> children, int x, int y, int width, int height, String s, String c) {
         this(children, x, y, width, height, s, c, false);
     }
 
     public void onPress() {
         boolean containedFocusTextField = false;
         if (children != null) {
-            ArrayList<IGuiEventListener> allChildren = new ArrayList<>(children);
-            for (IGuiEventListener eventListener : children) {
+            ArrayList<GuiEventListener> allChildren = new ArrayList<>(children);
+            for (GuiEventListener eventListener : children) {
                 if (!(eventListener instanceof ScrollableScissorWindow)) continue;
                 ScrollableScissorWindow window = (ScrollableScissorWindow) eventListener;
                 for (Widget w : window.getWidgets()) {
@@ -42,7 +42,7 @@ public class ColorButton extends StyledButton {
                 }
                 allChildren.remove(window);
             }
-            for (IGuiEventListener eventListener : allChildren) {
+            for (GuiEventListener eventListener : allChildren) {
                 if (!(eventListener instanceof StyledTextField)) continue;
                 StyledTextField textField = (StyledTextField) eventListener;
                 if (!textField.isFocused()) continue;

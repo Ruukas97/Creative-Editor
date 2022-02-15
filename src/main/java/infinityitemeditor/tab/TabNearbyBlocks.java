@@ -6,17 +6,17 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.entity.player.ClientPlayer;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.core.NonNullList;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3i;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -32,7 +32,7 @@ public class TabNearbyBlocks extends TabCreative {
     public void fillItemList(NonNullList<ItemStack> items) {
         Minecraft mc = Minecraft.getInstance();
         ClientWorld world = mc.level;
-        ClientPlayerEntity player = mc.player;
+        ClientPlayer player = mc.player;
         BlockPos playerPos = new BlockPos(player.position());
         HashMap<Item, Integer> map = new HashMap<>();
         int radius = Config.NEARBYBLOCKS_TAB_RADIUS.get();

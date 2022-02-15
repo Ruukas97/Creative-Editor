@@ -2,14 +2,12 @@ package infinityitemeditor.data.tag;
 
 import infinityitemeditor.data.base.SingularData;
 import lombok.Getter;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.nbt.IntNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.nbt.IntTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
-public class TagEnum<E extends Enum<E>> extends SingularData<E, IntNBT> implements Button.IPressable {
+public class TagEnum<E extends Enum<E>> extends SingularData<E, IntTag> implements Button.OnPress {
     @Getter
     private final E[] options;
 
@@ -35,14 +33,14 @@ public class TagEnum<E extends Enum<E>> extends SingularData<E, IntNBT> implemen
     }
 
     @Override
-    public IntNBT getNBT() {
-        return IntNBT.valueOf(data.ordinal());
+    public IntTag getTag() {
+        return IntTag.valueOf(data.ordinal());
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        return getName().withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        return getName().withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
+//    }
 
     @Override
     public void onPress(Button button) {
@@ -50,11 +48,11 @@ public class TagEnum<E extends Enum<E>> extends SingularData<E, IntNBT> implemen
         button.setMessage(getName());
     }
 
-    public TextComponent getName(){
-        return new TranslationTextComponent("enum." + (data.getDeclaringClass().getSimpleName() + '.' + data.name()).toLowerCase());
+    public Component getName(){
+        return new TranslatableComponent("enum." + (data.getDeclaringClass().getSimpleName() + '.' + data.name()).toLowerCase());
     }
 
-    public TextComponent getKeyValue(){
-        return (TextComponent) new TranslationTextComponent("enum." + data.getDeclaringClass().getSimpleName().toLowerCase() + "._", getPrettyDisplay("", 0)).withStyle(TextFormatting.AQUA);
-    }
+//    public TextComponent getKeyValue(){
+//        return (TextComponent) new TranslatableComponent("enum." + data.getDeclaringClass().getSimpleName().toLowerCase() + "._", getPrettyDisplay("", 0)).withStyle(ChatFormatting.AQUA);
+//    }
 }

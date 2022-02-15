@@ -8,23 +8,20 @@ import infinityitemeditor.util.AttributeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifier.Operation;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.util.RegistryKey;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponent;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Map.Entry;
 
-public class TagAttributeModifier implements Data<TagAttributeModifier, CompoundNBT> {
+public class TagAttributeModifier implements Data<TagAttributeModifier, CompoundTag> {
     /**
      * See: {@link }
-     * {@link ItemStack#addAttributeModifier(Attribute, AttributeModifier, EquipmentSlotType)}
+     * {@link ItemStack#addAttributeModifier(Attribute, AttributeModifier, EquipmentSlot)}
      * {@link }
      */
 
@@ -39,29 +36,29 @@ public class TagAttributeModifier implements Data<TagAttributeModifier, Compound
     private final DataDouble amount;
 
     @Getter
-    private final TagEnum<Operation> operation;
+    private final TagEnum<AttributeModifier.Operation> operation;
 
     @Getter
-    private final TagEnum<EquipmentSlotType> slot;
+    private final TagEnum<EquipmentSlot> slot;
 
     public TagAttributeModifier(Entry<RegistryKey<Attribute>, Attribute> attributeRegistryEntry) {
         this(attributeRegistryEntry.getValue(), new AttributeModifier(attributeRegistryEntry.getKey().toString(), attributeRegistryEntry.getValue().getDefaultValue(), AttributeModifier.Operation.ADDITION), null);
     }
 
-    public TagAttributeModifier(Attribute attribute, AttributeModifier modifier, EquipmentSlotType slot) {
+    public TagAttributeModifier(Attribute attribute, AttributeModifier modifier, EquipmentSlot slot) {
         this.attribute = attribute;
         this.name = new DataString(modifier.getName());
         this.amount = new DataDouble(modifier.getAmount());
         this.operation = new TagEnum<>(Operation.class, modifier.getOperation());
-        this.slot = new TagEnum<>(EquipmentSlotType.class, slot);
+        this.slot = new TagEnum<>(EquipmentSlot.class, slot);
     }
 
-    public TagAttributeModifier(INBT nbt) {
-        this(nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT());
+    public TagAttributeModifier(Tag nbt) {
+        this(nbt instanceof CompoundTag ? (CompoundTag) nbt : new CompoundTag());
     }
 
-    public TagAttributeModifier(CompoundNBT nbt) {
-        this(AttributeUtils.getAttribute(nbt.getString(NBTKeys.keys.attributeName())), AttributeModifier.load(nbt), nbt.contains(NBTKeys.keys.attributeSlot(), Constants.NBT.TAG_STRING) ? EquipmentSlotType.byName(nbt.getString(NBTKeys.keys.attributeSlot())) : EquipmentSlotType.MAINHAND);
+    public TagAttributeModifier(CompoundTag nbt) {
+        this(AttributeUtils.getAttribute(nbt.getString(NBTKeys.keys.attributeName())), AttributeModifier.load(nbt), nbt.contains(NBTKeys.keys.attributeSlot(), Tag.TAG_STRING) ? EquipmentSlot.byName(nbt.getString(NBTKeys.keys.attributeSlot())) : EquipmentSlot.MAINHAND);
     }
 
     @Override
@@ -71,16 +68,16 @@ public class TagAttributeModifier implements Data<TagAttributeModifier, Compound
 
     @Override
     public boolean isDefault() {
-        return this.attribute == null || amount.get() == 0 || getNBT().isEmpty();
+        return this.attribute == null || amount.get() == 0 || getTag().isEmpty();
     }
 
 
     @Override
-    public CompoundNBT getNBT() {
+    public CompoundTag getTag() {
         if(attribute == null){
-            return new CompoundNBT();
+            return new CompoundTag();
         }
-        CompoundNBT nbt = createAttributeModifier().save();
+        CompoundTag nbt = createAttributeModifier().save();
         nbt.putString(NBTKeys.keys.attributeName(), AttributeUtils.getName(attribute));
         nbt.putString(NBTKeys.keys.attributeSlot(), slot.get().getName());
         return nbt;
@@ -90,8 +87,8 @@ public class TagAttributeModifier implements Data<TagAttributeModifier, Compound
         return new AttributeModifier(name.get(), amount.get(), operation.get());
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        return ((TextComponent) slot.getPrettyDisplay("", 0)).append(AttributeUtils.getText(getAttribute(), createAttributeModifier()));
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        return ((TextComponent) slot.getPrettyDisplay("", 0)).append(AttributeUtils.getText(getAttribute(), createAttributeModifier()));
+//    }
 }

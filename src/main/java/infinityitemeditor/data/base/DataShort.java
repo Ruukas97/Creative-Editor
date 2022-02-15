@@ -1,10 +1,8 @@
 package infinityitemeditor.data.base;
 
-import net.minecraft.nbt.ShortNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.nbt.ShortTag;
 
-public class DataShort extends SingularData<Short, ShortNBT> {
+public class DataShort extends SingularData<Short, ShortTag> {
     public DataShort() {
         this((short) 0);
     }
@@ -15,7 +13,7 @@ public class DataShort extends SingularData<Short, ShortNBT> {
     }
 
 
-    public DataShort(ShortNBT nbt) {
+    public DataShort(ShortTag nbt) {
         this(nbt.getAsShort());
     }
 
@@ -27,13 +25,13 @@ public class DataShort extends SingularData<Short, ShortNBT> {
 
 
     @Override
-    public ShortNBT getNBT() {
-        return ShortNBT.valueOf(data);
+    public ShortTag getTag() {
+        return ShortTag.valueOf(data);
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        ITextComponent itextcomponent = (new StringTextComponent("s")).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
-        return (new StringTextComponent(String.valueOf((int) this.data))).append(itextcomponent).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        MutableComponent itextcomponent = (new TextComponent("s")).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
+//        return (new TextComponent(String.valueOf((int) this.data))).append(itextcomponent).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
+//    }
 }

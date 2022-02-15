@@ -3,8 +3,8 @@ package infinityitemeditor.render;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.data.base.DataBoolean;
 import infinityitemeditor.data.tag.entity.TagEntityArmorStand;
-import net.minecraft.item.ArmorStandItem;
-import net.minecraft.item.IItemPropertyGetter;
+import net.minecraft.world.item.ArmorStandItem;
+import net.minecraft.world.item.IItemPropertyGetter;
 
 public class ArmorStandRendering {
 

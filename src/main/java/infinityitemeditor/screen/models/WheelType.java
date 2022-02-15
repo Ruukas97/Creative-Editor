@@ -4,9 +4,9 @@ import infinityitemeditor.data.Data;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.util.TextComponentUtils;
 import lombok.Getter;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.text.MutableComponent;
 import net.minecraft.util.text.TextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.Comparator;
 
@@ -14,7 +14,7 @@ public abstract class WheelType<T extends Data<?, ?>> implements Comparator<T> {
     public static final TagFilter<?> ALL = new TagFilter<Data<?, ?>>() {
         @Override
         public TextComponent getName() {
-            return new TranslationTextComponent("filter.all");
+            return new TranslatableComponent("filter.all");
         }
 
         @Override
@@ -52,7 +52,7 @@ public abstract class WheelType<T extends Data<?, ?>> implements Comparator<T> {
 
     public abstract TextComponent displayTag(T tag);
 
-    public abstract ITextComponent[] tooltip(T tag);
+    public abstract MutableComponent[] tooltip(T tag);
 
     @Override
     public int compare(T o1, T o2) {

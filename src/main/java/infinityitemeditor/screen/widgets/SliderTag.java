@@ -1,6 +1,6 @@
 package infinityitemeditor.screen.widgets;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.NumberRangeInt;
 import infinityitemeditor.styles.IStyledSlider;
 import infinityitemeditor.styles.StyleManager;
@@ -8,7 +8,7 @@ import infinityitemeditor.styles.StyleSpectrum;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.glfw.GLFW;
@@ -32,19 +32,19 @@ public class SliderTag extends Widget implements IStyledSlider<Integer> {
 
 
     public SliderTag(int x, int y, int width, int height, String display, boolean drawString, NumberRangeInt range) {
-        super(x, y, width, height, new StringTextComponent(display));
+        super(x, y, width, height, new TextComponent(display));
         this.display = display;
         this.drawString = drawString;
         this.range = range;
 
-        setMessage(new StringTextComponent(drawString ? display + range.get() : ""));
+        setMessage(new TextComponent(drawString ? display + range.get() : ""));
     }
 
 
     @Override
-    public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float p3) {
+    public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float p3) {
         updateSlider();
-        StyleManager.getCurrentStyle().renderButton(matrix, this, mouseX, mouseY, p3);
+        StyleManager.getCurrentStyle().renderButton(poseStack,this, mouseX, mouseY, p3);
     }
 
 
@@ -93,7 +93,7 @@ public class SliderTag extends Widget implements IStyledSlider<Integer> {
 
 
     public void updateSlider() {
-        setMessage(new StringTextComponent(drawString ? display + getValue() : ""));
+        setMessage(new TextComponent(drawString ? display + getValue() : ""));
     }
 
 
@@ -143,11 +143,11 @@ public class SliderTag extends Widget implements IStyledSlider<Integer> {
     }
 
     @Override
-    public void renderBackground(MatrixStack matrix, Minecraft mc, int mouseX, int mouseY) {
+    public void renderBackground(PoseStack poseStack, Minecraft mc, int mouseX, int mouseY) {
         if (!this.visible)
             return;
 
-        StyleManager.getCurrentStyle().renderSlider(matrix, this, mouseX, mouseY);
+        StyleManager.getCurrentStyle().renderSlider(poseStack,this, mouseX, mouseY);
     }
 
 

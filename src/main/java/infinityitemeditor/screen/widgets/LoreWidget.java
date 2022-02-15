@@ -1,14 +1,14 @@
 package infinityitemeditor.screen.widgets;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.screen.LoreEditorScreen;
 import infinityitemeditor.styles.StyleManager;
 import lombok.Getter;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.IGuiEventListener;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiEventListener;
 import net.minecraft.client.gui.INestedGuiEventHandler;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponent;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -22,13 +22,13 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
     private final int offset = 20;
     private final int fieldWidth = width - (squareSize * 3 + (offset * 2 + (offset / 2)));
     private LoreEditorScreen loreEditorScreen;
-    private FontRenderer font;
+    private Font font;
     private StyledButton up, down, delete;
     public StyledTextField field;
     private List<Widget> children;
 
-    public LoreWidget(int count, int width, FontRenderer font, LoreEditorScreen loreEditorScreen) {
-        super(0, 0, width, 20, StringTextComponent.EMPTY);
+    public LoreWidget(int count, int width, Font font, LoreEditorScreen loreEditorScreen) {
+        super(0, 0, width, 20, TextComponent.EMPTY);
         this.loreEditorScreen = loreEditorScreen;
         this.count = count;
         this.font = font;
@@ -45,13 +45,13 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
         children.add(field);
     }
 
-    public LoreWidget(int count, int width, FontRenderer font, LoreEditorScreen loreEditorScreen, String text) {
+    public LoreWidget(int count, int width, Font font, LoreEditorScreen loreEditorScreen, String text) {
         this(count, width, font, loreEditorScreen);
         field.setText(text);
     }
 
     @Override
-    public List<? extends IGuiEventListener> children() {
+    public List<? extends GuiEventListener> children() {
         return children;
     }
 
@@ -83,24 +83,24 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
     int lastSpacingCount;
 
     @Override
-    public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partial) {
+    public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partial) {
         lastWidth = 0;
         lastSpacingCount = 0;
-        FontRenderer font = loreEditorScreen.getFontRenderer();
-        drawCenteredString(matrix, font, count + ".", this.x + squareSize / 2, this.y + (squareSize - font.lineHeight) / 2, StyleManager.getCurrentStyle().getMainColor().getInt());
-        renderChild(field, offset, 0, matrix, mouseX, mouseY, partial);
-        renderChild(up, fieldWidth, 0, matrix, mouseX, mouseY, partial);
-        renderChild(down, offset, 0, matrix, mouseX, mouseY, partial);
-        renderChild(delete, offset, 0, matrix, mouseX, mouseY, partial);
+        Font font = loreEditorScreen.getFont();
+        drawCenteredString(poseStack,font, count + ".", this.x + squareSize / 2, this.y + (squareSize - font.lineHeight) / 2, StyleManager.getCurrentStyle().getMainColor().getInt());
+        renderChild(field, offset, 0, poseStack,mouseX, mouseY, partial);
+        renderChild(up, fieldWidth, 0, poseStack,mouseX, mouseY, partial);
+        renderChild(down, offset, 0, poseStack,mouseX, mouseY, partial);
+        renderChild(delete, offset, 0, poseStack,mouseX, mouseY, partial);
 
     }
 
-    public void renderChild(Widget child, int offsetX, int offsetY, MatrixStack matrix, int mouseX, int mouseY, float partial) {
+    public void renderChild(Widget child, int offsetX, int offsetY, PoseStack poseStack, int mouseX, int mouseY, float partial) {
         child.x = this.x + offsetX + lastWidth + (lastSpacingCount * spacing);
         child.y = this.y + offsetY;
         lastWidth += offsetX;
         lastSpacingCount++;
-        child.render(matrix, mouseX, mouseY, partial);
+        child.render(poseStack,mouseX, mouseY, partial);
     }
 
     @Override
@@ -110,12 +110,12 @@ public class LoreWidget extends Widget implements INestedGuiEventHandler {
 
     @Nullable
     @Override
-    public IGuiEventListener getFocused() {
+    public GuiEventListener getFocused() {
         return this.field;
     }
 
     @Override
-    public void setFocused(@Nullable IGuiEventListener p_231035_1_) {
+    public void setFocused(@Nullable GuiEventListener p_231035_1_) {
     }
 
     @Override

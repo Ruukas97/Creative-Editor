@@ -3,12 +3,11 @@ package infinityitemeditor.screen.models;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.data.tag.TagEffect;
 import infinityitemeditor.util.EffectUtils;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.MutableComponent;
 import net.minecraft.util.text.TextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Arrays;
@@ -17,7 +16,7 @@ public class EffectWheelType extends WheelType<TagEffect> {
     private static final TagFilter<TagEffect> BENEFICIAL = new TagFilter<TagEffect>() {
         @Override
         public TextComponent getName() {
-            return new TranslationTextComponent("filter.effect.beneficial");
+            return new TranslatableComponent("filter.effect.beneficial");
         }
 
         @Override
@@ -34,7 +33,7 @@ public class EffectWheelType extends WheelType<TagEffect> {
     private static final TagFilter<TagEffect> NEUTRAL = new TagFilter<TagEffect>() {
         @Override
         public TextComponent getName() {
-            return new TranslationTextComponent("filter.effect.neutral");
+            return new TranslatableComponent("filter.effect.neutral");
         }
 
         @Override
@@ -51,7 +50,7 @@ public class EffectWheelType extends WheelType<TagEffect> {
     private static final TagFilter<TagEffect> HARMFUL = new TagFilter<TagEffect>() {
         @Override
         public TextComponent getName() {
-            return new TranslationTextComponent("filter.effect.harmful");
+            return new TranslatableComponent("filter.effect.harmful");
         }
 
         @Override
@@ -68,7 +67,7 @@ public class EffectWheelType extends WheelType<TagEffect> {
     private static final TagFilter<TagEffect> VANILLA = new TagFilter<TagEffect>() {
         @Override
         public TextComponent getName() {
-            return new StringTextComponent("minecraft");
+            return new TextComponent("minecraft");
         }
 
         @Override
@@ -99,7 +98,7 @@ public class EffectWheelType extends WheelType<TagEffect> {
 
     @Override
     public TagEffect clone(TagEffect tag) {
-        return new TagEffect(tag.getNBT());
+        return new TagEffect(tag.getTag());
     }
 
     @Override
@@ -113,7 +112,7 @@ public class EffectWheelType extends WheelType<TagEffect> {
     }
 
     @Override
-    public ITextComponent[] tooltip(TagEffect tag) {
+    public MutableComponent[] tooltip(TagEffect tag) {
         return EffectUtils.getTooltip(tag);
     }
 }

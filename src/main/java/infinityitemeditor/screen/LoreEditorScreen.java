@@ -1,19 +1,19 @@
 package infinityitemeditor.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.data.base.DataString;
 import infinityitemeditor.screen.widgets.LoreWidget;
 import infinityitemeditor.screen.widgets.ScrollableScissorWindow;
 import infinityitemeditor.screen.widgets.StyledButton;
 import infinityitemeditor.util.ColorUtils;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.MutableComponent;
+import net.minecraft.util.text.TextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class LoreEditorScreen extends ParentItemScreen {
     private int scrollWidth;
 
     public LoreEditorScreen(Screen lastScreen, DataItem editing) {
-        super(new TranslationTextComponent("gui.loreeditor"), lastScreen, editing);
+        super(new TranslatableComponent("gui.loreeditor"), lastScreen, editing);
     }
 
     @Override
@@ -39,15 +39,15 @@ public class LoreEditorScreen extends ParentItemScreen {
         setRenderItem(true, 1f, 10);
         scrollWidth = width / 6 * 4;
         int xScroll = (width - scrollWidth) / 2;
-        scrollWindow = addButton(new ScrollableScissorWindow(xScroll, height / 4, scrollWidth, height / 4 * 2, new StringTextComponent("Lores")));
+        scrollWindow = addRenderableWidget(new ScrollableScissorWindow(xScroll, height / 4, scrollWidth, height / 4 * 2, new TextComponent("Lores")));
         int scrollTop = height / 4;
-        addButton(new StyledButton(xScroll - buttonWidth - distanceFromScroll, scrollTop, buttonWidth, 20, I18n.get("gui.loreeditor.addline"), t -> addLine()));
-        addButton(new StyledButton(xScroll - buttonWidth - distanceFromScroll, scrollTop + 25, buttonWidth, 20, I18n.get("gui.loreeditor.copy"), t -> copyLoreToClipboard()));
+        addRenderableWidget(new StyledButton(xScroll - buttonWidth - distanceFromScroll, scrollTop, buttonWidth, 20, I18n.get("gui.loreeditor.addline"), t -> addLine()));
+        addRenderableWidget(new StyledButton(xScroll - buttonWidth - distanceFromScroll, scrollTop + 25, buttonWidth, 20, I18n.get("gui.loreeditor.copy"), t -> copyLoreToClipboard()));
         loreLines.clear();
         List<DataString> l = item.getTag().getDisplay().getLore().get();
         for (int i = 0; i < l.size(); i++) {
             String loreText = "";
-            IFormattableTextComponent textFromJson = ITextComponent.Serializer.fromJson(l.get(i).get());
+            IFormattableTextComponent textFromJson = MutableComponent.Serializer.fromJson(l.get(i).get());
             if (textFromJson != null) {
                 loreText = textFromJson.getString();
             }
@@ -90,8 +90,8 @@ public class LoreEditorScreen extends ParentItemScreen {
     }
 
     @Override
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
-        super.mainRender(matrix, mouseX, mouseY, p3, color);
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
+        super.mainRender(poseStack,mouseX, mouseY, p3, color);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class LoreEditorScreen extends ParentItemScreen {
         for (LoreWidget widget : loreLines) {
             String text = widget.field.getText();
             if (text.isEmpty()) text = "";
-            item.getTag().getDisplay().getLore().add(new DataString(ITextComponent.Serializer.toJson(new StringTextComponent(text))));
+            item.getTag().getDisplay().getLore().add(new DataString(MutableComponent.Serializer.toJson(new TextComponent(text))));
         }
     }
 

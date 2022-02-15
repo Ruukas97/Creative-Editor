@@ -4,9 +4,8 @@ import infinityitemeditor.data.tag.TagBannerPattern;
 import infinityitemeditor.data.tag.TagList;
 import infinityitemeditor.data.version.NBTKeys;
 import lombok.Getter;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tileentity.BannerTileEntity;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class TagBanner extends TagTileEntity<BannerTileEntity> {
@@ -14,7 +13,7 @@ public class TagBanner extends TagTileEntity<BannerTileEntity> {
     private final TagList<TagBannerPattern> patterns;
 
 
-    public TagBanner(CompoundNBT nbt) {
+    public TagBanner(CompoundTag nbt) {
         patterns = new TagList<>(nbt.getList(NBTKeys.keys.tagPatterns(), NBT.TAG_COMPOUND), TagBannerPattern::new);
     }
 
@@ -32,14 +31,14 @@ public class TagBanner extends TagTileEntity<BannerTileEntity> {
 
 
     @Override
-    public CompoundNBT getNBT() {
-        CompoundNBT nbt = new CompoundNBT();
-        nbt.put(NBTKeys.keys.tagPatterns(), patterns.getNBT());
+    public CompoundTag getTag() {
+        CompoundTag nbt = new CompoundTag();
+        nbt.put(NBTKeys.keys.tagPatterns(), patterns.getTag());
         return nbt;
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        return getNBT().getPrettyDisplay(space, indentation);
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        return getTag().getPrettyDisplay(space, indentation);
+//    }
 }

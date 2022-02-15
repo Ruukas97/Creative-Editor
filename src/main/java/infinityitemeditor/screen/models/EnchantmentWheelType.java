@@ -4,8 +4,7 @@ import infinityitemeditor.data.DataItem;
 import infinityitemeditor.data.tag.TagEnchantment;
 import infinityitemeditor.util.EnchantmentUtils;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.MutableComponent;
 import net.minecraft.util.text.TextComponent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -22,7 +21,7 @@ public class EnchantmentWheelType extends WheelType<TagEnchantment>  {
     private static final TagFilter<TagEnchantment> MINECRAFT = new TagFilter<TagEnchantment>() {
         @Override
         public TextComponent getName() {
-            return new StringTextComponent("Minecraft");
+            return new TextComponent("Minecraft");
         }
 
         @Override
@@ -52,7 +51,7 @@ public class EnchantmentWheelType extends WheelType<TagEnchantment>  {
 
     @Override
     public TagEnchantment clone(TagEnchantment tag) {
-        return new TagEnchantment(tag.getNBT());
+        return new TagEnchantment(tag.getTag());
     }
 
     @Override
@@ -66,7 +65,7 @@ public class EnchantmentWheelType extends WheelType<TagEnchantment>  {
     }
 
     @Override
-    public ITextComponent[] tooltip(TagEnchantment tag) {
+    public MutableComponent[] tooltip(TagEnchantment tag) {
         return EnchantmentUtils.getTooltip(tag);
     }
 

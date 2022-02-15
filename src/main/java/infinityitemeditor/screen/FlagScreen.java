@@ -1,21 +1,20 @@
 package infinityitemeditor.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.screen.widgets.StyledBitToggle;
 import infinityitemeditor.screen.widgets.StyledButton;
 import infinityitemeditor.util.ColorUtils.Color;
 import infinityitemeditor.util.HideFlagUtils;
-import infinityitemeditor.util.ItemRendererUtils;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class FlagScreen extends ParentItemScreen {
 
     public FlagScreen(Screen lastScreen, DataItem editing) {
-        super(new TranslationTextComponent("gui.itemflag"), lastScreen, editing);
+        super(new TranslatableComponent("gui.itemflag"), lastScreen, editing);
     }
 
 
@@ -33,7 +32,7 @@ public class FlagScreen extends ParentItemScreen {
             int x = (i < amount / 2 ? 2 * thirdWidth : 3 * thirdWidth + 20) - 80; // 1/3 of width if i < 3, other 2/3 of width
             int y = height / 7 * 2 + (30 * (i < amount / 2 ? i : i - amount / 2)); // i*30, or (i-3)*30 if i>=3
             if(i >= amount-1) {
-                addButton(new StyledButton(x, y, 120, 20, I18n.get("flag.switchall"), (Button b) -> {
+                addRenderableWidget(new StyledButton(x, y, 120, 20, I18n.get("flag.switchall"), (Button b) -> {
                     for(int j = 0; j < amount-1; j++) {
                         item.getTag().getHideFlags().get()[j] = !item.getTag().getHideFlags().get()[j];
                         init();
@@ -41,29 +40,29 @@ public class FlagScreen extends ParentItemScreen {
                 }));
                 continue;
             }
-            addButton(new StyledBitToggle(x, y, 120, 20, I18n.get(HideFlagUtils.Flags.values()[i].getKey()), item.getTag().getHideFlags(), i));
+            addRenderableWidget(new StyledBitToggle(x, y, 120, 20, I18n.get(HideFlagUtils.Flags.values()[i].getKey()), item.getTag().getHideFlags(), i));
         }
 
     }
 
 
     @Override
-    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
-        super.overlayRender(matrix, mouseX, mouseY, p3, color);
+    public void overlayRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color color) {
+        super.overlayRender(poseStack,mouseX, mouseY, p3, color);
     }
 
     @Override
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
-        super.mainRender(matrix, mouseX, mouseY, p3, color);
-        matrix.pushPose();
-        matrix.scale(0.9F, 0.9F, 0.9F);
-        renderTooltip(matrix, item.getItemStack(), 3, 68);
-        matrix.popPose();
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color color) {
+        super.mainRender(poseStack,mouseX, mouseY, p3, color);
+        poseStack.pushPose();
+        poseStack.scale(0.9F, 0.9F, 0.9F);
+        renderTooltip(poseStack,item.getItemStack(), 3, 68);
+        poseStack.popPose();
     }
 
 
     @Override
-    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
-        super.backRender(matrix, mouseX, mouseY, p3, color);
+    public void backRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color color) {
+        super.backRender(poseStack,mouseX, mouseY, p3, color);
     }
 }

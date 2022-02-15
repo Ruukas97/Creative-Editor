@@ -9,7 +9,7 @@ import infinityitemeditor.data.tag.block.TagBlockEntity;
 import infinityitemeditor.data.tag.entity.TagEntityArmorStand;
 import infinityitemeditor.data.version.NBTKeys;
 import lombok.Getter;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.util.Constants.NBT;
 import org.apache.commons.lang3.StringUtils;
 
@@ -105,10 +105,10 @@ public class TagItemNBT extends DataUnserializedCompound {
     private final TagEntityArmorStand armorStandTag;
 
 
-    public TagItemNBT(DataItem item, CompoundNBT nbt) {
+    public TagItemNBT(DataItem item, CompoundTag nbt) {
         super(nbt);
         if(nbt == null){
-            nbt = new CompoundNBT();
+            nbt = new CompoundTag();
         }
         this.item = item;
         NBTKeys keys = NBTKeys.keys;

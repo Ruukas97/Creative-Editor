@@ -1,17 +1,17 @@
 package infinityitemeditor.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.styles.StyleManager;
 import infinityitemeditor.util.ColorUtils.Color;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.MutableComponent;
 
 public class WindowManagerScreen extends Screen {
 
-    public WindowManagerScreen(ITextComponent titleIn) {
+    public WindowManagerScreen(MutableComponent titleIn) {
         super(titleIn);
     }
 
@@ -47,7 +47,7 @@ public class WindowManagerScreen extends Screen {
     }
 
 
-    public FontRenderer getFontRenderer() {
+    public Font getFont() {
         return font;
     }
 
@@ -64,24 +64,24 @@ public class WindowManagerScreen extends Screen {
 
 
     @Override
-    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         Color color = StyleManager.getCurrentStyle().getMainColor();
-        backRender(matrix, mouseX, mouseY, partialTicks, color);
-        mainRender(matrix, mouseX, mouseY, partialTicks, color);
+        backRender(poseStack,mouseX, mouseY, partialTicks, color);
+        mainRender(poseStack,mouseX, mouseY, partialTicks, color);
         overlayRender(mouseX, mouseY, partialTicks, color);
         StyleManager.getCurrentStyle().update();
     }
 
 
-    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float partialTicks, Color color) {
-        this.fillGradient(matrix, 0, 0, this.width, this.height, new Color(150, 16, 16, 16).getInt(), color.copy().setValue(0.4f).setAlpha(150).getInt());
-        drawCenteredString(matrix, font, "Heya", width / 2, 10, color.getInt());
+    public void backRender(PoseStack poseStack, int mouseX, int mouseY, float partialTicks, Color color) {
+        this.fillGradient(poseStack,0, 0, this.width, this.height, new Color(150, 16, 16, 16).getInt(), color.copy().setValue(0.4f).setAlpha(150).getInt());
+        drawCenteredString(poseStack,font, "Heya", width / 2, 10, color.getInt());
     }
 
 
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float partialTicks, Color color) {
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float partialTicks, Color color) {
         for (Widget w : buttons)
-            w.render(matrix, mouseX, mouseY, partialTicks);
+            w.render(poseStack,mouseX, mouseY, partialTicks);
     }
 
 

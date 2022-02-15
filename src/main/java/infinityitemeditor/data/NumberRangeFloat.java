@@ -2,7 +2,7 @@ package infinityitemeditor.data;
 
 import infinityitemeditor.data.base.DataFloat;
 import lombok.Getter;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 public class NumberRangeFloat extends DataFloat {
     @Getter
@@ -21,6 +21,6 @@ public class NumberRangeFloat extends DataFloat {
 
     @Override
     public void set(Float number) {
-        super.set(MathHelper.clamp(number, getMin(), getMax()));
+        super.set(Mth.clamp(number, getMin(), getMax()));
     }
 }

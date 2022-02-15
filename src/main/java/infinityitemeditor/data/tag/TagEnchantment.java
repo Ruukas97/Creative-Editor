@@ -5,30 +5,29 @@ import infinityitemeditor.data.NumberRangeInt;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
+import net.minecraft.ResourceLocationException;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.ResourceLocationException;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Map;
 
 @AllArgsConstructor
-public class TagEnchantment implements Data<TagEnchantment, CompoundNBT> {
+public class TagEnchantment implements Data<TagEnchantment, CompoundTag> {
     @Getter @Setter
     private Enchantment enchantment;
     @Getter
     private final NumberRangeInt level;
 
-    public TagEnchantment(INBT nbt) {
-        this(nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT());
+    public TagEnchantment(Tag nbt) {
+        this(nbt instanceof CompoundTag ? (CompoundTag) nbt : new CompoundTag());
     }
 
 
-    public TagEnchantment(CompoundNBT nbt) {
+    public TagEnchantment(CompoundTag nbt) {
         try {
             ResourceLocation rl = new ResourceLocation(nbt.getString("id"));
             enchantment = GameRegistry.findRegistry(Enchantment.class).getValue(rl);
@@ -55,17 +54,17 @@ public class TagEnchantment implements Data<TagEnchantment, CompoundNBT> {
     }
 
     @Override
-    public CompoundNBT getNBT() {
-        CompoundNBT nbt = new CompoundNBT();
+    public CompoundTag getTag() {
+        CompoundTag nbt = new CompoundTag();
         nbt.putString( "id", enchantment.delegate.name().toString() );
         nbt.putInt( "lvl", level.get() );
         return nbt;
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        return enchantment.getFullname(level.get());
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        return enchantment.getFullname(level.get());
+//    }
 
     @Override
     public TagEnchantment getData() {

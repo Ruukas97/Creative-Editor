@@ -6,13 +6,13 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.arguments.ItemArgument;
 import net.minecraft.command.arguments.ItemInput;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponent;
+import net.minecraft.world.item.ItemStack;
 
 public class CommandUtil {
     public ItemStack getStackFromCommand(String command) throws CommandSyntaxException {
         if (!command.startsWith("/give ")) {
-            Minecraft.getInstance().gui.getChat().addMessage(new StringTextComponent("Must have a /give command in clipboard to paste item!"));
+            Minecraft.getInstance().gui.getChat().addMessage(new TextComponent("Must have a /give command in clipboard to paste item!"));
             return ItemStack.EMPTY;
         }
         command = command.substring(6);

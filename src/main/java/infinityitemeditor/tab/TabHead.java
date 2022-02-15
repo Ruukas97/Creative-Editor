@@ -4,10 +4,9 @@ import infinityitemeditor.json.CachedHead;
 import infinityitemeditor.json.MinecraftHeads;
 import infinityitemeditor.json.MinecraftHeadsCategory;
 import infinityitemeditor.util.RandomUtils;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
 
@@ -54,8 +53,8 @@ public class TabHead extends TabCreative {
     }
 
 
-    @Override
-    public ITextComponent getDisplayName() {
-        return category.getTranslationKey();
-    }
+//    @Override
+//    public MutableComponent getDisplayName() {
+//        return category.getTranslationKey();
+//    }
 }

@@ -1,8 +1,8 @@
 package infinityitemeditor.screen.widgets;
 
 import infinityitemeditor.data.base.DataBoolean;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.util.text.TextComponent;
 
 public class StyledTFToggle extends StyledButton {
     private final String text;
@@ -15,6 +15,6 @@ public class StyledTFToggle extends StyledButton {
 
 
     public void updateMessage(boolean b) {
-        setMessage(new StringTextComponent(text + ": " + b));
+        setMessage(new TextComponent(text + ": " + b));
     }
 }

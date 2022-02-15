@@ -1,11 +1,11 @@
 package infinityitemeditor.screen.widgets;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.styles.StyleManager;
 import net.minecraft.client.Minecraft;
 
 public class StyledTextButton extends StyledButton {
-    public StyledTextButton(int xIn, int yIn, int stringWidth, String msg, IPressable onPress) {
+    public StyledTextButton(int xIn, int yIn, int stringWidth, String msg, Button.OnPress onPress) {
         super(xIn - (stringWidth / 2) - 1, yIn - 7, stringWidth + 2, 9, msg, onPress);
     }
 
@@ -16,10 +16,10 @@ public class StyledTextButton extends StyledButton {
 
 
     @Override
-    public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float unused) {
+    public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float unused) {
         if (this.visible) {
             Minecraft mc = Minecraft.getInstance();
-            drawString(matrix, mc.font, getMessage(), x + 1, y + 1, StyleManager.getCurrentStyle().getFGColor(this).getInt());
+            drawString(poseStack,mc.font, getMessage(), x + 1, y + 1, StyleManager.getCurrentStyle().getFGColor(this).getInt());
         }
     }
 

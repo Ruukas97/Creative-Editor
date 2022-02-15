@@ -2,18 +2,18 @@ package infinityitemeditor.collections;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 
 @AllArgsConstructor
-public class ItemGroupCollection implements ItemCollection {
+public class CreativeModeTabCollection implements ItemCollection {
 
     @Getter
-    private ItemGroup group;
+    private CreativeModeTab group;
 
 
     @Override

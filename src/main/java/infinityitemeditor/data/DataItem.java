@@ -1,26 +1,21 @@
 package infinityitemeditor.data;
 
-import com.google.common.base.Strings;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import infinityitemeditor.data.base.DataMap;
 import infinityitemeditor.data.tag.TagDamage;
 import infinityitemeditor.data.tag.TagDisplayName;
 import infinityitemeditor.data.tag.TagItemID;
 import infinityitemeditor.data.tag.TagItemNBT;
 import infinityitemeditor.data.version.NBTKeys;
 import lombok.Getter;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SkullItem;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IItemProvider;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SkullItem;
 
-public class DataItem implements Data<ItemStack, CompoundNBT> {
+public class DataItem implements Data<ItemStack, CompoundTag> {
     @Getter
     private final TagItemID item;
     @Getter
@@ -43,7 +38,7 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
         this(ItemStack.EMPTY);
     }
 
-    public DataItem(CompoundNBT nbt) {
+    public DataItem(CompoundTag nbt) {
         this(ItemStack.of(nbt));
     }
 
@@ -67,7 +62,7 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
     }
 
 
-    public DataItem(Item item, int count, CompoundNBT tag, int slot) {
+    public DataItem(Item item, int count, CompoundTag tag, int slot) {
         this.item = new TagItemID(item);
         this.count = new NumberRangeInt(count, 1, 64);
         this.slot = new NumberRangeInt(slot, 0, 45);
@@ -80,12 +75,12 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
     }
 
 
-    private static CompoundNBT getTETag(Item item, TileEntity te) {
-        CompoundNBT nbt = new CompoundNBT();
-        CompoundNBT teTag = te.save(new CompoundNBT());
+    private static CompoundTag getTETag(Item item, TileEntity te) {
+        CompoundTag nbt = new CompoundTag();
+        CompoundTag teTag = te.save(new CompoundTag());
 
         if (item instanceof SkullItem && teTag.contains("Owner")) {
-            CompoundNBT compoundnbt2 = teTag.getCompound("Owner");
+            CompoundTag compoundnbt2 = teTag.getCompound("Owner");
             nbt.put("SkullOwner", compoundnbt2);
         } else {
             nbt.put("BlockEntityTag", teTag);
@@ -101,7 +96,7 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
 
 
     public ItemStack getItemStack() {
-        return ItemStack.of(getNBT());
+        return ItemStack.of(getTag());
     }
 
 
@@ -113,7 +108,7 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
      * @return An itemstack including all data, with no cleanup.
      */
     public ItemStack getItemStackFull() {
-        return ItemStack.of(getNBT());
+        return ItemStack.of(getTag());
     }
 
 
@@ -133,78 +128,78 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
 
     public DataItem split(int count) {
         int i = Math.min(count, this.count.get());
-        DataItem item = new DataItem(getNBT());
+        DataItem item = new DataItem(getTag());
         item.count.set(i);
         this.count.set(this.count.get() - count);
         return item;
     }
 
     @Override
-    public CompoundNBT getNBT() {
+    public CompoundTag getTag() {
         NBTKeys keys = NBTKeys.keys;
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
         if (!getSlot().isDefault())
-            nbt.put(keys.stackSlot(), getSlot().getNBT());
-        nbt.put(keys.stackID(), getItem().getNBT());
-        nbt.put(keys.stackCount(), getCount().getNBT());
+            nbt.put(keys.stackSlot(), getSlot().getTag());
+        nbt.put(keys.stackID(), getItem().getTag());
+        nbt.put(keys.stackCount(), getCount().getTag());
         if (!getTag().isDefault())
-            nbt.put(keys.stackTag(), getTag().getNBT());
+            nbt.put(keys.stackTag(), getTag().getTag());
         return nbt;
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        IFormattableTextComponent iformattabletextcomponent = new StringTextComponent("{");
-
-        if (!space.isEmpty()) {
-            iformattabletextcomponent.append("\n");
-        }
-
-        IFormattableTextComponent iformattabletextcomponent1;
-        NBTKeys keys = NBTKeys.keys;
-        String count = keys.stackCount();
-        String slot = keys.stackSlot();
-        String id = keys.stackID();
-        String tag = keys.stackTag();
-
-        boolean showCount = !getCount().isDefault();
-        boolean showSlot = !getSlot().isDefault();
-        boolean showId = !getItem().isDefault();
-        boolean showTag = !getTag().isDefault();
-
-        if (showCount) {
-            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(count)).append(String.valueOf(':')).append(" ").append(this.count.getPrettyDisplay(space, indentation + 1));
-            if (showSlot || showId || showTag)
-                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
-            iformattabletextcomponent.append(iformattabletextcomponent1);
-        }
-
-        if (showSlot) {
-            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(slot)).append(String.valueOf(':')).append(" ").append(this.slot.getPrettyDisplay(space, indentation + 1));
-            if (showId || showTag)
-                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
-            iformattabletextcomponent.append(iformattabletextcomponent1);
-        }
-
-        if (showId) {
-            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(id)).append(String.valueOf(':')).append(" ").append(this.item.getPrettyDisplay(space, indentation + 1));
-            if (showTag)
-                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
-            iformattabletextcomponent.append(iformattabletextcomponent1);
-        }
-
-        if (showTag) {
-            iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(tag)).append(String.valueOf(':')).append(" ").append(this.tag.getPrettyDisplay(space, indentation + 1));
-            iformattabletextcomponent.append(iformattabletextcomponent1);
-        }
-
-        if (!space.isEmpty()) {
-            iformattabletextcomponent.append("\n").append(Strings.repeat(space, indentation));
-        }
-
-        iformattabletextcomponent.append("}");
-        return iformattabletextcomponent;
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        IFormattableTextComponent iformattabletextcomponent = new TextComponent("{");
+//
+//        if (!space.isEmpty()) {
+//            iformattabletextcomponent.append("\n");
+//        }
+//
+//        IFormattableTextComponent iformattabletextcomponent1;
+//        NBTKeys keys = NBTKeys.keys;
+//        String count = keys.stackCount();
+//        String slot = keys.stackSlot();
+//        String id = keys.stackID();
+//        String tag = keys.stackTag();
+//
+//        boolean showCount = !getCount().isDefault();
+//        boolean showSlot = !getSlot().isDefault();
+//        boolean showId = !getItem().isDefault();
+//        boolean showTag = !getTag().isDefault();
+//
+//        if (showCount) {
+//            iformattabletextcomponent1 = (new TextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(count)).append(String.valueOf(':')).append(" ").append(this.count.getPrettyDisplay(space, indentation + 1));
+//            if (showSlot || showId || showTag)
+//                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+//            iformattabletextcomponent.append(iformattabletextcomponent1);
+//        }
+//
+//        if (showSlot) {
+//            iformattabletextcomponent1 = (new TextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(slot)).append(String.valueOf(':')).append(" ").append(this.slot.getPrettyDisplay(space, indentation + 1));
+//            if (showId || showTag)
+//                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+//            iformattabletextcomponent.append(iformattabletextcomponent1);
+//        }
+//
+//        if (showId) {
+//            iformattabletextcomponent1 = (new TextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(id)).append(String.valueOf(':')).append(" ").append(this.item.getPrettyDisplay(space, indentation + 1));
+//            if (showTag)
+//                iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
+//            iformattabletextcomponent.append(iformattabletextcomponent1);
+//        }
+//
+//        if (showTag) {
+//            iformattabletextcomponent1 = (new TextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(tag)).append(String.valueOf(':')).append(" ").append(this.tag.getPrettyDisplay(space, indentation + 1));
+//            iformattabletextcomponent.append(iformattabletextcomponent1);
+//        }
+//
+//        if (!space.isEmpty()) {
+//            iformattabletextcomponent.append("\n").append(Strings.repeat(space, indentation));
+//        }
+//
+//        iformattabletextcomponent.append("}");
+//        return iformattabletextcomponent;
+//    }
 
 
     @Override
@@ -213,6 +208,6 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
     }
 
     public DataItem copy() {
-        return new DataItem(this.getNBT());
+        return new DataItem(this.getTag());
     }
 }

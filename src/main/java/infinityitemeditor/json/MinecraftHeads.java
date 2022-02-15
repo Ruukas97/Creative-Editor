@@ -2,7 +2,7 @@ package infinityitemeditor.json;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 import java.io.IOException;

@@ -4,10 +4,10 @@ import infinityitemeditor.data.Data;
 import infinityitemeditor.data.tag.TagItemList;
 import infinityitemeditor.screen.container.EquipmentInventory;
 import lombok.Getter;
-import net.minecraft.entity.Entity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
 
-public abstract class TagEntity<E extends Entity> implements Data<E, CompoundNBT> {
+public abstract class TagEntity<E extends Entity> implements Data<E, CompoundTag> {
     @Getter
     protected TagItemList armorItems;
 
@@ -29,12 +29,12 @@ public abstract class TagEntity<E extends Entity> implements Data<E, CompoundNBT
     }
 
     @Override
-    public CompoundNBT getNBT() {
-        CompoundNBT nbt = new CompoundNBT();
+    public CompoundTag getTag() {
+        CompoundTag nbt = new CompoundTag();
         if(!armorItems.isDefault())
-            nbt.put("ArmorItems", armorItems.getNBT());
+            nbt.put("ArmorItems", armorItems.getTag());
         if(!handItems.isDefault())
-            nbt.put("HandItems", handItems.getNBT());
+            nbt.put("HandItems", handItems.getTag());
         return nbt;
     }
 }

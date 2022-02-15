@@ -1,16 +1,14 @@
 package infinityitemeditor.data.base;
 
-import net.minecraft.nbt.IntNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.nbt.IntTag;
 
-public class DataInteger extends SingularData<Integer, IntNBT> {
+public class DataInteger extends SingularData<Integer, IntTag> {
     public DataInteger() {
         this(0);
     }
 
 
-    public DataInteger(IntNBT nbt) {
+    public DataInteger(IntTag nbt) {
         this(nbt.getAsInt());
     }
 
@@ -27,12 +25,12 @@ public class DataInteger extends SingularData<Integer, IntNBT> {
 
 
     @Override
-    public IntNBT getNBT() {
-        return IntNBT.valueOf(data);
+    public IntTag getTag() {
+        return IntTag.valueOf(data);
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        return (new StringTextComponent(String.valueOf(this.data))).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        return (new TextComponent(String.valueOf(this.data))).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
+//    }
 }

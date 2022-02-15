@@ -3,8 +3,8 @@ package infinityitemeditor.screen.models;
 import com.mojang.datafixers.util.Pair;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.data.tag.TagEnchantment;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.text.TextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.Arrays;
 import java.util.function.Function;
@@ -15,7 +15,7 @@ public class EnchantmentFilter implements TagFilter<TagEnchantment> {
 
 
     public EnchantmentFilter(String name, Function<Pair<DataItem, TagEnchantment>, Boolean> shouldShow) {
-        this.name = new TranslationTextComponent("filter._", new TranslationTextComponent("filter.enchantment." + name));
+        this.name = new TranslatableComponent("filter._", new TranslatableComponent("filter.enchantment." + name));
         this.shouldShow = shouldShow;
     }
 

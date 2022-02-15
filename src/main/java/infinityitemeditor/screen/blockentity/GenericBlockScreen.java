@@ -1,13 +1,12 @@
 package infinityitemeditor.screen.blockentity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.screen.ParentItemScreen;
 import infinityitemeditor.screen.widgets.StyledDataTextField;
-import infinityitemeditor.screen.widgets.StyledTextField;
 import infinityitemeditor.util.ColorUtils;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class GenericBlockScreen extends ParentItemScreen {
 
@@ -15,7 +14,7 @@ public class GenericBlockScreen extends ParentItemScreen {
 
 
     public GenericBlockScreen(Screen lastScreen, DataItem editing) {
-        super(new TranslationTextComponent("gui.genericblock"), lastScreen, editing);
+        super(new TranslatableComponent("gui.genericblock"), lastScreen, editing);
     }
 
 
@@ -31,8 +30,8 @@ public class GenericBlockScreen extends ParentItemScreen {
     }
 
     @Override
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
-        super.mainRender(matrix, mouseX, mouseY, p3, color);
-        drawCenteredString(matrix, font, new TranslationTextComponent("block.tag.lock"), width / 2, this.height / 2 - 30, color.getInt());
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
+        super.mainRender(poseStack,mouseX, mouseY, p3, color);
+        drawCenteredString(poseStack,font, new TranslatableComponent("block.tag.lock"), width / 2, this.height / 2 - 30, color.getInt());
     }
 }

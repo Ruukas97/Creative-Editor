@@ -1,6 +1,6 @@
 package infinityitemeditor.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.screen.widgets.ClassSpecificWidget;
 import infinityitemeditor.screen.widgets.ScrollableScissorWindow;
@@ -8,10 +8,10 @@ import infinityitemeditor.screen.widgets.WidgetInfo;
 import infinityitemeditor.screen.widgets.base.AdvancedWidgets;
 import infinityitemeditor.screen.widgets.base.ItemWidgets;
 import infinityitemeditor.util.ColorUtils;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.ArrayList;
 
@@ -20,14 +20,14 @@ public class AllWidgetsScreen extends ParentItemScreen {
     ScrollableScissorWindow scissorWindow;
 
     public AllWidgetsScreen(Screen lastScreen, DataItem editing) {
-        super(new TranslationTextComponent("gui.allwidgets"), lastScreen, editing);
+        super(new TranslatableComponent("gui.allwidgets"), lastScreen, editing);
     }
 
     @Override
     protected void init() {
         renderItem = false;
         super.init();
-        scissorWindow = addButton(new ScrollableScissorWindow(width / 5, height / 10, width / 5 * 3, resetButton.y - height / 10 - 10, new TranslationTextComponent("gui.allwidgets")));
+        scissorWindow = addRenderableWidget(new ScrollableScissorWindow(width / 5, height / 10, width / 5 * 3, resetButton.y - height / 10 - 10, new TranslatableComponent("gui.allwidgets")));
         ArrayList<ClassSpecificWidget> list = new ArrayList<>();
         list.addAll(new ItemWidgets().list);
         list.addAll(new AdvancedWidgets().list);
@@ -46,8 +46,8 @@ public class AllWidgetsScreen extends ParentItemScreen {
     }
 
     @Override
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
-        super.mainRender(matrix, mouseX, mouseY, p3, color);
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
+        super.mainRender(poseStack,mouseX, mouseY, p3, color);
 
     }
 }

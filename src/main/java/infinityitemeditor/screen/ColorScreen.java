@@ -1,21 +1,20 @@
 package infinityitemeditor.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.data.base.DataColor;
 import infinityitemeditor.screen.widgets.HexField;
 import infinityitemeditor.screen.widgets.SliderColorTag;
-import infinityitemeditor.util.CEStringUtils;
 import infinityitemeditor.util.ColorUtils.Color;
 import infinityitemeditor.util.GuiUtil;
 import infinityitemeditor.util.ItemUtils;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.math.Mth;
 
 public class ColorScreen extends ParentItemScreen {
     @Getter
@@ -31,14 +30,14 @@ public class ColorScreen extends ParentItemScreen {
     private boolean draggingHuePicker = false;
 
     public ColorScreen(Screen lastScreen, DataItem editing) {
-        super(new TranslationTextComponent("gui.color"), lastScreen, editing);
+        super(new TranslatableComponent("gui.color"), lastScreen, editing);
         setRenderItem(true, 2f);
         this.color = ItemUtils.getColorTag(editing);
         this.useAlpha = false;
     }
 
     public ColorScreen(Screen lastScreen, DataItem editing, DataColor color, boolean useAlpha) {
-        super(new TranslationTextComponent("gui.color"), lastScreen, editing);
+        super(new TranslatableComponent("gui.color"), lastScreen, editing);
         setRenderItem(true, 2f);
         this.color = color;
         this.useAlpha = useAlpha;
@@ -55,12 +54,12 @@ public class ColorScreen extends ParentItemScreen {
     @Override
     protected void init() {
         super.init();
-        hex = addButton(new HexField(font, width / 3 + (font.width("#FFFFFF") + 8), (height / 3 + 20 * 2) + 10, 16, color));
+        hex = addRenderableWidget(new HexField(font, width / 3 + (font.width("#FFFFFF") + 8), (height / 3 + 20 * 2) + 10, 16, color));
         int yStart = this.height / 2 - 50;
         int x = width * 2 / 3 + 16;
-        red = addButton(new SliderColorTag(x, yStart, width - 20 - x, 20, color, 0)); // red
-        green = addButton(new SliderColorTag(x, yStart + 35, width - 20 - x, 20, color, 1)); // green
-        blue = addButton(new SliderColorTag(x, yStart + 70, width - 20 - x, 20, color, 2)); // blue
+        red = addRenderableWidget(new SliderColorTag(x, yStart, width - 20 - x, 20, color, 0)); // red
+        green = addRenderableWidget(new SliderColorTag(x, yStart + 35, width - 20 - x, 20, color, 1)); // green
+        blue = addRenderableWidget(new SliderColorTag(x, yStart + 70, width - 20 - x, 20, color, 2)); // blue
     }
 
 
@@ -84,15 +83,15 @@ public class ColorScreen extends ParentItemScreen {
         int y = 60;
         int yEnd = y + width;
         if (draggingSatBrightPicker) {
-            mouseX = MathHelper.clamp(mouseX, x, xEnd);
-            mouseY = MathHelper.clamp(mouseY, y, yEnd);
+            mouseX = Mth.clamp(mouseX, x, xEnd);
+            mouseY = Mth.clamp(mouseY, y, yEnd);
             float sat = (float) ((mouseX - (double) x) / (double) width);
             float bri = (float) (1d - (mouseY - 60d) / width);
             color.setHSB(color.getHue(), sat, bri);
             return true;
         } else if (draggingHuePicker) {
-            mouseX = MathHelper.clamp(mouseX, x, xEnd);
-            //mouseY = MathHelper.clamp(mouseY, yEnd + 3, yEnd + 6);
+            mouseX = Mth.clamp(mouseX, x, xEnd);
+            //mouseY = Mth.clamp(mouseY, yEnd + 3, yEnd + 6);
             float hue = (float) ((mouseX - (double) x) / (double) width);
             // hue %= 1;
             color.setHSB(hue, color.getSaturation(), color.getBrightness());
@@ -147,24 +146,24 @@ public class ColorScreen extends ParentItemScreen {
 
 
     @Override
-    public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color guiColor) {
-        super.backRender(matrix, mouseX, mouseY, p3, guiColor);
+    public void backRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color guiColor) {
+        super.backRender(poseStack,mouseX, mouseY, p3, guiColor);
 
         // First vertical line
-        fill(matrix, width / 3, 20, width / 3 + 1, height / 5 * 4, guiColor.getInt());
+        fill(poseStack,width / 3, 20, width / 3 + 1, height / 5 * 4, guiColor.getInt());
         // Second vertical line
-        fill(matrix, width * 2 / 3, 20, width * 2 / 3 + 1, height / 5 * 4, guiColor.getInt());
+        fill(poseStack,width * 2 / 3, 20, width * 2 / 3 + 1, height / 5 * 4, guiColor.getInt());
         // Left horizontal line
-        fill(matrix, 20, 40, width / 3 - 15, 41, guiColor.getInt());
+        fill(poseStack,20, 40, width / 3 - 15, 41, guiColor.getInt());
         // Right horizontal line
-        fill(matrix, width * 2 / 3 + 16, 40, width - 20, 41, guiColor.getInt());
+        fill(poseStack,width * 2 / 3 + 16, 40, width - 20, 41, guiColor.getInt());
 
         int leftText = (5 + width / 3) / 2;
-        drawCenteredString(matrix, font, "Color Pickers", leftText, 30, guiColor.getInt());
-        drawCenteredString(matrix, font, "HSB Picker", leftText, 45, guiColor.getInt());
+        drawCenteredString(poseStack,font, "Color Pickers", leftText, 30, guiColor.getInt());
+        drawCenteredString(poseStack,font, "HSB Picker", leftText, 45, guiColor.getInt());
 
         int rightText = width * 2 / 3 + 16;
-        drawCenteredString(matrix, font, "RGB Sliders", rightText + ((width - 20 - rightText) / 2), 30, guiColor.getInt());
+        drawCenteredString(poseStack,font, "RGB Sliders", rightText + ((width - 20 - rightText) / 2), 30, guiColor.getInt());
 
 
         int x = 25;
@@ -189,20 +188,20 @@ public class ColorScreen extends ParentItemScreen {
         int colorY = (int) (60 + ((1 - color.getBrightness()) * pickerWidth));
 
 
-        fill(matrix, colorX - 1, colorY - 1, colorX, colorY, inverseColor);
-        fill(matrix, colorX + 1, colorY - 1, colorX + 2, colorY, inverseColor);
-        fill(matrix, colorX - 1, colorY + 1, colorX, colorY + 2, inverseColor);
-        fill(matrix, colorX + 1, colorY + 1, colorX + 2, colorY + 2, inverseColor);
+        fill(poseStack,colorX - 1, colorY - 1, colorX, colorY, inverseColor);
+        fill(poseStack,colorX + 1, colorY - 1, colorX + 2, colorY, inverseColor);
+        fill(poseStack,colorX - 1, colorY + 1, colorX, colorY + 2, inverseColor);
+        fill(poseStack,colorX + 1, colorY + 1, colorX + 2, colorY + 2, inverseColor);
 
         int hueX = (int) (x + color.getHue() * pickerWidth);
-        fill(matrix, hueX, y - 1, hueX + 1, y, inverseColor);
-        fill(matrix, hueX, yEnd, hueX + 1, yEnd + 1, inverseColor);
+        fill(poseStack,hueX, y - 1, hueX + 1, y, inverseColor);
+        fill(poseStack,hueX, yEnd, hueX + 1, yEnd + 1, inverseColor);
     }
 
 
     @Override
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color guiColor) {
-        super.mainRender(matrix, mouseX, mouseY, p3, guiColor);
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color guiColor) {
+        super.mainRender(poseStack,mouseX, mouseY, p3, guiColor);
         int halfWidth = width / 2;
         int yStart = height / 3 + 15;
         Color color = this.color;
@@ -211,8 +210,8 @@ public class ColorScreen extends ParentItemScreen {
 
 
     @Override
-    public void overlayRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color guiColor) {
-        super.overlayRender(matrix, mouseX, mouseY, p3, guiColor);
-        GuiUtil.addToolTip(matrix, this, resetButton, mouseX, mouseY, I18n.get("gui.color.reset"));
+    public void overlayRender(PoseStack poseStack, int mouseX, int mouseY, float p3, Color guiColor) {
+        super.overlayRender(poseStack,mouseX, mouseY, p3, guiColor);
+        GuiUtil.addToolTip(poseStack,this, resetButton, mouseX, mouseY, I18n.get("gui.color.reset"));
     }
 }

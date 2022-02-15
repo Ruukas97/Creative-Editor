@@ -3,33 +3,33 @@ package infinityitemeditor.util;
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import infinityitemeditor.data.tag.TagEffect;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
 import net.minecraft.util.StringUtils;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Mth;
 import net.minecraft.util.text.*;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class EffectUtils {
-    private static final IFormattableTextComponent NO_EFFECT = (new TranslationTextComponent("effect.none")).withStyle(TextFormatting.GRAY);
+    private static final IFormattableTextComponent NO_EFFECT = (new TranslatableComponent("effect.none")).withStyle(ChatFormatting.GRAY);
 
 
     public static TextComponent getText(TagEffect tag) {
         Effect effect = tag.getEffectId().getEffect();
-        TranslationTextComponent component = new TranslationTextComponent(effect.getDescriptionId());
+        TranslatableComponent component = new TranslatableComponent(effect.getDescriptionId());
 
         if (tag.getAmplifier().get() > 0) {
-            component = new TranslationTextComponent("potion.withAmplifier", component, I18n.exists("potion.potency." + tag.getAmplifier().get()) ? new TranslationTextComponent("potion.potency." + tag.getAmplifier().get()) : new StringTextComponent(String.valueOf(tag.getAmplifier().get() + 1)));
+            component = new TranslatableComponent("potion.withAmplifier", component, I18n.exists("potion.potency." + tag.getAmplifier().get()) ? new TranslatableComponent("potion.potency." + tag.getAmplifier().get()) : new TextComponent(String.valueOf(tag.getAmplifier().get() + 1)));
         }
 
         if (tag.getDuration().get() > 20) {
-            component = new TranslationTextComponent("potion.withDuration", component, formatDuration(tag));
+            component = new TranslatableComponent("potion.withDuration", component, formatDuration(tag));
         }
 
         return (TextComponent) component.withStyle(effect.getCategory().getTooltipFormatting());
@@ -39,7 +39,7 @@ public class EffectUtils {
         if (tag.getAmbient().get()) {
             return "**:**";
         } else {
-            int i = MathHelper.floor((float) tag.getDuration().get());
+            int i = Mth.floor((float) tag.getDuration().get());
             return StringUtils.formatTickDuration(i);
         }
     }
@@ -48,10 +48,10 @@ public class EffectUtils {
         return effect.getRegistryName().getNamespace().equals(namespace);
     }
 
-    public static ITextComponent[] getTooltip(TagEffect tag) {
+    public static MutableComponent[] getTooltip(TagEffect tag) {
         List<Pair<Attribute, AttributeModifier>> list1 = Lists.newArrayList();
         if (tag.getEffectId().isDefault()) {
-            return new ITextComponent[]{NO_EFFECT};
+            return new MutableComponent[]{NO_EFFECT};
         }
 
         Effect effect = tag.getEffectId().getEffect();
@@ -59,10 +59,10 @@ public class EffectUtils {
         Map<Attribute, AttributeModifier> modifierMap = effect.getAttributeModifiers();
 
         if (!modifierMap.isEmpty()) {
-            ArrayList<ITextComponent> list = new ArrayList<>();
+            ArrayList<MutableComponent> list = new ArrayList<>();
             list.add(component);
-            list.add(StringTextComponent.EMPTY);
-            list.add((new TranslationTextComponent("potion.whenDrank")).withStyle(TextFormatting.DARK_PURPLE));
+            list.add(TextComponent.EMPTY);
+            list.add((new TranslatableComponent("potion.whenDrank")).withStyle(ChatFormatting.DARK_PURPLE));
 
             for (Map.Entry<Attribute, AttributeModifier> pair : modifierMap.entrySet()) {
                 AttributeModifier attributemodifier2 = pair.getValue();
@@ -75,14 +75,14 @@ public class EffectUtils {
                 }
 
                 if (d0 >= 0.0D) {
-                    list.add((new TranslationTextComponent("attribute.modifier.plus." + attributemodifier2.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), new TranslationTextComponent(pair.getKey().getDescriptionId()))).withStyle(TextFormatting.BLUE));
+                    list.add((new TranslatableComponent("attribute.modifier.plus." + attributemodifier2.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), new TranslatableComponent(pair.getKey().getDescriptionId()))).withStyle(ChatFormatting.BLUE));
                 } else if (d0 < 0.0D) {
                     d1 = d1 * -1.0D;
-                    list.add((new TranslationTextComponent("attribute.modifier.take." + attributemodifier2.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), new TranslationTextComponent(pair.getKey().getDescriptionId()))).withStyle(TextFormatting.RED));
+                    list.add((new TranslatableComponent("attribute.modifier.take." + attributemodifier2.getOperation().toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(d1), new TranslatableComponent(pair.getKey().getDescriptionId()))).withStyle(ChatFormatting.RED));
                 }
             }
-            return list.toArray(new ITextComponent[0]);
+            return list.toArray(new MutableComponent[0]);
         }
-        return new ITextComponent[]{component};
+        return new MutableComponent[]{component};
     }
 }

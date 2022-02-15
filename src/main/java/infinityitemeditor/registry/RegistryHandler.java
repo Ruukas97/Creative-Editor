@@ -2,7 +2,7 @@ package infinityitemeditor.registry;
 
 import infinityitemeditor.InfinityItemEditor;
 import infinityitemeditor.block.BlockBarrier;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

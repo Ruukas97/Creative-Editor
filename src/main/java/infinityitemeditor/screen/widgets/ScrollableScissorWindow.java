@@ -1,17 +1,17 @@
 package infinityitemeditor.screen.widgets;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.styles.StyleManager;
 import infinityitemeditor.util.GuiUtil;
 import infinityitemeditor.util.RenderUtil;
 import lombok.Getter;
 import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.client.gui.IGuiEventListener;
+import net.minecraft.client.gui.GuiEventListener;
 import net.minecraft.client.gui.INestedGuiEventHandler;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.math.Mth;
+import net.minecraft.util.text.MutableComponent;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ScrollableScissorWindow extends Widget implements INestedGuiEventHandler {
     @Nullable
-    private IGuiEventListener focused;
+    private GuiEventListener focused;
     private boolean isDragging;
 
     @Getter
@@ -31,7 +31,7 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
     @Getter
     protected final List<Widget> widgets = Lists.newArrayList();
 
-    public ScrollableScissorWindow(int x, int y, int width, int height, ITextComponent msg) {
+    public ScrollableScissorWindow(int x, int y, int width, int height, MutableComponent msg) {
         super(x, y, width, height, msg);
     }
 
@@ -50,14 +50,14 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
             int listHeight = getListHeight();
             if(listHeight <= height)
                 return false;
-            scrollOffset = (int) MathHelper.clamp(scrollOffset - p_mouseScrolled_5_ * 10, 0, listHeight - height);
+            scrollOffset = (int) Mth.clamp(scrollOffset - p_mouseScrolled_5_ * 10, 0, listHeight - height);
             return true;
         }
         return false;
     }
 
     @Override
-    public List<? extends IGuiEventListener> children() {
+    public List<? extends GuiEventListener> children() {
         return widgets;
     }
 
@@ -76,13 +76,13 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
 
     @Nullable
     @Override
-    public IGuiEventListener getFocused() {
+    public GuiEventListener getFocused() {
         return this.focused;
     }
 
 
     @Override
-    public void setFocused(IGuiEventListener focused) {
+    public void setFocused(GuiEventListener focused) {
         this.focused = focused;
     }
 
@@ -95,10 +95,10 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
             int listHeight = getListHeight();
             int max = listHeight - this.height;
             int insideHeight = (this.height - 4);
-            double covered = MathHelper.clamp(insideHeight / (float) listHeight, 0d, 1d);
+            double covered = Mth.clamp(insideHeight / (float) listHeight, 0d, 1d);
             int scrollBarHeight = (int) (insideHeight * covered);
             int scrollSpace = insideHeight - scrollBarHeight;
-            double mousePos = MathHelper.clamp(mouseY - (this.y + 2 + (scrollBarHeight / 2d)), 0, scrollSpace);
+            double mousePos = Mth.clamp(mouseY - (this.y + 2 + (scrollBarHeight / 2d)), 0, scrollSpace);
             double scrollPerc = mousePos / scrollSpace;
             scrollOffset = (int) (scrollPerc * max);
             return true;
@@ -107,7 +107,7 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
         }
 
         if (this.isHovered && this.children().size() > 0) {
-            for (IGuiEventListener iguieventlistener : this.children()) {
+            for (GuiEventListener iguieventlistener : this.children()) {
                 if (iguieventlistener.mouseClicked(mouseX, mouseY, mouseButton)) {
                     this.setFocused(iguieventlistener);
                     if (mouseButton == 0) {
@@ -135,10 +135,10 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
             int listHeight = getListHeight();
             int max = listHeight - this.height;
             int insideHeight = (this.height - 4);
-            double covered = MathHelper.clamp(insideHeight / (float) listHeight, 0d, 1d);
+            double covered = Mth.clamp(insideHeight / (float) listHeight, 0d, 1d);
             int scrollBarHeight = (int) (insideHeight * covered);
             int scrollSpace = insideHeight - scrollBarHeight;
-            double mousePos = MathHelper.clamp(mouseY - (this.y + 2 + (scrollBarHeight / 2)), 0, scrollSpace);
+            double mousePos = Mth.clamp(mouseY - (this.y + 2 + (scrollBarHeight / 2)), 0, scrollSpace);
             double scrollPerc = mousePos / scrollSpace;
             scrollOffset = (int) (scrollPerc * max);
         }
@@ -146,20 +146,20 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
     }
 
     @Override
-    public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+    public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         // super.renderButton( mouseX, mouseY, partialTicks );
         // Minecraft mc = Minecraft.getInstance();
-        GuiUtil.drawFrame(matrix, x, y, x + width, y + height, 1, StyleManager.getCurrentStyle().getMainColor());
+        GuiUtil.drawFrame(poseStack,x, y, x + width, y + height, 1, StyleManager.getCurrentStyle().getMainColor());
         int listHeight = getListHeight();
-        GuiUtil.drawFrame(matrix, x + width - scrollBarWidth, y, x + width, y + height, 1, StyleManager.getCurrentStyle().getMainColor());
+        GuiUtil.drawFrame(poseStack,x + width - scrollBarWidth, y, x + width, y + height, 1, StyleManager.getCurrentStyle().getMainColor());
         int insideHeight = (this.height - 4);
-        double covered = MathHelper.clamp(insideHeight / (float) listHeight, 0d, 1d);
+        double covered = Mth.clamp(insideHeight / (float) listHeight, 0d, 1d);
         int scrollBarHeight = (int) (insideHeight * covered);
-        double scrolled = MathHelper.clamp(scrollOffset / (float) (listHeight - this.height), 0d, 1d);
+        double scrolled = Mth.clamp(scrollOffset / (float) (listHeight - this.height), 0d, 1d);
         int scrolledPixels = (int) (scrolled * (insideHeight - scrollBarHeight));
         int scrollTop = 2 + y + scrolledPixels;
         boolean hovered = GuiUtil.isMouseInRegion(mouseX, mouseY, x + width - scrollBarWidth, y, scrollBarWidth, height);
-        fill(matrix, 2 + x + width - scrollBarWidth, scrollTop, x + width - 2, scrollTop + scrollBarHeight, StyleManager.getCurrentStyle().getFGColor(true, hovered).getInt());
+        fill(poseStack,2 + x + width - scrollBarWidth, scrollTop, x + width - 2, scrollTop + scrollBarHeight, StyleManager.getCurrentStyle().getFGColor(true, hovered).getInt());
 
         if (widgets.size() != 0) {
             RenderUtil.glScissorBox(this.x + 1, this.y + 2, this.x + this.width - scrollBarWidth - 1, this.y + this.height - 1);
@@ -180,9 +180,9 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
                     w.active = true;
                     w.visible = true;
                     if (mouseOut) {
-                        w.render(matrix, -10000, -10000, partialTicks);
+                        w.render(poseStack,-10000, -10000, partialTicks);
                     } else {
-                        w.render(matrix, mouseX, mouseY, partialTicks);
+                        w.render(poseStack,mouseX, mouseY, partialTicks);
                     }
                 } else {
                     w.active = false;

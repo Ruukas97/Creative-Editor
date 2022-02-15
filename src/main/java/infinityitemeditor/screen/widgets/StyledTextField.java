@@ -1,8 +1,8 @@
 package infinityitemeditor.screen.widgets;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.styles.StyleManager;
 import infinityitemeditor.styles.StyleVanilla;
 import infinityitemeditor.util.GuiUtil;
@@ -10,18 +10,18 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.IGuiEventListener;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiEventListener;
 import net.minecraft.client.gui.IRenderable;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.util.Util;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.math.Mth;
+import net.minecraft.util.text.TextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -31,8 +31,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @OnlyIn(Dist.CLIENT)
-public class StyledTextField extends Widget implements IRenderable, IGuiEventListener {
-    private final FontRenderer fontRenderer;
+public class StyledTextField extends Widget implements IRenderable, GuiEventListener {
+    private final Font fontRenderer;
     protected String text = "";
     @Getter
     @Setter
@@ -51,13 +51,13 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
     private BiFunction<String, Integer, String> textFormatter = (p_195610_0_, p_195610_1_) -> p_195610_0_;
 
 
-    public StyledTextField(FontRenderer font, int x, int y, int width, int height, String msg) {
+    public StyledTextField(Font font, int x, int y, int width, int height, String msg) {
         this(font, x, y, width, height, null, msg);
     }
 
 
-    public StyledTextField(FontRenderer fontIn, int x, int y, int width, int height, @Nullable StyledTextField old, String msg) {
-        super(x, y, width, height, new StringTextComponent(msg));
+    public StyledTextField(Font fontIn, int x, int y, int width, int height, @Nullable StyledTextField old, String msg) {
+        super(x, y, width, height, new TextComponent(msg));
         this.fontRenderer = fontIn;
         if (old != null) {
             this.setText(old.getText());
@@ -308,7 +308,7 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
 
 
     public void setCursorPos(int pos) {
-        this.cursorPosition = MathHelper.clamp(pos, 0, this.text.length());
+        this.cursorPosition = Mth.clamp(pos, 0, this.text.length());
     }
 
 
@@ -441,7 +441,7 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
             }
 
             if (this.isFocused() && flag && mouseButton == 0) {
-                int i = MathHelper.floor(mouseX) - this.x;
+                int i = Mth.floor(mouseX) - this.x;
                 if (getEnableBackgroundDrawing()) {
                     i -= 4;
                 }
@@ -457,14 +457,14 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
 
 
     @Override
-    public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+    public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         if (this.getVisible()) {
             if (this.getEnableBackgroundDrawing()) {
                 if (StyleManager.getCurrentStyle() instanceof StyleVanilla) {
-                    fill(matrix, this.x - 1, this.y - 1, this.x + this.width + 1, this.y + this.height + 1, StyleManager.getCurrentStyle().getMainColor().getInt());
-                    fill(matrix, this.x, this.y, this.x + this.width, this.y + this.height, /* StyleManager.getCurrentStyle() instanceof StyleVanilla ? */ -16777216 /* :ColorUtils.hsvToRGBInt(0, 0, 55).getInt() */);
+                    fill(poseStack,this.x - 1, this.y - 1, this.x + this.width + 1, this.y + this.height + 1, StyleManager.getCurrentStyle().getMainColor().getInt());
+                    fill(poseStack,this.x, this.y, this.x + this.width, this.y + this.height, /* StyleManager.getCurrentStyle() instanceof StyleVanilla ? */ -16777216 /* :ColorUtils.hsvToRGBInt(0, 0, 55).getInt() */);
                 } else {
-                    GuiUtil.drawFrame(matrix, x, y, x + width, y + height, 1, StyleManager.getCurrentStyle().getMainColor());
+                    GuiUtil.drawFrame(poseStack,x, y, x + width, y + height, 1, StyleManager.getCurrentStyle().getMainColor());
                 }
             }
 
@@ -483,7 +483,7 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
 
             if (!renderString.isEmpty()) {
                 String s1 = flag ? renderString.substring(0, j) : renderString;
-                j1 = this.fontRenderer.drawShadow(matrix, this.textFormatter.apply(s1, this.lineScrollOffset), (float) l, (float) i1, color);
+                j1 = this.fontRenderer.drawShadow(poseStack,this.textFormatter.apply(s1, this.lineScrollOffset), (float) l, (float) i1, color);
             }
 
             boolean flag2 = this.cursorPosition < this.text.length() || this.text.length() >= this.getMaxStringLength();
@@ -496,18 +496,18 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
             }
 
             if (!renderString.isEmpty() && flag && j < renderString.length()) {
-                this.fontRenderer.drawShadow(matrix, this.textFormatter.apply(renderString.substring(j), this.cursorPosition), (float) j1, (float) i1, color);
+                this.fontRenderer.drawShadow(poseStack,this.textFormatter.apply(renderString.substring(j), this.cursorPosition), (float) j1, (float) i1, color);
             }
 
             if (!flag2 && this.suggestion != null) {
-                this.fontRenderer.drawShadow(matrix, this.suggestion, (float) (k1 - 1), (float) i1, -8355712);
+                this.fontRenderer.drawShadow(poseStack,this.suggestion, (float) (k1 - 1), (float) i1, -8355712);
             }
 
             if (flag1) {
                 if (flag2) {
-                    AbstractGui.fill(matrix, k1, i1 - 1, k1 + 1, i1 + 1 + 9, -3092272);
+                    AbstractGui.fill(poseStack,k1, i1 - 1, k1 + 1, i1 + 1 + 9, -3092272);
                 } else {
-                    this.fontRenderer.drawShadow(matrix, "_", (float) k1, (float) i1, color);
+                    this.fontRenderer.drawShadow(poseStack,"_", (float) k1, (float) i1, color);
                 }
             }
 
@@ -517,7 +517,7 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
             }
 
             if(text.length() == 0 && hint != null){
-                this.fontRenderer.drawShadow(matrix, hint, (float) j1, (float) i1, color);
+                this.fontRenderer.drawShadow(poseStack,hint, (float) j1, (float) i1, color);
             }
         }
     }
@@ -659,7 +659,7 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
      */
     public void setSelectionPos(int position) {
         int i = this.text.length();
-        this.selectionEnd = MathHelper.clamp(position, 0, i);
+        this.selectionEnd = Mth.clamp(position, 0, i);
         if (this.fontRenderer != null) {
             if (this.lineScrollOffset > i) {
                 this.lineScrollOffset = i;
@@ -678,7 +678,7 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
                 this.lineScrollOffset -= this.lineScrollOffset - this.selectionEnd;
             }
 
-            this.lineScrollOffset = MathHelper.clamp(this.lineScrollOffset, 0, i);
+            this.lineScrollOffset = Mth.clamp(this.lineScrollOffset, 0, i);
         }
 
     }

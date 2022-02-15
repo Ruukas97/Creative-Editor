@@ -6,8 +6,8 @@ import infinityitemeditor.data.DataItem;
 import infinityitemeditor.data.tag.TagEnchantment;
 import infinityitemeditor.json.MinecraftHeadsCategory;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class CreativeTabs {
     public static void init() {

@@ -1,19 +1,19 @@
 package infinityitemeditor.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import infinityitemeditor.data.DataItem;
 import infinityitemeditor.util.ColorUtils;
 import infinityitemeditor.util.EntityDrawUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.util.text.MutableComponent;
 
 public abstract class BaseArmorstandScreen extends ParentItemScreen {
 
     protected static EntityDrawUtils drawArmor;
     private boolean isInRegion = false;
 
-    public BaseArmorstandScreen(ITextComponent title, Screen lastScreen, DataItem editing) {
+    public BaseArmorstandScreen(MutableComponent title, Screen lastScreen, DataItem editing) {
         super(title, lastScreen, editing);
         this.renderItem = false;
     }
@@ -30,8 +30,8 @@ public abstract class BaseArmorstandScreen extends ParentItemScreen {
     }
 
     @Override
-    public void mainRender(MatrixStack matrix, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
-        super.mainRender(matrix, mouseX, mouseY, p3, color);
+    public void mainRender(PoseStack poseStack, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
+        super.mainRender(poseStack,mouseX, mouseY, p3, color);
         drawArmor.drawArmorStand((int) (this.width / 3 * 2.5), (int) (this.height / 5 * 3.8), 70);
 
     }

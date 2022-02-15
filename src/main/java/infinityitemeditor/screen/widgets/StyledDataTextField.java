@@ -4,19 +4,19 @@ import infinityitemeditor.data.Data;
 import infinityitemeditor.data.base.DataString;
 import infinityitemeditor.data.base.DataTextComponent;
 import infinityitemeditor.screen.DataController;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.nbt.StringNBT;
+import net.minecraft.client.gui.Font;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedConstants;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponent;
 
 public class StyledDataTextField extends StyledTextField implements DataController {
-    private final Data<?, StringNBT> data;
+    private final Data<?, StringTag> data;
     private boolean isResourceLocationField = false;
 
 
-    public StyledDataTextField(FontRenderer fontIn, int x, int y, int width, int height, Data<?, StringNBT> data) {
-        super(fontIn, x, y, width, height, data.getNBT().getAsString());
+    public StyledDataTextField(Font fontIn, int x, int y, int width, int height, Data<?, StringTag> data) {
+        super(fontIn, x, y, width, height, data.getTag().getAsString());
         this.data = data;
         if (data instanceof DataTextComponent) {
             DataTextComponent dataT = (DataTextComponent) data;
@@ -146,7 +146,7 @@ public class StyledDataTextField extends StyledTextField implements DataControll
     private void setTag(String text) {
         if (data instanceof DataTextComponent) {
             DataTextComponent dataT = (DataTextComponent) data;
-            dataT.set(new StringTextComponent(text));
+            dataT.set(new TextComponent(text));
             this.text = dataT.getFormatted();
 
         } else if (data instanceof DataString) {

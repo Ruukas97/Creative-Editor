@@ -32,21 +32,21 @@ public class HeadRenderer extends ItemStackTileEntityRenderer {
 
 
 //    @Override
-//    public void renderByItem(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+//    public void renderByItem(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformType, PoseStack poseStackStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
 //        Item item = itemStackIn.getItem();
 //        if (item instanceof BlockItem) {
 //            Block block = ((BlockItem) item).getBlock();
 //            if (block instanceof AbstractSkullBlock) {
 //                GameProfile gameprofile = null;
 //                if (itemStackIn.hasTag()) {
-//                    CompoundNBT compoundnbt = itemStackIn.getTag();
+//                    CompoundTag compoundnbt = itemStackIn.getTag();
 //                    if (compoundnbt.contains("SkullOwner", 10)) {
-//                        gameprofile = NBTUtil.readGameProfile(compoundnbt.getCompound("SkullOwner"));
+//                        gameprofile = NbtUtils.readGameProfile(compoundnbt.getCompound("SkullOwner"));
 //                    } else if (compoundnbt.contains("SkullOwner", 8) && !StringUtils.isBlank(compoundnbt.getString("SkullOwner"))) {
 //                        GameProfile gameprofile1 = new GameProfile(null, compoundnbt.getString("SkullOwner"));
 //                        gameprofile = SkullTileEntity.updateGameprofile(gameprofile1);
 //                        compoundnbt.remove("SkullOwner");
-//                        compoundnbt.put("SkullOwner", NBTUtil.writeGameProfile(new CompoundNBT(), gameprofile));
+//                        compoundnbt.put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), gameprofile));
 //                    }
 //                }
 //
@@ -64,7 +64,7 @@ public class HeadRenderer extends ItemStackTileEntityRenderer {
      * Modified version of
      * {@link net.minecraft.client.renderer.tileentity.SkullTileEntityRenderer#render}
      */
-//    public static void render(Direction directionIn, float rotation, GameProfile profile, float animationProgress, MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int combinedLight) {
+//    public static void render(Direction directionIn, float rotation, GameProfile profile, float animationProgress, PoseStack poseStackStackIn, IRenderTypeBuffer buffer, int combinedLight) {
 //        matrixStackIn.pushPose();
 //        if (directionIn == null) {
 //            matrixStackIn.translate(0.5D, 0.0D, 0.5D);

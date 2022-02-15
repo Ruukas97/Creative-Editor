@@ -6,15 +6,12 @@ import infinityitemeditor.data.base.DataColor;
 import infinityitemeditor.data.version.NBTKeys;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.item.FireworkRocketItem.Shape;
-import net.minecraft.nbt.ByteNBT;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraft.nbt.ByteTag;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.FireworkRocketItem.Shape;
 
-public class TagExplosion implements Data<TagExplosion, CompoundNBT> {
+public class TagExplosion implements Data<TagExplosion, CompoundTag> {
     @Getter
     private final DataBoolean flicker;
     @Getter
@@ -28,18 +25,18 @@ public class TagExplosion implements Data<TagExplosion, CompoundNBT> {
     private final TagList<DataColor> fadeColors;
 
 
-    public TagExplosion(INBT nbt) {
-        this(nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT());
+    public TagExplosion(Tag nbt) {
+        this(nbt instanceof CompoundTag ? (CompoundTag) nbt : new CompoundTag());
     }
 
 
-    public TagExplosion(CompoundNBT nbt) {
+    public TagExplosion(CompoundTag nbt) {
         NBTKeys keys = NBTKeys.keys;
         flicker = new DataBoolean(nbt.getBoolean(keys.explosionFlicker()));
         trail = new DataBoolean(nbt.getBoolean(keys.explosionTrail()));
         shape = Shape.byId(nbt.getByte(keys.explosionShape()));
-        colors = new TagList<>(nbt.getList(keys.explosionColors(), NBT.TAG_INT), DataColor::new);
-        fadeColors = new TagList<>(nbt.getList(keys.explosionFadeColor(), NBT.TAG_INT), DataColor::new);
+        colors = new TagList<>(nbt.getList(keys.explosionColors(), Tag.TAG_INT), DataColor::new);
+        fadeColors = new TagList<>(nbt.getList(keys.explosionFadeColor(), Tag.TAG_INT), DataColor::new);
     }
 
 
@@ -56,28 +53,28 @@ public class TagExplosion implements Data<TagExplosion, CompoundNBT> {
 
 
     @Override
-    public CompoundNBT getNBT() {
+    public CompoundTag getTag() {
         NBTKeys keys = NBTKeys.keys;
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
         if (!flicker.isDefault())
-            nbt.put(keys.explosionFlicker(), flicker.getNBT());
+            nbt.put(keys.explosionFlicker(), flicker.getTag());
         if (!trail.isDefault())
-            nbt.put(keys.explosionTrail(), trail.getNBT());
+            nbt.put(keys.explosionTrail(), trail.getTag());
         if (shape != null)
-            nbt.put(keys.explosionShape(), ByteNBT.valueOf((byte) shape.ordinal()));
+            nbt.put(keys.explosionShape(), ByteTag.valueOf((byte) shape.ordinal()));
         if (!colors.isDefault())
-            nbt.put(keys.explosionColors(), colors.getNBT());
+            nbt.put(keys.explosionColors(), colors.getTag());
         if (!getFadeColors().isDefault())
-            nbt.put(keys.explosionFadeColor(), fadeColors.getNBT());
+            nbt.put(keys.explosionFadeColor(), fadeColors.getTag());
         return nbt;
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        if (isDefault() || shape == null) {
-            return new StringTextComponent("{}");
-        } else {
-            return new StringTextComponent(shape.getName()).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
-        }
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        if (isDefault() || shape == null) {
+//            return new TextComponent("{}");
+//        } else {
+//            return new TextComponent(shape.getName()).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
+//        }
+//    }
 }

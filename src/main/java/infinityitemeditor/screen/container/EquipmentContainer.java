@@ -3,28 +3,28 @@ package infinityitemeditor.screen.container;
 import com.mojang.datafixers.util.Pair;
 import infinityitemeditor.InfinityItemEditor;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EquipmentContainer extends Container {
+public class EquipmentContainer extends AbstractContainerMenu {
     public static final ResourceLocation EMPTY_ARMOR_SLOT_SWORD = new ResourceLocation(InfinityItemEditor.MODID, "item/empty_armor_slot_sword");
-    private static final EquipmentSlotType[] SLOT_IDS = new EquipmentSlotType[]{EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET};
-    private static final ResourceLocation[] TEXTURE_EMPTY_SLOTS = new ResourceLocation[]{PlayerContainer.EMPTY_ARMOR_SLOT_BOOTS, PlayerContainer.EMPTY_ARMOR_SLOT_LEGGINGS, PlayerContainer.EMPTY_ARMOR_SLOT_CHESTPLATE, PlayerContainer.EMPTY_ARMOR_SLOT_HELMET};
+    private static final EquipmentSlot[] SLOT_IDS = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+    private static final ResourceLocation[] TEXTURE_EMPTY_SLOTS = new ResourceLocation[]{InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS, InventoryMenu.EMPTY_ARMOR_SLOT_LEGGINGS, InventoryMenu.EMPTY_ARMOR_SLOT_CHESTPLATE, InventoryMenu.EMPTY_ARMOR_SLOT_HELMET};
 
     public EquipmentContainer(EquipmentInventory equipmentInventory) {
         super(null, 0);
-        PlayerInventory playerInventory = Minecraft.getInstance().player.inventory;
+        Inventory playerInventory = Minecraft.getInstance().player.getInventory();
 
         for (int k = 0; k < 4; ++k) {
-            final EquipmentSlotType equipmentslottype = SLOT_IDS[k];
+            final EquipmentSlot equipmentslottype = SLOT_IDS[k];
             this.addSlot(new Slot(playerInventory, 39 - k, 8, 8 + k * 18) {
                 public int getMaxStackSize() {
                     return 1;
@@ -34,13 +34,13 @@ public class EquipmentContainer extends Container {
                     return stack.canEquip(equipmentslottype, playerInventory.player);
                 }
 
-                public boolean mayPickup(PlayerEntity player) {
+                public boolean mayPickup(Player player) {
                     return !getItem().isEmpty() && super.mayPickup(player);
                 }
 
                 @OnlyIn(Dist.CLIENT)
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return Pair.of(PlayerContainer.BLOCK_ATLAS, TEXTURE_EMPTY_SLOTS[equipmentslottype.getIndex()]);
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, TEXTURE_EMPTY_SLOTS[equipmentslottype.getIndex()]);
                 }
             }).index += 5;
         }
@@ -58,7 +58,7 @@ public class EquipmentContainer extends Container {
         this.addSlot(new Slot(playerInventory, 40, 77, 62) {
             @OnlyIn(Dist.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
             }
         }).index += 5;
 
@@ -66,33 +66,33 @@ public class EquipmentContainer extends Container {
         this.addSlot(new Slot(equipmentInventory, 4, 83, 8) {
             @OnlyIn(Dist.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return Pair.of(PlayerContainer.BLOCK_ATLAS, EMPTY_ARMOR_SLOT_SWORD);
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, EMPTY_ARMOR_SLOT_SWORD);
             }
         });
         this.addSlot(new Slot(equipmentInventory, 5, 83, 26) {
             @OnlyIn(Dist.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
             }
         });
 
         for (int k = 0; k < 4; ++k) {
-            final EquipmentSlotType equipmentslottype = SLOT_IDS[k];
+            final EquipmentSlot equipmentslottype = SLOT_IDS[k];
             this.addSlot(new Slot(equipmentInventory, 5 - k - 2, 152, 8 + k * 18) {
-                public boolean mayPickup(PlayerEntity player) {
+                public boolean mayPickup(Player player) {
                     return !getItem().isEmpty() && super.mayPickup(player);
                 }
 
                 @OnlyIn(Dist.CLIENT)
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return Pair.of(PlayerContainer.BLOCK_ATLAS, TEXTURE_EMPTY_SLOTS[equipmentslottype.getIndex()]);
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, TEXTURE_EMPTY_SLOTS[equipmentslottype.getIndex()]);
                 }
             });
         }
     }
 
     @Override
-    public boolean stillValid(PlayerEntity player) {
+    public boolean stillValid(Player player) {
         return false;
     }
 }

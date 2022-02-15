@@ -1,7 +1,7 @@
 package infinityitemeditor.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import infinityitemeditor.util.ColorUtils;
 import infinityitemeditor.util.TextComponentUtils;
@@ -15,10 +15,10 @@ import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
-import net.minecraft.item.*;
 import net.minecraft.tileentity.BannerPattern;
 import net.minecraft.tileentity.BannerTileEntity;
 import net.minecraft.util.Util;
+import net.minecraft.world.item.*;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class ShieldRenderer extends ItemStackTileEntityRenderer {
 
 
     @Override
-    public void renderByItem(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void renderByItem(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformType, PoseStack poseStackStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
         Item item = itemStackIn.getItem();
         if (item == Items.SHIELD) {
             String displayName = TextComponentUtils.getPlainText(itemStackIn.getDisplayName());
@@ -62,7 +62,7 @@ public class ShieldRenderer extends ItemStackTileEntityRenderer {
     }
 
 
-    public static void renderBannerPatterns(MatrixStack matrixStack, IRenderTypeBuffer renderType, int combinedLight, int combinedOverlay, ModelRenderer modelRenderer, RenderMaterial materialIn, boolean isBanner, List<Pair<BannerPattern, DyeColor>> patterns) {
+    public static void renderBannerPatterns(PoseStack poseStackStack, IRenderTypeBuffer renderType, int combinedLight, int combinedOverlay, ModelRenderer modelRenderer, RenderMaterial materialIn, boolean isBanner, List<Pair<BannerPattern, DyeColor>> patterns) {
         modelRenderer.render(matrixStack, materialIn.buffer(renderType, RenderType::entitySolid), combinedLight, combinedOverlay);
 
         float hue = ((float) (Util.getMillis() % 50000)) / 50000;

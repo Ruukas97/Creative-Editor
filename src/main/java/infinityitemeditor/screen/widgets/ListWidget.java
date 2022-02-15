@@ -10,7 +10,7 @@ public class ListWidget extends ExtendedList {
 
     @SuppressWarnings("resource")
     public ListWidget(ParentScreen parent, int listWidth) {
-        super(parent.getMinecraft(), listWidth, parent.height, 32, parent.height - 91 + 4, parent.getFontRenderer().lineHeight * 2 + 8);
+        super(parent.getMinecraft(), listWidth, parent.height, 32, parent.height - 91 + 4, parent.getFont().lineHeight * 2 + 8);
         this.parent = parent;
         this.listWidth = listWidth;
     }

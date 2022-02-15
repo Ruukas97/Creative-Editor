@@ -1,6 +1,7 @@
 package infinityitemeditor.util;
 
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -22,7 +23,7 @@ public class ColorUtils {
 
 
     public static int mcHSVtoRGB(float hue, float saturation, float value) {
-        return MathHelper.hsvToRgb(hue, saturation, value);
+        return Mth.hsvToRgb(hue, saturation, value);
     }
 
 
@@ -290,8 +291,8 @@ public class ColorUtils {
             return "Color[A:" + getAlpha() + ",R:" + getRed() + ",G:" + getGreen() + ",B:" + getBlue() + "]";
         }
 
-        public net.minecraft.util.text.Color toMcColor() {
-            return net.minecraft.util.text.Color.fromRgb(argb);
+        public TextColor toMcColor() {
+            return TextColor.fromRgb(argb);
         }
     }
 }

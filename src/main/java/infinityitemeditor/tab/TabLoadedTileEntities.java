@@ -5,13 +5,13 @@ import infinityitemeditor.data.version.NBTKeys;
 import infinityitemeditor.util.InventoryUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.ArmorStandEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class TabLoadedTileEntities extends TabCreative {
 
@@ -44,10 +44,10 @@ public class TabLoadedTileEntities extends TabCreative {
 
         NonNullList<ItemStack> stands = NonNullList.create();
         for (Entity ent : world.entitiesForRendering()) {
-            if (ent instanceof ArmorStandEntity) {
-                ArmorStandEntity stand = (ArmorStandEntity) ent;
-                CompoundNBT itemTag = new CompoundNBT();
-                CompoundNBT entityTag = new CompoundNBT();
+            if (ent instanceof ArmorStand) {
+                ArmorStand stand = (ArmorStand) ent;
+                CompoundTag itemTag = new CompoundTag();
+                CompoundTag entityTag = new CompoundTag();
                 stand.save(entityTag);
                 itemTag.put(NBTKeys.keys.tagEntityTag(), entityTag);
 

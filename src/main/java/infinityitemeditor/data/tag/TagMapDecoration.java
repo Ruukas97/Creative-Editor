@@ -6,13 +6,12 @@ import infinityitemeditor.data.base.DataString;
 import infinityitemeditor.data.version.NBTKeys;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.nbt.ByteNBT;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.storage.MapDecoration;
+import net.minecraft.nbt.ByteTag;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.level.saveddata.maps.MapDecoration;
 
-public class TagMapDecoration implements Data<TagMapDecoration, CompoundNBT> {
+public class TagMapDecoration implements Data<TagMapDecoration, CompoundTag> {
 
     @Getter
     private final DataString id;
@@ -26,11 +25,11 @@ public class TagMapDecoration implements Data<TagMapDecoration, CompoundNBT> {
     @Getter
     private final DataDouble rotation;
 
-    public TagMapDecoration(INBT nbt) {
-        this(nbt instanceof CompoundNBT ? (CompoundNBT) nbt : new CompoundNBT());
+    public TagMapDecoration(Tag nbt) {
+        this(nbt instanceof CompoundTag ? (CompoundTag) nbt : new CompoundTag());
     }
 
-    public TagMapDecoration(CompoundNBT nbt) {
+    public TagMapDecoration(CompoundTag nbt) {
         NBTKeys keys = NBTKeys.keys;
         id = new DataString(nbt.getString(keys.decorationId()));
         type = MapDecoration.Type.byIcon(nbt.getByte(keys.decorationType()));
@@ -53,19 +52,19 @@ public class TagMapDecoration implements Data<TagMapDecoration, CompoundNBT> {
 
 
     @Override
-    public CompoundNBT getNBT() {
-        CompoundNBT nbt = new CompoundNBT();
+    public CompoundTag getTag() {
+        CompoundTag nbt = new CompoundTag();
         NBTKeys keys = NBTKeys.keys;
-        nbt.put(keys.decorationId(), id.getNBT());
-        nbt.put(keys.decorationType(), ByteNBT.valueOf(type.getIcon()));
-        nbt.put("x", x.getNBT());
-        nbt.put("y", y.getNBT());
-        nbt.put(keys.decorationRotation(), rotation.getNBT());
+        nbt.put(keys.decorationId(), id.getTag());
+        nbt.put(keys.decorationType(), ByteTag.valueOf(type.getIcon()));
+        nbt.put("x", x.getTag());
+        nbt.put("y", y.getTag());
+        nbt.put(keys.decorationRotation(), rotation.getTag());
         return nbt;
     }
 
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        return getNBT().getPrettyDisplay(space, indentation);
-    }
+//    @Override
+//    public MutableComponent getPrettyDisplay(String space, int indentation) {
+//        return getTag().getPrettyDisplay(space, indentation);
+//    }
 }

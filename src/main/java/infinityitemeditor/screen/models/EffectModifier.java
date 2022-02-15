@@ -5,9 +5,9 @@ import infinityitemeditor.data.base.DataBoolean;
 import infinityitemeditor.data.tag.TagEffect;
 import infinityitemeditor.screen.widgets.NumberField;
 import infinityitemeditor.screen.widgets.StyledToggle;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resources.language.I18n;
 
 public class EffectModifier implements TagModifier<TagEffect> {
     private final NumberRangeInt amplifier;
@@ -34,7 +34,7 @@ public class EffectModifier implements TagModifier<TagEffect> {
         showIcon = new DataBoolean(true);
     }
 
-    private void initWidgets(FontRenderer font, int width, int height) {
+    private void initWidgets(Font font, int width, int height) {
         amplifierField = new NumberField(font, 10, height - 130, 20, amplifier);
         durationField = new NumberField(font, 10, height - 105, 20, duration);
         ambientToggle = new StyledToggle(10, height - 80, 80, 20, I18n.get("gui.effectwheel.ambient"), ambient);
@@ -52,7 +52,7 @@ public class EffectModifier implements TagModifier<TagEffect> {
     }
 
     @Override
-    public Widget[] widgets(FontRenderer font, int width, int height) {
+    public Widget[] widgets(Font font, int width, int height) {
         initWidgets(font, width, height);
         return new Widget[]{amplifierField, durationField, ambientToggle, showParticlesToggle, showIconToggle};
     }

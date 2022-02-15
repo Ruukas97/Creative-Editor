@@ -1,7 +1,7 @@
 package infinityitemeditor.json;
 
 import lombok.Getter;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,8 +30,8 @@ public enum MinecraftHeadsCategory {
     }
 
 
-    public TranslationTextComponent getTranslationKey() {
-        return new TranslationTextComponent("gui.headcollection.category." + name);
+    public TranslatableComponent getTranslationKey() {
+        return new TranslatableComponent("gui.headcollection.category." + name);
     }
 
 
