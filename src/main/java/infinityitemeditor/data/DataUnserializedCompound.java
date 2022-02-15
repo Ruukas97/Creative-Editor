@@ -14,8 +14,8 @@ public class DataUnserializedCompound implements Data<DataUnserializedCompound, 
     private final Map<String, Data<?, ?>> serialized = new HashMap<>();
     private final CompoundNBT unserializedNBT;
 
-    public DataUnserializedCompound(CompoundNBT nbt){
-        if(nbt == null){
+    public DataUnserializedCompound(CompoundNBT nbt) {
+        if (nbt == null) {
             nbt = new CompoundNBT();
         }
         unserializedNBT = nbt.copy();
@@ -23,6 +23,7 @@ public class DataUnserializedCompound implements Data<DataUnserializedCompound, 
 
     protected <T extends Data<?, ?>> T add(String key, T data) {
         serialized.put(key, data);
+        unserializedNBT.remove(key);
         return data;
     }
 

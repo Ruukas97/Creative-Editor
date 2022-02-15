@@ -28,7 +28,7 @@ public class DataString extends SingularData<String, StringNBT> {
 
     @Override
     public boolean isDefault() {
-        return data == null || data.length() < 1;
+        return data == null || data.isEmpty();
     }
 
 
@@ -49,13 +49,13 @@ public class DataString extends SingularData<String, StringNBT> {
         StringBuilder stringbuilder = new StringBuilder(" ");
         char c0 = 0;
 
-        for(int i = 0; i < string.length(); ++i) {
+        for (int i = 0; i < string.length(); ++i) {
             char c1 = string.charAt(i);
             if (c1 == '\\') {
                 stringbuilder.append('\\');
             } else if (c1 == '"' || c1 == '\'') {
                 if (c0 == 0) {
-                    c0 = (char)(c1 == '"' ? 39 : 34);
+                    c0 = (char) (c1 == '"' ? 39 : 34);
                 }
 
                 if (c0 == c1) {
