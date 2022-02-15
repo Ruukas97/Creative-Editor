@@ -94,8 +94,8 @@ public class NBTKeysLatest extends NBTKeys {
     }
 
     @Override
-    public String locked() {
-        return "lock";
+    public String blockEntityLock() {
+        return "Lock";
     }
 
     @Override

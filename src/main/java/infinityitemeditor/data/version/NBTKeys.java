@@ -106,7 +106,7 @@ public abstract class NBTKeys {
 
     public abstract String blockEntityCustomName();
 
-    public abstract String locked();
+    public abstract String blockEntityLock();
 
     public abstract String tagBlockStateTag();
 

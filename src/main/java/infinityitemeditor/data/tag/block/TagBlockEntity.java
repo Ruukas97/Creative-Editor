@@ -29,7 +29,7 @@ public class TagBlockEntity extends DataUnserializedCompound {
         }
         NBTKeys keys = NBTKeys.keys;
         customName = add(keys.blockEntityCustomName(), new DataString(nbt.getString(keys.blockEntityCustomName())));
-        locked = add(keys.locked(), new DataString(nbt.getString(keys.locked())));
+        locked = add(keys.blockEntityLock(), new DataString(nbt.getString(keys.blockEntityLock())));
         items = add(keys.blockEntityItems(), new TagItemList(nbt.getList(keys.blockEntityItems(), Constants.NBT.TAG_COMPOUND)));
 
         patterns = add(keys.tagPatterns(), new TagList<>(nbt.getList(keys.tagPatterns(), Constants.NBT.TAG_COMPOUND), TagBannerPattern::new));
