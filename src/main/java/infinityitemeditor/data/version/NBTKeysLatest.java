@@ -100,7 +100,7 @@ public class NBTKeysLatest extends NBTKeys {
 
     @Override
     public String blockEntityItems(){
-        return "items";
+        return "Items";
     }
 
     @Override
