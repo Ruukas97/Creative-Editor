@@ -105,7 +105,10 @@ public class WheelScreen<T extends Data<?, ?>> extends ParentItemScreen {
         searchField.setHint(I18n.get("gui.wheel.search"));
         addAll = addButton(new StyledButton(10, 60, 100, 20, new TranslationTextComponent("gui.wheel.addall"), b -> {
             for (T tag : filteredTags) {
-                addTag(tag);
+                T cloned = wheelType.clone(tag);
+                tagModifier.modify(cloned);
+                addTag(cloned);
+                added.add(cloned);
             }
         }));
 
