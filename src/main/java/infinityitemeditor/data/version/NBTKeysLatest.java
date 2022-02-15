@@ -89,8 +89,18 @@ public class NBTKeysLatest extends NBTKeys {
     }
 
     @Override
+    public String blockEntityCustomName(){
+        return "CustomName";
+    }
+
+    @Override
     public String locked() {
         return "lock";
+    }
+
+    @Override
+    public String blockEntityItems(){
+        return "items";
     }
 
     @Override

@@ -56,12 +56,11 @@ public class TagItemList extends SingularData<DataItem[], ListNBT>{
 
     @Override
     public ITextComponent getPrettyDisplay(String space, int indentation) {
-        ITextComponent itextcomponent = (new StringTextComponent("B")).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
-        IFormattableTextComponent iformattabletextcomponent = (new StringTextComponent("[")).append(itextcomponent).append(";");
+        IFormattableTextComponent iformattabletextcomponent = (new StringTextComponent("["));
 
-        for(int i = 0; i < this.data.length; ++i) {
+        for(int i = 0; i < this.data.length; i++) {
             IFormattableTextComponent iformattabletextcomponent1 = (new StringTextComponent(data[i].getItem().getIDExcludingMC())).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
-            iformattabletextcomponent.append(" ").append(iformattabletextcomponent1).append(itextcomponent);
+            iformattabletextcomponent.append(" ").append(iformattabletextcomponent1);
             if (i != this.data.length - 1) {
                 iformattabletextcomponent.append(",");
             }
