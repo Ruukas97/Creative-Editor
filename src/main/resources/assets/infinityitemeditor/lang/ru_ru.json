@@ -149,7 +149,7 @@
   "gui.headcollection.freeslots": "Свободные слоты",
   "gui.headcollection.headsininventory": "Головы в инвентаре",
   "gui.headcollection.typesearch": "Введите для поиска",
-  "gui.itemflag": "Флаги для описания предмета",
+  "gui.itemflag": "Скрыть флаги",
   "gui.iteminspector": "Осмотр предмета",
   "gui.itemspawner": "Item Spawner",
   "gui.loreeditor": "Редактор описания",
@@ -192,8 +192,8 @@
   "gui.tagexplorer.help": "Используйте %%s для целочисленной переменной",
   "gui.texteditor": "Редактор текста",
   "gui.texteditor.preview": "Предосмотр",
-  "gui.toggle.off": "выключено",
-  "gui.toggle.on": "включено",
+  "gui.toggle.off": "нет",
+  "gui.toggle.on": "да",
   "gui.wheel.search": "Поиск",
   "item.tag.invisible": "Невидимый",
   "item.tag.unbreakable.false": "Разрушимый",
@@ -208,5 +208,5 @@
   "key.debug": "Ключ откладки",
   "key.editor": "Редактировать выбранный предмет",
   "key.headcollection": "Открыть коллекцию голов",
-  "key.offhandswing": "Атака запасной рукой",
+  "key.offhandswing": "Атака запасной рукой"
 }
