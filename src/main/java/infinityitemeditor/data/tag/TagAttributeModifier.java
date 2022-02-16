@@ -3,6 +3,7 @@ package infinityitemeditor.data.tag;
 import infinityitemeditor.data.Data;
 import infinityitemeditor.data.base.DataDouble;
 import infinityitemeditor.data.base.DataString;
+import infinityitemeditor.data.base.DataUUID;
 import infinityitemeditor.data.version.NBTKeys;
 import infinityitemeditor.util.AttributeUtils;
 import lombok.Getter;
@@ -33,6 +34,9 @@ public class TagAttributeModifier implements Data<TagAttributeModifier, Compound
     private Attribute attribute;
 
     @Getter
+    private final DataUUID id;
+
+    @Getter
     private final DataString name;
 
     @Getter
@@ -50,6 +54,7 @@ public class TagAttributeModifier implements Data<TagAttributeModifier, Compound
 
     public TagAttributeModifier(Attribute attribute, AttributeModifier modifier, EquipmentSlotType slot) {
         this.attribute = attribute;
+        this.id = new DataUUID();
         this.name = new DataString(modifier.getName());
         this.amount = new DataDouble(modifier.getAmount());
         this.operation = new TagEnum<>(Operation.class, modifier.getOperation());
@@ -87,7 +92,7 @@ public class TagAttributeModifier implements Data<TagAttributeModifier, Compound
     }
 
     public AttributeModifier createAttributeModifier(){
-        return new AttributeModifier(name.get(), amount.get(), operation.get());
+        return new AttributeModifier(id.getData(), name.get(), amount.get(), operation.get());
     }
 
     @Override

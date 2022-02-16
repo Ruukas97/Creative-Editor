@@ -22,9 +22,13 @@ public class TagBlockEntity extends DataUnserializedCompound {
     @Getter
     private final TagList<TagBannerPattern> patterns;
 
+    public TagBlockEntity() {
+        this(new CompoundNBT());
+    }
+
     public TagBlockEntity(CompoundNBT nbt) {
         super(nbt);
-        if(nbt == null){
+        if (nbt == null) {
             nbt = new CompoundNBT();
         }
         NBTKeys keys = NBTKeys.keys;

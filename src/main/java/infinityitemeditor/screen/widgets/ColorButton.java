@@ -11,9 +11,9 @@ import java.util.List;
 
 public class ColorButton extends StyledButton {
 
-    private String c;
-    private List<IGuiEventListener> children;
-    private boolean clean;
+    private final String c;
+    private final List<IGuiEventListener> children;
+    private final boolean clean;
 
     public ColorButton(List<IGuiEventListener> children, int x, int y, int width, int height, String s, String c, boolean clean) {
         super(x, y, width, height, new StringTextComponent(s), t -> t.onPress());

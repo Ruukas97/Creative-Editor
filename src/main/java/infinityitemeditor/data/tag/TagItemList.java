@@ -6,23 +6,25 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
-public class TagItemList extends SingularData<DataItem[], ListNBT>{
+import java.util.ArrayList;
+import java.util.List;
+
+public class TagItemList extends SingularData<List<DataItem>, ListNBT> {
     public TagItemList(int size) {
-        super(new DataItem[size]);
+        super(new ArrayList<>(size));
     }
 
     public TagItemList(ListNBT items, int size) {
         this(size);
-        int i = 0;
-        for(INBT nbt : items){
-            if(nbt instanceof CompoundNBT){
-                data[i] = new DataItem((CompoundNBT) nbt);
+        for (INBT nbt : items) {
+            if (nbt instanceof CompoundNBT) {
+                data.add(new DataItem((CompoundNBT) nbt));
             }
-            i++;
         }
     }
 
@@ -32,8 +34,8 @@ public class TagItemList extends SingularData<DataItem[], ListNBT>{
 
     @Override
     public boolean isDefault() {
-        for (DataItem item : data){
-            if(item != null && !item.isDefault()){
+        for (DataItem item : data) {
+            if (item != null && !item.isDefault()) {
                 return false;
             }
         }
@@ -58,10 +60,10 @@ public class TagItemList extends SingularData<DataItem[], ListNBT>{
     public ITextComponent getPrettyDisplay(String space, int indentation) {
         IFormattableTextComponent iformattabletextcomponent = (new StringTextComponent("["));
 
-        for(int i = 0; i < this.data.length; i++) {
-            IFormattableTextComponent iformattabletextcomponent1 = (new StringTextComponent(data[i].getItem().getIDExcludingMC())).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
+        for (int i = 0; i < this.data.size(); i++) {
+            IFormattableTextComponent iformattabletextcomponent1 = (new StringTextComponent(data.get(i).getItem().getIDExcludingMC())).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
             iformattabletextcomponent.append(" ").append(iformattabletextcomponent1);
-            if (i != this.data.length - 1) {
+            if (i != this.data.size() - 1) {
                 iformattabletextcomponent.append(",");
             }
         }

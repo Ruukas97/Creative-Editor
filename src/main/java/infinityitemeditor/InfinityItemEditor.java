@@ -32,7 +32,6 @@ public class InfinityItemEditor {
 
     public static Path DATAPATH = FMLPaths.GAMEDIR.get().resolve(MODID.concat("-data"));
 
-
     public InfinityItemEditor() {
         final ModLoadingContext context = ModLoadingContext.get();
 

@@ -1,7 +1,7 @@
 package infinityitemeditor.screen.widgets;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import infinityitemeditor.data.base.DataColor;
+import infinityitemeditor.data.base.DataUUID;
 import infinityitemeditor.styles.Style;
 import infinityitemeditor.styles.StyleManager;
 import infinityitemeditor.util.ColorUtils.Color;
@@ -15,11 +15,13 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.glfw.GLFW;
 
-public class HexField extends Widget {
+import java.util.UUID;
+
+public class UUIDField extends Widget {
     private final FontRenderer fontRenderer;
 
     @Getter
-    DataColor dataColor;
+    DataUUID dataUUID;
     public char[] digits;
 
     private final char[] allowed = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f'};
@@ -38,13 +40,13 @@ public class HexField extends Widget {
     private int cursorPosition;
 
 
-    public HexField(FontRenderer font, int x, int y, int height, DataColor color) {
-        super(x, y, font.width("#FFFFFF") + 8, height, new StringTextComponent(""));
-        this.dataColor = color;
+    public UUIDField(FontRenderer font, int x, int y, int height, DataUUID uuid) {
+        super(x, y, font.width("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF") + 8, height, new StringTextComponent(""));
+        this.dataUUID = uuid;
         this.fontRenderer = font;
 
-        this.digits = new char[]{'0', '0', '0', '0', '0', '0'};
-        setValue(dataColor.getInt());
+        this.digits = new char[]{'0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'};
+        setValue(dataUUID.getData());
     }
 
 
@@ -59,7 +61,7 @@ public class HexField extends Widget {
 
 
     public String getHexString() {
-        return '#' + new String(digits);
+        return dataUUID.getData().toString();
     }
 
 
@@ -78,8 +80,9 @@ public class HexField extends Widget {
         if (isAllowed(c)) {
             digits[i] = c;
         }
-
-        dataColor.setInt(getDigitsValue());
+        UUID value = getUUIDValue();
+        dataUUID.getMostSignificantBits().set(value.getMostSignificantBits());
+        dataUUID.getLeastSignificantBits().set(value.getLeastSignificantBits());
     }
 
 
@@ -91,25 +94,24 @@ public class HexField extends Widget {
     }
 
 
-    private void setValue(int value) {
-        value = 0xFFFFFF & value;
-        String s = String.format("%06X", value);
-
+    private void setValue(UUID uuid) {
+        String s = uuid.toString().replaceAll("-", "");
         for (int i = 0; i < s.length(); i++) {
             this.digits[i] = s.charAt(i);
         }
     }
 
+    private String getStringWithHyphens() {
+        String without = new String(digits);
+        return without.substring(0, 8) + '-' + without.substring(8, 12) + '-' + without.substring(12, 16) + '-' + without.substring(16, 20) + '-' + without.substring(20);
+    }
 
-    /**
-     * Returns the contents of the textbox
-     */
-    private int getDigitsValue() {
+    private UUID getUUIDValue() {
         try {
-            return Integer.decode("#" + new String(digits));
+            return UUID.fromString(getStringWithHyphens());
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
+            return new UUID(0, 0);
         }
     }
 
@@ -168,19 +170,18 @@ public class HexField extends Widget {
         }
         if (Screen.isPaste(keyCode)) {
             try {
-                int p = Integer.decode(mc.keyboardHandler.getClipboard());
-                dataColor.setInt(p);
+                UUID value = UUID.fromString(mc.keyboardHandler.getClipboard().replaceAll("-", ""));
+                dataUUID.getMostSignificantBits().set(value.getMostSignificantBits());
+                dataUUID.getLeastSignificantBits().set(value.getLeastSignificantBits());
                 return true;
-            } catch (NumberFormatException e) {
+            } catch (IllegalArgumentException e) {
             }
-
         }
         if (Screen.isCut(keyCode)) {
             mc.keyboardHandler.setClipboard(String.valueOf(digits));
             return true;
         }
 
-        // TODO support more keys
         switch (keyCode) {
             case GLFW.GLFW_KEY_LEFT:
                 moveCursor(false);
@@ -245,9 +246,10 @@ public class HexField extends Widget {
             if (this.enableBackgroundDrawing) {
                 i -= 4;
             }
-            //TODO clicking selects wrong digit
-            String s = this.fontRenderer.plainSubstrByWidth(this.getHexString(), this.getWidth());
-            this.setCursorPosition(this.fontRenderer.plainSubstrByWidth(s, i).length());
+            String s = this.fontRenderer.plainSubstrByWidth(this.getStringWithHyphens(), this.getWidth());
+            String found = this.fontRenderer.plainSubstrByWidth(s, i);
+
+            this.setCursorPosition((int) (found.length() - found.chars().filter(value -> value == '-').count()));
             return true;
         } else {
             return false;
@@ -260,8 +262,8 @@ public class HexField extends Widget {
         Style style = StyleManager.getCurrentStyle();
         Color color = style.getFGColor(this);
 
-        if (getDigitsValue() != dataColor.getInt()) {
-            setValue(dataColor.getInt());
+        if (!getUUIDValue().equals(dataUUID.getData())) {
+            setValue(dataUUID.getData());
         }
 
         if (this.getEnableBackgroundDrawing()) {
@@ -269,7 +271,8 @@ public class HexField extends Widget {
         }
 
         int cursorPos = this.cursorPosition;
-        String string = this.fontRenderer.plainSubstrByWidth(this.getHexString(), this.getWidth());
+        String withHyphens = getStringWithHyphens();
+        String string = this.fontRenderer.plainSubstrByWidth(withHyphens, this.getWidth());
         boolean cursorFine = cursorPos >= 0 && cursorPos <= string.length();
         boolean displayCursor = isFocused() && this.cursorCounter / 6 % 2 == 0 && cursorFine;
         int textX = this.enableBackgroundDrawing ? this.x + 4 : this.x;
@@ -278,17 +281,31 @@ public class HexField extends Widget {
 
         if (!string.isEmpty()) {
             String halfString = cursorFine ? string.substring(0, cursorPos) : string;
-            halfX = this.fontRenderer.drawShadow(matrix, halfString, (float) textX, (float) textY, dataColor.getInt()) - 1;
+            halfX = this.fontRenderer.drawShadow(matrix, halfString, (float) textX, (float) textY, color.getInt()) - 1;
         }
 
-        int cursorX = halfX + (int) Math.ceil(fontRenderer.width("#"));
+        int hyphens;
+        if (cursorPos >= 20) {
+            hyphens = 4;
+        } else if (cursorPos >= 16) {
+            hyphens = 3;
+        } else if (cursorPos >= 12) {
+            hyphens = 2;
+        } else if (cursorPos >= 8) {
+            hyphens = 1;
+        } else {
+            hyphens = 0;
+        }
 
-        if (!cursorFine) {
-            cursorX = cursorPos > 0 ? textX + this.width : textX;
+        int cursorX;
+        if (cursorFine) {
+            cursorX = halfX + fontRenderer.width("-") * hyphens;
+        } else {
+            cursorX = textX + this.width;
         }
 
         if (!string.isEmpty() && cursorFine && cursorPos < string.length()) {
-            halfX = this.fontRenderer.drawShadow(matrix, string.substring(cursorPos), (float) halfX, (float) textY, dataColor.getInt());
+            halfX = this.fontRenderer.drawShadow(matrix, string.substring(cursorPos), (float) halfX, (float) textY, color.getInt());
         }
 
         if (displayCursor) {

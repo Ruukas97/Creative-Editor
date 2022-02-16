@@ -3,15 +3,11 @@ package infinityitemeditor.data;
 import com.google.common.base.Strings;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import infinityitemeditor.data.base.DataMap;
-import infinityitemeditor.data.tag.TagDamage;
-import infinityitemeditor.data.tag.TagDisplayName;
-import infinityitemeditor.data.tag.TagItemID;
-import infinityitemeditor.data.tag.TagItemNBT;
+import infinityitemeditor.data.tag.*;
 import infinityitemeditor.data.version.NBTKeys;
 import lombok.Getter;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SkullItem;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -206,6 +202,17 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
         return iformattabletextcomponent;
     }
 
+    public EquipmentSlotType getAppropriateEquipmentSlot() {
+        Item item = this.item.getItem();
+        if (item instanceof ArmorItem) {
+            ArmorItem armor = (ArmorItem) item;
+            return armor.getSlot();
+        } else if (item instanceof ShieldItem || item instanceof ArrowItem || item == Items.TOTEM_OF_UNDYING) {
+            return EquipmentSlotType.OFFHAND;
+        } else {
+            return EquipmentSlotType.MAINHAND;
+        }
+    }
 
     @Override
     public boolean isDefault() {

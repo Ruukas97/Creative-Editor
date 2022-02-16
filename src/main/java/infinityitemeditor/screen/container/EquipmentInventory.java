@@ -6,6 +6,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
+import java.util.List;
+
 public class EquipmentInventory implements IInventory {
     private TagItemList armor;
     private TagItemList hands;
@@ -19,7 +21,7 @@ public class EquipmentInventory implements IInventory {
 
     @Override
     public int getContainerSize() {
-        return armor.getData().length + hands.get().length;
+        return armor.getData().size() + hands.get().size();
     }
 
     @Override
@@ -39,63 +41,63 @@ public class EquipmentInventory implements IInventory {
 
     @Override
     public ItemStack getItem(int index) {
-        DataItem[] array = null;
+        List<DataItem> list = null;
 
         for (TagItemList itemList : both) {
-            if (index < itemList.get().length) {
-                array = itemList.get();
+            if (index < itemList.get().size()) {
+                list = itemList.get();
                 break;
             }
 
-            index -= itemList.get().length;
+            index -= itemList.get().size();
         }
 
-        return array == null || array[index] == null ? ItemStack.EMPTY : array[index].getItemStack();
+        return list == null || list.get(index) == null ? ItemStack.EMPTY : list.get(index).getItemStack();
     }
 
     @Override
     public ItemStack removeItem(int index, int count) {
-        DataItem[] array = null;
+        List<DataItem> list = null;
 
         for (TagItemList itemList : both) {
-            if (index < itemList.get().length) {
-                array = itemList.get();
+            if (index < itemList.get().size()) {
+                list = itemList.get();
                 break;
             }
 
-            index -= itemList.get().length;
+            index -= itemList.get().size();
         }
-        if (array != null && array[index] != null && !array[index].getItemStack().isEmpty()) {
-            DataItem old = array[index];
-            ItemStack is = removeItem(array, index, count);
+        if (list != null && list.get(index) != null && !list.get(index).getItemStack().isEmpty()) {
+            DataItem old = list.get(index);
+            ItemStack is = removeItem(list, index, count);
             int i = old.getCount().get() - is.getCount();
-            array[index] = i > 0 ? new DataItem(is.getItem(), i, old.getItemStack().getTag(), 0) : new DataItem();
+            list.set(index, i > 0 ? new DataItem(is.getItem(), i, old.getItemStack().getTag(), 0) : new DataItem());
             return is;
         }
         return ItemStack.EMPTY;
     }
 
 
-    private static ItemStack removeItem(DataItem[] array, int index, int count) {
-        return index >= 0 && index < array.length && !array[index].getItemStack().isEmpty() && count > 0 ? array[index].split(count).getItemStack() : ItemStack.EMPTY;
+    private static ItemStack removeItem(List<DataItem> list, int index, int count) {
+        return index >= 0 && index < list.size() && !list.get(index).getItemStack().isEmpty() && count > 0 ? list.get(index).split(count).getItemStack() : ItemStack.EMPTY;
     }
 
     @Override
     public ItemStack removeItemNoUpdate(int index) {
-        DataItem[] array = null;
+        List<DataItem> list = null;
 
         for (TagItemList itemList : both) {
-            if (index < itemList.get().length) {
-                array = itemList.get();
+            if (index < itemList.get().size()) {
+                list = itemList.get();
                 break;
             }
 
-            index -= itemList.get().length;
+            index -= itemList.get().size();
         }
 
-        if (array != null && array[index] != null && !array[index].getItemStack().isEmpty()) {
-            DataItem item = array[index];
-            array[index] = new DataItem();
+        if (list != null && list.get(index) != null && !list.get(index).getItemStack().isEmpty()) {
+            DataItem item = list.get(index);
+            list.set(index, new DataItem());
             return item.getItemStack();
         } else {
             return ItemStack.EMPTY;
@@ -104,19 +106,19 @@ public class EquipmentInventory implements IInventory {
 
     @Override
     public void setItem(int index, ItemStack stack) {
-        DataItem[] array = null;
+        List<DataItem> list = null;
 
         for (TagItemList itemList : both) {
-            if (index < itemList.get().length) {
-                array = itemList.get();
+            if (index < itemList.get().size()) {
+                list = itemList.get();
                 break;
             }
 
-            index -= itemList.get().length;
+            index -= itemList.get().size();
         }
 
-        if (array != null) {
-            array[index] = new DataItem(stack);
+        if (list != null) {
+            list.set(index, new DataItem(stack));
         }
     }
 
@@ -133,8 +135,8 @@ public class EquipmentInventory implements IInventory {
     @Override
     public void clearContent() {
         for (TagItemList list : both) {
-            for (int i = 0; i < list.get().length; i++) {
-                list.get()[0] = null;
+            for (int i = 0; i < list.get().size(); i++) {
+                list.get().set(0, null);
             }
         }
     }

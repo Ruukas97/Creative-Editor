@@ -93,7 +93,7 @@ public interface Data<E, T extends INBT> {
         return id == NBT.TAG_ANY_NUMERIC || (NBT.TAG_BYTE <= id && id <= NBT.TAG_DOUBLE);
     }
 
-    default ITextComponent getPrettyDisplay(String space, int indentantion){
-        return getNBT().getPrettyDisplay(space, indentantion);
+    default ITextComponent getPrettyDisplay(String space, int indentation){
+        return getNBT().getPrettyDisplay(space, indentation);
     }
 }
