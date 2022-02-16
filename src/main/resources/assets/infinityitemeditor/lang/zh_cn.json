@@ -1,10 +1,4 @@
-//Translate player: chingching3086
-//Translate Tools: Manual Translation + Cambridge Help
-//Degree of completion: 99%
-//Debug Sarch: text
 {
-  //EnchantmentContent --------------------------------------------------------------------------------------------------------------------------------
-  //It was really difficult to have a player who was focused on 1.12.2 translate the mod 1.16.5
   "enchantment.minecraft.aqua_affinity.desc": "提升水下的挖掘速度",
   "enchantment.minecraft.bane_of_arthropods.desc": "对节肢生物会有额外伤害",
   "enchantment.minecraft.binding_curse.desc": "无法从背包中移除 (创造模式除外)",
@@ -42,7 +36,7 @@
   "enchantment.minecraft.thorns.desc": "对方攻击你时有概率会让对方也受到伤害",
   "enchantment.minecraft.unbreaking.desc": "使用后有概率不消耗耐久 (护甲耐久必掉 只是荆棘效果有概率不消耗耐久)",
   "enchantment.minecraft.vanishing_curse.desc": "死亡后物品会消失",
-  //AttributeMod --------------------------------------------------------------------------------------------------------------------------------
+
   "attribute.amount._": "等级: %s",
   "enum.equipmentslottype._": "格子: %s",
   "enum.equipmentslottype.chest": "胸甲",
@@ -55,7 +49,7 @@
   "enum.operation.addition": "增加 (+)",
   "enum.operation.multiply_base": "乘 (基本)",
   "enum.operation.multiply_total": "乘 (总计)",
-  //NBT --------------------------------------------------------------------------------------------------------------------------------
+
   "flag.attributemod": "属性",
   "flag.candestroy": "可以破坏",
   "flag.canplaceon": "可以放置",
@@ -64,7 +58,7 @@
   "flag.iteminfo": "物品信息",
   "flag.switchall": "全部切换",
   "flag.unbreakable": "无限耐久",
-  //GUI --------------------------------------------------------------------------------------------------------------------------------
+
   "gui.allwidgets": "所有可改NBT",
   "gui.armorstandeditor": "盔甲架编辑",
   "gui.armorstandeditor.body": "身体",
@@ -188,24 +182,24 @@
   "gui.effectwheel.showicon": "图标",
   "gui.effectwheel": "转盘编辑药水效果",
   "gui.wheel.search": "搜索",
-  //ShowTag --------------------------------------------------------------------------------------------------------------------------------
+
   "item.tag.invisible": "隐形",
   "item.tag.unbreakable.false": "可破坏",
   "item.tag.unbreakable.true": "无法破坏",
-  //Group --------------------------------------------------------------------------------------------------------------------------------
+
   "itemGroup.all": "全部",
   "itemGroup.aquatic": "海洋更新",
   "itemGroup.nearbyblocks": "附近的方块",
   "itemGroup.tileentities": "已加载的TE",
   "itemGroup.unavailable": "无法使用",
   "itemGroup.villageandpillage": "村民和掠夺更新",
-  //Key --------------------------------------------------------------------------------------------------------------------------------
+
   "key.barriertoggle": "切换屏障可见",
   "key.debug": "除错",
   "key.editor": "编辑所有物品",
   "key.headcollection": "打开头颅栏",
   "key.offhandswing": "挥杆",
-  //Filter --------------------------------------------------------------------------------------------------------------------------------
+
   "filter._": "切换: %s",
   "filter.all": "所有",
   "filter.search": "搜索",
