@@ -8,7 +8,9 @@ import infinityitemeditor.render.ShieldRenderer;
 import infinityitemeditor.saving.SaveService;
 import infinityitemeditor.styles.StyleManager;
 import infinityitemeditor.tab.CreativeTabs;
+import infinityitemeditor.util.CursorService;
 import infinityitemeditor.util.ReflectionUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ArmorStandItem;
 import net.minecraft.item.Items;
 import net.minecraftforge.common.MinecraftForge;
@@ -63,5 +65,6 @@ public class InfinityItemEditor {
             ArmorStandRendering.addPropertyOverrides((ArmorStandItem) Items.ARMOR_STAND);
 
         SaveService.getInstance();
+        CursorService.init(Minecraft.getInstance());
     }
 }
