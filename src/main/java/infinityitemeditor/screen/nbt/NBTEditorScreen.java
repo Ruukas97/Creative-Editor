@@ -26,6 +26,11 @@ public class NBTEditorScreen extends WindowScreen {
             child.setColor(new ColorUtils.Color(0xFF00FF99));
             child.setInsets(EdgeInsets.fromLTRB(0, 0, 2, 1));
             window.children.add(child);
+            window.setCloseable(w -> {
+                windows.remove(w);
+                buttons.remove(w);
+                children.remove(w);
+            });
             windows.add(addButton(window));
         }
         for (WindowWidget w : windows) {

@@ -1,10 +1,13 @@
 package infinityitemeditor.screen.nbt;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import infinityitemeditor.InfinityItemEditor;
 import infinityitemeditor.styles.StyleManager;
 import infinityitemeditor.util.ColorUtils.Color;
 import infinityitemeditor.util.CursorService;
 import infinityitemeditor.util.GuiUtil;
+import infinityitemeditor.util.RemoveWidgetCallback;
 import infinityitemeditor.util.RenderUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +18,7 @@ import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.INestedGuiEventHandler;
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.opengl.GL11;
@@ -23,6 +27,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
 
 public class WindowWidget extends Widget implements INestedGuiEventHandler {
+    public static final ResourceLocation CLOSE_ICON = new ResourceLocation(InfinityItemEditor.MODID, "textures/gui/close.png");
     public static final int TITLEBAR_HEIGHT = 15;
     public static final int RESIZE_HOVER_MARGIN = 3;
 
@@ -65,6 +70,11 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
     @Getter
     @Setter
     protected boolean showTitleBar = true;
+
+    @Getter
+    protected boolean hasCloseButton = false;
+    @Getter
+    protected RemoveWidgetCallback closeCallback = null;
 
     @Getter
     @Setter
@@ -118,6 +128,11 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
         return children;
     }
 
+    public void setCloseable(RemoveWidgetCallback callback) {
+        hasCloseButton = true;
+        closeCallback = callback;
+    }
+
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         applyMousePosition((int) mouseX, (int) mouseY);
@@ -133,10 +148,17 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
             return false;
         }
 
-        if (canMove && showTitleBar && GuiUtil.isMouseInRegion(mouseX, mouseY, x, y, width, TITLEBAR_HEIGHT)) {
-            startDragging((int) mouseX, (int) mouseY);
-            isMoving = true;
-            return true;
+        if (showTitleBar && GuiUtil.isMouseInRegion(mouseX, mouseY, x, y, width, TITLEBAR_HEIGHT)) {
+            int closeX = x + width - 14;
+            int closeY = y + 1;
+            if (hasCloseButton && GuiUtil.isMouseInRegion(mouseX, mouseY, closeX, closeY, 13, 13)) {
+                closeCallback.removeWidget(this);
+                return true;
+            } else if (canMove) {
+                startDragging((int) mouseX, (int) mouseY);
+                isMoving = true;
+                return true;
+            }
         }
         if (this.children().size() > 0) {
             int localX = x + 1;
@@ -317,14 +339,28 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
             drawCenteredString(matrix, Minecraft.getInstance().font, title, x + width / 2, y + TITLEBAR_HEIGHT - 11, color.getInt());
         }
 
-        if (children.size() == 0) {
-            return;
+        if (hasCloseButton) {
+            Minecraft mc = Minecraft.getInstance();
+            mc.getTextureManager().bind(CLOSE_ICON);
+            int closeX = x + width - 14;
+            int closeY = y + 1;
+
+            Color closeColor = color;
+            if (GuiUtil.isMouseInRegion(mouseX, mouseY, closeX, closeY, 13, 13)) {
+                closeColor = StyleManager.getCurrentStyle().getFGColor(true, true);
+            }
+            RenderSystem.color3f(closeColor.getRed() / 255f, closeColor.getGreen() / 255f, closeColor.getBlue() / 255f);
+            AbstractGui.blit(matrix,
+                    closeX, closeY,
+                    0, 0,
+                    13, 13,
+                    16, 16
+            );
+            RenderSystem.color3f(1f, 1f, 1f);
         }
 
-        boolean mouseOut = mouseY < y || mouseY >= y + height;
-        if (mouseOut) {
-            mouseX = -10000;
-            mouseY = -10000;
+        if (children.size() == 0) {
+            return;
         }
 
         int localX = x + 1;
