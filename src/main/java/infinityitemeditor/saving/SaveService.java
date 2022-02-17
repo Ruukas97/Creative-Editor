@@ -86,7 +86,7 @@ public class SaveService {
                     continue;
                 }
                 loadedNBT.put(file, nbt);
-            } catch (Exception exception) {
+            } catch (Throwable exception) {
                 InfinityItemEditor.LOGGER.error("Failed to load file: " + file.getName(), exception);
             }
         }

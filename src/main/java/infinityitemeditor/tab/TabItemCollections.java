@@ -1,5 +1,6 @@
 package infinityitemeditor.tab;
 
+import infinityitemeditor.data.DataItem;
 import infinityitemeditor.saving.DataItemCollection;
 import infinityitemeditor.saving.SaveService;
 import net.minecraft.block.Blocks;
@@ -21,9 +22,15 @@ public class TabItemCollections extends TabCreative {
     @Override
     public void fillItemList(NonNullList<ItemStack> stackList) {
         super.fillItemList(stackList);
-        List<DataItemCollection> collections = SaveService.getInstance().getItemCollections();
-        for (DataItemCollection collection : collections) {
-            stackList.add(collection.toShulker().getItemStack());
+        try {
+            List<DataItemCollection> collections = SaveService.getInstance().getItemCollections();
+            for (DataItemCollection collection : collections) {
+                for (DataItem shulker : collection.toShulkers()) {
+                    stackList.add(shulker.getItemStack());
+                }
+            }
+        } catch (Throwable exception) {
+            exception.printStackTrace();
         }
     }
 }

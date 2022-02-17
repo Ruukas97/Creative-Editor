@@ -64,7 +64,6 @@ public class MainScreen extends ParentItemScreen {
             item.getCount().set(1);
         }
 
-        assert minecraft != null;
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
         String nbtLocal = I18n.get("gui.main.nbt");
         String tooltipLocal = I18n.get("gui.main.tooltip");
@@ -447,13 +446,8 @@ public class MainScreen extends ParentItemScreen {
         matrix.pushPose();
         if (Config.MAIN_LEFT_TAB.get() == 0) {
             // NBT
-            assert minecraft != null;
-            matrix.scale(0.75F, 0.75F, 0.75F);
-
-            ItemRendererUtils.renderFormattedItemNBT(matrix, item, 5, 80, width, height, width / 3 - 1, font );
+            ItemRendererUtils.renderFormattedItemNBT(matrix, item, 3, 68, width, height, width / 3 - 1, font );
         } else if (Config.MAIN_LEFT_TAB.get() == 1) {
-
-            matrix.scale(0.9F, 0.9F, 0.9F);
             renderTooltip(matrix, item.getItemStack(), 3, 68);
 //          GuiUtil.drawHoveringText(item.getItemStack(), matrix, getTooltipFromItem(item.getItemStack()), 0, 60, width / 3 - 1, height, -1, font);
 

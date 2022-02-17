@@ -43,7 +43,7 @@ public class TagBannerPattern implements Data<Pair<BannerPattern, DyeColor>, Com
 
     @Override
     public boolean isDefault() {
-        return false;
+        return pattern == null;
     }
 
 
@@ -51,8 +51,12 @@ public class TagBannerPattern implements Data<Pair<BannerPattern, DyeColor>, Com
     public CompoundNBT getNBT() {
         NBTKeys keys = NBTKeys.keys;
         CompoundNBT nbt = new CompoundNBT();
-        nbt.putInt(keys.patternColor(), color.getId());
-        nbt.putString(keys.patternPattern(), pattern.getHashname());
+        if (color != null) {
+            nbt.putInt(keys.patternColor(), color.getId());
+        }
+        if (pattern != null) {
+            nbt.putString(keys.patternPattern(), pattern.getHashname());
+        }
         return nbt;
     }
 

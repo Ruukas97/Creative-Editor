@@ -37,7 +37,7 @@ public class ItemRendererUtils {
         if (w < maxTextWidth) {
             maxTextWidth = w - 5;
         }
-        GuiUtil.drawHoveringText(item.getItemStack(), matrix, list, mouseX, mouseY, width, height, maxTextWidth, font);
+        GuiUtil.drawHoveringText(ItemStack.EMPTY, matrix, list, mouseX, mouseY, width, height, maxTextWidth, font);
     }
 
     public TextureManager getTextureManager() {

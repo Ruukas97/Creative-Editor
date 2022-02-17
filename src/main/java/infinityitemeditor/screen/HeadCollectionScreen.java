@@ -71,7 +71,6 @@ public class HeadCollectionScreen extends ParentScreen {
             filteredString = searchString;
         }
 
-        assert minecraft != null;
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
         long endTime = System.nanoTime();
