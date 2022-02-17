@@ -18,19 +18,19 @@ public class NBTEditorScreen extends WindowScreen {
     @Override
     protected void init() {
         super.init();
+        Size screenSize = new Size(width, height);
+
         if (windows.isEmpty()) {
-            WindowWidget window = new WindowWidget(10, 10, 300, 300, new StringTextComponent("Hello"), new StringTextComponent("Testing"));
-            WindowWidget child = new WindowWidget(5, 5, 50, 50, new StringTextComponent("World"), new StringTextComponent("Testing"));
-            child.setMinY(0);
-            child.setMinX(0);
-            window.children.put(child, null);
+            WindowWidget window = new WindowWidget(10, 10, 200, 200 + WindowWidget.TITLEBAR_HEIGHT, new StringTextComponent("Hello"), new StringTextComponent("Testing"), screenSize);
+            WindowWidget child = new WindowWidget(5, 5, 50, 50, new StringTextComponent("World"), new StringTextComponent("Testing"), Size.square(200));
+            child.setColor(new ColorUtils.Color(0xFF00FF99));
+            child.setInsets(EdgeInsets.fromLTRB(0, 0, 2, 1));
+            window.children.add(child);
             windows.add(addButton(window));
         }
         for (WindowWidget w : windows) {
-            w.setMinX(6);
-            w.setMaxX(width - 6);
-            w.setMinY(6);
-            w.setMaxY(height - 6);
+            w.setScreenSize(screenSize);
+            w.setInsets(EdgeInsets.all(6));
         }
     }
 

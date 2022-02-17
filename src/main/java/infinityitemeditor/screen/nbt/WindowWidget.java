@@ -20,9 +20,7 @@ import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class WindowWidget extends Widget implements INestedGuiEventHandler {
     public static final int TITLEBAR_HEIGHT = 15;
@@ -40,46 +38,33 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
 
     @Getter
     @Setter
+    protected Color color = null;
+
+    @Getter
+    @Setter
     protected Color backgroundColor = new Color(0x99000000);
 
     @Getter
     @Setter
-    protected int minX = -1000;
-    @Getter
-    @Setter
-    protected int minY = -1000;
+    protected EdgeInsets insets = EdgeInsets.ZERO;
 
     @Getter
     @Setter
-    protected int maxX = 3000;
-    @Getter
-    @Setter
-    protected int maxY = 3000;
+    protected Constraints sizeConstraints = new Constraints(50, 2000, 50, 2000);
 
     @Getter
     @Setter
-    protected int minWidth = 50;
+    protected Size screenSize;
     @Getter
     @Setter
-    protected int minHeight = 50;
+    protected boolean canClipScreenBorder = false;
 
     @Getter
-    @Setter
-    protected int maxWidth = 500;
-    @Getter
-    @Setter
-    protected int maxHeight = 500;
-
-    @Getter
-    protected final Map<Widget, WindowChild> children = new HashMap<>();
+    protected final LinkedList<Widget> children = new LinkedList<>();
 
     @Getter
     @Setter
     protected boolean showTitleBar = true;
-
-    @Getter
-    @Setter
-    protected boolean canClipScreenBorder = false;
 
     @Getter
     @Setter
@@ -115,9 +100,10 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
     protected IGuiEventListener focused = null;
 
 
-    public WindowWidget(int x, int y, int initialWidth, int initialHeight, ITextComponent title, ITextComponent message) {
+    public WindowWidget(int x, int y, int initialWidth, int initialHeight, ITextComponent title, ITextComponent message, Size screenSize) {
         super(x, y, initialWidth, initialHeight, message);
         this.title = title;
+        this.screenSize = screenSize;
         clampPosition();
     }
 
@@ -128,8 +114,8 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
 
     @SuppressWarnings("NullableProblems")
     @Override
-    public ArrayList<Widget> children() {
-        return new ArrayList<>(children.keySet());
+    public List<Widget> children() {
+        return children;
     }
 
     @Override
@@ -156,16 +142,19 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
             int localX = x + 1;
             int localY = y + 1;
             if (showTitleBar) {
-                localY += TITLEBAR_HEIGHT;
+                localY += TITLEBAR_HEIGHT - 1;
             }
             int localMouseX = (int) (mouseX - localX);
             int localMouseY = (int) (mouseY - localY);
-            for (Widget child : this.children()) {
+            List<Widget> widgets = this.children();
+            for (int i = 0; i < widgets.size(); i++) {
+                Widget child = widgets.get(i);
                 if (child.mouseClicked(localMouseX, localMouseY, mouseButton)) {
                     this.setFocused(child);
                     if (mouseButton == 0) {
                         isDragging = true;
                     }
+                    children.addFirst(children.remove(i));
                     return true;
                 }
             }
@@ -197,7 +186,7 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
             int localX = x + 1;
             int localY = y + 1;
             if (showTitleBar) {
-                localY += TITLEBAR_HEIGHT;
+                localY += TITLEBAR_HEIGHT - 1;
             }
             int localMouseX = (int) (mouseX - localX);
             int localMouseY = (int) (mouseY - localY);
@@ -216,7 +205,7 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
             int localX = x + 1;
             int localY = y + 1;
             if (showTitleBar) {
-                localY += TITLEBAR_HEIGHT;
+                localY += TITLEBAR_HEIGHT - 1;
             }
             int localMouseX = (int) (mouseX - localX);
             int localMouseY = (int) (mouseY - localY);
@@ -228,25 +217,42 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
     }
 
     public void applyMousePosition(int mouseX, int mouseY) {
-        MainWindow window = Minecraft.getInstance().getWindow();
-        int screenWidth = window.getGuiScaledWidth();
-        int screenHeight = window.getGuiScaledHeight();
-        int xLimit = maxX - minWidth;
-        int yLimit = maxY - minHeight;
+
+        Constraints constraints = sizeConstraints;
+        if (constraints == null) {
+            constraints = Constraints.NONE;
+        }
+        Size size = screenSize;
+        if (size == null) {
+            MainWindow window = Minecraft.getInstance().getWindow();
+            size = new Size(window.getGuiScaledWidth(), window.getGuiScaledHeight());
+        }
+
         if (isResizing && resizeEdge != null) {
             if (resizeEdge == ResizeEdge.LEFT || resizeEdge == ResizeEdge.TOPLEFT || resizeEdge == ResizeEdge.BOTTOMLEFT) {
                 int originalX = x;
-                x = MathHelper.clamp(mouseX, Math.max(canClipScreenBorder ? minX : Math.max(minX, 0), x + width - maxWidth), Math.min(x + width - minWidth, xLimit));
+                x = MathHelper.clamp(mouseX, x + width - constraints.maxWidth(), x + width - constraints.minWidth());
+                clampPosition();
                 width += originalX - x;
             } else if (resizeEdge == ResizeEdge.RIGHT || resizeEdge == ResizeEdge.TOPRIGHT || resizeEdge == ResizeEdge.BOTTOMRIGHT) {
-                width = MathHelper.clamp(mouseX - x, minWidth, Math.min(maxX - x, canClipScreenBorder ? Math.min(maxWidth, screenWidth) : maxWidth));
+                width = MathHelper.clamp(mouseX - x, constraints.minWidth(), Math.min(constraints.maxWidth(), size.width() - x));
             }
             if (resizeEdge == ResizeEdge.TOP || resizeEdge == ResizeEdge.TOPLEFT || resizeEdge == ResizeEdge.TOPRIGHT) {
                 int originalY = y;
-                y = MathHelper.clamp(mouseY, Math.max(canClipScreenBorder ? minY : Math.max(minY, 0), y + height - maxHeight), Math.min(y + height - minHeight, yLimit));
+                y = MathHelper.clamp(mouseY, y + height - constraints.maxHeight(), y + height - constraints.minHeight());
+                clampPosition();
                 height += originalY - y;
             } else if (resizeEdge == ResizeEdge.BOTTOM || resizeEdge == ResizeEdge.BOTTOMLEFT || resizeEdge == ResizeEdge.BOTTOMRIGHT) {
-                height = MathHelper.clamp(mouseY - y, minHeight, Math.min(maxY - y, canClipScreenBorder ? Math.min(maxHeight, screenHeight) : maxHeight));
+                height = MathHelper.clamp(mouseY - y, constraints.minHeight(), Math.min(constraints.maxHeight(), size.height() - y));
+            }
+            Size contentSize = new Size(width, height - TITLEBAR_HEIGHT);
+
+            for (Widget child : this.children()) {
+                if (child instanceof WindowWidget) {
+                    WindowWidget w = (WindowWidget) child;
+                    w.setScreenSize(contentSize);
+                    w.clampPosition();
+                }
             }
         } else if (isMoving) {
             x = mouseX - dragOffsetX;
@@ -256,25 +262,16 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
     }
 
     public void clampPosition() {
-        MainWindow window = Minecraft.getInstance().getWindow();
-        int screenWidth = window.getGuiScaledWidth();
-        int screenHeight = window.getGuiScaledHeight();
-        int xLimit = maxX - width;
-        int yLimit = maxY - height;
-        if (!canClipScreenBorder) {
-            if (x < 0) {
-                x = 0;
-            } else if (x > screenWidth - width) {
-                x = screenWidth - width;
-            }
-            if (y < 0) {
-                y = 0;
-            } else if (y > screenHeight - height) {
-                y = screenHeight - height;
-            }
+        Size size = screenSize;
+        if (size == null) {
+            MainWindow window = Minecraft.getInstance().getWindow();
+            size = new Size(window.getGuiScaledWidth(), window.getGuiScaledHeight());
         }
-        x = MathHelper.clamp(x, minX, xLimit);
-        y = MathHelper.clamp(y, minY, yLimit);
+
+        if (!canClipScreenBorder) {
+            x = MathHelper.clamp(x, insets.left(), size.width() - insets.right() - width);
+            y = MathHelper.clamp(y, insets.top(), size.height() - insets.bottom() - height);
+        }
     }
 
     public ResizeEdge getResizeEdge(int mouseX, int mouseY) {
@@ -294,9 +291,9 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
         if (canResize && !isResizing) {
             ResizeEdge edge = getResizeEdge(mouseX, mouseY);
             if (edge != null) {
-                if (activeCursor == null) {
-                    CursorService.getINSTANCE().setCursor(edge.getCursor());
+                if (activeCursor != edge.getCursor()) {
                     activeCursor = edge.getCursor();
+                    CursorService.getINSTANCE().setCursor(activeCursor);
                 }
             } else if (activeCursor != null) {
                 CursorService.getINSTANCE().resetCursor();
@@ -304,7 +301,11 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
             }
         }
 
-        Color color = StyleManager.getCurrentStyle().getMainColor();
+        Color color = this.color;
+        if (color == null) {
+            color = StyleManager.getCurrentStyle().getMainColor();
+        }
+
         GuiUtil.drawFrame(matrix, x, y, x + width, y + height, 1, color);
 
         if (backgroundColor != null) {
@@ -320,9 +321,6 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
             return;
         }
 
-        RenderUtil.glScissorBox(x + 1, y + 2, x + width - 1, y + height - 1);
-        GL11.glEnable(GL11.GL_SCISSOR_TEST);
-
         boolean mouseOut = mouseY < y || mouseY >= y + height;
         if (mouseOut) {
             mouseX = -10000;
@@ -332,18 +330,18 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
         int localX = x + 1;
         int localY = y + 1;
         if (showTitleBar) {
-            localY += TITLEBAR_HEIGHT;
+            localY += TITLEBAR_HEIGHT - 1;
         }
         int localMouseX = mouseX - localX;
         int localMouseY = mouseY - localY;
 
+        RenderUtil.glScissorBox(localX, localY, localX + width - 1, localY + height - 1 - TITLEBAR_HEIGHT);
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
         GL11.glTranslated(localX, localY, 0d);
-        for (Widget w : children.keySet()) {
-            w.render(matrix, localMouseX, localMouseY, partialTicks);
+        for (Iterator<Widget> it = children.descendingIterator(); it.hasNext(); ) {
+            it.next().render(matrix, localMouseX, localMouseY, partialTicks);
         }
         GL11.glTranslated(-localX, -localY, 0d);
-
-
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
     }
 
