@@ -1,13 +1,16 @@
 package infinityitemeditor.data.tag;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import infinityitemeditor.data.Data;
 import infinityitemeditor.data.base.DataDouble;
 import infinityitemeditor.data.base.DataString;
 import infinityitemeditor.data.base.DataUUID;
 import infinityitemeditor.data.version.NBTKeys;
+import infinityitemeditor.render.NBTIcons;
 import infinityitemeditor.util.AttributeUtils;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifier.Operation;
@@ -28,6 +31,10 @@ public class TagAttributeModifier implements Data<TagAttributeModifier, Compound
      * {@link ItemStack#addAttributeModifier(Attribute, AttributeModifier, EquipmentSlotType)}
      * {@link }
      */
+
+    @Getter
+    @Setter
+    protected Data<?, ?> parent;
 
     @Getter
     @Setter
@@ -82,7 +89,7 @@ public class TagAttributeModifier implements Data<TagAttributeModifier, Compound
 
     @Override
     public CompoundNBT getNBT() {
-        if(attribute == null){
+        if (attribute == null) {
             return new CompoundNBT();
         }
         CompoundNBT nbt = createAttributeModifier().save();
@@ -91,12 +98,17 @@ public class TagAttributeModifier implements Data<TagAttributeModifier, Compound
         return nbt;
     }
 
-    public AttributeModifier createAttributeModifier(){
+    public AttributeModifier createAttributeModifier() {
         return new AttributeModifier(id.getData(), name.get(), amount.get(), operation.get());
     }
 
     @Override
     public ITextComponent getPrettyDisplay(String space, int indentation) {
         return ((TextComponent) slot.getPrettyDisplay("", 0)).append(AttributeUtils.getText(getAttribute(), createAttributeModifier()));
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        NBTIcons.COMPOUND_TAG.renderIcon(mc, matrix, x, y);
     }
 }

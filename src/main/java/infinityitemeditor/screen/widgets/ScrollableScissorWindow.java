@@ -6,6 +6,7 @@ import infinityitemeditor.styles.StyleManager;
 import infinityitemeditor.util.GuiUtil;
 import infinityitemeditor.util.RenderUtil;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.INestedGuiEventHandler;
@@ -19,14 +20,24 @@ import java.util.List;
 
 public class ScrollableScissorWindow extends Widget implements INestedGuiEventHandler {
     @Nullable
+    @Getter
+    @Setter
     private IGuiEventListener focused;
+    @Getter
+    @Setter
     private boolean isDragging;
 
     @Getter
     private boolean isScrolling = false;
+    @Getter
+    @Setter
     private int scrollOffset = 0;
-    private final int padding = 5;
-    private final int scrollBarWidth = 10;
+    @Getter
+    @Setter
+    private int padding = 5;
+    @Getter
+    @Setter
+    private int scrollBarWidth = 10;
 
     @Getter
     protected final List<Widget> widgets = Lists.newArrayList();
@@ -46,9 +57,9 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
 
     @Override
     public boolean mouseScrolled(double p_mouseScrolled_1_, double p_mouseScrolled_3_, double p_mouseScrolled_5_) {
-        if(isHovered){
+        if (isHovered) {
             int listHeight = getListHeight();
-            if(listHeight <= height)
+            if (listHeight <= height)
                 return false;
             scrollOffset = (int) MathHelper.clamp(scrollOffset - p_mouseScrolled_5_ * 10, 0, listHeight - height);
             return true;
@@ -59,31 +70,6 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
     @Override
     public List<? extends IGuiEventListener> children() {
         return widgets;
-    }
-
-
-    @Override
-    public final boolean isDragging() {
-        return this.isDragging;
-    }
-
-
-    @Override
-    public final void setDragging(boolean isDragging) {
-        this.isDragging = isDragging;
-    }
-
-
-    @Nullable
-    @Override
-    public IGuiEventListener getFocused() {
-        return this.focused;
-    }
-
-
-    @Override
-    public void setFocused(IGuiEventListener focused) {
-        this.focused = focused;
     }
 
 
@@ -177,16 +163,11 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
                 w.setWidth(width - padding - padding - scrollBarWidth);
 
                 if (this.y <= w.y + w.getHeight() && w.y < maxY) {
-                    w.active = true;
-                    w.visible = true;
                     if (mouseOut) {
                         w.render(matrix, -10000, -10000, partialTicks);
                     } else {
                         w.render(matrix, mouseX, mouseY, partialTicks);
                     }
-                } else {
-                    w.active = false;
-                    w.visible = false;
                 }
                 y = w.y + w.getHeight() + padding;
             }
@@ -196,6 +177,6 @@ public class ScrollableScissorWindow extends Widget implements INestedGuiEventHa
     }
 
     @Override
-    public void playDownSound(SoundHandler p_230988_1_) {}
-
+    public void playDownSound(SoundHandler p_230988_1_) {
+    }
 }

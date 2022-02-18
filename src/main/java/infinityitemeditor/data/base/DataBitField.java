@@ -8,7 +8,6 @@ import net.minecraft.util.text.*;
 public class DataBitField extends SingularData<boolean[], IntNBT> implements Button.IPressable {
     private final boolean keepSize;
 
-
     public DataBitField(boolean keepSize, boolean... data) {
         super(data);
         this.keepSize = keepSize;

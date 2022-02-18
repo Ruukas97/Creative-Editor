@@ -21,6 +21,13 @@ import net.minecraft.util.text.ITextComponent;
 import java.util.List;
 
 public abstract class ParentScreen extends Screen {
+    @Getter
+    @Setter
+    protected boolean showFrame = true;
+    @Getter
+    @Setter
+    protected boolean showTitle = true;
+
     protected final Screen lastScreen;
     protected List<Widget> renderWidgets = Lists.newArrayList();
 
@@ -133,12 +140,20 @@ public abstract class ParentScreen extends Screen {
     public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
         StyleManager.getCurrentStyle().renderBackground(matrix, this);
 
+        if (showTitle) {
+            drawCenteredString(matrix, font, getTitle().getString(), width / 2, 9, color.getInt());
+        }
+
+        if (!showFrame) {
+            return;
+        }
+
         // Frame
         GuiUtil.drawFrame(matrix, 5, 5, width - 5, height - 5, 1, color);
 
-        // GUI Title
-        drawCenteredString(matrix, font, getTitle().getString(), width / 2, 9, color.getInt());
-
+        if (!showTitle) {
+            return;
+        }
         // Title underline
         int midX = width / 2;
         if (getTopLineWidth() == -1) {

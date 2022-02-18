@@ -1,8 +1,12 @@
 package infinityitemeditor.data.base;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import infinityitemeditor.data.Data;
+import infinityitemeditor.render.NBTIcons;
 import io.netty.util.internal.ThreadLocalRandom;
 import lombok.Getter;
+import lombok.Setter;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.IntArrayNBT;
@@ -20,6 +24,9 @@ public class DataUUID implements Data<UUID, IntArrayNBT> {
     public static final UUID BASE_ATTACK_SPEED_UUID = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3");
     public static final UUID[] ARMOR_MODIFIER_UUID_PER_SLOT = new UUID[]{UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"), UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"), UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"), UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150")};
 
+    @Getter
+    @Setter
+    protected Data<?, ?> parent;
 
     @Getter
     private final DataLong mostSignificantBits;
@@ -86,5 +93,10 @@ public class DataUUID implements Data<UUID, IntArrayNBT> {
 
     public void randomize() {
         setFromUUID(MathHelper.createInsecureUUID(ThreadLocalRandom.current()));
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        NBTIcons.INT_ARRAY.renderIcon(mc, matrix, x, y);
     }
 }

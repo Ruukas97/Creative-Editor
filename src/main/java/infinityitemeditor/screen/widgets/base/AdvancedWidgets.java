@@ -15,7 +15,7 @@ public class AdvancedWidgets extends WidgetIteratorBase {
         ));
 
         add(new ClassSpecificWidget(I18n.get("gui.nbt"), true, (item, info) ->
-                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new NBTEditorScreen(info.getParent(), item))))
+                new StyledTextButton(info.withTrigger(button -> mc.setScreen(new NBTEditorScreen(info.getParent(), item, ""))))
         ));
 
         add(new ClassSpecificWidget(I18n.get("gui.rawnbt"), true, (item, info) ->

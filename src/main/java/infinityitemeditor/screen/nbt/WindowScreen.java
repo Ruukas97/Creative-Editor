@@ -2,6 +2,7 @@ package infinityitemeditor.screen.nbt;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import infinityitemeditor.screen.ParentScreen;
+import infinityitemeditor.screen.widgets.ScrollableScissorWindow;
 import infinityitemeditor.util.ColorUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -14,12 +15,15 @@ public class WindowScreen extends ParentScreen {
 
     public WindowScreen(Screen lastScreen, TranslationTextComponent title) {
         super(title, lastScreen);
+        showFrame = false;
+        showTitle = false;
     }
 
     @Override
     protected void init() {
         super.init();
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
+
         for (WindowWidget window : windows) {
             addButton(window);
             window.clampPosition();
@@ -70,6 +74,11 @@ public class WindowScreen extends ParentScreen {
     @Override
     public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, ColorUtils.Color color) {
         super.backRender(matrix, mouseX, mouseY, p3, color);
+        buttons.forEach(widget -> {
+            if (widget instanceof NBTNodeControl) {
+                ((NBTNodeControl) widget).renderLines(matrix);
+            }
+        });
     }
 
     @Override

@@ -43,6 +43,9 @@ public class GuiUtil extends GuiUtils {
         return w.x <= mouseX && mouseX < w.x + w.getWidth() && w.y <= mouseY && mouseY < w.y + w.getHeight();
     }
 
+    public static void drawFrame(MatrixStack matrix, Widget w, int border, Color color) {
+        drawFrame(matrix, w.x, w.y, w.x + w.getWidth(), w.y + w.getHeight(), border, color);
+    }
 
     public static void drawFrame(MatrixStack matrix, int xStart, int yStart, int xEnd, int yEnd, int border, Color color) {
         int c = color.getInt();

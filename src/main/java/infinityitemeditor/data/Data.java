@@ -1,6 +1,7 @@
 package infinityitemeditor.data;
 
 import infinityitemeditor.data.base.*;
+import infinityitemeditor.screen.nbt.INBTNode;
 import net.minecraft.nbt.*;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -8,13 +9,17 @@ import net.minecraftforge.common.util.Constants.NBT;
 
 import javax.annotation.Nullable;
 
-public interface Data<E, T extends INBT> {
+public interface Data<E, T extends INBT> extends INBTNode {
     TextFormatting SYNTAX_HIGHLIGHTING_KEY = TextFormatting.AQUA;
     TextFormatting SYNTAX_HIGHLIGHTING_STRING = TextFormatting.GREEN;
     TextFormatting SYNTAX_HIGHLIGHTING_NUMBER = TextFormatting.GOLD;
     TextFormatting SYNTAX_HIGHLIGHTING_NUMBER_TYPE = TextFormatting.RED;
 
     E getData();
+
+    Data<?, ?> getParent();
+
+    void setParent(Data<?, ?> parent);
 
 
     /**
@@ -93,7 +98,7 @@ public interface Data<E, T extends INBT> {
         return id == NBT.TAG_ANY_NUMERIC || (NBT.TAG_BYTE <= id && id <= NBT.TAG_DOUBLE);
     }
 
-    default ITextComponent getPrettyDisplay(String space, int indentation){
+    default ITextComponent getPrettyDisplay(String space, int indentation) {
         return getNBT().getPrettyDisplay(space, indentation);
     }
 }

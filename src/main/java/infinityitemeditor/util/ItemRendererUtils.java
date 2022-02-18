@@ -25,7 +25,31 @@ import java.util.List;
 public class ItemRendererUtils {
     private final ItemRenderer itemRenderer;
 
+    public void renderItem(ItemStack stack, Minecraft mc, MatrixStack matrix, int x, int y) {
+        if (stack.isEmpty()) {
+            return;
+        }
+        RenderSystem.translatef(0.0F, 0.0F, 32.0F);
+        if (mc.screen != null) {
+            mc.screen.setBlitOffset(200);
+        }
+        itemRenderer.blitOffset = 10.0F;
+        net.minecraft.client.gui.FontRenderer font = stack.getItem().getFontRenderer(stack);
+        if (font == null)
+            font = mc.font;
+        this.renderItemIntoGUI(stack, x, y, 0, 0);
+        itemRenderer.renderGuiItemDecorations(font, stack, x, y, null);
+        if (mc.screen != null) {
+            mc.screen.setBlitOffset(0);
+        }
+        itemRenderer.blitOffset = 0.0F;
+        RenderSystem.translatef(0.0F, 0.0F, -32.0F);
+    }
+
     public void renderItemIntoGUI(ItemStack stack, int x, int y, float xRot, float yRot) {
+        if (stack.isEmpty()) {
+            return;
+        }
         this.renderItemModelIntoGUI(stack, x, y, xRot, yRot, itemRenderer.getModel(stack, null, null));
     }
 
@@ -45,6 +69,9 @@ public class ItemRendererUtils {
     }
 
     protected void renderItemModelIntoGUI(ItemStack stack, int x, int y, float xRot, float yRot, IBakedModel bakedmodel) {
+        if (stack.isEmpty()) {
+            return;
+        }
         RenderSystem.pushMatrix();
         getTextureManager().bind(AtlasTexture.LOCATION_BLOCKS);
         getTextureManager().getTexture(AtlasTexture.LOCATION_BLOCKS).setBlurMipmap(false, false);

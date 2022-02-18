@@ -2,15 +2,19 @@ package infinityitemeditor.data.base;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import infinityitemeditor.data.Data;
+import infinityitemeditor.render.NBTIcons;
+import infinityitemeditor.screen.nbt.INBTNode;
+import infinityitemeditor.screen.nbt.NBTNodeControl;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public abstract class DataList<E extends Data<?, ?>> extends SingularData<List<E>, ListNBT> implements Iterable<E> {
     public DataList() {
@@ -113,5 +117,19 @@ public abstract class DataList<E extends Data<?, ?>> extends SingularData<List<E
     @Override
     public ListIterator<E> iterator() {
         return data.listIterator();
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        NBTIcons.LIST.renderIcon(mc, matrix, x, y);
+    }
+
+    @Override
+    public Map<String, INBTNode> getSubNodes() {
+        Map<String, INBTNode> map = new HashMap<>();
+        for (int i = 0; i < data.size(); i++) {
+            map.put(String.valueOf(i), data.get(i));
+        }
+        return map;
     }
 }

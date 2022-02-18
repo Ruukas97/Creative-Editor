@@ -2,6 +2,7 @@ package infinityitemeditor.data.tag;
 
 import infinityitemeditor.data.Data;
 import infinityitemeditor.data.DataItem;
+import infinityitemeditor.data.DataUnserializedCompound;
 import infinityitemeditor.data.base.DataColor;
 import infinityitemeditor.data.base.DataListString;
 import infinityitemeditor.data.version.NBTKeys;
@@ -10,8 +11,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants.NBT;
 
-public class TagDisplay implements Data<TagDisplay, CompoundNBT> {
-    private final DataItem item;
+public class TagDisplay extends DataUnserializedCompound {
+    private DataItem item;
 
     private final @Getter
     DataColor color;
@@ -24,6 +25,7 @@ public class TagDisplay implements Data<TagDisplay, CompoundNBT> {
 
 
     public TagDisplay(DataItem item, CompoundNBT nbt) {
+        super(nbt);
         this.item = item;
         NBTKeys keys = NBTKeys.keys;
         color = new DataColor(nbt.getInt(keys.displayColor()));
@@ -32,6 +34,17 @@ public class TagDisplay implements Data<TagDisplay, CompoundNBT> {
         lore = new DataListString(nbt.getList(keys.displayLore(), NBT.TAG_STRING));
     }
 
+    @Override
+    public DataItem getParent() {
+        return item;
+    }
+
+    @Override
+    public void setParent(Data<?, ?> parent) {
+        if (parent instanceof DataItem) {
+            item = (DataItem) parent;
+        }
+    }
 
     @Override
     public boolean isDefault() {

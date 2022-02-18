@@ -1,5 +1,6 @@
 package infinityitemeditor.saving;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.datafixers.DSL;
 import com.mojang.datafixers.DataFixer;
 import com.mojang.serialization.Dynamic;
@@ -68,6 +69,15 @@ public class DataSaveable implements Data<DataSaveable, CompoundNBT> {
         }
         formatVersion = new DataInteger(nbt.contains("FormatVersion", Constants.NBT.TAG_ANY_NUMERIC) ? nbt.getInt("FormatVersion") : FORMAT_VERSION);
         dataVersion = new DataInteger(nbt.getInt("DataVersion"));
+    }
+
+    @Override
+    public Data<?, ?> getParent() {
+        return null;
+    }
+
+    @Override
+    public void setParent(Data<?, ?> parent) {
     }
 
     @Override
@@ -151,5 +161,10 @@ public class DataSaveable implements Data<DataSaveable, CompoundNBT> {
     public static CompoundNBT updateNBT(DSL.TypeReference type, CompoundNBT nbt, int version, int newVersion) {
         DataFixer fixer = Minecraft.getInstance().getFixerUpper();
         return (CompoundNBT) fixer.update(type, new Dynamic<>(NBTDynamicOps.INSTANCE, nbt), version, newVersion).getValue();
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+
     }
 }

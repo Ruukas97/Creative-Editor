@@ -1,11 +1,17 @@
 package infinityitemeditor.data.tag;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import infinityitemeditor.data.Data;
 import infinityitemeditor.data.base.DataBoolean;
 import infinityitemeditor.data.base.DataByte;
 import infinityitemeditor.data.base.DataInteger;
 import infinityitemeditor.util.EffectUtils;
 import lombok.Getter;
+import lombok.Setter;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.renderer.texture.PotionSpriteUploader;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.potion.Effect;
@@ -16,6 +22,10 @@ import net.minecraft.util.text.ITextComponent;
 import java.util.Map;
 
 public class TagEffect implements Data<EffectInstance, CompoundNBT> {
+    @Getter
+    @Setter
+    protected Data<?, ?> parent;
+
     /*
      * See: {@link net.minecraft.potion.Potion} {@link Potions} {@link Effect} {@link EffectInstance}
      */
@@ -49,7 +59,7 @@ public class TagEffect implements Data<EffectInstance, CompoundNBT> {
     public TagEffect(Map.Entry<RegistryKey<Effect>, Effect> registryEntry) {
         effectId = new TagEffectId((byte) Effect.getId(registryEntry.getValue()));
         amplifier = new DataByte((byte) 1);
-        duration = new DataInteger( (byte) 1);
+        duration = new DataInteger((byte) 1);
         ambient = new DataBoolean(false);
         showParticles = new DataBoolean(false);
         showIcon = new DataBoolean(false);
@@ -92,5 +102,19 @@ public class TagEffect implements Data<EffectInstance, CompoundNBT> {
     @Override
     public ITextComponent getPrettyDisplay(String space, int indentation) {
         return EffectUtils.getText(this);
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        int blitOffset = 0;
+        if (mc.screen != null) {
+            blitOffset = mc.screen.getBlitOffset();
+        }
+        PotionSpriteUploader potionspriteuploader = mc.getMobEffectTextures();
+        Effect effect = getEffectId().getEffect();
+        TextureAtlasSprite textureatlassprite = potionspriteuploader.get(effect);
+        mc.getTextureManager().bind(textureatlassprite.atlas().location());
+
+        AbstractGui.blit(matrix, -9, -9, blitOffset, 18, 18, textureatlassprite);
     }
 }

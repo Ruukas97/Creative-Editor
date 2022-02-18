@@ -2,8 +2,15 @@ package infinityitemeditor.data;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import infinityitemeditor.data.base.DataMap;
+import infinityitemeditor.render.NBTIcons;
+import infinityitemeditor.screen.nbt.INBTNode;
+import lombok.Getter;
+import lombok.Setter;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -11,6 +18,10 @@ import net.minecraft.util.text.StringTextComponent;
 import java.util.*;
 
 public class DataUnserializedCompound implements Data<DataUnserializedCompound, CompoundNBT> {
+    @Getter
+    @Setter
+    private Data<?, ?> parent;
+
     private final Map<String, Data<?, ?>> serialized = new HashMap<>();
     private final CompoundNBT unserializedNBT;
 
@@ -96,5 +107,34 @@ public class DataUnserializedCompound implements Data<DataUnserializedCompound, 
     @Override
     public DataUnserializedCompound getData() {
         return this;
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        NBTIcons.COMPOUND_TAG.renderIcon(mc, matrix, x, y);
+    }
+
+    @Override
+    public Map<String, ? extends INBTNode> getSubNodes() {
+        Map<String, Data<?, ?>> map = new HashMap<>();
+        for (Map.Entry<String, Data<?, ?>> entry : serialized.entrySet()) {
+            if (entry.getValue().isDefault()) {
+                continue;
+            }
+            map.put(entry.getKey(), entry.getValue());
+        }
+        for (String key : unserializedNBT.getAllKeys()) {
+            INBT nbt = unserializedNBT.get(key);
+            if (nbt == null) {
+                continue;
+            }
+            Data<?, ?> data = Data.getDataFromNBT(nbt);
+            if (data == null || data.isDefault()) {
+                continue;
+            }
+            map.put(key, data);
+
+        }
+        return map;
     }
 }

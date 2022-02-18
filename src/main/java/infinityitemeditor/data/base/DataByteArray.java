@@ -1,5 +1,8 @@
 package infinityitemeditor.data.base;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import infinityitemeditor.render.NBTIcons;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.ByteArrayNBT;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
@@ -42,5 +45,10 @@ public class DataByteArray extends SingularData<byte[], ByteArrayNBT> {
 
         iformattabletextcomponent.append("]");
         return iformattabletextcomponent;
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        NBTIcons.BYTE_ARRAY.renderIcon(mc, matrix, x, y);
     }
 }

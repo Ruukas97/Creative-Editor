@@ -1,5 +1,8 @@
 package infinityitemeditor.data.base;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import infinityitemeditor.render.NBTIcons;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -73,5 +76,10 @@ public class DataString extends SingularData<String, StringNBT> {
         stringbuilder.setCharAt(0, c0);
         stringbuilder.append(c0);
         return stringbuilder.toString();
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        NBTIcons.STRING.renderIcon(mc, matrix, x, y);
     }
 }

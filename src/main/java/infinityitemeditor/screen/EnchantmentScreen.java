@@ -163,8 +163,9 @@ public class EnchantmentScreen extends ParentScreen {
                 removeSelected();
             }
         });
-        if (tag.getEnchantment().getRegistryName() != null)
+        if (tag.getEnchantment().getRegistryName() != null) {
             button.setTooltip(tag.getEnchantment().getRegistryName().toString());
+        }
         added.getWidgets().add(button);
         setSelected(tag, button);
     }
@@ -229,11 +230,11 @@ public class EnchantmentScreen extends ParentScreen {
             }
         }
 
-        if(selected != null){
+        if (selected != null) {
             int xStart = (width / 3 - 10) * 2 + 20;
             int eWidth = width / 3 - 10;
             int textWidth = font.width(I18n.get("gui.enchantment.level"));
-            drawString(matrix, font, new TranslationTextComponent("gui.enchantment.level"), xStart + eWidth/2 - 3 - textWidth,141, color.getInt());
+            drawString(matrix, font, new TranslationTextComponent("gui.enchantment.level"), xStart + eWidth / 2 - 3 - textWidth, 141, color.getInt());
         }
     }
 

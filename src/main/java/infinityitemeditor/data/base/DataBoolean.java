@@ -1,8 +1,13 @@
 package infinityitemeditor.data.base;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import infinityitemeditor.render.NBTIcons;
+import infinityitemeditor.screen.nbt.ContextMenu;
+import infinityitemeditor.screen.nbt.INBTNode;
 import infinityitemeditor.screen.widgets.StyledBitToggle;
 import infinityitemeditor.screen.widgets.StyledTFToggle;
 import infinityitemeditor.screen.widgets.StyledToggle;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.Button.IPressable;
 import net.minecraft.nbt.ByteNBT;
@@ -10,8 +15,9 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
-public class
-DataBoolean extends SingularData<Boolean, ByteNBT> implements IPressable {
+import java.util.List;
+
+public class DataBoolean extends SingularData<Boolean, ByteNBT> implements IPressable {
     TextFormatting SYNTAX_HIGHLIGHTING_TRUE = TextFormatting.GREEN;
     TextFormatting SYNTAX_HIGHLIGHTING_FALSE = TextFormatting.RED;
 
@@ -51,8 +57,7 @@ DataBoolean extends SingularData<Boolean, ByteNBT> implements IPressable {
         ITextComponent textBool;
         if (data) {
             textBool = (new StringTextComponent(" (true)")).withStyle(SYNTAX_HIGHLIGHTING_TRUE);
-        }
-        else {
+        } else {
             textBool = (new StringTextComponent(" (false)")).withStyle(SYNTAX_HIGHLIGHTING_FALSE);
         }
         ITextComponent itextcomponent = (new StringTextComponent("b")).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
@@ -69,5 +74,10 @@ DataBoolean extends SingularData<Boolean, ByteNBT> implements IPressable {
         } else if (button instanceof StyledBitToggle) {
             ((StyledBitToggle) button).updateMessage(data);
         }
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        NBTIcons.BOOLEAN.renderIcon(mc, matrix, x, y);
     }
 }

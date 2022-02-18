@@ -239,7 +239,6 @@ public class WindowWidget extends Widget implements INestedGuiEventHandler {
     }
 
     public void applyMousePosition(int mouseX, int mouseY) {
-
         Constraints constraints = sizeConstraints;
         if (constraints == null) {
             constraints = Constraints.NONE;

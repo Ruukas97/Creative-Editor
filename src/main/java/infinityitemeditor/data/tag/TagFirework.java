@@ -1,11 +1,16 @@
 package infinityitemeditor.data.tag;
 
 import com.google.common.base.Strings;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import infinityitemeditor.data.base.DataByte;
 import infinityitemeditor.data.base.DataMap;
 import infinityitemeditor.data.base.SingularData;
 import infinityitemeditor.data.version.NBTKeys;
+import infinityitemeditor.util.ItemRendererUtils;
 import lombok.Getter;
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
@@ -70,5 +75,11 @@ public class TagFirework extends SingularData<TagList<TagExplosion>, CompoundNBT
             iformattabletextcomponent.append("}");
             return iformattabletextcomponent;
         }
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        ItemStack banner = new ItemStack(Items.FIREWORK_ROCKET);
+        new ItemRendererUtils(mc.getItemRenderer()).renderItem(banner, mc, matrix, x, y);
     }
 }
