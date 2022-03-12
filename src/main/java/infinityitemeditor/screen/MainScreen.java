@@ -1,6 +1,7 @@
 package infinityitemeditor.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import infinityitemeditor.config.Config;
 import infinityitemeditor.data.DataItem;
@@ -13,6 +14,7 @@ import infinityitemeditor.util.ColorUtils.Color;
 import infinityitemeditor.util.ItemRendererUtils;
 import infinityitemeditor.util.RenderUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
@@ -20,6 +22,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
+import infinityitemeditor.util.GuiTrain;
 
 import java.util.ArrayList;
 
@@ -40,6 +43,11 @@ public class MainScreen extends ParentItemScreen {
     // Lore
     private StyledDataTextField nameField;
     private StyledTextButton clearButton;
+
+    // Train
+    private boolean automaticTrains = false;  // If new trains should automatically be dispatched once the previous has gone off-screen
+    private GuiTrain train;
+    private int trainFrameCount = 0;
 
 
     public MainScreen(Screen lastScreen, DataItem editing) {
@@ -223,6 +231,10 @@ public class MainScreen extends ParentItemScreen {
 
         setLeftTab(Config.MAIN_LEFT_TAB.get(), false);
         setRightTab(Config.MAIN_RIGHT_TAB.get(), false);
+
+        // Train
+        if (automaticTrains)
+            train = GuiTrain.randomTrain();
     }
 
     private void loadWidgets(Iterable<ClassSpecificWidget> widgets, ArrayList<Widget> widgetList) {
@@ -372,6 +384,9 @@ public class MainScreen extends ParentItemScreen {
             }
         }
 
+        if (key2 == 20 && train == null)
+            train = GuiTrain.randomTrain();
+
         return super.keyPressed(key1, key2, key3);
     }
 
@@ -430,6 +445,26 @@ public class MainScreen extends ParentItemScreen {
         //drawString( font, item.getItem().getIDExcludingMC(), x + 6 + idoffset, 85, color.getInt() );
 
         drawString(matrix, font, count, x, 105, color.getInt());
+
+        if (train != null) {
+            trainFrameCount += 1;
+            float trainPos = (trainFrameCount + partialTicks) * train.speed - 611;
+            minecraft.getTextureManager().bind(train.texture);
+            RenderSystem.color3f(train.red, train.green, train.blue);
+            AbstractGui.blit(matrix,
+                    (int)trainPos/5, 1,
+                    0, 0,
+                    611/5, 71/5,
+                    611/5, 71/5
+            );
+            RenderSystem.color3f(1f, 1f, 1f);
+            if (trainPos > width*5) {
+                if (automaticTrains)
+                    train = GuiTrain.randomTrain();
+                else train = null;
+                trainFrameCount = 0;
+            }
+        }
     }
 
     private String addChar(String str, String ch, int position) {
