@@ -13,19 +13,12 @@ import javax.annotation.Nonnull;
 
 public class TagItemID extends DataString {
     public TagItemID(INBT value) {
-        super(value instanceof StringNBT ? value.getAsString() : "minecraft:air");
+        this(value instanceof StringNBT ? value.getAsString() : "air");
     }
-
-
-    public TagItemID(StringNBT value) {
-        super(value);
-    }
-
 
     public TagItemID(String value) {
         super(value);
     }
-
 
     public TagItemID(Item item) {
         this(getIDFromItem(item));
@@ -45,13 +38,16 @@ public class TagItemID extends DataString {
     }
 
     public String getIDExcludingMC() {
+        if (data == null) {
+            return "air";
+        }
         if (data.startsWith("minecraft:")) {
             return data.substring(10);
         }
         return data;
     }
 
-    public boolean isBlockItem(){
+    public boolean isBlockItem() {
         return getItem() instanceof BlockItem;
     }
 

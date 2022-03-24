@@ -1,6 +1,7 @@
 package infinityitemeditor.data;
 
 import com.google.common.base.Strings;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import infinityitemeditor.data.base.DataMap;
 import infinityitemeditor.data.tag.TagDamage;
@@ -8,10 +9,13 @@ import infinityitemeditor.data.tag.TagDisplayName;
 import infinityitemeditor.data.tag.TagItemID;
 import infinityitemeditor.data.tag.TagItemNBT;
 import infinityitemeditor.data.version.NBTKeys;
+import infinityitemeditor.screen.nbt.INBTNode;
+import infinityitemeditor.util.ItemRendererUtils;
 import lombok.Getter;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SkullItem;
+import lombok.Setter;
+import net.minecraft.client.Minecraft;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -20,7 +24,14 @@ import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DataItem implements Data<ItemStack, CompoundNBT> {
+    @Getter
+    @Setter
+    protected Data<?, ?> parent;
+
     @Getter
     private final TagItemID item;
     @Getter
@@ -206,6 +217,17 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
         return iformattabletextcomponent;
     }
 
+    public EquipmentSlotType getAppropriateEquipmentSlot() {
+        Item item = this.item.getItem();
+        if (item instanceof ArmorItem) {
+            ArmorItem armor = (ArmorItem) item;
+            return armor.getSlot();
+        } else if (item instanceof ShieldItem || item instanceof ArrowItem || item == Items.TOTEM_OF_UNDYING) {
+            return EquipmentSlotType.OFFHAND;
+        } else {
+            return EquipmentSlotType.MAINHAND;
+        }
+    }
 
     @Override
     public boolean isDefault() {
@@ -214,5 +236,28 @@ public class DataItem implements Data<ItemStack, CompoundNBT> {
 
     public DataItem copy() {
         return new DataItem(this.getNBT());
+    }
+
+    @Override
+    public ITextComponent getNodeName(String key) {
+        return getItemStack().getHoverName();
+    }
+
+    @Override
+    public Map<String, ? extends INBTNode> getSubNodes() {
+        NBTKeys keys = NBTKeys.keys;
+        Map<String, Data<?, ?>> map = new HashMap<>();
+        if (!getSlot().isDefault())
+            map.put(keys.stackSlot(), getSlot());
+        map.put(keys.stackID(), getItem());
+        map.put(keys.stackCount(), getCount());
+        if (!getTag().isDefault())
+            map.put(keys.stackTag(), getTag());
+        return map;
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        new ItemRendererUtils(mc.getItemRenderer()).renderItem(getItemStack(), mc, matrix, x, y);
     }
 }

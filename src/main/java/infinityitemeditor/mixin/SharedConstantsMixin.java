@@ -8,12 +8,12 @@ import org.spongepowered.asm.mixin.Overwrite;
 public class SharedConstantsMixin {
 
     /**
-     * @author ThiemeH
-     * @reason Removes the section sign from invalid chat character
+     * @author Ruukas
+     * @reason Adds the section sign to allowed chat characters
      */
     @Overwrite
-    public static boolean isAllowedChatCharacter(char p) { //func_71566_a
-        return (p >= ' ' && p != '');
+    public static boolean isAllowedChatCharacter(char c) { //func_71566_a
+        return SharedConstants.isAllowedChatCharacter(c) || c == '\u00a7';
     }
 
 }

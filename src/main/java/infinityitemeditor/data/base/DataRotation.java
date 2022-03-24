@@ -1,8 +1,12 @@
 package infinityitemeditor.data.base;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import infinityitemeditor.data.Data;
 import infinityitemeditor.data.NumberRangeInt;
+import infinityitemeditor.render.NBTIcons;
 import lombok.Getter;
+import lombok.Setter;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.FloatNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.math.Rotations;
@@ -11,15 +15,15 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
 public class DataRotation implements Data<Rotations, ListNBT> {
-    private @Getter
-    final
-    NumberRangeInt x;
-    private @Getter
-    final
-    NumberRangeInt y;
-    private @Getter
-    final
-    NumberRangeInt z;
+    @Getter
+    @Setter
+    protected Data<?, ?> parent;
+    @Getter
+    private final NumberRangeInt x;
+    @Getter
+    private final NumberRangeInt y;
+    @Getter
+    private final NumberRangeInt z;
 
 
     public DataRotation(ListNBT nbt) {
@@ -63,5 +67,10 @@ public class DataRotation implements Data<Rotations, ListNBT> {
     @Override
     public Rotations getData() {
         return new Rotations(x.get(), y.get(), z.get());
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        NBTIcons.LIST.renderIcon(mc, matrix, x, y);
     }
 }

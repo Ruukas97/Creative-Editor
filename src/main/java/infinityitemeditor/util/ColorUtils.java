@@ -121,7 +121,6 @@ public class ColorUtils {
             return this;
         }
 
-
         public Color hueShift() {
             int r = getRed();
             int g = getGreen();

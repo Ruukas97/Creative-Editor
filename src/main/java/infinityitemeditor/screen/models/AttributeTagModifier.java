@@ -31,15 +31,7 @@ public class AttributeTagModifier implements TagModifier<TagAttributeModifier> {
     private NumberField fractionalField;
 
     public AttributeTagModifier(DataItem dataItem) {
-        Item item = dataItem.getItem().getItem();
-        if (item instanceof ArmorItem) {
-            ArmorItem armor = (ArmorItem) item;
-            slot = new TagEnum<>(EquipmentSlotType.class, armor.getSlot());
-        } else if (item instanceof ShieldItem || item instanceof ArrowItem || item == Items.TOTEM_OF_UNDYING) {
-            slot = new TagEnum<>(EquipmentSlotType.class, EquipmentSlotType.OFFHAND);
-        } else {
-            slot = new TagEnum<>(EquipmentSlotType.class, EquipmentSlotType.MAINHAND);
-        }
+        slot = new TagEnum<>(EquipmentSlotType.class, dataItem.getAppropriateEquipmentSlot());
         infinity = new DataBoolean();
         operation = new TagEnum<>(Operation.class, Operation.ADDITION);
         level = new NumberRangeInt(1, 0, 99999999);

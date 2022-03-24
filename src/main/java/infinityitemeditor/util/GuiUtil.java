@@ -43,6 +43,9 @@ public class GuiUtil extends GuiUtils {
         return w.x <= mouseX && mouseX < w.x + w.getWidth() && w.y <= mouseY && mouseY < w.y + w.getHeight();
     }
 
+    public static void drawFrame(MatrixStack matrix, Widget w, int border, Color color) {
+        drawFrame(matrix, w.x, w.y, w.x + w.getWidth(), w.y + w.getHeight(), border, color);
+    }
 
     public static void drawFrame(MatrixStack matrix, int xStart, int yStart, int xEnd, int yEnd, int border, Color color) {
         int c = color.getInt();
@@ -73,10 +76,10 @@ public class GuiUtil extends GuiUtils {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuilder();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.vertex((double) xEnd, (double) yStart, (double) screen.getBlitOffset()).color(f1, f2, f3, f).endVertex();
-        bufferbuilder.vertex((double) xStart, (double) yStart, (double) screen.getBlitOffset()).color(f1, f2, f3, f).endVertex();
-        bufferbuilder.vertex((double) xStart, (double) yEnd, (double) screen.getBlitOffset()).color(f5, f6, f7, f4).endVertex();
-        bufferbuilder.vertex((double) xEnd, (double) yEnd, (double) screen.getBlitOffset()).color(f5, f6, f7, f4).endVertex();
+        bufferbuilder.vertex(xEnd, yStart, screen.getBlitOffset()).color(f1, f2, f3, f).endVertex();
+        bufferbuilder.vertex(xStart, yStart, screen.getBlitOffset()).color(f1, f2, f3, f).endVertex();
+        bufferbuilder.vertex(xStart, yEnd, screen.getBlitOffset()).color(f5, f6, f7, f4).endVertex();
+        bufferbuilder.vertex(xEnd, yEnd, screen.getBlitOffset()).color(f5, f6, f7, f4).endVertex();
         tessellator.end();
         RenderSystem.shadeModel(7424);
         RenderSystem.disableBlend();
@@ -102,10 +105,10 @@ public class GuiUtil extends GuiUtils {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuilder();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.vertex((double) xEnd, (double) yStart, (double) screen.getBlitOffset()).color(f1, f2, f3, f).endVertex();
-        bufferbuilder.vertex((double) xStart, (double) yStart, (double) screen.getBlitOffset()).color(f1, f2, f3, f).endVertex();
-        bufferbuilder.vertex((double) xStart, (double) yEnd, (double) screen.getBlitOffset()).color(f5, f6, f7, f4).endVertex();
-        bufferbuilder.vertex((double) xEnd, (double) yEnd, (double) screen.getBlitOffset()).color(f5, f6, f7, f4).endVertex();
+        bufferbuilder.vertex(xEnd, yStart, screen.getBlitOffset()).color(f1, f2, f3, f).endVertex();
+        bufferbuilder.vertex(xStart, yStart, screen.getBlitOffset()).color(f1, f2, f3, f).endVertex();
+        bufferbuilder.vertex(xStart, yEnd, screen.getBlitOffset()).color(f5, f6, f7, f4).endVertex();
+        bufferbuilder.vertex(xEnd, yEnd, screen.getBlitOffset()).color(f5, f6, f7, f4).endVertex();
         tessellator.end();
         RenderSystem.shadeModel(7424);
         RenderSystem.disableBlend();
@@ -131,10 +134,10 @@ public class GuiUtil extends GuiUtils {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuilder();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.vertex((double) xEnd, (double) yStart, (double) screen.getBlitOffset()).color(rightRed, rightGreen, rightBlue, rightAlpha).endVertex();
-        bufferbuilder.vertex((double) xStart, (double) yStart, (double) screen.getBlitOffset()).color(leftRed, leftGreen, leftBlue, leftAlpha).endVertex();
-        bufferbuilder.vertex((double) xStart, (double) yEnd, (double) screen.getBlitOffset()).color(leftRed, leftGreen, leftBlue, leftAlpha).endVertex();
-        bufferbuilder.vertex((double) xEnd, (double) yEnd, (double) screen.getBlitOffset()).color(rightRed, rightGreen, rightBlue, rightAlpha).endVertex();
+        bufferbuilder.vertex(xEnd, yStart, screen.getBlitOffset()).color(rightRed, rightGreen, rightBlue, rightAlpha).endVertex();
+        bufferbuilder.vertex(xStart, yStart, screen.getBlitOffset()).color(leftRed, leftGreen, leftBlue, leftAlpha).endVertex();
+        bufferbuilder.vertex(xStart, yEnd, screen.getBlitOffset()).color(leftRed, leftGreen, leftBlue, leftAlpha).endVertex();
+        bufferbuilder.vertex(xEnd, yEnd, screen.getBlitOffset()).color(rightRed, rightGreen, rightBlue, rightAlpha).endVertex();
         tessellator.end();
         RenderSystem.shadeModel(7424);
         RenderSystem.disableBlend();
@@ -157,24 +160,24 @@ public class GuiUtil extends GuiUtils {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuilder();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.vertex((double) xEnd, (double) yStart, (double) screen.getBlitOffset()).color(1f, 1f, 1f, 1f).endVertex();
-        bufferbuilder.vertex((double) xStart, (double) yStart, (double) screen.getBlitOffset()).color(1f, 1f, 1f, 1f).endVertex();
-        bufferbuilder.vertex((double) xStart, (double) yEnd, (double) screen.getBlitOffset()).color(1f, 1f, 1f, 1f).endVertex();
-        bufferbuilder.vertex((double) xEnd, (double) yEnd, (double) screen.getBlitOffset()).color(1f, 1f, 1f, 1f).endVertex();
+        bufferbuilder.vertex(xEnd, yStart, screen.getBlitOffset()).color(1f, 1f, 1f, 1f).endVertex();
+        bufferbuilder.vertex(xStart, yStart, screen.getBlitOffset()).color(1f, 1f, 1f, 1f).endVertex();
+        bufferbuilder.vertex(xStart, yEnd, screen.getBlitOffset()).color(1f, 1f, 1f, 1f).endVertex();
+        bufferbuilder.vertex(xEnd, yEnd, screen.getBlitOffset()).color(1f, 1f, 1f, 1f).endVertex();
         tessellator.end();
 
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.vertex((double) xEnd, (double) yStart, (double) screen.getBlitOffset()).color(satRed, satGreen, satBlue, 1f).endVertex();
-        bufferbuilder.vertex((double) xStart, (double) yStart, (double) screen.getBlitOffset()).color(satRed, satGreen, satBlue, 0f).endVertex();
-        bufferbuilder.vertex((double) xStart, (double) yEnd, (double) screen.getBlitOffset()).color(satRed, satGreen, satBlue, 0f).endVertex();
-        bufferbuilder.vertex((double) xEnd, (double) yEnd, (double) screen.getBlitOffset()).color(satRed, satGreen, satBlue, 1f).endVertex();
+        bufferbuilder.vertex(xEnd, yStart, screen.getBlitOffset()).color(satRed, satGreen, satBlue, 1f).endVertex();
+        bufferbuilder.vertex(xStart, yStart, screen.getBlitOffset()).color(satRed, satGreen, satBlue, 0f).endVertex();
+        bufferbuilder.vertex(xStart, yEnd, screen.getBlitOffset()).color(satRed, satGreen, satBlue, 0f).endVertex();
+        bufferbuilder.vertex(xEnd, yEnd, screen.getBlitOffset()).color(satRed, satGreen, satBlue, 1f).endVertex();
         tessellator.end();
 
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.vertex((double) xEnd, (double) yStart, (double) screen.getBlitOffset()).color(0f, 0f, 0f, 0f).endVertex();
-        bufferbuilder.vertex((double) xStart, (double) yStart, (double) screen.getBlitOffset()).color(0f, 0f, 0f, 0f).endVertex();
-        bufferbuilder.vertex((double) xStart, (double) yEnd, (double) screen.getBlitOffset()).color(0f, 0f, 0f, 1f).endVertex();
-        bufferbuilder.vertex((double) xEnd, (double) yEnd, (double) screen.getBlitOffset()).color(0f, 0f, 0f, 1f).endVertex();
+        bufferbuilder.vertex(xEnd, yStart, screen.getBlitOffset()).color(0f, 0f, 0f, 0f).endVertex();
+        bufferbuilder.vertex(xStart, yStart, screen.getBlitOffset()).color(0f, 0f, 0f, 0f).endVertex();
+        bufferbuilder.vertex(xStart, yEnd, screen.getBlitOffset()).color(0f, 0f, 0f, 1f).endVertex();
+        bufferbuilder.vertex(xEnd, yEnd, screen.getBlitOffset()).color(0f, 0f, 0f, 1f).endVertex();
         tessellator.end();
 
         RenderSystem.shadeModel(7424);

@@ -1,5 +1,8 @@
 package infinityitemeditor.data.base;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import infinityitemeditor.render.NBTIcons;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.LongArrayNBT;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
@@ -43,5 +46,10 @@ public class DataLongArray extends SingularData<long[], LongArrayNBT> {
 
         iformattabletextcomponent.append("]");
         return iformattabletextcomponent;
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        NBTIcons.LONG_ARRAY.renderIcon(mc, matrix, x, y);
     }
 }

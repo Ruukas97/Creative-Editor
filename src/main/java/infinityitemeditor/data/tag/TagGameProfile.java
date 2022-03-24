@@ -2,8 +2,13 @@ package infinityitemeditor.data.tag;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.yggdrasil.response.MinecraftProfilePropertiesResponse;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import infinityitemeditor.data.base.SingularData;
 import infinityitemeditor.json.MinecraftHeadsResponse;
+import infinityitemeditor.util.ItemRendererUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.text.IFormattableTextComponent;
@@ -54,10 +59,19 @@ public class TagGameProfile extends SingularData<GameProfile, CompoundNBT> {
 
     @Override
     public ITextComponent getPrettyDisplay(String space, int indentation) {
-        IFormattableTextComponent text = new StringTextComponent(data.getName() == null ? "Player" : data.getName());
-        if(data.getId() != null){
+        IFormattableTextComponent text = new StringTextComponent(data == null || data.getName() == null ? "Player" : data.getName());
+        if (data != null && data.getId() != null) {
             text.append(data.getId().toString());
         }
         return text;
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        ItemStack head = new ItemStack(Items.PLAYER_HEAD);
+        if (data != null) {
+            NBTUtil.writeGameProfile(head.getOrCreateTagElement("SkullOwner"), data);
+        }
+        new ItemRendererUtils(mc.getItemRenderer()).renderItem(head, mc, matrix, x, y);
     }
 }

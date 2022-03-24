@@ -73,7 +73,7 @@ public class RawNBTEditorScreen extends ParentItemScreen {
                 NumberRangeInt c = item.getCount();
                 if (c.get() > c.getMax()) c.set(c.getMax());
             }
-        } catch(JsonSyntaxException ignored) {}
+        } catch(RuntimeException ignored) {}
     }
 
     @Override

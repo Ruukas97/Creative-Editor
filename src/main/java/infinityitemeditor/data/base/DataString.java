@@ -1,5 +1,8 @@
 package infinityitemeditor.data.base;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import infinityitemeditor.render.NBTIcons;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -28,7 +31,7 @@ public class DataString extends SingularData<String, StringNBT> {
 
     @Override
     public boolean isDefault() {
-        return data == null || data.length() < 1;
+        return data == null || data.isEmpty();
     }
 
 
@@ -49,13 +52,13 @@ public class DataString extends SingularData<String, StringNBT> {
         StringBuilder stringbuilder = new StringBuilder(" ");
         char c0 = 0;
 
-        for(int i = 0; i < string.length(); ++i) {
+        for (int i = 0; i < string.length(); ++i) {
             char c1 = string.charAt(i);
             if (c1 == '\\') {
                 stringbuilder.append('\\');
             } else if (c1 == '"' || c1 == '\'') {
                 if (c0 == 0) {
-                    c0 = (char)(c1 == '"' ? 39 : 34);
+                    c0 = (char) (c1 == '"' ? 39 : 34);
                 }
 
                 if (c0 == c1) {
@@ -73,5 +76,10 @@ public class DataString extends SingularData<String, StringNBT> {
         stringbuilder.setCharAt(0, c0);
         stringbuilder.append(c0);
         return stringbuilder.toString();
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        NBTIcons.STRING.renderIcon(mc, matrix, x, y);
     }
 }

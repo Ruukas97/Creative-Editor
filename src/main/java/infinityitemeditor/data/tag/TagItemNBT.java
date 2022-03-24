@@ -1,10 +1,8 @@
 package infinityitemeditor.data.tag;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
-import infinityitemeditor.data.Data;
 import infinityitemeditor.data.DataItem;
+import infinityitemeditor.data.DataUnserializedCompound;
 import infinityitemeditor.data.NumberRangeInt;
 import infinityitemeditor.data.base.*;
 import infinityitemeditor.data.tag.block.TagBlockEntity;
@@ -12,19 +10,12 @@ import infinityitemeditor.data.tag.entity.TagEntityArmorStand;
 import infinityitemeditor.data.version.NBTKeys;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.util.Constants.NBT;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
-
-public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
+public class TagItemNBT extends DataUnserializedCompound {
     @Getter
     private final DataItem item;
-    private final Map<String, Data<?, ?>> map = new HashMap<>();
-    private final CompoundNBT unserializedNBT;
 
     // General
     @Getter
@@ -74,12 +65,6 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
 
     // Specific Items
 
-    // Banner
-    @Getter
-    private final TagList<TagBannerPattern> patterns;
-    //@Getter
-    //private final TagBanner banner;
-
     // Books
     @Getter
     private final DataBoolean resolved;
@@ -121,9 +106,10 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
 
 
     public TagItemNBT(DataItem item, CompoundNBT nbt) {
-        super();
-
-        nbt = nbt != null ? nbt.copy() : new CompoundNBT();
+        super(nbt);
+        if(nbt == null){
+            nbt = new CompoundNBT();
+        }
         this.item = item;
         NBTKeys keys = NBTKeys.keys;
         // General
@@ -154,13 +140,8 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
 
         // Block tags
         canPlaceOn = add(keys.tagCanPlaceOn(), new TagList<>(nbt.getList(keys.tagCanPlaceOn(), NBT.TAG_STRING), TagItemID::new));
-        blockEntityTag = add(keys.tagBlockEntityTag(), new TagBlockEntity(item, nbt.getCompound(keys.tagBlockEntityTag())));
+        blockEntityTag = add(keys.tagBlockEntityTag(), new TagBlockEntity(nbt.getCompound(keys.tagBlockEntityTag())));
         // Specific Items/Blocks
-
-
-        // Banners
-        patterns = add(keys.tagPatterns(), new TagList<>(nbt.getList(keys.tagPatterns(), NBT.TAG_COMPOUND), TagBannerPattern::new));
-        //banner = add( keys.tagBlockEntityTag(), new TagBanner( nbt.getCompound( keys.tagBlockEntityTag() ) ) );
 
         // Books
         resolved = add(keys.tagResolved(), new DataBoolean(nbt.getBoolean(keys.tagResolved())));
@@ -193,90 +174,6 @@ public class TagItemNBT implements Data<TagItemNBT, CompoundNBT> {
         mapDecorations = add(keys.tagMapDecorations(), new TagList<>(nbt.getList(keys.tagMapDecorations(), NBT.TAG_COMPOUND), TagMapDecoration::new));
         // Entity Tags
         armorStandTag = add(keys.tagEntityTag(), new TagEntityArmorStand(nbt.getCompound(keys.tagEntityTag())));
-
-
-        unserializedNBT = nbt.copy();
-
-        //Minecraft mc = Minecraft.getInstance();
-        //mc.player.sendMessage( new StringTextComponent( "Before: " + item.getItem().get() ).appendSibling( unserializedNBT.toFormattedComponent() ) );
-
-
-        for (String key : map.keySet()) {
-            unserializedNBT.remove(key);
-        }
-        //mc.player.sendMessage( new StringTextComponent( "After: " + item.getItem().get() ).appendSibling( unserializedNBT.toFormattedComponent() ) );
-    }
-
-
-    private <T extends Data<?, ?>> T add(String key, T data) {
-        map.put(key, data);
-        return data;
-    }
-
-
-    @Override
-    public CompoundNBT getNBT() {
-        CompoundNBT nbt = unserializedNBT.copy();
-        for (String key : map.keySet()) {
-            Data<?, ?> data = map.get(key);
-            if (!data.isDefault())
-                nbt.put(key, data.getNBT());
-        }
-        return nbt;
-    }
-
-    @Override
-    public ITextComponent getPrettyDisplay(String space, int indentation) {
-        if (map.isEmpty() || isDefault()) {
-            return new StringTextComponent("{}");
-        } else {
-            IFormattableTextComponent iformattabletextcomponent = new StringTextComponent("{");
-            List<String> collection = Lists.newArrayList(map.keySet());
-            List<String> list = Lists.newArrayList();
-            for(String s : collection){
-                Data<?, ?> d = map.get(s);
-                if(!d.isDefault()){
-                    list.add(s);
-                }
-            }
-
-            Collections.sort(list);
-            collection = list;
-
-            if (!space.isEmpty()) {
-                iformattabletextcomponent.append("\n");
-            }
-
-            IFormattableTextComponent iformattabletextcomponent1;
-            for (Iterator<String> iterator = collection.iterator(); iterator.hasNext(); iformattabletextcomponent.append(iformattabletextcomponent1)) {
-                String s = iterator.next();
-                iformattabletextcomponent1 = (new StringTextComponent(Strings.repeat(space, indentation + 1))).append(DataMap.handleEscapePretty(s)).append(String.valueOf(':')).append(" ").append(map.get(s).getPrettyDisplay(space, indentation + 1));
-                if (iterator.hasNext()) {
-                    iformattabletextcomponent1.append(String.valueOf(',')).append(space.isEmpty() ? " " : "\n");
-                }
-            }
-
-            if (!space.isEmpty()) {
-                iformattabletextcomponent.append("\n").append(Strings.repeat(space, indentation));
-            }
-
-            iformattabletextcomponent.append("}");
-            return iformattabletextcomponent;
-        }
-    }
-
-
-    @Override
-    public boolean isDefault() {
-        if (!unserializedNBT.isEmpty())
-            return false;
-
-        for (String key : map.keySet()) {
-            Data<?, ?> data = map.get(key);
-            if (!data.isDefault())
-                return false;
-        }
-        return true;
     }
 
 

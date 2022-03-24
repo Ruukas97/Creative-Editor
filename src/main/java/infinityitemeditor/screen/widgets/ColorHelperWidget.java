@@ -7,6 +7,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ColorHelperWidget extends Widget {
@@ -35,12 +36,12 @@ public class ColorHelperWidget extends Widget {
         colorButtons[1] = new ColorButton(children, width - xOffset - butWidth * ((colorAmount + 2) / 2) + (butWidth * 2), height - yOffset, butWidth, butHeight, "&", "\u00a7r");
         for (int i = 2; i < colorAmount; i++) {
             TextFormatting f = formats[i - 2];
-            colorButtons[i] = new ColorButton(children, width - xOffset - butWidth * ((colorAmount + 2) / 2) + (butWidth * ((i % (colorAmount / 2)) + 1)), height - yOffset + (15 * (i / (colorAmount / 2))), butWidth, butHeight, f.toString() + f.toString().substring(1), f.toString());
+            int x = width - xOffset - butWidth * ((colorAmount + 2) / 2) + (butWidth * ((i % (colorAmount / 2)) + 1));
+            int y = height - yOffset + (15 * (i / (colorAmount / 2)));
+            String s = f + f.toString().substring(1);
+            colorButtons[i] = new ColorButton(children, x, y, butWidth, butHeight, s, f.toString());
         }
-
-        for (int i = 0; i < colorAmount; i++) {
-            this.children.add(colorButtons[i]);
-        }
+        this.children.addAll(Arrays.asList(colorButtons));
     }
 
 
