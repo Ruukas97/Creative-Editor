@@ -12,11 +12,12 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class PlayerInteractHandler {
 
+    private final Minecraft minecraft;
+
     public PlayerInteractHandler() {
         this.minecraft = Minecraft.getInstance();
     }
 
-    private final Minecraft minecraft;
 
     @SubscribeEvent
     public void onInteract(PlayerInteractEvent.EntityInteractSpecific e) {
