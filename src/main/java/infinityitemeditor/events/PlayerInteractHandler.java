@@ -23,7 +23,7 @@ public class PlayerInteractHandler {
     public void onInteract(PlayerInteractEvent.EntityInteractSpecific e) {
         DataItem heldItemStack = new DataItem(e.getPlayer().getMainHandItem());
         Item heldItem = e.getPlayer().getMainHandItem().getItem();
-        if (e.getPlayer().isCreative() && e.getTarget().getType() == EntityType.PLAYER && e.getPlayer().isShiftKeyDown() && (heldItem == Items.PLAYER_HEAD) && heldItemStack.getTag().getSkullOwner().get() == null) {
+        if (e.getPlayer().isShiftKeyDown() && e.getPlayer().isCreative() && e.getTarget().getType() == EntityType.PLAYER && heldItem == Items.PLAYER_HEAD && heldItemStack.getTag().getSkullOwner().get() == null) {
             heldItemStack.getTag().getSkullOwner().set(((PlayerEntity) e.getTarget()).getGameProfile());
             minecraft.getConnection().send(new CCreativeInventoryActionPacket(36 + minecraft.player.inventory.selected, heldItemStack.getItemStack()));
         }
