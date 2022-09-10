@@ -4,6 +4,7 @@ import infinityitemeditor.data.DataItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import infinityitemeditor.screen.ParentItemScreen;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.network.play.client.CCreativeInventoryActionPacket;
@@ -12,10 +13,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class PlayerInteractHandler {
 
-    private final Minecraft minecraft;
-
     public PlayerInteractHandler() {
-        this.minecraft = Minecraft.getInstance();
+        
     }
 
 
@@ -25,7 +24,7 @@ public class PlayerInteractHandler {
         Item heldItem = e.getPlayer().getMainHandItem().getItem();
         if (e.getPlayer().isCrouching() && e.getPlayer().isCreative() && e.getTarget().getType() == EntityType.PLAYER && heldItem == Items.PLAYER_HEAD && heldItemStack.getTag().getSkullOwner().get() == null) {
             heldItemStack.getTag().getSkullOwner().set(((PlayerEntity) e.getTarget()).getGameProfile());
-            minecraft.getConnection().send(new CCreativeInventoryActionPacket(36 + minecraft.player.inventory.selected, heldItemStack.getItemStack()));
+            ParentItemScreen.save(heldItemStack);
         }
     }
 
