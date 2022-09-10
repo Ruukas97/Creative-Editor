@@ -13,6 +13,7 @@ public class CreativeTabs {
     public static void init() {
         InfinityItemEditor.LOGGER.info("Adding Creative Tabs");
         new TabUnavailable();
+        new TabItemCollections();
 
         if (Config.NEARBYBLOCKS_TAB_ENABLED.get())
             new TabNearbyBlocks();

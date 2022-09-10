@@ -40,21 +40,21 @@ public class ArmorStandEquipScreen extends ContainerScreen<EquipmentContainer> {
 
     @Override
     public void render(MatrixStack matrix, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
-        for(int i=0; i<2; i++){
-            if(armorStandTag.getHandItems().get()[i] != null){
-                entity.setItemSlot(EquipmentSlotType.byTypeAndIndex(EquipmentSlotType.Group.HAND, i), armorStandTag.getHandItems().get()[i].getItemStack());
+        for (int i = 0; i < 2; i++) {
+            if (armorStandTag.getHandItems().get().get(i) != null) {
+                entity.setItemSlot(EquipmentSlotType.byTypeAndIndex(EquipmentSlotType.Group.HAND, i), armorStandTag.getHandItems().get().get(i).getItemStack());
             }
         }
 
-        for(int i=0; i<4; i++){
-            if(armorStandTag.getArmorItems().get()[i] != null){
-                entity.setItemSlot(EquipmentSlotType.byTypeAndIndex(EquipmentSlotType.Group.ARMOR, i), armorStandTag.getArmorItems().get()[i].getItemStack());
+        for (int i = 0; i < 4; i++) {
+            if (armorStandTag.getArmorItems().get().get(i) != null) {
+                entity.setItemSlot(EquipmentSlotType.byTypeAndIndex(EquipmentSlotType.Group.ARMOR, i), armorStandTag.getArmorItems().get().get(i).getItemStack());
             }
         }
 
         super.render(matrix, p_230430_2_, p_230430_3_, p_230430_4_);
-        this.xMouse = (float)p_230430_2_;
-        this.yMouse = (float)p_230430_3_;
+        this.xMouse = (float) p_230430_2_;
+        this.yMouse = (float) p_230430_3_;
     }
 
     @Override
@@ -64,19 +64,19 @@ public class ArmorStandEquipScreen extends ContainerScreen<EquipmentContainer> {
         int i = this.leftPos;
         int j = this.topPos;
         this.blit(matrix, i, j, 0, 0, this.imageWidth, this.imageHeight);
-        InventoryScreen.renderEntityInInventory(i + 51, j + 75, 30, (float)(i + 51) - this.xMouse, (float)(j + 75 - 50) - this.yMouse, this.minecraft.player);
-        renderArmorStand(i + 126, j + 75, 30, (float)(i + 126) - this.xMouse, (float)(j + 75 - 50) - this.yMouse);
+        InventoryScreen.renderEntityInInventory(i + 51, j + 75, 30, (float) (i + 51) - this.xMouse, (float) (j + 75 - 50) - this.yMouse, this.minecraft.player);
+        renderArmorStand(i + 126, j + 75, 30, (float) (i + 126) - this.xMouse, (float) (j + 75 - 50) - this.yMouse);
     }
 
     public void renderArmorStand(int x, int y, int scale, float lookX, float lookY) {
-        float lvt_6_1_ = (float)Math.atan(lookX / 40.0F);
-        float lvt_7_1_ = (float)Math.atan(lookY / 40.0F);
+        float lvt_6_1_ = (float) Math.atan(lookX / 40.0F);
+        float lvt_7_1_ = (float) Math.atan(lookY / 40.0F);
         RenderSystem.pushMatrix();
-        RenderSystem.translatef((float)x, (float)y, 1050.0F);
+        RenderSystem.translatef((float) x, (float) y, 1050.0F);
         RenderSystem.scalef(1.0F, 1.0F, -1.0F);
         MatrixStack lvt_8_1_ = new MatrixStack();
         lvt_8_1_.translate(0.0D, 0.0D, 1000.0D);
-        lvt_8_1_.scale((float)scale, (float)scale, (float)scale);
+        lvt_8_1_.scale((float) scale, (float) scale, (float) scale);
         Quaternion lvt_9_1_ = Vector3f.ZP.rotationDegrees(180.0F);
         Quaternion lvt_10_1_ = Vector3f.XP.rotationDegrees(lvt_7_1_ * 20.0F);
         lvt_9_1_.mul(lvt_10_1_);

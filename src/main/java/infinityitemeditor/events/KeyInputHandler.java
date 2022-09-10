@@ -1,22 +1,34 @@
 package infinityitemeditor.events;
 
 import infinityitemeditor.InfinityItemEditor;
+import infinityitemeditor.collections.ItemCollection;
 import infinityitemeditor.data.DataItem;
+import infinityitemeditor.data.base.DataString;
+import infinityitemeditor.data.base.DataUUID;
+import infinityitemeditor.saving.DataItemCollection;
+import infinityitemeditor.saving.SaveService;
 import infinityitemeditor.screen.HeadCollectionScreen;
 import infinityitemeditor.screen.MainScreen;
 import infinityitemeditor.screen.ParentItemScreen;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.lwjgl.glfw.GLFW;
+
+import java.io.File;
+import java.io.IOException;
 
 public class KeyInputHandler {
     private static KeyBinding OPEN_EDITOR_KEY;
@@ -66,19 +78,33 @@ public class KeyInputHandler {
             InfinityItemEditor.BARRIER_VISIBLE = !InfinityItemEditor.BARRIER_VISIBLE;
             mc.levelRenderer.allChanged(); // reload chunks
         } else if (InfinityItemEditor.DEBUG && event.getKey() == DEBUG_KEY.getKey().getValue()) {
-             mc.setScreen( new ParentItemScreen(new StringTextComponent(""), null, new DataItem(new ItemStack(Items.DIAMOND))) {
-                 @Override
-                 protected void init() {
-                     renderColorHelper = true;
-                     super.init();
-                 }
-             });
-            // mc.player.getHeldItemMainhand() ) ) );
-            // mc.setScreen( new EnchantmentScreen( mc.screen, new DataItem(
-            // mc.player.getHeldItemMainhand() ) ) );
-            // mc.setScreen( new ItemSpawnerScreen( mc.screen ) );
+            ItemStack stack = mc.player.getMainHandItem();
+            if (stack.getItem() == Blocks.PURPLE_SHULKER_BOX.asItem()) {
+                DataItem item = new DataItem(stack);
+                File file = new File(SaveService.getInstance().getItemCollectionsDir(), new DataUUID().getData().toString() + ".nbt");
+                DataString name = new DataString(stack.getHoverName().getString());
+                DataItemCollection itemCollection = DataItemCollection.fromBlockEntityTag(file, item.getTag().getBlockEntityTag(), name);
+                try {
+                    itemCollection.save();
+                    SaveService.getInstance().getItemCollections().add(itemCollection);
+                    Minecraft.getInstance().player.sendMessage(new StringTextComponent("Added"), null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+//            mc.setScreen(new ParentItemScreen(new StringTextComponent(""), null, new DataItem(new ItemStack(Items.DIAMOND))) {
+//                @Override
+//                protected void init() {
+//                    renderColorHelper = true;
+//                    super.init();
+//                }
+//            });
+//            mc.player.getHeldItemMainhand() ) ) );
+//            mc.setScreen(new EnchantmentScreen(mc.screen, new DataItem(
+//                    mc.player.getHeldItemMainhand())));
+//            mc.setScreen(new ItemSpawnerScreen(mc.screen));
 //            mc.setScreen(new CreativeScreen(mc.player));
-            //mc.setScreen( new WindowManagerScreen( new StringTextComponent( CreativeEditor.NAME ) ) );
+//            mc.setScreen(new WindowManagerScreen(new StringTextComponent(CreativeEditor.NAME)));
         }
     }
 

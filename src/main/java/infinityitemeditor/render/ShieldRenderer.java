@@ -39,20 +39,24 @@ public class ShieldRenderer extends ItemStackTileEntityRenderer {
                 return;
             }
 
-            boolean hasBannerPatterns = itemStackIn.getTagElement("BlockEntityTag") != null;
             matrixStackIn.pushPose();
             matrixStackIn.scale(1.0F, -1.0F, -1.0F);
-            RenderMaterial material = hasBannerPatterns ? ModelBakery.SHIELD_BASE : ModelBakery.NO_PATTERN_SHIELD;
+            RenderMaterial material = ModelBakery.SHIELD_BASE;
             IVertexBuilder ivertexbuilder = material.sprite().wrap(ItemRenderer.getFoilBufferDirect(bufferIn, this.modelShield.renderType(material.atlasLocation()), false, item.isFoil(itemStackIn)));
 
 
             this.modelShield.plate().render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1F, 1F, 1F, 1F);
 
-            if (hasBannerPatterns) {
-                List<Pair<BannerPattern, DyeColor>> list = BannerTileEntity.createPatterns(ShieldItem.getColor(itemStackIn), BannerTileEntity.getItemPatterns(itemStackIn));
-                renderBannerPatterns(matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn, this.modelShield.plate(), material, false, list);
-            } else
-                this.modelShield.handle().render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1f, 1f, 1f, 1F);
+            List<Pair<BannerPattern, DyeColor>> list;
+            if (itemStackIn.getTagElement("BlockEntityTag") != null) {
+                list = BannerTileEntity.createPatterns(ShieldItem.getColor(itemStackIn), BannerTileEntity.getItemPatterns(itemStackIn));
+            } else {
+                list = BannerTileEntity.createPatterns(DyeColor.WHITE, BannerTileEntity.getItemPatterns(ItemStack.EMPTY));
+            }
+            renderBannerPatterns(matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn, this.modelShield.plate(), material, false, list);
+
+
+            this.modelShield.handle().render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1f, 1f, 1f, 1F);
 
 
             matrixStackIn.popPose();

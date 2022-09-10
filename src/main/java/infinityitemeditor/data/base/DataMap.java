@@ -3,7 +3,10 @@ package infinityitemeditor.data.base;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import infinityitemeditor.data.Data;
+import infinityitemeditor.render.NBTIcons;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.StringNBT;
@@ -164,5 +167,10 @@ public class DataMap extends SingularData<Map<String, Data<?, ?>>, CompoundNBT> 
             ITextComponent itextcomponent = (new StringTextComponent(s.substring(1, s.length() - 1))).withStyle(SYNTAX_HIGHLIGHTING_KEY);
             return (new StringTextComponent(s1)).append(itextcomponent).append(s1);
         }
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        NBTIcons.COMPOUND_TAG.renderIcon(mc, matrix, x, y);
     }
 }

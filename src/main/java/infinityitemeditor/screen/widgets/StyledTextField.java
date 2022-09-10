@@ -3,6 +3,7 @@ package infinityitemeditor.screen.widgets;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import infinityitemeditor.mixin.SharedConstantsMixin;
 import infinityitemeditor.styles.StyleManager;
 import infinityitemeditor.styles.StyleVanilla;
 import infinityitemeditor.util.GuiUtil;
@@ -418,15 +419,12 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
     public boolean charTyped(char char1, int char2) {
         if (!this.getActive()) {
             return false;
-        } else if (SharedConstants.isAllowedChatCharacter(char1)) {
-            if (this.isEnabled) {
-                this.writeText(Character.toString(char1));
-            }
-
-            return true;
-        } else {
+        }
+        if (!SharedConstantsMixin.isAllowedChatCharacter(char1)) {
             return false;
         }
+        this.writeText(Character.toString(char1));
+        return true;
     }
 
 
@@ -434,25 +432,25 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (!this.getVisible()) {
             return false;
-        } else {
-            boolean flag = mouseX >= (double) this.x && mouseX < (double) (this.x + this.width) && mouseY >= (double) this.y && mouseY < (double) (this.y + this.height);
-            if (this.canLoseFocus) {
-                this.setFocused(flag);
-            }
-
-            if (this.isFocused() && flag && mouseButton == 0) {
-                int i = MathHelper.floor(mouseX) - this.x;
-                if (getEnableBackgroundDrawing()) {
-                    i -= 4;
-                }
-
-                String s = this.fontRenderer.plainSubstrByWidth(this.text.substring(this.lineScrollOffset), this.getAdjustedWidth());
-                this.setCursorPosition(this.fontRenderer.plainSubstrByWidth(s, i).length() + this.lineScrollOffset);
-                return true;
-            } else {
-                return false;
-            }
         }
+
+        boolean flag = mouseX >= (double) this.x && mouseX < (double) (this.x + this.width) && mouseY >= (double) this.y && mouseY < (double) (this.y + this.height);
+        if (this.canLoseFocus) {
+            this.setFocused(flag);
+        }
+
+        if (this.isFocused() && flag && mouseButton == 0) {
+            int i = MathHelper.floor(mouseX) - this.x;
+            if (getEnableBackgroundDrawing()) {
+                i -= 4;
+            }
+
+            String s = this.fontRenderer.plainSubstrByWidth(this.text.substring(this.lineScrollOffset), this.getAdjustedWidth());
+            this.setCursorPosition(this.fontRenderer.plainSubstrByWidth(s, i).length() + this.lineScrollOffset);
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -516,7 +514,7 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
                 this.drawSelectionBox(k1, i1 - 1, l1 - 1, i1 + 1 + 9);
             }
 
-            if(text.length() == 0 && hint != null){
+            if (text.length() == 0 && hint != null) {
                 this.fontRenderer.drawShadow(matrix, hint, (float) j1, (float) i1, color);
             }
         }

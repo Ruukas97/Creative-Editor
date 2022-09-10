@@ -72,7 +72,9 @@ public class ParentItemScreen extends ParentScreen {
 
             dropButton = addButton(new StyledButton(posX + bwidth + 1, posY, bwidth, 20, new TranslationTextComponent("gui.main.drop"), this::drop));
 
-            if (!minecraft.player.abilities.instabuild) {
+            //if (!minecraft.player.abilities.instabuild) {
+            //im not sure why it was checking instabuild instead of creative...
+            if (!minecraft.player.isCreative()&&!minecraft.hasSingleplayerServer()) {
                 if (saveButton != null) saveButton.active = false;
                 dropButton.active = false;
             }
@@ -102,10 +104,14 @@ public class ParentItemScreen extends ParentScreen {
         init();
     }
 
-
     public void save(Widget w) {
         if (item.getItem().getItem() != Items.AIR) {
-            minecraft.getConnection().send(new CCreativeInventoryActionPacket(36 + minecraft.player.inventory.selected, item.getItemStack()));
+            int slotId = 36 + minecraft.player.inventory.selected;
+            if (minecraft.hasSingleplayerServer()) {
+                minecraft.getSingleplayerServer().getPlayerList().getPlayer(minecraft.player.getUUID()).inventoryMenu.setItem(slotId, item.getItemStack());
+            } else {
+                minecraft.getConnection().send(new CCreativeInventoryActionPacket(slotId, item.getItemStack()));
+            }
         }
     }
 

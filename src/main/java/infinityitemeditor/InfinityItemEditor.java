@@ -5,9 +5,12 @@ import infinityitemeditor.events.*;
 import infinityitemeditor.render.ArmorStandRendering;
 import infinityitemeditor.render.HeadRenderer;
 import infinityitemeditor.render.ShieldRenderer;
+import infinityitemeditor.saving.SaveService;
 import infinityitemeditor.styles.StyleManager;
 import infinityitemeditor.tab.CreativeTabs;
+import infinityitemeditor.util.CursorService;
 import infinityitemeditor.util.ReflectionUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ArmorStandItem;
 import net.minecraft.item.Items;
 import net.minecraftforge.common.MinecraftForge;
@@ -28,10 +31,9 @@ public class InfinityItemEditor {
     public static final String NAME = "Infinity Item Editor";
 
     public static boolean BARRIER_VISIBLE = false;
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     public static Path DATAPATH = FMLPaths.GAMEDIR.get().resolve(MODID.concat("-data"));
-
 
     public InfinityItemEditor() {
         final ModLoadingContext context = ModLoadingContext.get();
@@ -62,5 +64,8 @@ public class InfinityItemEditor {
 
         if (Items.ARMOR_STAND instanceof ArmorStandItem)
             ArmorStandRendering.addPropertyOverrides((ArmorStandItem) Items.ARMOR_STAND);
+
+        SaveService.getInstance();
+        CursorService.init(Minecraft.getInstance());
     }
 }

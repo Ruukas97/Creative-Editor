@@ -1,11 +1,14 @@
 package infinityitemeditor.data.tag;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import infinityitemeditor.data.Data;
 import infinityitemeditor.data.base.DataDouble;
 import infinityitemeditor.data.base.DataString;
 import infinityitemeditor.data.version.NBTKeys;
+import infinityitemeditor.render.NBTIcons;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.ByteNBT;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -13,6 +16,9 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.storage.MapDecoration;
 
 public class TagMapDecoration implements Data<TagMapDecoration, CompoundNBT> {
+    @Getter
+    @Setter
+    protected Data<?, ?> parent;
 
     @Getter
     private final DataString id;
@@ -67,5 +73,10 @@ public class TagMapDecoration implements Data<TagMapDecoration, CompoundNBT> {
     @Override
     public ITextComponent getPrettyDisplay(String space, int indentation) {
         return getNBT().getPrettyDisplay(space, indentation);
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        NBTIcons.COMPOUND_TAG.renderIcon(mc, matrix, x, y);
     }
 }

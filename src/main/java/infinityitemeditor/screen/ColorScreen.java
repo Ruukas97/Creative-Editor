@@ -207,8 +207,6 @@ public class ColorScreen extends ParentItemScreen {
         int yStart = height / 3 + 15;
         Color color = this.color;
         int i = 0;
-        drawCenteredString(matrix, font, I18n.get("gui.color.rgb", CEStringUtils.zeroPaddedInt(color.getRed(), 3), CEStringUtils.zeroPaddedInt(color.getGreen(), 3), CEStringUtils.zeroPaddedInt(color.getBlue(), 3)), halfWidth, yStart + (20 * i++), guiColor.getInt());
-        drawCenteredString(matrix, font, I18n.get("gui.color.hex", color.getHexString()), halfWidth, yStart + (20 * i++), guiColor.getInt());
     }
 
 

@@ -2,12 +2,12 @@ package infinityitemeditor.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import infinityitemeditor.data.base.DataString;
+import infinityitemeditor.mixin.SharedConstantsMixin;
 import infinityitemeditor.screen.widgets.StyledButton;
 import infinityitemeditor.util.ColorUtils.Color;
 import infinityitemeditor.util.GuiUtil;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.SharedConstants;
 import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.glfw.GLFW;
 
@@ -122,7 +122,7 @@ public class TextEditorScreen extends ParentScreen {
     public boolean charTyped(char key, int modifier) {
         if (super.charTyped(key, modifier))
             return true;
-        if (key == 167 || SharedConstants.isAllowedChatCharacter(key)) {
+        if (key == 167 || SharedConstantsMixin.isAllowedChatCharacter(key)) {
             String s = text.get();
             text.set(s.substring(0, cursor) + key + s.substring(cursor));
             cursor++;

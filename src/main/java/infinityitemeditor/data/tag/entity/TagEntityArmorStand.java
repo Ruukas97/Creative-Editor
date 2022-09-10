@@ -1,13 +1,16 @@
 package infinityitemeditor.data.tag.entity;
 
 import com.google.common.base.Strings;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import infinityitemeditor.data.Data;
 import infinityitemeditor.data.base.DataBitField;
 import infinityitemeditor.data.base.DataBoolean;
 import infinityitemeditor.data.base.DataMap;
 import infinityitemeditor.data.base.DataRotation;
 import infinityitemeditor.data.tag.TagItemList;
+import infinityitemeditor.render.NBTIcons;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ArmorStandEntity;
@@ -202,6 +205,10 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
 
 
     public static class Pose implements Data<Pose, CompoundNBT> {
+        @Getter
+        @Setter
+        protected Data<?, ?> parent;
+
         private @Getter
         DataRotation head, body, leftArm, rightArm, leftLeg, rightLeg;
 
@@ -363,5 +370,9 @@ public class TagEntityArmorStand extends TagEntity<ArmorStandEntity> {
             stand.setRightLegPose(rightLeg.getData());
         }
 
+        @Override
+        public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+            NBTIcons.COMPOUND_TAG.renderIcon(mc, matrix, x, y);
+        }
     }
 }

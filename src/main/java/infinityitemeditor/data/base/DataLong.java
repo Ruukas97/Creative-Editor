@@ -1,5 +1,8 @@
 package infinityitemeditor.data.base;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import infinityitemeditor.render.NBTIcons;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.LongNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -36,5 +39,10 @@ public class DataLong extends SingularData<Long, LongNBT> {
     public ITextComponent getPrettyDisplay(String space, int indentation) {
         ITextComponent itextcomponent = (new StringTextComponent("L")).withStyle(SYNTAX_HIGHLIGHTING_NUMBER_TYPE);
         return (new StringTextComponent(String.valueOf(this.data))).append(itextcomponent).withStyle(SYNTAX_HIGHLIGHTING_NUMBER);
+    }
+
+    @Override
+    public void renderIcon(Minecraft mc, MatrixStack matrix, int x, int y) {
+        NBTIcons.LONG.renderIcon(mc, matrix, x, y);
     }
 }

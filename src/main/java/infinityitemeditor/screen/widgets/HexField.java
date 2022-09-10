@@ -79,28 +79,6 @@ public class HexField extends Widget {
             digits[i] = c;
         }
 
-        /*
-         * if (getDigitsValue() > getMax()) { String maxStr = (getMax() + ""); int diff
-         * = digits.length - maxStr.length(); char mC = maxStr.charAt(
-         * this.cursorPosition - diff );
-         *
-         * if (c == mC) { this.setValue( getMax() ); } else { this.setDigit( mC ); } }
-         *
-         * else if (getDigitsValue() < getMin()) { String minStr = (getMin() + "");
-         *
-         * String zeroes = "";
-         *
-         * int neededZeroes = digits.length - minStr.length();
-         *
-         * for (int z = 0; z < neededZeroes; z++) { zeroes += "0"; }
-         *
-         * minStr = zeroes + minStr;
-         *
-         * int diff = digits.length - minStr.length(); char mC = minStr.charAt(
-         * this.cursorPosition - diff );
-         *
-         * if (c == mC) { this.setValue( getMin() ); } else { this.setDigit( mC ); } }
-         */
         dataColor.setInt(getDigitsValue());
     }
 

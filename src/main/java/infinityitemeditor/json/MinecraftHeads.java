@@ -5,8 +5,10 @@ import com.google.gson.JsonParseException;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nullable;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.EnumMap;
 
@@ -87,7 +89,10 @@ public class MinecraftHeads {
 
     private static MinecraftHeadsResponse[] readCategory(MinecraftHeadsCategory category) throws IOException, JsonParseException {
         long startTime = System.nanoTime();
-        InputStreamReader reader = new InputStreamReader(category.getURL().openStream());
+        URLConnection connection = category.getURL().openConnection();
+        connection.setRequestProperty("User-Agent", "Infinity Item Editor");
+        connection.connect();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         Gson gson = new Gson();
         MinecraftHeadsResponse[] response = gson.fromJson(reader, MinecraftHeadsResponse[].class);
         reader.close();
