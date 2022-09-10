@@ -113,7 +113,7 @@ public class ParentItemScreen extends ParentScreen {
         saveItem(item,Minecraft.getInstance());
     }
     
-    public void saveItem(DataItem item, Minecraft minecraft) {
+    public static void saveItem(DataItem item, Minecraft minecraft) {
         if (item.getItem().getItem() != Items.AIR) {
             int slotId = 36 + minecraft.player.inventory.selected;
             if (minecraft.hasSingleplayerServer()) {
