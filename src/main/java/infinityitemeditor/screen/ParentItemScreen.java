@@ -12,6 +12,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -105,6 +106,14 @@ public class ParentItemScreen extends ParentScreen {
     }
 
     public void save(Widget w) {
+        saveItem(item, minecraft);
+    }
+    
+    public static void save(DataItem item) {
+        saveItem(item,Minecraft.getInstance());
+    }
+    
+    public static void saveItem(DataItem item, Minecraft minecraft) {
         if (item.getItem().getItem() != Items.AIR) {
             int slotId = 36 + minecraft.player.inventory.selected;
             if (minecraft.hasSingleplayerServer()) {
