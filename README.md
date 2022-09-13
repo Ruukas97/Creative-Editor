@@ -15,6 +15,9 @@ https://www.curseforge.com/minecraft/mc-mods/infinity-item-editor/files/all?filt
 ### From terminal (using maven)
 run 
 `git clone https://github.com/Ruukas97/Creative-Editor`
+
 `cd Creative-Editor`
+
 `mvn clean package`
+
 Note: the version on github may contain bugs that are not fixed yet
