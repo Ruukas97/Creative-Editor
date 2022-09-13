@@ -13,7 +13,7 @@ public class SharedConstantsMixin {
      */
     @Overwrite
     public static boolean isAllowedChatCharacter(char c) { //func_71566_a
-        return SharedConstants.isAllowedChatCharacter(c) || c == '\u00a7';
+        return (c != 167 && c >= ' ' && c != 127) || c == '\u00a7';
     }
 
 }
