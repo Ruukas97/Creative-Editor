@@ -19,6 +19,6 @@ run
 
 `cd Creative-Editor`
 
-`mvn clean package`
+`gradle build` OR `./gradlew build`
 
 Note: the version on github may contain bugs that are not fixed yet
