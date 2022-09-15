@@ -13,6 +13,7 @@ import infinityitemeditor.styles.StyleManager;
 import infinityitemeditor.util.ColorUtils.Color;
 import infinityitemeditor.util.GuiUtil;
 import infinityitemeditor.util.InventoryUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -192,19 +193,20 @@ public class HeadCollectionScreen extends ParentScreen {
             return true;
         } else if (key == GLFW.GLFW_KEY_SPACE) {
             searchString += " ";
-        } else if (searchString.length() < 20) {
-            char c = (char) key;
-            String cha = String.valueOf(c);
-            if (cha.matches("[a-zA-Z0-9]")) {
-                if (!hasShiftDown()) {
-                    cha = cha.toLowerCase();
-                }
-                searchString += cha;
-            }
+        } else if (Screen.isPaste(key)) {
+            searchString = minecraft.keyboardHandler.getClipboard();
+            return true;
         }
         return false;
     }
 
+    public boolean charTyped(char c, int idk) {
+        if (searchString.length() < 20) {
+            searchString += Character.toString(c);
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public void backRender(MatrixStack matrix, int mouseX, int mouseY, float p3, Color color) {
