@@ -202,8 +202,7 @@ public class HeadCollectionScreen extends ParentScreen {
 
     public boolean charTyped(char c, int idk) {
         if (searchString.length() < 20) {
-            String cha = Character.toString(c);
-            searchString += cha;
+            searchString += Character.toString(c);
             return true;
         }
         return false;
