@@ -13,6 +13,7 @@ import infinityitemeditor.screen.ParentItemScreen;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
@@ -73,7 +74,9 @@ public class KeyInputHandler {
             mc.player.swing(Hand.OFF_HAND);
             // mc.setScreen( new TextEditorScreen( mc.screen ) );
         } else if (event.getKey() == HEAD_COLLECTION.getKey().getValue()) {
-            mc.setScreen(new HeadCollectionScreen(mc.screen));
+            HeadCollectionScreen headScreen = new HeadCollectionScreen(mc.screen);
+            headScreen.ignoreKey = true;
+            mc.setScreen(headScreen);
         } else if (event.getKey() == BARRIER_TOGGLE.getKey().getValue()) {
             InfinityItemEditor.BARRIER_VISIBLE = !InfinityItemEditor.BARRIER_VISIBLE;
             mc.levelRenderer.allChanged(); // reload chunks

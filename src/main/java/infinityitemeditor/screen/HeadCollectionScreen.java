@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.play.client.CCreativeInventoryActionPacket;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.glfw.GLFW;
 
@@ -29,11 +30,11 @@ import java.util.Map;
 
 public class HeadCollectionScreen extends ParentScreen {
     private final List<CachedHead> filteredHeads = new LinkedList<>();
-
     private static MinecraftHeadsCategory selCat = MinecraftHeadsCategory.alphabet;
-    private static int currentElement = 0;
-    private static String filteredString = null;
-    private static String searchString = "";
+    public boolean ignoreKey = false;
+    private int currentElement = 0;
+    private String filteredString = null;
+    private String searchString = "";
     private final int divideHeight = 20;
 
     private int maxInRow;
@@ -193,6 +194,7 @@ public class HeadCollectionScreen extends ParentScreen {
             return true;
         } else if (key == GLFW.GLFW_KEY_SPACE) {
             searchString += " ";
+            return true;
         } else if (Screen.isPaste(key)) {
             searchString = minecraft.keyboardHandler.getClipboard();
             return true;
@@ -201,6 +203,10 @@ public class HeadCollectionScreen extends ParentScreen {
     }
 
     public boolean charTyped(char c, int idk) {
+        if (ignoreKey) {
+            ignoreKey = false;
+            return false;
+        }
         if (searchString.length() < 20) {
             searchString += Character.toString(c);
             return true;
@@ -307,8 +313,7 @@ public class HeadCollectionScreen extends ParentScreen {
         int searchW = font.width(searchString);
 
         if (hovered != null) {
-            char section = "\u00a7r".charAt(0);
-            GuiUtil.addToolTip(matrix, this, mouseX, mouseY, width, height, mouseX, mouseY, hovered.getDisplayName().getString(), section + "7" + I18n.get("gui.headcollection.clickhead"), section + "7" + I18n.get("gui.headcollection.clickheadshift"));
+            GuiUtil.addToolTip(matrix, this, mouseX, mouseY, width, height, mouseX, mouseY, hovered.getDisplayName().getString(), TextFormatting.GRAY + I18n.get("gui.headcollection.clickhead"), TextFormatting.GRAY + I18n.get("gui.headcollection.clickheadshift"));
         } else if (!searchString.equals(filteredString) && GuiUtil.isMouseInRegion(mouseX, mouseY, (width / 2) - searchW / 2, 56, searchW, 8)) {
             GuiUtil.addToolTip(matrix, this, mouseX, mouseY, I18n.get("gui.headcollection.clicksearch"));
         } else {
