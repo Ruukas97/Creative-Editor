@@ -18,7 +18,6 @@ import net.minecraft.util.text.StringTextComponent;
 import java.util.UUID;
 
 public class DataUUID implements Data<UUID, IntArrayNBT> {
-    private static Item item = new Item(new Item.Properties());
     public static final UUID EMPTY = UUID.fromString("00000000-0000-0000-0000-000000000000");
     public static final UUID BASE_ATTACK_DAMAGE_UUID = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
     public static final UUID BASE_ATTACK_SPEED_UUID = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3");
