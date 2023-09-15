@@ -1,5 +1,6 @@
 package infinityitemeditor.mixin;
 
+import infinityitemeditor.util.CharUtils;
 import net.minecraft.util.SharedConstants;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -13,7 +14,7 @@ public class SharedConstantsMixin {
      */
     @Overwrite
     public static boolean isAllowedChatCharacter(char c) { //func_71566_a
-        return (c != 167 && c >= ' ' && c != 127) || c == '\u00a7';
+        return CharUtils.isAllowedChatCharacter(c);
     }
 
 }

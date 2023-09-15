@@ -6,6 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import infinityitemeditor.mixin.SharedConstantsMixin;
 import infinityitemeditor.styles.StyleManager;
 import infinityitemeditor.styles.StyleVanilla;
+import infinityitemeditor.util.CharUtils;
 import infinityitemeditor.util.GuiUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -420,7 +421,7 @@ public class StyledTextField extends Widget implements IRenderable, IGuiEventLis
         if (!this.getActive()) {
             return false;
         }
-        if (!SharedConstantsMixin.isAllowedChatCharacter(char1)) {
+        if (!CharUtils.isAllowedChatCharacter(char1)) {
             return false;
         }
         this.writeText(Character.toString(char1));

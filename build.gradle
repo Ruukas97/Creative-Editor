@@ -16,7 +16,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 String modid = 'infinityitemeditor'
-version = '1.2.3'
+version = '1.2.4'
 group = modid // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = modid
 
@@ -133,7 +133,7 @@ dependencies {
 
 	compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.spongepowered:mixin:0.8:processor'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     testCompileOnly 'org.projectlombok:lombok:1.18.20'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
