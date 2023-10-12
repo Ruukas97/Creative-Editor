@@ -158,7 +158,7 @@
   "gui.main": "無限物品編輯",
   "gui.main.back": "返回",
   "gui.main.close": "關閉",
-  "gui.main.colorstyle": "RGB GUI",
+  "gui.main.colorstyle": "切換風格(幻燈片)",
   "gui.main.copyclipboard": "按著shift複製/獲得指令到剪貼板",
   "gui.main.count": "數量",
   "gui.main.damage": "耐久值(副ID)",
